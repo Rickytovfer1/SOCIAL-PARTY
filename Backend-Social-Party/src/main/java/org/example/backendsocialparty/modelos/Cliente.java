@@ -45,9 +45,6 @@ public class Cliente {
     @Column(name = "telelefono", unique = true,  nullable = false)
     private String telefono;
 
-    @Column(name = "admin", nullable = false)
-    private boolean admin;
-
     @OneToMany(mappedBy = "usuario1", cascade = CascadeType.ALL)
     private Set<Amistad> amistades = new HashSet<>(0);
 
