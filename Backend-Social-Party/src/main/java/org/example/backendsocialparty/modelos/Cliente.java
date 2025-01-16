@@ -30,11 +30,8 @@ public class Cliente {
     @Column(name = "apellidos", nullable = false)
     private String apellidos;
 
-    @Column(name = "correoElectronico", unique = true,  nullable = false)
-    private String correoElectronico;
-
-    @Column(name = "contrasena",  nullable = false)
-    private String contrasena;
+    @Column(name = "correo", unique = true,  nullable = false)
+    private String correo;
 
     @Column(name = "DNI", unique = true,  nullable = false)
     private String dni;
@@ -45,21 +42,18 @@ public class Cliente {
     @Column(name = "telelefono", unique = true,  nullable = false)
     private String telefono;
 
+    @Column(name = "biografia", unique = true,  nullable = false)
+    private String biografia;
+
     @OneToMany(mappedBy = "usuario1", cascade = CascadeType.ALL)
     private Set<Amistad> amistades = new HashSet<>(0);
-
-    @OneToMany(mappedBy = "emisor", cascade = CascadeType.ALL)
-    private Set<Mensaje> mensajes = new HashSet<>(0);
-
-    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY, targetEntity = Mensaje.class)
-    @JoinTable(name = "receptor",
-            joinColumns = {@JoinColumn(name = "idCliente", nullable = false)} ,
-            inverseJoinColumns ={@JoinColumn(name = "idMensaje", nullable = false)})
-    private Set<Cliente> receptor = new HashSet<>(0);
 
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
     private Set<Entrada> entrada = new HashSet<>(0);
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "usuarios")
     private Set<Grupo> grupos = new HashSet<>(0);
+
+    @OneToOne(fetch = FetchType.LAZY)
+    private Usuario usuario;
 }

@@ -19,6 +19,21 @@ import java.util.List;
 @NoArgsConstructor
 public class Usuario implements UserDetails {
 
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @Column(name = "correo", nullable = false, unique = true)
+    private String correo;
+
+    @Column(name = "contrasena", nullable = false, unique = true)
+    private String contrasena;
+
+    @Column(name = "rol", nullable = false)
+    @Enumerated(EnumType.ORDINAL)
+    private Rol rol;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of();
@@ -26,6 +41,11 @@ public class Usuario implements UserDetails {
 
     @Override
     public String getPassword() {
+        return "";
+    }
+
+    @Override
+    public String getUsername() {
         return "";
     }
 
@@ -48,19 +68,4 @@ public class Usuario implements UserDetails {
     public boolean isEnabled() {
         return UserDetails.super.isEnabled();
     }
-
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
-    @Column(name = "username")
-    private String username;
-
-    @Column(name = "contrasena", nullable = false)
-    private String contrasena;
-
-    @Column(name = "rol", nullable = false)
-    @Enumerated(EnumType.ORDINAL)
-    private Rol rol;
 }
