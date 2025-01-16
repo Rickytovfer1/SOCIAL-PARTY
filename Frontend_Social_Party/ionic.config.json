@@ -1,0 +1,7 @@
+{
+  "name": "Frontend_Social_Party",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
