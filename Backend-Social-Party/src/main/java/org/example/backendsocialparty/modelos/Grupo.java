@@ -29,7 +29,7 @@ public class Grupo {
     private Cliente creador;
 
     @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY, targetEntity = Cliente.class)
-    @JoinTable(name = "grupoIntegrante",
+    @JoinTable(name = "cliente_grupo",
             joinColumns = {@JoinColumn(name = "idGrupo", nullable = false)} ,
             inverseJoinColumns ={@JoinColumn(name = "idCliente", nullable = false)})
     private Set<Cliente> usuarios = new HashSet<>(0);

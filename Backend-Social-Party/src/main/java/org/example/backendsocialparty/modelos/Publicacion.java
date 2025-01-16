@@ -36,10 +36,10 @@ public class Publicacion {
     @Column(name = "foto", nullable = false)
     private String foto;
 
-    @Column(name = "direccion") // No es necesario actualmente
+    @Column(name = "direccion")
     private String direccion;
 
-    @Column(name = "idUsuario") // No es necesario actualmente
-    private Integer usuario;
-
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_usuario")
+    private Usuario usuario;
 }

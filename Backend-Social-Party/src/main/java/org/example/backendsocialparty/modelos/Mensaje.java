@@ -35,10 +35,11 @@ public class Mensaje {
     @Column(name = "fecha", nullable = false)
     private LocalDate fecha;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "emisor")
     private Cliente emisor;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    private Set<Cliente> receptor = new HashSet<>(0);
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "receptor")
+    private Cliente receptor;
 }

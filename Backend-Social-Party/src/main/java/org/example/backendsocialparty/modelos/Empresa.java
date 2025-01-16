@@ -41,4 +41,7 @@ public class Empresa {
 
     @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL)
     private Set<Evento> eventos = new HashSet<>(0);
+
+    @OneToOne(fetch = FetchType.LAZY)
+    private Usuario usuario;
 }
