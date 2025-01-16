@@ -30,11 +30,8 @@ public class Cliente {
     @Column(name = "apellidos", nullable = false)
     private String apellidos;
 
-    @Column(name = "correoElectronico", unique = true,  nullable = false)
-    private String correoElectronico;
-
-    @Column(name = "contrasena",  nullable = false)
-    private String contrasena;
+    @Column(name = "correo", unique = true,  nullable = false)
+    private String correo;
 
     @Column(name = "DNI", unique = true,  nullable = false)
     private String dni;
@@ -44,6 +41,9 @@ public class Cliente {
 
     @Column(name = "telelefono", unique = true,  nullable = false)
     private String telefono;
+
+    @Column(name = "biografia", unique = true,  nullable = false)
+    private String biografia;
 
     @OneToMany(mappedBy = "usuario1", cascade = CascadeType.ALL)
     private Set<Amistad> amistades = new HashSet<>(0);

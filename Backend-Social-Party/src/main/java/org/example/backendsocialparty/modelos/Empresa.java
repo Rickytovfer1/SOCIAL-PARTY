@@ -30,14 +30,17 @@ public class Empresa {
     @Column(name = "codigoPostal", nullable = false)
     private String codigoPostal;
 
-    @Column(name = "correoElectronico", unique = true,  nullable = false)
-    private String correoElectronico;
-
-    @Column(name = "contrasena",  nullable = false)
-    private String contrasena;
+    @Column(name = "correo", unique = true,  nullable = false)
+    private String correo;
 
     @Column(name = "NIF", unique = true,  nullable = false)
     private String nif;
+
+    @Column(name = "telelefono", unique = true,  nullable = false)
+    private String telefono;
+
+    @Column(name = "valoracion_minima", nullable = false)
+    private Integer valoracionMinima;
 
     @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL)
     private Set<Evento> eventos = new HashSet<>(0);
