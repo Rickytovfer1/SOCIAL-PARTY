@@ -3,6 +3,7 @@ package org.example.backendsocialparty.modelos;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -30,14 +31,14 @@ public class Cliente {
     @Column(name = "apellidos", nullable = false)
     private String apellidos;
 
-    @Column(name = "correo", unique = true,  nullable = false)
-    private String correo;
-
     @Column(name = "DNI", unique = true,  nullable = false)
     private String dni;
 
     @Column(name = "valoracion",  nullable = false)
     private Integer valoracion;
+
+    @Column(name = "fechaNacimiento",  nullable = false)
+    private LocalDate fechaNacimiento;
 
     @Column(name = "telelefono", unique = true,  nullable = false)
     private String telefono;

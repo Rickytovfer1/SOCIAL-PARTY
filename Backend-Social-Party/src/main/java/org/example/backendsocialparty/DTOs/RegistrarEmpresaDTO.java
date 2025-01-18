@@ -4,21 +4,22 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class EmpresaDTO {
-    private int id;
+public class RegistrarEmpresaDTO {
+
+    //TABLA EMPRESA
     private String nombre;
     private String direccion;
-    private String cp;
-    private String correo;
+    private String codigoPostal;
     private String nif;
     private String telefono;
     private Integer valoracionMinima;
-    private Integer edadMinimsa;
-    private Set<Integer> eventos;
-    private Integer idUsuario;
+    private Integer edadMinima;
+
+    // TABLA USUARIO
+    private String correo;
+    private String contrasena;
+
 }
