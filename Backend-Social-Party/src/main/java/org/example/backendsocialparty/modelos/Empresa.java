@@ -30,9 +30,6 @@ public class Empresa {
     @Column(name = "codigoPostal", nullable = false)
     private String codigoPostal;
 
-    @Column(name = "correo", unique = true,  nullable = false)
-    private String correo;
-
     @Column(name = "NIF", unique = true,  nullable = false)
     private String nif;
 
@@ -41,6 +38,9 @@ public class Empresa {
 
     @Column(name = "valoracion_minima", nullable = false)
     private Integer valoracionMinima;
+
+    @Column(name = "edad_minima", nullable = false)
+    private Integer edadMinima;
 
     @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL)
     private Set<Evento> eventos = new HashSet<>(0);
