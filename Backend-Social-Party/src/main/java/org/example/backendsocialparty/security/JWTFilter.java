@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.example.backendsocialparty.modelos.Usuario;
 import org.example.backendsocialparty.repositorios.UsuarioRepositorio;
+import org.example.backendsocialparty.servicios.UsuarioServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,6 +25,9 @@ public class JWTFilter extends OncePerRequestFilter {
 
     @Autowired
     private UsuarioRepositorio usuarioRepositorio;
+
+    @Autowired
+    private UsuarioServicio usuarioServicio;
 
 
     @Override
@@ -51,7 +55,7 @@ public class JWTFilter extends OncePerRequestFilter {
         TokenDataDTO tokenDataDTO = jwtService.extractTokenData(token);
 
         if(tokenDataDTO!=null && SecurityContextHolder.getContext().getAuthentication() == null){
-            Usuario usuario = usuarioService.buscarUsuarioPorNombre(tokenDataDTO.getCorreo());
+            Usuario usuario = (Usuario) usuarioServicio.loadUserByUsername(tokenDataDTO.getCorreo());
 
             if(usuario!= null && !jwtService.isExpired(token)){
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(

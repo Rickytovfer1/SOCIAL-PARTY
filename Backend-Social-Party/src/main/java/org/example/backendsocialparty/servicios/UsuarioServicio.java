@@ -1,8 +1,10 @@
 package org.example.backendsocialparty.servicios;
 
 import lombok.AllArgsConstructor;
+import org.example.backendsocialparty.DTOs.LoginDTO;
 import org.example.backendsocialparty.DTOs.RegistrarClienteDTO;
 import org.example.backendsocialparty.DTOs.RegistrarEmpresaDTO;
+import org.example.backendsocialparty.DTOs.RespuestaDTO;
 import org.example.backendsocialparty.enumerados.Rol;
 import org.example.backendsocialparty.modelos.Cliente;
 import org.example.backendsocialparty.modelos.Empresa;
@@ -11,16 +13,23 @@ import org.example.backendsocialparty.repositorios.ClienteRepositorio;
 import org.example.backendsocialparty.repositorios.EmpresaRepositorio;
 import org.example.backendsocialparty.repositorios.UsuarioRepositorio;
 import org.example.backendsocialparty.security.JWTService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-public class UsuarioServicio {
+public class UsuarioServicio implements UserDetailsService {
 
     private UsuarioRepositorio usuarioRepositorio;
     private ClienteRepositorio clienteRepositorio;
@@ -82,6 +91,38 @@ public class UsuarioServicio {
         Empresa empresaGuardada = empresaRepositorio.save(empresa);
 
         return usuarioGuardado;
+
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String correo) throws UsernameNotFoundException {
+        return usuarioRepositorio.findTopByCorreo(correo).orElse(null);
+    }
+
+    public ResponseEntity<RespuestaDTO> login(LoginDTO dto){
+
+        // Buscar usuario por nombre de usuario
+        Optional<Usuario> usuarioOpcional = usuarioRepositorio.findUsuarioByCorreo(dto.getCorreo());
+
+        if (usuarioOpcional.isPresent()) {
+            Usuario usuario = usuarioOpcional.get();
+
+            // Verificar la contraseña
+            if (passwordEncoder.matches(dto.getContrasena(), usuario.getPassword())) {
+
+                // Contraseña válida, devolver token de acceso
+                String token = jwtService.generateToken(usuario);
+                return ResponseEntity
+                        .ok(RespuestaDTO
+                                .builder()
+                                .estado(HttpStatus.OK.value())
+                                .token(token).build());
+            } else {
+                throw new BadCredentialsException("Contraseña incorrecta");
+            }
+        } else {
+            throw new UsernameNotFoundException("Usuario no encontrado");
+        }
 
     }
 
