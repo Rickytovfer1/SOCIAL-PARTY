@@ -42,7 +42,7 @@ public class Cliente {
     @Column(name = "telelefono", unique = true,  nullable = false)
     private String telefono;
 
-    @Column(name = "biografia", unique = true,  nullable = false)
+    @Column(name = "biografia")
     private String biografia;
 
     @OneToMany(mappedBy = "usuario1", cascade = CascadeType.ALL)
