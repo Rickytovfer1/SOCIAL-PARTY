@@ -14,7 +14,6 @@ public class EmpresaDTO {
     private String nombre;
     private String direccion;
     private String cp;
-    private String correo;
     private String nif;
     private String telefono;
     private Integer valoracionMinima;

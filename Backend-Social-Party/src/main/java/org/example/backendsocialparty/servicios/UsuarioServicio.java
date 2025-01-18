@@ -56,7 +56,7 @@ public class UsuarioServicio implements UserDetailsService {
 
         cliente.setTelefono(dto.getTelefono());
         cliente.setAmistades(new HashSet<>());
-        cliente.setEntrada(new HashSet<>());
+        cliente.setEntradas(new HashSet<>());
         cliente.setGrupos(new HashSet<>());
 
         Usuario usuarioGuardado = usuarioRepositorio.save(nuevoUsuario);

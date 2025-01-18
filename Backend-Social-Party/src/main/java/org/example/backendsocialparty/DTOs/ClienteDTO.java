@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 @Data
@@ -13,11 +14,10 @@ public class ClienteDTO {
     private int id;
     private String nombre;
     private String apellidos;
-    private String correo;
     private String dni;
     private String telefono;
-    private String fechaNacimiento;
-    private String valoracion;
+    private LocalDate fechaNacimiento;
+    private Integer valoracion;
     private Set<Integer> amigos;
     private Set<Integer> entradas;
     private Set<Integer> grupos;

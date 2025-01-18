@@ -50,7 +50,7 @@ public class Cliente {
     private Set<Amistad> amistades = new HashSet<>(0);
 
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
-    private Set<Entrada> entrada = new HashSet<>(0);
+    private Set<Entrada> entradas = new HashSet<>(0);
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "usuarios")
     private Set<Grupo> grupos = new HashSet<>(0);

@@ -1,6 +1,7 @@
 package org.example.backendsocialparty.servicios;
 
 import lombok.AllArgsConstructor;
+import org.example.backendsocialparty.DTOs.ClienteDTO;
 import org.example.backendsocialparty.modelos.Amistad;
 import org.example.backendsocialparty.modelos.Cliente;
 import org.example.backendsocialparty.repositorios.AmistadRepositorio;
@@ -13,29 +14,34 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-@AllArgsConstructor
 public class AmistadServicio {
 
-    private AmistadRepositorio amistadRepositorio;
+    private final AmistadRepositorio amistadRepositorio;
+    private final ClienteRepositorio clienteRepositorio;
+    private final ClienteServicio clienteServicio;
 
-    private ClienteRepositorio clienteRepositorio;
+    public AmistadServicio(AmistadRepositorio amistadRepositorio, ClienteRepositorio clienteRepositorio, ClienteServicio clienteServicio) {
+        this.amistadRepositorio = amistadRepositorio;
+        this.clienteRepositorio = clienteRepositorio;
+        this.clienteServicio = clienteServicio;
+    }
 
-    public Set<Cliente> getAmistad(Integer idUsuario) throws Exception{
+    public List<ClienteDTO> getAmistad(Integer idUsuario) {
 
-        if (idUsuario == null){
-            throw new Exception("El idUsuario es nulo");
+        if (!clienteRepositorio.existsById(idUsuario)) {
+            throw new RuntimeException("No existe un cliente con este ID.");
         }
 
-        Set<Amistad> amistades = amistadRepositorio.findByUsuario2_Id(idUsuario);
+        Cliente cliente = clienteRepositorio.findById(idUsuario).get();
 
-        Set<Cliente> usuarios = new HashSet<>();
-
-        for (Amistad amigo : amistades) {
-            Cliente usuarioAmigo = amigo.getUsuario1();
-            usuarios.add(usuarioAmigo);
+        List<ClienteDTO> clientesDTOs = new ArrayList<>();
+        for (Amistad a : cliente.getAmistades()) {
+            Cliente c = clienteRepositorio.findById(a.getUsuario2().getId()).get();
+            ClienteDTO dto = clienteServicio.getClienteDTO(c);
+            clientesDTOs.add(dto);
         }
 
-        return usuarios;
+        return clientesDTOs;
 
     }
 
