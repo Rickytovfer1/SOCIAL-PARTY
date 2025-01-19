@@ -41,7 +41,7 @@ public class JWTFilter extends OncePerRequestFilter {
 
 
         //Si viene por una url "/auth" lo dejamos pasar
-        if (request.getServletPath().contains("/auth")){
+        if (request.getServletPath().contains("/autorizacion")){
             filterChain.doFilter(request, response);
             return;
         }
