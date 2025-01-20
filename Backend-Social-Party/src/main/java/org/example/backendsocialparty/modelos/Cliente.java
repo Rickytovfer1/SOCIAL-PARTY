@@ -46,7 +46,7 @@ public class Cliente {
     @Column(name = "biografia")
     private String biografia;
 
-    @OneToMany(mappedBy = "usuario1", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     private Set<Amistad> amistades = new HashSet<>(0);
 
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
@@ -57,4 +57,7 @@ public class Cliente {
 
     @OneToOne(fetch = FetchType.LAZY)
     private Usuario usuario;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Evento evento;
 }

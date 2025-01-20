@@ -10,10 +10,12 @@ import java.time.LocalTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PublicacionDTO {
+public class MostrarPublicacionDTO {
     private int id;
     private String texto;
     private String titulo;
+    private LocalTime hora;
+    private LocalDate fecha;
     private String foto;
     private String direccion;
     private Integer idUsuario;

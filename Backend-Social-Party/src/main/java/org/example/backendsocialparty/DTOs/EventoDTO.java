@@ -18,5 +18,5 @@ public class EventoDTO {
     private String titulo;
     private String foto;
     private String descripcion;
-    private Integer idEmpresario;
+    private Integer idEmpresa;
 }

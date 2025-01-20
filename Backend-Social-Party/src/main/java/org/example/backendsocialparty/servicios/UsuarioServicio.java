@@ -48,7 +48,7 @@ public class UsuarioServicio implements UserDetailsService {
         cliente.setNombre(dto.getNombre());
         cliente.setApellidos(dto.getApellidos());
         cliente.setDni(dto.getDni());
-        cliente.setValoracion(dto.getValoracion());
+        cliente.setValoracion(100);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate fechaNacimiento = LocalDate.parse(dto.getFechaNacimiento(), formatter);
@@ -108,7 +108,7 @@ public class UsuarioServicio implements UserDetailsService {
             Usuario usuario = usuarioOpcional.get();
 
             // Verificar la contraseña
-            if (passwordEncoder.matches(dto.getContrasena(), usuario.getPassword())) {
+            if (passwordEncoder.matches(dto.getContrasena(), usuario.getContrasena())) {
 
                 // Contraseña válida, devolver token de acceso
                 String token = jwtService.generateToken(usuario);

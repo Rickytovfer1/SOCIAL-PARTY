@@ -49,4 +49,7 @@ public class Evento {
     @OneToMany(mappedBy = "evento", cascade = CascadeType.ALL)
     private Set<Entrada> entradas = new HashSet<>(0);
 
+    @OneToMany(cascade = CascadeType.ALL)
+    private Set<Cliente> asistentes = new HashSet<>(0);
+
 }

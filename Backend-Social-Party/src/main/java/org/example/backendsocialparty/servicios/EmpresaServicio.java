@@ -16,7 +16,7 @@ public class EmpresaServicio {
 
     private EmpresaRepositorio empresaRepositorio;
 
-    public List<EmpresaDTO> getEmpresas() {
+    public List<EmpresaDTO> listarEmpresas() {
         List<Empresa> empresas = empresaRepositorio.findAll();
         List<EmpresaDTO> empresasDTO = new ArrayList<>();
         for (Empresa empresa : empresas) {
