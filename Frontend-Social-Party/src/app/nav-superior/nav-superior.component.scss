@@ -1,0 +1,44 @@
+.custom-toolbar {
+  background-color: #471fcd; // Color azul oscuro para el toolbar
+  color: #fff;
+
+  ion-avatar img {
+    width: 250px; // Ajustar tamaño del avatar
+    height: 60px;
+  }
+
+  .star-container {
+    display: flex;
+    align-items: center;
+    gap: 5px; // Espaciado entre el ícono y el puntaje
+
+    .star-points {
+      font-size: 16px;
+      color: #ffd700; // Color dorado para el texto
+      font-weight: bold;
+    }
+  }
+
+  .settings-icon {
+    font-size: 24px;
+    color: #fff; // Color blanco para el ícono
+    margin-left: 15px; // Espaciado entre los íconos de la derecha
+  }
+
+  #estrella {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px; // Espaciado entre el ícono de estrella y el texto
+  }
+
+  #iconoSettings {
+    width: 20px;
+    height: 20px;
+    margin-left: 15px; // Espaciado entre el ícono de estrella y el ícono de configuración
+  }
+}
+
+ion-header {
+  --ion-toolbar-background: #471fcd; // Color de fondo
+  --ion-toolbar-color: #fff; // Color del texto y los íconos
+}

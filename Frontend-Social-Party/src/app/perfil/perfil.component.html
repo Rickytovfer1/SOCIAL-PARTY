@@ -1,0 +1,53 @@
+<app-nav-superior></app-nav-superior>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12">
+        <ion-card>
+          <ion-card-header>
+            <!-- Espacio para la foto del usuario -->
+            <div
+              style="display: flex; justify-content: center; align-items: center;
+                     border: 1px solid #ccc; border-radius: 50%;
+                     width: 150px; height: 150px; margin: 0 auto; overflow: hidden; background-color: #f9f9f9;">
+              <img id="userPhoto" src=""
+                   alt="Foto del Usuario"
+                   style="width: 100%; height: 100%; object-fit: cover; display: none;" />
+            </div>
+          </ion-card-header>
+          <ion-card-content>
+            <!-- Campos del perfil -->
+            <ion-item>
+              <ion-label position="floating">Nombre</ion-label>
+              <ion-input type="text"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">Apellido</ion-label>
+              <ion-input type="text"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">Correo</ion-label>
+              <ion-input type="text"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">Contraseña</ion-label>
+              <ion-input type="password"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">DNI</ion-label>
+              <ion-input type="text"></ion-input>
+            </ion-item>
+            <!-- Input para subir la foto -->
+            <ion-item>
+              <ion-label position="stacked">Subir Foto</ion-label>
+              <ion-input type="file" accept="image/*" (ionChange)="onPhotoSelected($event)"></ion-input>
+            </ion-item>
+
+            <ion-button expand="block">Actualizar</ion-button>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <app-nav-inferior></app-nav-inferior>
