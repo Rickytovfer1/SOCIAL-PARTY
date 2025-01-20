@@ -4,12 +4,14 @@ import org.example.backendsocialparty.DTOs.EmpresaDTO;
 import org.example.backendsocialparty.modelos.Empresa;
 import org.example.backendsocialparty.modelos.Evento;
 import org.example.backendsocialparty.repositorios.EmpresaRepositorio;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@Service
 public class EmpresaServicio {
 
     private EmpresaRepositorio empresaRepositorio;
