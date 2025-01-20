@@ -57,4 +57,7 @@ public class Cliente {
 
     @OneToOne(fetch = FetchType.LAZY)
     private Usuario usuario;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Evento evento;
 }
