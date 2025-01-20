@@ -1,13 +1,10 @@
 package org.example.backendsocialparty.repositorios;
 
-import org.example.backendsocialparty.modelos.Amistad;
+import org.example.backendsocialparty.modelos.Solicitud;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-import java.util.Set;
-
 @Repository
-public interface AmistadRepositorio extends JpaRepository<Amistad, Integer> {
+public interface SolicitudRepositorio extends JpaRepository<Solicitud, Integer> {
 
 }
