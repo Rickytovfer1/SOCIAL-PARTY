@@ -18,6 +18,7 @@ public class ClienteDTO {
     private String telefono;
     private LocalDate fechaNacimiento;
     private Integer valoracion;
+    private String biografia;
     private Set<Integer> amigos;
     private Set<Integer> entradas;
     private Set<Integer> grupos;

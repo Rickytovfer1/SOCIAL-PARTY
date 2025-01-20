@@ -36,7 +36,7 @@ public class AmistadServicio {
 
         List<ClienteDTO> clientesDTOs = new ArrayList<>();
         for (Amistad a : cliente.getAmistades()) {
-            Cliente c = clienteRepositorio.findById(a.getUsuario2().getId()).get();
+            Cliente c = clienteRepositorio.findById(a.getAmigo().getId()).get();
             ClienteDTO dto = clienteServicio.getClienteDTO(c);
             clientesDTOs.add(dto);
         }
@@ -47,11 +47,11 @@ public class AmistadServicio {
 
     public Amistad aceptarSolicitud(Integer idUsuario, Integer idUsuario2){
         Cliente usuario = clienteRepositorio.getReferenceById(idUsuario);
-        Cliente usuario2 = clienteRepositorio.getReferenceById(idUsuario2);
+        Cliente amigo = clienteRepositorio.getReferenceById(idUsuario2);
 
         Amistad amistad = new Amistad();
-        amistad.setUsuario1(usuario);
-        amistad.setUsuario2(usuario2);
+        amistad.setUsuario(usuario);
+        amistad.setAmigo(amigo);
 
         return amistadRepositorio.save(amistad);
 

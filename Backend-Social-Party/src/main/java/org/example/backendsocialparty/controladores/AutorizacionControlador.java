@@ -21,7 +21,7 @@ public class AutorizacionControlador {
 
 
     @PostMapping("/registro/cliente")
-    public Usuario registro(@RequestBody RegistrarClienteDTO registroDTO){
+    public Usuario registroCliente(@RequestBody RegistrarClienteDTO registroDTO){
         return usuarioServicio.registrarCliente(registroDTO);
     }
 

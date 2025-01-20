@@ -13,7 +13,6 @@ public class RegistrarClienteDTO {
     private String nombre;
     private String apellidos;
     private String dni;
-    private Integer valoracion;
     private String fechaNacimiento;
     private String telefono;
 
