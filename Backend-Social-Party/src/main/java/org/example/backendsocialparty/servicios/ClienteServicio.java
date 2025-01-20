@@ -5,6 +5,7 @@ import org.example.backendsocialparty.modelos.Amistad;
 import org.example.backendsocialparty.modelos.Cliente;
 import org.example.backendsocialparty.modelos.Entrada;
 import org.example.backendsocialparty.modelos.Grupo;
+import org.example.backendsocialparty.repositorios.ClienteRepositorio;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -12,6 +13,14 @@ import java.util.Set;
 
 @Service
 public class ClienteServicio {
+
+    private ClienteRepositorio clienteRepositorio;
+
+    public ClienteDTO buscarClienteId(Integer id) {
+        Cliente cliente = clienteRepositorio.findById(id)
+                .orElseThrow(() -> new RuntimeException("No existe un cliente con este ID."));
+        return getClienteDTO(cliente);
+    }
 
     public static ClienteDTO getClienteDTO(Cliente c) {
         ClienteDTO dtonuevo = new ClienteDTO();
