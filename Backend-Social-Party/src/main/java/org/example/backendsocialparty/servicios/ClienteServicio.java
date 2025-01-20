@@ -16,7 +16,7 @@ public class ClienteServicio {
 
     private ClienteRepositorio clienteRepositorio;
 
-    public ClienteDTO buscarUsuarioId(Integer id) {
+    public ClienteDTO buscarClienteId(Integer id) {
         Cliente cliente = clienteRepositorio.findById(id)
                 .orElseThrow(() -> new RuntimeException("No existe un cliente con este ID."));
         return getClienteDTO(cliente);

@@ -23,7 +23,12 @@ import static org.example.backendsocialparty.servicios.ClienteServicio.getClient
 public class EventoServicio {
 
     private EventoRepositorio eventoRepositorio;
-    private ClienteRepositorio clienteRepositorio;
+
+    public EventoDTO buscarEventoId(Integer id) {
+        Evento evento = eventoRepositorio.findById(id)
+                .orElseThrow(() -> new RuntimeException("No existe un evento con este ID."));
+        return getEventoDTO(evento);
+    }
 
     public List<EventoDTO> listarEventosEmpresa() {
         List<Evento> eventos = eventoRepositorio.findAll();
