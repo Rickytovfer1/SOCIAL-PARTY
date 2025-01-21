@@ -1,6 +1,7 @@
 package org.example.backendsocialparty.servicios;
 
 import lombok.AllArgsConstructor;
+import org.example.backendsocialparty.DTOs.ClientePublicacionDTO;
 import org.example.backendsocialparty.DTOs.MostrarPublicacionDTO;
 import org.example.backendsocialparty.DTOs.PublicacionDTO;
 import org.example.backendsocialparty.modelos.Evento;
@@ -34,6 +35,20 @@ public class PublicacionServicio {
         publicacion.setFecha(LocalDate.now());
         publicacion.setFoto(dto.getFoto());
         publicacion.setDireccion(dto.getDireccion());
+
+        Usuario usuario = usuarioRepositorio.findById(dto.getIdUsuario()).orElse(null);
+        publicacion.setUsuario(usuario);
+
+        return publicacionRepositorio.save(publicacion);
+    }
+    public Publicacion guardarPublicacionCliente(ClientePublicacionDTO dto) {
+
+
+        Publicacion publicacion = new Publicacion();
+        publicacion.setId(dto.getId());
+        publicacion.setTexto(dto.getTexto());
+        publicacion.setHora(LocalTime.now());
+        publicacion.setFecha(LocalDate.now());
 
         Usuario usuario = usuarioRepositorio.findById(dto.getIdUsuario()).orElse(null);
         publicacion.setUsuario(usuario);

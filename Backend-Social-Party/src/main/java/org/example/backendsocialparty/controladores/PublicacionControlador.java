@@ -1,6 +1,7 @@
 package org.example.backendsocialparty.controladores;
 
 import lombok.AllArgsConstructor;
+import org.example.backendsocialparty.DTOs.ClientePublicacionDTO;
 import org.example.backendsocialparty.DTOs.PublicacionDTO;
 import org.example.backendsocialparty.modelos.Publicacion;
 import org.example.backendsocialparty.servicios.PublicacionServicio;
@@ -17,8 +18,8 @@ public class PublicacionControlador {
     private PublicacionServicio publicacionServicio;
 
     @PostMapping("/cliente/crear/publicacion")
-    public Publicacion guardarPublicacionCliente(@RequestBody PublicacionDTO dto) {
-        return publicacionServicio.guardarPublicacion(dto);
+    public Publicacion guardarPublicacionCliente(@RequestBody ClientePublicacionDTO dto) {
+        return publicacionServicio.guardarPublicacionCliente(dto);
     }
 
     @PostMapping("/empresa/crear/publicacion")
