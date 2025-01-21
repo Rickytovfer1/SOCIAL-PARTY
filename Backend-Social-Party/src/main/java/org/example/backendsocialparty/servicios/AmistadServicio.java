@@ -1,6 +1,5 @@
 package org.example.backendsocialparty.servicios;
 
-import lombok.AllArgsConstructor;
 import org.example.backendsocialparty.DTOs.ClienteDTO;
 import org.example.backendsocialparty.modelos.Amistad;
 import org.example.backendsocialparty.modelos.Cliente;
