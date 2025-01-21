@@ -11,6 +11,7 @@ import org.example.backendsocialparty.repositorios.ClienteRepositorio;
 import org.example.backendsocialparty.repositorios.EventoRepositorio;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -49,6 +50,15 @@ public class EventoServicio {
             clientesDTO.add(getClienteDTO(cliente));
         }
         return clientesDTO;
+    }
+
+    public void crearEvento(EventoDTO eventoDTO) {
+
+        Evento evento = new Evento();
+        evento.setHoraApertura(eventoDTO.getHoraApertura());
+        evento.setHoraFinalizacion(eventoDTO.getHoraFinalizacion());
+        evento.setFecha(LocalDate.now());
+
     }
 
     private static EventoDTO getEventoDTO(Evento e) {
