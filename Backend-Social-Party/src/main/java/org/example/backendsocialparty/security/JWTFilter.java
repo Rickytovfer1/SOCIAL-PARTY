@@ -59,8 +59,8 @@ public class JWTFilter extends OncePerRequestFilter {
 
             if(usuario!= null && !jwtService.isExpired(token)){
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        usuario.getUsername(),
-                        usuario.getPassword(),
+                        usuario.getCorreo(),
+                        usuario.getContrasena(),
                         usuario.getAuthorities());
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);

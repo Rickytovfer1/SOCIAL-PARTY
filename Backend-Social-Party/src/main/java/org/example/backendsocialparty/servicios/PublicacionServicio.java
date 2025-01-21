@@ -27,6 +27,7 @@ public class PublicacionServicio {
 
 
         Publicacion publicacion = new Publicacion();
+        publicacion.setId(dto.getId());
         publicacion.setTexto(dto.getTexto());
         publicacion.setTitulo(dto.getTitulo());
         publicacion.setHora(LocalTime.now());
@@ -34,7 +35,7 @@ public class PublicacionServicio {
         publicacion.setFoto(dto.getFoto());
         publicacion.setDireccion(dto.getDireccion());
 
-        Usuario usuario = usuarioRepositorio.findById(dto.getId()).orElse(null);
+        Usuario usuario = usuarioRepositorio.findById(dto.getIdUsuario()).orElse(null);
         publicacion.setUsuario(usuario);
 
         return publicacionRepositorio.save(publicacion);
