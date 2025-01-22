@@ -23,7 +23,7 @@ public class Usuario implements UserDetails {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(name = "correo", nullable = false, unique = true)
     private String correo;

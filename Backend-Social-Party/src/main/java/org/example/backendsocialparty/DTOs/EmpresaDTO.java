@@ -10,7 +10,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EmpresaDTO {
-    private int id;
+    private Integer id;
     private String nombre;
     private String direccion;
     private String cp;

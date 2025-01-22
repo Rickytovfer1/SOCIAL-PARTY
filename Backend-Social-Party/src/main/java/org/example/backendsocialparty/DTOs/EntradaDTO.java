@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EntradaDTO {
-    private int id;
+    private Integer id;
     private LocalDateTime fecha;
     private Integer idCliente;
     private Integer idEvento;

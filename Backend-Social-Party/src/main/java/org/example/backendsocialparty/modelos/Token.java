@@ -20,7 +20,7 @@ public class Token {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(name = "token", nullable = false)
     private String token;

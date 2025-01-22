@@ -11,7 +11,7 @@ import java.time.LocalTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MostrarPublicacionDTO {
-    private int id;
+    private Integer id;
     private String texto;
     private String titulo;
     private LocalTime hora;

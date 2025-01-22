@@ -10,7 +10,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GrupoDTO {
-    private int id;
+    private Integer id;
     private String nombre;
     private Integer idCreador;
     private Set<Integer> participantes;

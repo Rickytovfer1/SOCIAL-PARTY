@@ -20,7 +20,7 @@ public class Entrada {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(name = "fecha", nullable = false)
     private LocalDateTime fecha;

@@ -11,7 +11,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ClienteDTO {
-    private int id;
+    private Integer id;
     private String nombre;
     private String apellidos;
     private String dni;

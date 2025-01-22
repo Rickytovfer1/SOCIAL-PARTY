@@ -37,6 +37,9 @@ public class EventoServicio {
         Empresa empresa = empresaRepositorio.findById(idEmpresa)
                 .orElseThrow(() -> new RuntimeException("No existe una empresa con este ID."));
         Set<Evento> eventos = empresa.getEventos();
+        if (eventos.isEmpty()) {
+            eventos = new HashSet<>();
+        }
         List<EventoDTO> eventosDTO = new ArrayList<>();
         for (Evento evento : eventos) {
             eventosDTO.add(getEventoDTO(evento));
@@ -58,7 +61,16 @@ public class EventoServicio {
 
     public void crearEvento(EventoDTO eventoDTO) {
 
-        Evento evento = new Evento();
+        Evento evento = null;
+
+        if (eventoDTO.getId() != null){
+            evento = eventoRepositorio.findById(eventoDTO.getId()).orElse(null);
+        }
+
+        if (eventoDTO.getId() == null){
+            evento = new Evento();
+        }
+
         evento.setHoraApertura(eventoDTO.getHoraApertura());
         evento.setHoraFinalizacion(eventoDTO.getHoraFinalizacion());
         evento.setFecha(LocalDate.now());
