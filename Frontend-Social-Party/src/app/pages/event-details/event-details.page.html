@@ -9,7 +9,9 @@
         ></ion-img>
         <ion-card-header>
           <ion-card-title>{{ event?.title }}</ion-card-title>
-          <ion-card-subtitle>{{ event?.date | date:'longDate' }} | {{ event?.hours }}</ion-card-subtitle>
+          <ion-card-subtitle>
+            {{ event?.date | date:'longDate' }} | {{ event?.hours }}
+          </ion-card-subtitle>
         </ion-card-header>
         <ion-card-content>
           <p>{{ event?.description }}</p>
@@ -29,7 +31,7 @@
           >
             <ion-avatar slot="start">
               <img
-                [src]="attendee.profileImage || 'assets/images/default-user.png'"
+                [src]="attendee.profileImage || 'assets/users/1.png'"
                 alt="{{ attendee.name }}"
               />
             </ion-avatar>
