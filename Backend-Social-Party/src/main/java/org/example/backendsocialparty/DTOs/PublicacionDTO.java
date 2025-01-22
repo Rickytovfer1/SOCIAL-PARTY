@@ -11,7 +11,6 @@ import java.time.LocalTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PublicacionDTO {
-    private Integer id;
     private String texto;
     private String titulo;
     private String foto;
