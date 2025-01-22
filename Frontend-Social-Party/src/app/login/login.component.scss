@@ -3,59 +3,86 @@
 }
 
 .carta {
-  margin-left: 30%;
-  margin-right: 30%;
-  margin-bottom: 10%;
+  margin: 5% auto;
+  width: 90%; /* Reduce el ancho en pantallas pequeñas */
+  max-width: 500px; /* Limita el ancho en pantallas grandes */
   background-color: #B3E5E5;
   border-radius: 2%;
 }
 
 body {
   background-color: #471FCD;
-  max-height: 100vh; /* Altura máxima de la ventana */
-  overflow-y: auto;  /* Habilita el desplazamiento vertical */
+  max-height: 100vh;
+  overflow-y: auto;
 }
 
 #icono {
   display: block;
-  margin: 0 auto; /* Center the image and add space below */
-  width: 500px; /* Adjust the width as needed */}
+  margin: 20px auto; /* Centra la imagen y añade espacio arriba/abajo */
+  width: 80%; /* Ajusta el ancho para pantallas pequeñas */
+  max-width: 200px; /* Tamaño máximo para pantallas grandes */
+}
 
 ion-input {
   background-color: lightblue;
+  width: calc(100% - 60px); /* Resta el margen para asegurar ajuste dinámico */
+  margin: 10px 30px;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+ion-label {
+  margin-left: 30px;
+  font-size: 14px; /* Tamaño ajustado para pantallas pequeñas */
 }
 
 #back {
   margin-left: 5%;
   margin-top: 5%;
-  width: 10%;
-  height: 10%;
+  width: 40px;
+  height: 40px;
 }
 
-ion-input {
-  width: 90%;
-  margin-left: 30px;
-  border-radius: 10px;
+#iniciarSesionBoton {
+  width: calc(100% - 60px); /* Ajusta el ancho dinámicamente */
+  margin: 10px 30px;
 }
 
-
-ion-label {
-  margin-left: 30px;
+ion-range {
+  width: calc(100% - 60px);
+  margin: 10px 30px;
 }
 
-#registro{
-  width: 90%;
-  margin-left: 30px;
+/* Media Queries para pantallas pequeñas */
+@media (max-width: 768px) {
+  #icono {
+    width: 60%;
+    max-width: 150px;
+  }
+
+  .carta {
+    width: 95%;
+  }
+
+  ion-label, ion-input, #iniciarSesionBoton {
+    font-size: 12px;
+  }
 }
 
+/* Media Queries para pantallas extra pequeñas */
+@media (max-width: 480px) {
+  #icono {
+    width: 50%;
+    max-width: 120px;
+  }
 
+  ion-input {
+    width: calc(100% - 40px); /* Reduce margen en pantallas pequeñas */
+    margin: 10px 20px;
+  }
 
-ion-range{
-  width: 90%;
-  margin-left: 30px;
-}
-
-#iniciarSesionBoton{
-  width: 90%;
-  margin-left: 30px;
+  #iniciarSesionBoton {
+    width: calc(100% - 40px);
+    margin: 10px 20px;
+  }
 }

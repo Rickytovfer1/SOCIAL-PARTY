@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import {RegistroUsuarioComponent} from "./registro-usuario/registro-usuario.component";
 import {RegistroEmpresaComponent} from "./registro-empresa/registro-empresa.component";
+import {MenuPrincipalComponent} from "./menu-principal/menu-principal.component";
 
 export const routes: Routes = [
   {
@@ -35,5 +36,21 @@ export const routes: Routes = [
   {
     path: 'app-perfil',
     loadComponent: () => import('./perfil/perfil.component').then((m) => m.PerfilComponent),
+  },
+  {
+    path: 'app-menu-principal',
+    loadComponent: () => import('./menu-principal/menu-principal.component').then((m) => m.MenuPrincipalComponent),
+  },
+  {
+    path: 'app-nav-lateral',
+    loadComponent: () => import('./nav-lateral/nav-lateral.component').then((m) => m.NavLateralComponent),
+  },
+  {
+    path: 'app-pantalla-principal',
+    loadComponent: () => import('./pantalla-principal/pantalla-principal.component').then((m) => m.PantallaPrincipalComponent),
+  },
+  {
+    path: 'app-amigos',
+    loadComponent: () => import('./amigos/amigos.component').then((m) => m.AmigosComponent),
   },
 ];

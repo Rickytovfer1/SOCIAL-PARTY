@@ -1,85 +1,81 @@
 <body>
-<ion-img src="assets/icon/img.png" id="icono"></ion-img>
-<ion-card color="primary" class="carta">
+<ion-img src="assets/icon/img.png" id="icono" class="center-icon"></ion-img>
+<ion-card color="primary" class="carta responsive-card">
   <ion-card-header>
-    <ion-button id="back"><ion-img src="assets/icon/back.png"></ion-img></ion-button>
+    <ion-button id="back" fill="clear">
+      <ion-img src="assets/icon/back.png"></ion-img>
+    </ion-button>
   </ion-card-header>
 
   <ion-card-content>
-    <ion-label>Nombre: </ion-label>
-    <ion-input type="text" placeholder="Introduce su nombre"></ion-input>
+    <ion-grid>
+      <!-- Fila 1: Nombre y Dirección -->
+      <ion-row>
+        <ion-col size="12" size-md="6">
+          <ion-label>Nombre: </ion-label>
+          <ion-input type="text" placeholder="Introduce su nombre"></ion-input>
+        </ion-col>
+        <ion-col size="12" size-md="6">
+          <ion-label>Dirección: </ion-label>
+          <ion-input type="text" placeholder="Introduce su dirección"></ion-input>
+        </ion-col>
+      </ion-row>
 
-    <hr>
+      <!-- Fila 2: Código Postal y NIF -->
+      <ion-row>
+        <ion-col size="12" size-md="6">
+          <ion-label>Código Postal: </ion-label>
+          <ion-input type="text" placeholder="Introduce su código postal"></ion-input>
+        </ion-col>
+        <ion-col size="12" size-md="6">
+          <ion-label>NIF: </ion-label>
+          <ion-input type="text" placeholder="Introduce su NIF"></ion-input>
+        </ion-col>
+      </ion-row>
 
-    <ion-label>Dirección: </ion-label>
-    <ion-input type="text" placeholder="Introduce su dirección"></ion-input>
+      <!-- Fila 3: Teléfono -->
+      <ion-row>
+        <ion-col size="12" size-md="6">
+          <ion-label>Teléfono: </ion-label>
+          <ion-input type="text" placeholder="Introduce su teléfono"></ion-input>
+        </ion-col>
+      </ion-row>
 
-    <hr>
+      <!-- Fila 4: Rango de Valoración y Edad -->
+      <ion-row>
+        <ion-col size="12" size-md="6">
+          <ion-label>Valoración mínima: </ion-label>
+          <ion-range
+            aria-label="Custom range"
+            min="1"
+            max="5"
+            value="1"
+            pin="true"
+            ticks="true"
+            snaps="true"
+          ></ion-range>
+        </ion-col>
+        <ion-col size="12" size-md="6">
+          <ion-label>Edad Mínima: </ion-label>
+          <ion-range
+            aria-label="Custom range"
+            min="18"
+            max="100"
+            value="18"
+            pin="true"
+            ticks="true"
+            snaps="true"
+          ></ion-range>
+        </ion-col>
+      </ion-row>
 
-    <ion-label>Código Postal: </ion-label>
-    <ion-input type="text" placeholder="Introduce su código postal"></ion-input>
-
-    <hr>
-
-    <ion-label>NIF: </ion-label>
-    <ion-input type="text" placeholder="Introduce su NIF"></ion-input>
-
-    <hr>
-
-    <ion-label>Teléfono: </ion-label>
-    <ion-input type="text" placeholder="Introduce su teléfono"></ion-input>
-
-    <hr>
-
-    <ion-label>Valoración mínima: </ion-label>
-    <ion-range
-      aria-label="Custom range"
-      [min]="1"
-      [max]="5"
-      [value]="1"
-      [pin]="true"
-      [ticks]="true"
-      [snaps]="true"
-    ></ion-range>
-
-    <hr>
-
-    <ion-label>Edad Mínima: </ion-label>
-    <ion-range
-      aria-label="Custom range"
-      [min]="18"
-      [max]="100"
-      [value]="1"
-      [pin]="true"
-      [ticks]="true"
-      [snaps]="true"
-    ></ion-range>
-
-    <hr>
-
-    <ion-button id="registro" expand="full">Registrarse</ion-button>
-
-    <hr>
+      <!-- Fila 5: Botón de Registro -->
+      <ion-row>
+        <ion-col size="12">
+          <ion-button id="registro" expand="full" routerLink="/login">Registrarse</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </ion-card-content>
 </ion-card>
 </body>
-
-
-<!--
-
-    //TABLA EMPRESA
-    private String nombre;
-    private String direccion;
-    private String codigoPostal;
-    private String nif;
-    private String telefono;
-    private Integer valoracionMinima;
-    private Integer edadMinima;
-
-    // TABLA USUARIO
-    private String correo;
-    private String contrasena;
-
-}
-
- -->

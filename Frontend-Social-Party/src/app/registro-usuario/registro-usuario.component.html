@@ -1,54 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
 <body>
 <ion-img src="assets/icon/img.png" id="icono"></ion-img>
 <ion-card color="primary" class="carta">
   <ion-card-header>
-    <ion-button id="back"><ion-img src="assets/icon/back.png"></ion-img></ion-button>
+    <ion-button id="back" fill="clear">
+      <ion-img src="assets/icon/back.png"></ion-img>
+    </ion-button>
   </ion-card-header>
 
   <ion-card-content>
-      <ion-label>Nombre: </ion-label>
-      <ion-input type="text" placeholder="Introduce su nombre"></ion-input>
-
+    <ion-label>Nombre: </ion-label>
+    <ion-input type="text" placeholder="Introduce su nombre"></ion-input>
     <hr>
 
     <ion-label>Apellidos: </ion-label>
     <ion-input type="text" placeholder="Introduce su Apellido"></ion-input>
-
     <hr>
 
     <ion-label>Correo: </ion-label>
-    <ion-input type="text" placeholder="Introduce su correo electorinico"></ion-input>
-
+    <ion-input type="text" placeholder="Introduce su correo electrónico"></ion-input>
     <hr>
 
     <ion-label>Contraseña: </ion-label>
-    <ion-input type="text" placeholder="Introduce su contraseña"></ion-input>
-
+    <ion-input type="password" placeholder="Introduce su contraseña"></ion-input>
     <hr>
 
     <ion-label>Repetir contraseña: </ion-label>
-    <ion-input type="text" placeholder="Repite su contraseña"></ion-input>
-
+    <ion-input type="password" placeholder="Repite su contraseña"></ion-input>
     <hr>
 
     <ion-label>DNI: </ion-label>
     <ion-input type="text" placeholder="Introduce su DNI"></ion-input>
-
     <hr>
 
     <ion-label>Fecha de Nacimiento: </ion-label>
-    <ion-input type="date" value="Fecha de Nacimiento">
-      <ion-input-password-toggle></ion-input-password-toggle>
-    </ion-input>
-
+    <ion-input type="date"></ion-input>
     <hr>
 
-    <ion-button id="registro" expand="full">Registrarse</ion-button>
-
+    <ion-button id="registro" expand="full" routerLink="/login">Registrarse</ion-button>
     <hr>
 
-      <ion-label style="padding-left: 190px">¿Eres una empresa?</ion-label>
-
+    <ion-label class="center-label">¿Eres una empresa?</ion-label>
   </ion-card-content>
 </ion-card>
 </body>
+</html>

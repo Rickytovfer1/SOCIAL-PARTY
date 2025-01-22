@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {NavSuperiorComponent} from "../nav-superior/nav-superior.component";
 import {NavInferiorComponent} from "../nav-inferior/nav-inferior.component";
 import {IonicModule} from "@ionic/angular";
+import {NavLateralComponent} from "../nav-lateral/nav-lateral.component";
 
 @Component({
   selector: 'app-perfil',
@@ -11,7 +12,8 @@ import {IonicModule} from "@ionic/angular";
   imports: [
     NavSuperiorComponent,
     NavInferiorComponent,
-    IonicModule
+    IonicModule,
+    NavLateralComponent
   ]
 })
 export class PerfilComponent  implements OnInit {
@@ -21,6 +23,6 @@ export class PerfilComponent  implements OnInit {
   ngOnInit() {}
 
   onPhotoSelected($event: any) {
-    
+
   }
 }

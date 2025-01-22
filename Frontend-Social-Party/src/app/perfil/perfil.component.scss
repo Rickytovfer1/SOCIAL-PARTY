@@ -1,11 +1,68 @@
-
-
-ion-content{
-    --background: #471fcd;
-    --color: #fff;
+/* src/app/perfil/perfil.component.scss */
+ion-content {
+  --background: #471fcd;
+  --color: #fff;
+  min-height: 100vh; /* Asegura que el contenido ocupe al menos toda la altura de la pantalla */
+  padding-bottom: 60px; /* Evita que el contenido se solape con el nav inferior en móviles */
 }
 
-ion-card{
-    background-color: #B3E5E5;
-    border-radius: 2%;
+ion-card {
+  background-color: #B3E5E5;
+  border-radius: 2%;
+}
+
+/* General para ambas vistas */
+.d-block {
+  display: block !important;
+}
+
+.d-none {
+  display: none !important;
+}
+
+/* Estilos para dispositivos móviles */
+@media (max-width: 768px) {
+  /* Mostrar el nav inferior solo en pantallas pequeñas (móviles) */
+  .d-md-none {
+    display: block !important;
+  }
+
+  /* Ocultar el nav lateral en móviles */
+  .d-md-block {
+    display: none !important;
+  }
+
+  ion-content {
+    padding-bottom: 60px; /* Asegura que no se sobreponga el nav inferior */
+  }
+}
+
+/* Estilos para pantallas de escritorio y tablets grandes */
+@media (min-width: 769px) {
+  /* Mostrar el nav lateral solo en pantallas grandes */
+  .d-md-block {
+    display: block !important;
+  }
+
+  /* Ocultar el nav inferior en pantallas grandes */
+  .d-md-none {
+    display: none !important;
+  }
+
+  ion-content {
+    padding-left: 250px; /* Ajusta el espacio para no sobreponerse con el nav lateral */
+    background-color: #471FCD; /* Fondo para pantallas grandes */
+  }
+}
+
+ion-grid {
+  margin-top: 50px;
+}
+
+ion-content {
+  background-color: #471FCD;
+}
+
+.ion-padding md content-ltr {
+  background-color: #471FCD;
 }

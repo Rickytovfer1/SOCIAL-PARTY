@@ -1,53 +1,64 @@
-.fondo {
-  background-color: #B3E5E5;
-}
-
-.carta {
-  margin-left: 30%;
-  margin-right: 30%;
-  margin-bottom: 10%;
-  background-color: #B3E5E5;
-  border-radius: 2%;
-}
-
+/* Fondo de la página */
 body {
   background-color: #471FCD;
   max-height: 100vh; /* Altura máxima de la ventana */
-  overflow-y: auto;  /* Habilita el desplazamiento vertical */
+  overflow-y: auto; /* Habilita el desplazamiento vertical */
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
 }
 
+/* Icono principal */
 #icono {
   display: block;
-  margin: 0 auto; /* Center the image and add space below */
-  width: 500px; /* Adjust the width as needed */}
-
-ion-input {
-  background-color: lightblue;
+  margin: 20px auto;
+  width: 150px; /* Ajustar tamaño del ícono */
 }
 
+/* Tarjeta del formulario */
+.carta {
+  margin: 20px auto;
+  width: 90%; /* Tamaño en pantallas pequeñas */
+  max-width: 600px; /* Máximo ancho para pantallas grandes */
+  background-color: #B3E5E5;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+/* Botón de retroceso */
 #back {
-  margin-left: 5%;
-  margin-top: 5%;
-  width: 10%;
-  height: 10%;
+  margin: 10px;
+  width: 40px;
+  height: 40px;
+  display: inline-block;
 }
 
+/* Estilo de los inputs */
 ion-input {
-  width: 90%;
-  margin-left: 30px;
+  width: calc(100% - 60px); /* Espaciado horizontal */
+  margin: 10px 30px;
+  padding: 10px;
   border-radius: 10px;
+  background-color: lightblue;
+  box-sizing: border-box;
 }
 
-
+/* Estilo de los labels */
 ion-label {
   margin-left: 30px;
+  display: block;
+  margin-bottom: 5px;
 }
 
-#registro{
-  width: 90%;
-  margin-left: 30px;
+/* Estilo del botón de registro */
+#registro {
+  width: calc(100% - 60px);
+  margin: 10px 30px;
 }
 
-
-
-
+/* Centrar el label final */
+.center-label {
+  display: block;
+  text-align: center;
+  margin-top: 20px;
+}

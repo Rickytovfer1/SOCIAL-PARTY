@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {IonicModule} from "@ionic/angular";
+import {RouterLinkActive} from "@angular/router";
 
 @Component({
   selector: 'app-registro-empresa',
@@ -7,7 +8,8 @@ import {IonicModule} from "@ionic/angular";
   styleUrls: ['./registro-empresa.component.scss'],
   standalone: true,
   imports: [
-    IonicModule
+    IonicModule,
+    RouterLinkActive
   ]
 })
 export class RegistroEmpresaComponent  implements OnInit {

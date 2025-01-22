@@ -54,3 +54,30 @@ ion-range{
   width: 90%;
   margin-left: 30px;
 }
+
+   /* Centrar el ícono principal */
+ .center-icon {
+   display: block;
+   margin: 20px auto;
+   max-width: 100px;
+   height: auto;
+ }
+
+/* Ajustar el ancho de la tarjeta en diferentes pantallas */
+.responsive-card {
+  margin: 20px auto;
+  max-width: 600px;
+  width: 90%;
+}
+
+/* Personalizar el botón de retroceso */
+#back {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+/* Inputs adaptativos */
+ion-input {
+  width: 100%;
+}
