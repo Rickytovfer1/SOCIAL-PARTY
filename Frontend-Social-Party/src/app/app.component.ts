@@ -8,13 +8,13 @@ import {NavInferiorComponent} from "./nav-inferior/nav-inferior.component";
 import {PerfilComponent} from "./perfil/perfil.component";
 import {MenuPrincipalComponent} from "./menu-principal/menu-principal.component";
 import {NavLateralComponent} from "./nav-lateral/nav-lateral.component";
-import {PantallaPrincipalComponent} from "./pantalla-principal/pantalla-principal.component";
 import {AmigosComponent} from "./amigos/amigos.component";
+import {InicioComponent} from "./inicio/inicio.component";
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   standalone: true,
-  imports: [IonApp, IonRouterOutlet, RegistroUsuarioComponent, RegistroEmpresaComponent, LoginComponent, NavSuperiorComponent, NavInferiorComponent, PerfilComponent, MenuPrincipalComponent, NavLateralComponent,PantallaPrincipalComponent, AmigosComponent],
+  imports: [IonApp, IonRouterOutlet, RegistroUsuarioComponent, RegistroEmpresaComponent, LoginComponent, NavSuperiorComponent, NavInferiorComponent, PerfilComponent, MenuPrincipalComponent, NavLateralComponent, AmigosComponent, InicioComponent],
 })
 export class AppComponent {
   constructor() {}

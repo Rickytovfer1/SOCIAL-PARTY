@@ -82,3 +82,8 @@ div {
   background-color: #471fcd; /* Fondo del contenedor principal */
   height: 100%;
 }
+
+ion-item {
+  --background: color($colors, light);
+}
+

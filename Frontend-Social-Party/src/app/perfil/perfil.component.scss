@@ -66,3 +66,22 @@ ion-content {
 .ion-padding md content-ltr {
   background-color: #471FCD;
 }
+
+ion-item {
+  background-color: #f0f0f0; /* Cambia el fondo */
+  border-radius: 8px; /* Opcional: bordes redondeados */
+  padding: 10px; /* Opcional: espacio interno */
+  margin-bottom: 12px; /* Opcional: espacio entre ítems */
+}
+
+ion-item ion-label {
+  color: #333; /* Cambia el color del texto del label */
+}
+
+ion-item ion-input {
+  color: #ffffff; /* Cambia el color del texto del input */
+}
+
+ion-item {
+  --background: color($colors, light);
+}

@@ -46,11 +46,11 @@ export const routes: Routes = [
     loadComponent: () => import('./nav-lateral/nav-lateral.component').then((m) => m.NavLateralComponent),
   },
   {
-    path: 'app-pantalla-principal',
-    loadComponent: () => import('./pantalla-principal/pantalla-principal.component').then((m) => m.PantallaPrincipalComponent),
-  },
-  {
     path: 'app-amigos',
     loadComponent: () => import('./amigos/amigos.component').then((m) => m.AmigosComponent),
+  },
+  {
+    path: 'app-inicio',
+    loadComponent: () => import('./inicio/inicio.component').then((m) => m.InicioComponent),
   },
 ];
