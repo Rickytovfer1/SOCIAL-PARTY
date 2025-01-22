@@ -1,0 +1,74 @@
+ion-content {
+  --background: #306da9;
+}
+
+.profile-image {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  margin: 16px auto;
+  object-fit: cover;
+}
+
+ion-card {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  padding: 16px;
+  color: #ffffff;
+}
+
+.socials {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  margin: 24px 0;
+}
+
+.social-item a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s, color 0.2s;
+}
+
+.social-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+  transition: transform 0.2s;
+}
+
+.social-icon img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.social-item a:hover {
+  transform: scale(1.05);
+  color: #ffcc00;
+}
+
+.social-item a:hover .social-icon {
+  transform: scale(1.2);
+}
+
+.social-url {
+  word-break: break-all;
+}
+
+.add-friend-button {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+ion-button.add-friend {
+  --background: #ffffff;
+  --color: #306da9;
+  border-radius: 20px;
+  padding: 12px 24px;
+  font-weight: bold;
+}

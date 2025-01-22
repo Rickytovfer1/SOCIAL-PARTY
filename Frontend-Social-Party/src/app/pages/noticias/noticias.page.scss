@@ -1,0 +1,39 @@
+ion-card.noticia-card {
+  background: #306da9;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.2s;
+}
+
+ion-card.noticia-card:hover {
+  transform: scale(1.02);
+}
+
+.noticia-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.noticia-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-right: 16px;
+}
+
+.noticia-info {
+  flex: 1;
+  color: #ffffff;
+}
+
+.noticia-info h2 {
+  margin: 0 0 8px 0;
+  font-size: 1.2em;
+}
+
+.noticia-info p {
+  margin: 0;
+  font-size: 0.9em;
+}

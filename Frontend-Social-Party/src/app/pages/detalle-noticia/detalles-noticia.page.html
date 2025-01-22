@@ -1,0 +1,37 @@
+<app-nav-superior></app-nav-superior>
+
+<ion-content [style.background]="'#d3e5e5'">
+  <ng-container *ngIf="!isLoading; else loading">
+    <ng-container *ngIf="!isError; else error">
+      <ion-card class="recuadro-ticket">
+        <ion-card-content class="ticket-content">
+          <ion-img
+            [src]="ticket?.image || 'https://via.placeholder.com/80'"
+            alt="{{ ticket?.title }}"
+            class="ticket-image"
+          ></ion-img>
+          <div>
+            <h2>{{ ticket?.title }}</h2>
+            <p>Ticket encontrado: {{ ticket?.title }}</p>
+          </div>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card class="recuadro-descripcion">
+        <ion-card-content>
+          <p>{{ noticia?.descripcion }}</p>
+          <p>Descripción de la noticia.</p>
+        </ion-card-content>
+      </ion-card>
+    </ng-container>
+  </ng-container>
+
+  <ng-template #loading>
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Cargando</p>
+  </ng-template>
+
+  <ng-template #error>
+    <p>Noticia o Ticket no encontrados.</p>
+  </ng-template>
+</ion-content>

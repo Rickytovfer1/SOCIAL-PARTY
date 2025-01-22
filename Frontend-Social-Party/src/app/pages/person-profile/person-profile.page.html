@@ -1,0 +1,62 @@
+<app-nav-superior></app-nav-superior>
+
+<ion-content>
+  <ng-container *ngIf="!isLoading; else loading">
+    <ng-container *ngIf="user; else error">
+      <ion-card>
+        <ion-img
+          [src]="user?.profileImage || 'assets/images/default-user.png'"
+          alt="{{ user?.name }}"
+          class="profile-image"
+        ></ion-img>
+        <ion-card-header>
+          <ion-card-title>{{ user?.name }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <p>{{ user?.bio }}</p>
+        </ion-card-content>
+      </ion-card>
+
+      <div class="socials" *ngIf="user?.instagram || user?.tiktok || user?.bereal">
+        <div class="social-item" *ngIf="user?.instagram">
+          <a [href]="user.instagram" target="_blank" rel="noopener noreferrer">
+            <img src="assets/icon/instagram.png" alt="Instagram" class="social-icon" />
+            <span class="social-url">{{ user.instagram }}</span>
+          </a>
+        </div>
+
+        <div class="social-item" *ngIf="user?.tiktok">
+          <a [href]="user.tiktok" target="_blank" rel="noopener noreferrer">
+            <img src="assets/icon/TikTok.png" alt="TikTok" class="social-icon" />
+            <span class="social-url">{{ user.tiktok }}</span>
+          </a>
+        </div>
+
+        <div class="social-item" *ngIf="user?.bereal">
+          <a [href]="user.bereal" target="_blank" rel="noopener noreferrer">
+            <img src="assets/icon/bereal.png" alt="BeReal" class="social-icon" />
+            <span class="social-url">{{ user.bereal }}</span>
+          </a>
+        </div>
+      </div>
+
+
+      <div class="add-friend-button">
+        <ion-button class="add-friend">
+          Añadir amigo
+        </ion-button>
+      </div>
+    </ng-container>
+  </ng-container>
+
+  <ng-template #loading>
+    <div class="loading-container">
+      <ion-spinner name="crescent"></ion-spinner>
+      <p>Cargando</p>
+    </div>
+  </ng-template>
+
+  <ng-template #error>
+    <p>Usuario no encontrado.</p>
+  </ng-template>
+</ion-content>
