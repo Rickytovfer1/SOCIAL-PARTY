@@ -1,8 +1,11 @@
 package org.example.backendsocialparty.servicios;
 
+import org.example.backendsocialparty.DTOs.ClienteDTO;
 import org.example.backendsocialparty.DTOs.EmpresaDTO;
+import org.example.backendsocialparty.modelos.Cliente;
 import org.example.backendsocialparty.modelos.Empresa;
 import org.example.backendsocialparty.modelos.Evento;
+import org.example.backendsocialparty.repositorios.ClienteRepositorio;
 import org.example.backendsocialparty.repositorios.EmpresaRepositorio;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +18,7 @@ import java.util.Set;
 public class EmpresaServicio {
 
     private EmpresaRepositorio empresaRepositorio;
+    private ClienteRepositorio clienteRepositorio;
 
     public List<EmpresaDTO> listarEmpresas() {
         List<Empresa> empresas = empresaRepositorio.findAll();
@@ -23,6 +27,16 @@ public class EmpresaServicio {
             empresasDTO.add(getEmpresaDTO(empresa));
         }
         return empresasDTO;
+    }
+
+    public void restarPuntosCliente(Integer idCliente, Integer puntos) {
+
+        Cliente cliente = clienteRepositorio.findById(idCliente)
+                .orElseThrow(() -> new RuntimeException("No existe un liente con este ID."));
+
+        cliente.setValoracion(cliente.getValoracion() - puntos);
+
+        clienteRepositorio.save(cliente);
     }
 
     private static EmpresaDTO getEmpresaDTO(Empresa e) {

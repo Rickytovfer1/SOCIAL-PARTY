@@ -8,6 +8,7 @@ import org.example.backendsocialparty.modelos.Cliente;
 import org.example.backendsocialparty.modelos.Empresa;
 import org.example.backendsocialparty.modelos.Evento;
 import org.example.backendsocialparty.repositorios.ClienteRepositorio;
+import org.example.backendsocialparty.repositorios.EmpresaRepositorio;
 import org.example.backendsocialparty.repositorios.EventoRepositorio;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,7 @@ import static org.example.backendsocialparty.servicios.ClienteServicio.getClient
 public class EventoServicio {
 
     private EventoRepositorio eventoRepositorio;
+    private EmpresaRepositorio empresaRepositorio;
 
     public EventoDTO buscarEventoId(Integer id) {
         Evento evento = eventoRepositorio.findById(id)
@@ -58,6 +60,16 @@ public class EventoServicio {
         evento.setHoraApertura(eventoDTO.getHoraApertura());
         evento.setHoraFinalizacion(eventoDTO.getHoraFinalizacion());
         evento.setFecha(LocalDate.now());
+        evento.setTitulo(eventoDTO.getTitulo());
+        evento.setFoto(eventoDTO.getFoto());
+        evento.setDescripcion(eventoDTO.getDescripcion());
+
+        Empresa empresa = empresaRepositorio.findById(eventoDTO.getIdEmpresa())
+                .orElseThrow(() -> new RuntimeException("No existe una empresa con este ID."));
+
+        evento.setEmpresa(empresa);
+
+        eventoRepositorio.save(evento);
 
     }
 

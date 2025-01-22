@@ -1,22 +1,24 @@
 package org.example.backendsocialparty.servicios;
 
 import org.example.backendsocialparty.modelos.Cliente;
+import org.example.backendsocialparty.modelos.Empresa;
 import org.example.backendsocialparty.modelos.Entrada;
 import org.example.backendsocialparty.modelos.Evento;
 import org.example.backendsocialparty.repositorios.ClienteRepositorio;
+import org.example.backendsocialparty.repositorios.EmpresaRepositorio;
 import org.example.backendsocialparty.repositorios.EntradaRepositorio;
 import org.example.backendsocialparty.repositorios.EventoRepositorio;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Period;
 
 public class EntradaServicio {
 
     private EntradaRepositorio entradaRepositorio;
     private EventoRepositorio eventoRepositorio;
     private ClienteRepositorio clienteRepositorio;
+    private EmpresaRepositorio empresaRepositorio;
 
     public void canjearEntrada(Entrada entrada) {
 
@@ -33,5 +35,29 @@ public class EntradaServicio {
             clienteRepositorio.save(cliente);
             entradaRepositorio.save(entrada);
         }
+    }
+
+    public void comprarEntrada(Integer idEvento, Integer idEmpresa, Integer idCliente) {
+
+        Cliente cliente = clienteRepositorio.findById(idCliente)
+                .orElseThrow(() -> new RuntimeException("No existe un cliente con este ID."));
+        Empresa empresa = empresaRepositorio.findById(idEmpresa)
+                .orElseThrow(() -> new RuntimeException("No existe una empresa con este ID."));
+        Evento evento = eventoRepositorio.findById(idEvento)
+                .orElseThrow(() -> new RuntimeException("No existe un evento con este ID."));
+
+        Period periodo = Period.between(cliente.getFechaNacimiento(), LocalDate.now());
+        int edad = periodo.getYears();
+
+        if (empresa.getEdadMinima() > edad || empresa.getBaneados().contains(cliente) || empresa.getValoracionMinima() > cliente.getValoracion()) {
+            throw new RuntimeException("El cliente no es apto para entrar.");
+        }
+
+        Entrada entrada = new Entrada();
+        entrada.setFecha(LocalDateTime.now());
+        entrada.setCliente(cliente);
+        entrada.setEvento(evento);
+
+        entradaRepositorio.save(entrada);
     }
 }

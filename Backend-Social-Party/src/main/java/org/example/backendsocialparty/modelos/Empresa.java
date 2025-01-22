@@ -45,6 +45,9 @@ public class Empresa {
     @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL)
     private Set<Evento> eventos = new HashSet<>(0);
 
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    private Set<Cliente> baneados = new HashSet<>(0);
+
     @OneToOne(fetch = FetchType.LAZY)
     private Usuario usuario;
 }
