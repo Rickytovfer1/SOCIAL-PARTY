@@ -1,5 +1,6 @@
 package org.example.backendsocialparty.servicios;
 
+import lombok.AllArgsConstructor;
 import org.example.backendsocialparty.modelos.Cliente;
 import org.example.backendsocialparty.modelos.Empresa;
 import org.example.backendsocialparty.modelos.Entrada;
@@ -8,11 +9,14 @@ import org.example.backendsocialparty.repositorios.ClienteRepositorio;
 import org.example.backendsocialparty.repositorios.EmpresaRepositorio;
 import org.example.backendsocialparty.repositorios.EntradaRepositorio;
 import org.example.backendsocialparty.repositorios.EventoRepositorio;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
 
+@Service
+@AllArgsConstructor
 public class EntradaServicio {
 
     private EntradaRepositorio entradaRepositorio;
@@ -20,7 +24,10 @@ public class EntradaServicio {
     private ClienteRepositorio clienteRepositorio;
     private EmpresaRepositorio empresaRepositorio;
 
-    public void canjearEntrada(Entrada entrada) {
+    public void canjearEntrada(Integer idEntrada) throws Exception {
+
+        Entrada entrada = entradaRepositorio.findById(idEntrada)
+                .orElseThrow(() -> new RuntimeException("No existe una entrada con este ID."));
 
         Cliente cliente = clienteRepositorio.findById(entrada.getCliente().getId())
                 .orElseThrow(() -> new RuntimeException("No existe un cliente con este ID."));

@@ -1,5 +1,6 @@
 package org.example.backendsocialparty.servicios;
 
+import lombok.AllArgsConstructor;
 import org.example.backendsocialparty.DTOs.ClienteDTO;
 import org.example.backendsocialparty.DTOs.EmpresaDTO;
 import org.example.backendsocialparty.modelos.Cliente;
@@ -15,9 +16,11 @@ import java.util.List;
 import java.util.Set;
 
 @Service
+@AllArgsConstructor
 public class EmpresaServicio {
 
     private EmpresaRepositorio empresaRepositorio;
+
     private ClienteRepositorio clienteRepositorio;
 
     public List<EmpresaDTO> listarEmpresas() {
