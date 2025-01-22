@@ -1,6 +1,7 @@
 package org.example.backendsocialparty.servicios;
 
 import lombok.AllArgsConstructor;
+import org.example.backendsocialparty.DTOs.ClientePublicacionDTO;
 import org.example.backendsocialparty.DTOs.MostrarPublicacionDTO;
 import org.example.backendsocialparty.DTOs.PublicacionDTO;
 import org.example.backendsocialparty.modelos.Evento;
@@ -23,11 +24,13 @@ public class PublicacionServicio {
 
     private UsuarioRepositorio usuarioRepositorio;
 
-    public Publicacion guardarPublicacion(PublicacionDTO dto) {
+    public void guardarPublicacion(PublicacionDTO dto) {
 
+        if (dto.getIdUsuario() == null) {
+            throw new IllegalArgumentException("El ID de usuario no puede ser nulo");
+        }
 
         Publicacion publicacion = new Publicacion();
-        publicacion.setId(dto.getId());
         publicacion.setTexto(dto.getTexto());
         publicacion.setTitulo(dto.getTitulo());
         publicacion.setHora(LocalTime.now());
@@ -38,7 +41,25 @@ public class PublicacionServicio {
         Usuario usuario = usuarioRepositorio.findById(dto.getIdUsuario()).orElse(null);
         publicacion.setUsuario(usuario);
 
-        return publicacionRepositorio.save(publicacion);
+        publicacionRepositorio.save(publicacion);
+    }
+
+    public void guardarPublicacionCliente(ClientePublicacionDTO dto) {
+
+        if (dto.getIdUsuario() == null) {
+            throw new IllegalArgumentException("El ID de usuario no puede ser nulo");
+        }
+
+        Publicacion publicacion = new Publicacion();
+        publicacion.setTexto(dto.getTexto());
+        publicacion.setHora(LocalTime.now());
+        publicacion.setFecha(LocalDate.now());
+        publicacion.setFoto(dto.getFoto());
+
+        Usuario usuario = usuarioRepositorio.findById(dto.getIdUsuario()).orElse(null);
+        publicacion.setUsuario(usuario);
+
+        publicacionRepositorio.save(publicacion);
     }
 
     public List<MostrarPublicacionDTO> mostrarPublicaciones() {
@@ -68,5 +89,7 @@ public class PublicacionServicio {
 
         return publicacionDTO;
     }
+
+
 
 }

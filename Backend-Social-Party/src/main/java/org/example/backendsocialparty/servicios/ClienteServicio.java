@@ -1,5 +1,6 @@
 package org.example.backendsocialparty.servicios;
 
+import lombok.AllArgsConstructor;
 import org.example.backendsocialparty.DTOs.ClienteDTO;
 import org.example.backendsocialparty.modelos.Amistad;
 import org.example.backendsocialparty.modelos.Cliente;
@@ -12,6 +13,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Service
+@AllArgsConstructor
 public class ClienteServicio {
 
     private ClienteRepositorio clienteRepositorio;
@@ -24,7 +26,6 @@ public class ClienteServicio {
 
     public static ClienteDTO getClienteDTO(Cliente c) {
         ClienteDTO dtonuevo = new ClienteDTO();
-
         dtonuevo.setId(c.getId());
         dtonuevo.setNombre(c.getNombre());
         dtonuevo.setApellidos(c.getApellidos());
