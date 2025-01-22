@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -39,12 +40,25 @@ public class UsuarioServicio implements UserDetailsService {
 
     public Usuario registrarCliente(RegistrarClienteDTO dto){
 
+        List<Usuario> usuarios = usuarioRepositorio.findAll();
+
         Usuario nuevoUsuario = new Usuario();
+        Cliente cliente = new Cliente();
+
+        for (Usuario usuario : usuarios) {
+            if (usuario.getCorreo().equals(dto.getCorreo())){
+                nuevoUsuario = usuario;
+                cliente = clienteRepositorio.findClienteByDni(dto.getDni());
+            } else {
+                nuevoUsuario = new Usuario();
+                cliente = new Cliente();
+            }
+        }
+
         nuevoUsuario.setCorreo(dto.getCorreo());
         nuevoUsuario.setContrasena(passwordEncoder.encode(dto.getContrasena()));
         nuevoUsuario.setRol(Rol.CLIENTE);
 
-        Cliente cliente = new Cliente();
         cliente.setNombre(dto.getNombre());
         cliente.setApellidos(dto.getApellidos());
         cliente.setDni(dto.getDni());
@@ -62,7 +76,7 @@ public class UsuarioServicio implements UserDetailsService {
         Usuario usuarioGuardado = usuarioRepositorio.save(nuevoUsuario);
         cliente.setUsuario(usuarioGuardado);
 
-        Cliente clienteGuardado = clienteRepositorio.save(cliente);
+        clienteRepositorio.save(cliente);
 
         return usuarioGuardado;
 
@@ -70,12 +84,25 @@ public class UsuarioServicio implements UserDetailsService {
 
     public Usuario registrarEmpresa(RegistrarEmpresaDTO dto){
 
+        List<Usuario> usuarios = usuarioRepositorio.findAll();
+
         Usuario nuevoUsuario = new Usuario();
+        Empresa empresa = new Empresa();
+
+        for (Usuario usuario : usuarios) {
+            if (usuario.getCorreo().equals(dto.getCorreo())){
+                nuevoUsuario = usuario;
+                empresa = empresaRepositorio.findByNif(dto.getNif());
+            } else {
+                nuevoUsuario = new Usuario();
+                empresa = new Empresa();
+            }
+        }
+
         nuevoUsuario.setCorreo(dto.getCorreo());
         nuevoUsuario.setContrasena(passwordEncoder.encode(dto.getContrasena()));
         nuevoUsuario.setRol(Rol.EMPRESA);
 
-        Empresa empresa = new Empresa();
         empresa.setNombre(dto.getNombre());
         empresa.setDireccion(dto.getDireccion());
         empresa.setCodigoPostal(dto.getCodigoPostal());
@@ -88,7 +115,7 @@ public class UsuarioServicio implements UserDetailsService {
         Usuario usuarioGuardado = usuarioRepositorio.save(nuevoUsuario);
         empresa.setUsuario(usuarioGuardado);
 
-        Empresa empresaGuardada = empresaRepositorio.save(empresa);
+        empresaRepositorio.save(empresa);
 
         return usuarioGuardado;
 

@@ -33,8 +33,10 @@ public class EventoServicio {
         return getEventoDTO(evento);
     }
 
-    public List<EventoDTO> listarEventosEmpresa() {
-        List<Evento> eventos = eventoRepositorio.findAll();
+    public List<EventoDTO> listarEventosEmpresa(Integer idEmpresa) {
+        Empresa empresa = empresaRepositorio.findById(idEmpresa)
+                .orElseThrow(() -> new RuntimeException("No existe una empresa con este ID."));
+        Set<Evento> eventos = empresa.getEventos();
         List<EventoDTO> eventosDTO = new ArrayList<>();
         for (Evento evento : eventos) {
             eventosDTO.add(getEventoDTO(evento));
@@ -42,8 +44,8 @@ public class EventoServicio {
         return eventosDTO;
     }
 
-    public List<ClienteDTO> listarClientesEvento(Evento evento) {
-        Evento e = eventoRepositorio.findById(evento.getId())
+    public List<ClienteDTO> listarClientesEvento(Integer idEvento) {
+        Evento e = eventoRepositorio.findById(idEvento)
                 .orElseThrow(() -> new RuntimeException("No existe un evento con este ID."));;
 
         Set<Cliente> clientes = e.getAsistentes();
