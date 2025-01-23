@@ -1,0 +1,39 @@
+.chat-content {
+  background-color: #d3e5e5;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-header {
+  background-color: #471fcd;
+  color: white;
+  padding: 16px;
+  text-align: center;
+}
+
+.messages-container {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.message {
+  padding: 10px 16px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+  max-width: 70%;
+}
+
+.message-friend {
+  background-color: #471fcd;
+  color: white;
+  margin-right: auto;
+}
+
+.message-self {
+  background-color: #5ab7d5;
+  color: white;
+  margin-left: auto;
+}
