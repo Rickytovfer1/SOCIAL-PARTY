@@ -3,6 +3,7 @@ package org.example.backendsocialparty.servicios;
 import lombok.AllArgsConstructor;
 import org.example.backendsocialparty.DTOs.ClienteDTO;
 import org.example.backendsocialparty.DTOs.EmpresaDTO;
+import org.example.backendsocialparty.DTOs.RestarPuntoDTO;
 import org.example.backendsocialparty.modelos.Cliente;
 import org.example.backendsocialparty.modelos.Empresa;
 import org.example.backendsocialparty.modelos.Evento;
@@ -32,12 +33,12 @@ public class EmpresaServicio {
         return empresasDTO;
     }
 
-    public void restarPuntosCliente(Integer idCliente, Integer puntos) {
+    public void restarPuntosCliente(RestarPuntoDTO dto) {
 
-        Cliente cliente = clienteRepositorio.findById(idCliente)
+        Cliente cliente = clienteRepositorio.findById(dto.getIdCliente())
                 .orElseThrow(() -> new RuntimeException("No existe un liente con este ID."));
 
-        cliente.setValoracion(cliente.getValoracion() - puntos);
+        cliente.setValoracion(cliente.getValoracion() - dto.getPuntos());
 
         clienteRepositorio.save(cliente);
     }
