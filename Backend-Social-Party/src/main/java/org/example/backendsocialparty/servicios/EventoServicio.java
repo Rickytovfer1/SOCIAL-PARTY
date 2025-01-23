@@ -88,6 +88,7 @@ public class EventoServicio {
     }
 
     private static EventoDTO getEventoDTO(Evento e) {
+
         EventoDTO dtonuevo = new EventoDTO();
 
         dtonuevo.setId(e.getId());
