@@ -9,6 +9,7 @@ ion-content {
 ion-card {
   background-color: #B3E5E5;
   border-radius: 2%;
+  max-width: 1000px;
 }
 
 /* General para ambas vistas */
@@ -79,9 +80,16 @@ ion-item ion-label {
 }
 
 ion-item ion-input {
-  color: #ffffff; /* Cambia el color del texto del input */
+  color: #000000; /* Cambia el color del texto del input */
 }
 
 ion-item {
   --background: color($colors, light);
+}
+
+ion-col{
+  display: flex;
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center; /* Centra verticalmente */
+  flex-direction: column; /* Asegura que los elementos se apilen verticalmente */
 }

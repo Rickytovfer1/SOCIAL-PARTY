@@ -71,6 +71,10 @@ export const routes: Routes = [
     path: 'noticias',
     component: NoticiasPage,
   },
+  {
+    path: 'app-chat',
+    loadComponent: () => import('./pages/chat/chat.page').then(m => m.ChatPage)
+  },
 
   { path: '**', redirectTo: 'ver-tickets' },
 ];
