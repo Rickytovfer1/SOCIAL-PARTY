@@ -30,4 +30,9 @@ public class EventoControlador {
     public List<ClienteDTO> verPersonasEvento(@PathVariable Integer idEvento) {
         return eventoServicio.listarClientesEvento(idEvento);
     }
+
+    @GetMapping("/cliente/evento/ver/{idEvento}")
+    public EventoDTO buscarEventoId(@PathVariable Integer idEvento) {
+        return eventoServicio.buscarEventoId(idEvento);
+    }
 }
