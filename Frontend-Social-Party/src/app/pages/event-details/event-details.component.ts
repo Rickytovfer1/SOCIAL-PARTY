@@ -1,17 +1,17 @@
-// src/app/pages/event-details/event-details.page.ts
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, RouterLink} from '@angular/router';
 import { TicketService } from '../../services/ticket.service';
 import { Event } from '../../models/event.model';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
+import {NavSuperiorComponent} from "../../nav-superior/nav-superior.component";
 
 @Component({
   selector: 'app-event-details',
   templateUrl: './event-details.page.html',
   styleUrls: ['./event-details.page.scss'],
   standalone: true,
-  imports: [CommonModule, IonicModule, RouterLink],
+  imports: [CommonModule, IonicModule, RouterLink,NavSuperiorComponent],
 })
 export class EventDetailsPage implements OnInit {
   ticketId: number | undefined;
