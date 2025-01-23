@@ -27,10 +27,14 @@ public class Entrada {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cliente")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Cliente cliente;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "evento")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Evento evento;
 
 

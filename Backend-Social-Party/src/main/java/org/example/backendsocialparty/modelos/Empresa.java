@@ -43,11 +43,17 @@ public class Empresa {
     private Integer edadMinima;
 
     @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Set<Evento> eventos = new HashSet<>(0);
 
     @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Set<Cliente> baneados = new HashSet<>(0);
 
     @OneToOne(fetch = FetchType.LAZY)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Usuario usuario;
 }
