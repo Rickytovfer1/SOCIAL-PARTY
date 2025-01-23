@@ -8,15 +8,15 @@ export class NoticiaService {
   private noticias: Noticia[] = [
     {
       id: 1,
-      titulo: 'Evento de mafia',
-      descripcion: 'descripcion de evento de mafia',
+      titulo: 'Evento de Rosso by Antique',
+      descripcion: 'Descripcion de Rosso',
       imagen: 'assets/images/example.png',
       ticketId: 1,
     },
     {
       id: 2,
-      titulo: 'Evento de Rosso',
-      descripcion: 'descrpcion de evento de Rosso by Antique.',
+      titulo: 'Evento de Maffia the club',
+      descripcion: 'Descripcion de Maffia the club',
       imagen: 'assets/images/example.png',
       ticketId: 2,
     },

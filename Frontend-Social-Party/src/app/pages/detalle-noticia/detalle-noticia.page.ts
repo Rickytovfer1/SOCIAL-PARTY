@@ -1,4 +1,3 @@
-// src/app/pages/detalle-noticia/detalle-noticia.page.ts
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NoticiaService } from '../../services/noticia.service';
