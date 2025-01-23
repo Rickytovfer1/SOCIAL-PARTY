@@ -1,0 +1,34 @@
+ion-content {
+  --background: #471fcd;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 16px;
+}
+
+ion-card {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.event-image {
+  width: 100%;
+  object-fit: cover;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.attendees-card {
+  background-color: #306da9;
+  color: #ffffff;
+  padding: 16px;
+  border-radius: 8px;
+  margin-top: 16px;
+}
+
+ion-card-header,
+ion-card-content {
+  padding: 16px;
+}

@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ ticket?.title || 'Comprar Ticket' }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [style.background]="'#d3e5e5'">
+  <ng-container *ngIf="!isLoading; else loading">
+    <ng-container *ngIf="ticket; else error">
+      <ion-list *ngIf="ticket?.events && ticket.events.length > 0; else noEvents">
+        <ion-item *ngFor="let event of ticket.events" lines="none">
+          <ion-card class="event-card" [routerLink]="['/event-details', ticket.id, event.id]">
+            <ion-card-content class="event-content">
+              <ion-img
+                [src]="event?.image || 'assets/images/example.png'"
+                alt="{{ event?.title }}"
+                class="event-image"
+              ></ion-img>
+              <div class="event-info">
+                <div class="event-details">
+                  <h3>{{ event?.title }}</h3>
+                  <p>{{ event?.description }}</p>
+                  <div class="event-date-hours">
+                    <span class="event-date">{{ event?.date | date:'longDate' }}</span>
+                    <span class="event-hours">{{ event?.hours }}</span>
+                  </div>
+                </div>
+              </div>
+            </ion-card-content>
+          </ion-card>
+        </ion-item>
+      </ion-list>
+
+      <ng-template #noEvents>
+        <p>No hay eventos disponibles</p>
+      </ng-template>
+    </ng-container>
+  </ng-container>
+
+  <ng-template #loading>
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Cargando</p>
+  </ng-template>
+  <ng-template #error>
+    <p>No encontrado.</p>
+  </ng-template>
+</ion-content>

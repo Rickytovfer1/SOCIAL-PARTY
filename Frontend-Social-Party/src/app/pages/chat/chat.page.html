@@ -1,0 +1,28 @@
+<app-nav-superior></app-nav-superior>
+
+<ion-content class="chat-content">
+  <div class="chat-header">
+    <h2>{{ friend?.name }}</h2>
+  </div>
+
+  <div class="messages-container">
+    <div
+      *ngFor="let msg of messages"
+      [ngClass]="msg.type === 'friend' ? 'message-friend' : 'message-self'"
+      class="message"
+    >
+      {{ msg.content }}
+    </div>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-input
+      [(ngModel)]="newMessage"
+      placeholder="Escribe un mensaje"
+      (keydown.enter)="sendMessage()"
+    ></ion-input>
+    <ion-button (click)="sendMessage()">Enviar</ion-button>
+  </ion-toolbar>
+</ion-footer>

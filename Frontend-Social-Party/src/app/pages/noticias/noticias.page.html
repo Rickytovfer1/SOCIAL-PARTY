@@ -1,0 +1,30 @@
+<app-nav-superior></app-nav-superior>
+
+<ion-content [style.background]="'#d3e5e5'">
+  <ng-container *ngIf="!isLoading; else loading">
+    <ion-list>
+      <ion-item *ngFor="let noticia of noticias" lines="none">
+        <ion-card class="noticia-card" [routerLink]="['/detalle-noticia', noticia.id]">
+          <ion-card-content class="noticia-content">
+            <ion-img
+              [src]="noticia.imagen || 'assets/images/example.png'"
+              alt="{{ noticia.titulo }}"
+              class="noticia-image"
+            ></ion-img>
+            <div class="noticia-info">
+              <h2>{{ noticia.titulo }}</h2>
+              <p>{{ noticia.descripcion | slice:0:100 }}...</p>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </ion-item>
+    </ion-list>
+  </ng-container>
+
+
+  <ng-template #loading>
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Cargando</p>
+  </ng-template>
+</ion-content>
+

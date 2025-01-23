@@ -1,0 +1,41 @@
+
+
+.recuadro-ticket,
+.recuadro-descripcion {
+  background: #306da9;
+  color: #ffffff;
+  border-radius: 12px;
+  margin: 16px;
+}
+
+.ticket-content {
+  display: flex;
+  align-items: center;
+}
+
+.ticket-image {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-right: 16px;
+}
+
+.recuadro-descripcion ion-card-content {
+  padding: 16px;
+}
+
+.recuadro-ticket ion-card-content {
+  padding: 16px;
+}
+
+ion-spinner {
+  display: block;
+  margin: 50px auto;
+}
+
+p {
+  text-align: center;
+  font-size: 1.1em;
+
+}

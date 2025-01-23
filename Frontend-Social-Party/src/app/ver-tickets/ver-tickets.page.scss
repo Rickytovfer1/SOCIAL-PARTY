@@ -1,0 +1,57 @@
+:host {
+  --ion-background-color: #d3e5e5;
+}
+
+.pageBackground {
+  background-color: var(--ion-background-color);
+}
+
+.ticket-card {
+  background-color: #306da9;
+  color: white;
+  margin: 2vw;
+  border-radius: 10px;
+}
+
+.card-content {
+  display: flex;
+  align-items: center;
+  padding: 1em;
+}
+
+.ticket-image {
+  width: 10vw;
+  height: 10vw;
+  max-width: 60px;
+  max-height: 60px;
+  border-radius: 8px;
+  margin-right: 3vw;
+}
+
+.ticket-details {
+  flex: 1;
+}
+
+.ticket-details h2 {
+  margin: 0;
+  font-size: 1.2em;
+}
+
+.ticket-details p {
+  margin: 5px 0 0 0;
+  font-size: 0.9em;
+}
+
+@media (max-width: 600px) {
+  .ticket-card {
+    margin: 5px;
+  }
+
+  .ticket-image {
+    width: 15vw;
+    height: 15vw;
+    max-width: 60px;
+    max-height: 60px;
+    margin-right: 5px;
+  }
+}
