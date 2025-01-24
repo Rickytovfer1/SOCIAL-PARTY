@@ -24,6 +24,7 @@ import static org.example.backendsocialparty.servicios.ClienteServicio.getClient
 @AllArgsConstructor
 public class EventoServicio {
 
+    private ClienteRepositorio clienteRepositorio;
     private EventoRepositorio eventoRepositorio;
     private EmpresaRepositorio empresaRepositorio;
 
@@ -104,6 +105,19 @@ public class EventoServicio {
         }
 
         return dtonuevo;
+    }
+
+    public void eliminarPersonaEvento(Integer id) {
+
+        Cliente cliente = clienteRepositorio.findById(id).orElseThrow();
+
+        if (cliente.getEvento() != null) {
+            Evento evento = cliente.getEvento();
+            evento.getAsistentes().remove(cliente);
+            eventoRepositorio.save(evento);
+        }
+
+
     }
 
 }

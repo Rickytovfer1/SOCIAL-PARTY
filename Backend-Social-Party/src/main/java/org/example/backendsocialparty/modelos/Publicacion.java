@@ -39,7 +39,7 @@ public class Publicacion {
     @Column(name = "direccion")
     private String direccion;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
 }

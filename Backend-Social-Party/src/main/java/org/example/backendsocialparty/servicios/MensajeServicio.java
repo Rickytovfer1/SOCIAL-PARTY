@@ -78,4 +78,10 @@ public class MensajeServicio {
 
         return dtonuevo;
     }
+
+    public void eliminarMensaje (Integer id) {
+
+        List<Mensaje> mensajes = mensajeRepositorio.findByReceptor_IdOrEmisor_Id(id, id);
+        mensajeRepositorio.deleteAll(mensajes);
+    }
 }

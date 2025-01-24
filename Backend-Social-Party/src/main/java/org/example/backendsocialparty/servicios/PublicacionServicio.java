@@ -90,6 +90,10 @@ public class PublicacionServicio {
         return publicacionDTO;
     }
 
+    public void eliminarPublicacion(Integer id){
+        List<Publicacion> publicaciones = publicacionRepositorio.findPublicacionesByUsuario_Id(id);
+        publicacionRepositorio.deleteAll(publicaciones);
+    }
 
 
 }

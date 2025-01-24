@@ -6,6 +6,7 @@ import org.example.backendsocialparty.modelos.Amistad;
 import org.example.backendsocialparty.modelos.Cliente;
 import org.example.backendsocialparty.modelos.Entrada;
 import org.example.backendsocialparty.modelos.Grupo;
+import org.example.backendsocialparty.repositorios.AmistadRepositorio;
 import org.example.backendsocialparty.repositorios.ClienteRepositorio;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,18 @@ import java.util.Set;
 public class ClienteServicio {
 
     private ClienteRepositorio clienteRepositorio;
+
+    private PublicacionServicio publicacionServicio;
+
+    private MensajeServicio mensajeServicio;
+
+    private SolicitudServicio solicitudServicio;
+
+    private AmistadServicio amistadServicio;
+
+    private EventoServicio eventoServicio;
+
+    private EntradaServicio entradaServicio;
 
     public ClienteDTO buscarClienteId(Integer id) {
         Cliente cliente = clienteRepositorio.findById(id)
@@ -63,5 +76,20 @@ public class ClienteServicio {
         }
 
         return dtonuevo;
+    }
+
+    public void eliminarCliente(Integer id){
+
+        Cliente cliente = clienteRepositorio.findById(id)
+                .orElseThrow(() -> new RuntimeException("No existe un cliente con este ID."));
+
+        entradaServicio.eliminarEntrada(id);
+        eventoServicio.eliminarPersonaEvento(id);
+        amistadServicio.eliminarAmistad(id);
+        solicitudServicio.eliminarSolicitudCli(id);
+        publicacionServicio.eliminarPublicacion(id);
+        mensajeServicio.eliminarMensaje(id);
+        clienteRepositorio.delete(cliente);
+
     }
 }

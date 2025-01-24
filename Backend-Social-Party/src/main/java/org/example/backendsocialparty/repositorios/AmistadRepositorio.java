@@ -9,5 +9,5 @@ import java.util.Set;
 
 @Repository
 public interface AmistadRepositorio extends JpaRepository<Amistad, Integer> {
-
+    List<Amistad> findAmistadByUsuario_IdAndAmigo_Id(Integer usuarioId, Integer amigoId);
 }

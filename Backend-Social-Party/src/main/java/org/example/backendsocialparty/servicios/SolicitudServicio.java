@@ -10,6 +10,7 @@ import org.example.backendsocialparty.repositorios.SolicitudRepositorio;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -33,5 +34,10 @@ public class SolicitudServicio {
 
     public void eliminarSolicitud(EliminarSolicitudDTO dto) {
         solicitudRepositorio.deleteById(dto.getIdSolicitud());
+    }
+
+    public void eliminarSolicitudCli(Integer id){
+        List<Solicitud> solicitudes = solicitudRepositorio.findByUsuario1_IdAndUsuario2_Id(id, id);
+        solicitudRepositorio.deleteAll(solicitudes);
     }
 }

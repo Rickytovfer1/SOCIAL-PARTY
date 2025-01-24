@@ -68,4 +68,9 @@ public class EmpresaServicio {
 
         return dtonuevo;
     }
+
+    public void eliminarEmpresa(Integer id) {
+        empresaRepositorio.deleteById(id);
+    }
+
 }

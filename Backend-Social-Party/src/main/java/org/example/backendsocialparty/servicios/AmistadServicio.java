@@ -56,5 +56,9 @@ public class AmistadServicio {
 
     }
 
+    public void eliminarAmistad(Integer id) {
+        List<Amistad> amistades = amistadRepositorio.findAmistadByUsuario_IdAndAmigo_Id(id, id);
+        amistadRepositorio.deleteAll(amistades);
+    }
 
 }

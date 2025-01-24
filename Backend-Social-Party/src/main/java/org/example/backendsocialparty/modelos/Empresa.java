@@ -42,7 +42,7 @@ public class Empresa {
     @Column(name = "edad_minima", nullable = false)
     private Integer edadMinima;
 
-    @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL, orphanRemoval = true)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Set<Evento> eventos = new HashSet<>(0);
@@ -52,7 +52,7 @@ public class Empresa {
     @ToString.Exclude
     private Set<Cliente> baneados = new HashSet<>(0);
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Usuario usuario;

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -67,5 +68,10 @@ public class EntradaServicio {
         entrada.setEvento(evento);
 
         entradaRepositorio.save(entrada);
+    }
+
+    public void eliminarEntrada(Integer id) {
+        List<Entrada> entradas = entradaRepositorio.findByCliente_Id(id);
+        entradaRepositorio.deleteAll(entradas);
     }
 }

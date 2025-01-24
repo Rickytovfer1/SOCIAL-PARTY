@@ -3,10 +3,7 @@ package org.example.backendsocialparty.controladores;
 import lombok.AllArgsConstructor;
 import org.example.backendsocialparty.DTOs.ClienteDTO;
 import org.example.backendsocialparty.servicios.ClienteServicio;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/cliente")
@@ -18,6 +15,11 @@ public class ClienteControlador {
     @GetMapping("/buscar/{id}")
     public ClienteDTO buscarClienteId(@PathVariable Integer id) {
         return clienteServicio.buscarClienteId(id);
+    }
+
+    @DeleteMapping("/eliminar/{idCliente}")
+    public void eliminarCliente(@PathVariable Integer idCliente){
+        clienteServicio.eliminarCliente(idCliente);
     }
 
 }

@@ -33,4 +33,15 @@ public class EmpresaControlador {
     public void restarPuntos(@RequestBody RestarPuntoDTO dto){
         empresaServicio.restarPuntosCliente(dto);
     }
+
+    @DeleteMapping("/empresa/eliminar/{idEmpresa}")
+    public void eliminarEmpresa(@PathVariable Integer idEmpresa){
+        empresaServicio.eliminarEmpresa(idEmpresa);
+    }
+
+    @DeleteMapping("/empresa/eliminar/cliente/{idCliente}")
+    public void eliminarCliente(@PathVariable Integer idCliente){
+        clienteServicio.eliminarCliente(idCliente);
+    }
+
 }

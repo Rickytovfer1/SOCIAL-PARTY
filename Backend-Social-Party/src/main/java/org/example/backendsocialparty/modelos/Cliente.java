@@ -46,22 +46,22 @@ public class Cliente {
     @Column(name = "biografia")
     private String biografia;
 
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Set<Amistad> amistades = new HashSet<>(0);
 
-    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Set<Entrada> entradas = new HashSet<>(0);
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "usuarios")
+    @ManyToMany(mappedBy = "usuarios", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Set<Grupo> grupos = new HashSet<>(0);
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Usuario usuario;
