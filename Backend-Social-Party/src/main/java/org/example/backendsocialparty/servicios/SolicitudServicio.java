@@ -37,7 +37,7 @@ public class SolicitudServicio {
     }
 
     public void eliminarSolicitudCli(Integer id){
-        List<Solicitud> solicitudes = solicitudRepositorio.findByUsuario1_IdAndUsuario2_Id(id, id);
+        List<Solicitud> solicitudes = solicitudRepositorio.findByUsuario1_IdOrUsuario2_Id(id, id);
         solicitudRepositorio.deleteAll(solicitudes);
     }
 }

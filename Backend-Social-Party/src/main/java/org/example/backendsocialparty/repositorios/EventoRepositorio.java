@@ -10,5 +10,5 @@ import java.util.Set;
 
 @Repository
 public interface EventoRepositorio extends JpaRepository<Evento, Integer> {
-
+    List<Evento> findByEmpresa_Id(Integer id);
 }

@@ -4,9 +4,10 @@ import lombok.AllArgsConstructor;
 import org.example.backendsocialparty.DTOs.ClientePublicacionDTO;
 import org.example.backendsocialparty.DTOs.MostrarPublicacionDTO;
 import org.example.backendsocialparty.DTOs.PublicacionDTO;
-import org.example.backendsocialparty.modelos.Evento;
-import org.example.backendsocialparty.modelos.Publicacion;
-import org.example.backendsocialparty.modelos.Usuario;
+import org.example.backendsocialparty.enumerados.Rol;
+import org.example.backendsocialparty.modelos.*;
+import org.example.backendsocialparty.repositorios.ClienteRepositorio;
+import org.example.backendsocialparty.repositorios.EmpresaRepositorio;
 import org.example.backendsocialparty.repositorios.PublicacionRepositorio;
 import org.example.backendsocialparty.repositorios.UsuarioRepositorio;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @AllArgsConstructor
@@ -23,6 +25,10 @@ public class PublicacionServicio {
     private PublicacionRepositorio publicacionRepositorio;
 
     private UsuarioRepositorio usuarioRepositorio;
+
+    private ClienteRepositorio clienteRepositorio;
+
+    private EmpresaRepositorio empresaRepositorio;
 
     public void guardarPublicacion(PublicacionDTO dto) {
 
@@ -92,7 +98,27 @@ public class PublicacionServicio {
 
     public void eliminarPublicacion(Integer id){
         List<Publicacion> publicaciones = publicacionRepositorio.findPublicacionesByUsuario_Id(id);
-        publicacionRepositorio.deleteAll(publicaciones);
+
+        for (Publicacion publicacion: publicaciones){
+
+            if (publicacion.getUsuario().getRol() == Rol.CLIENTE){
+
+                Cliente cliente = clienteRepositorio.findByUsuario_Id(publicacion.getUsuario().getId());
+
+                if (Objects.equals(cliente.getUsuario().getId(), publicacion.getUsuario().getId())){
+                    publicacionRepositorio.deleteAll(publicaciones);
+
+                }
+            }
+            if (publicacion.getUsuario().getRol() == Rol.EMPRESA){
+
+                Empresa empresa = empresaRepositorio.findByUsuario_Id(publicacion.getUsuario().getId());
+                if (Objects.equals(empresa.getUsuario().getId(), publicacion.getUsuario().getId())){
+                    publicacionRepositorio.deleteAll(publicaciones);
+                }
+            }
+
+        }
     }
 
 

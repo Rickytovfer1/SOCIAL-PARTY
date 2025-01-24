@@ -7,4 +7,5 @@ public interface EmpresaRepositorio extends JpaRepository<Empresa, Integer> {
 
     Empresa findByNif(String nif);
 
+    Empresa findByUsuario_Id(Integer id);
 }

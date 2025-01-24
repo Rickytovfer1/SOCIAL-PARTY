@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 public interface ClienteRepositorio extends JpaRepository<Cliente, Integer> {
 
     Cliente findClienteByDni(String dni);
-
+    Cliente findByUsuario_Id(Integer id);
 }

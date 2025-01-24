@@ -117,6 +117,11 @@ public class EventoServicio {
             eventoRepositorio.save(evento);
         }
 
+    }
+
+    public void eliminarEvento(Integer id){
+        List<Evento> eventos = eventoRepositorio.findByEmpresa_Id(id);
+        eventoRepositorio.deleteAll(eventos);
 
     }
 

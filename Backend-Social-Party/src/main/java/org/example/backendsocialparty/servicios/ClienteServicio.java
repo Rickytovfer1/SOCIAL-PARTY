@@ -8,28 +8,42 @@ import org.example.backendsocialparty.modelos.Entrada;
 import org.example.backendsocialparty.modelos.Grupo;
 import org.example.backendsocialparty.repositorios.AmistadRepositorio;
 import org.example.backendsocialparty.repositorios.ClienteRepositorio;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Service
-@AllArgsConstructor
 public class ClienteServicio {
 
-    private ClienteRepositorio clienteRepositorio;
+    private final ClienteRepositorio clienteRepositorio;
 
-    private PublicacionServicio publicacionServicio;
+    private final PublicacionServicio publicacionServicio;
 
-    private MensajeServicio mensajeServicio;
+    private final MensajeServicio mensajeServicio;
 
-    private SolicitudServicio solicitudServicio;
+    private final SolicitudServicio solicitudServicio;
 
-    private AmistadServicio amistadServicio;
+    private final AmistadServicio amistadServicio;
 
-    private EventoServicio eventoServicio;
+    private final EventoServicio eventoServicio;
 
-    private EntradaServicio entradaServicio;
+    private final EntradaServicio entradaServicio;
+
+
+    public ClienteServicio(ClienteRepositorio clienteRepositorio, PublicacionServicio publicacionServicio,
+                           MensajeServicio mensajeServicio, SolicitudServicio solicitudServicio,
+                           @Lazy AmistadServicio amistadServicio, EventoServicio eventoServicio,
+                           EntradaServicio entradaServicio) {
+        this.clienteRepositorio = clienteRepositorio;
+        this.publicacionServicio = publicacionServicio;
+        this.mensajeServicio = mensajeServicio;
+        this.solicitudServicio = solicitudServicio;
+        this.amistadServicio = amistadServicio;
+        this.eventoServicio = eventoServicio;
+        this.entradaServicio = entradaServicio;
+    }
 
     public ClienteDTO buscarClienteId(Integer id) {
         Cliente cliente = clienteRepositorio.findById(id)

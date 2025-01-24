@@ -24,6 +24,18 @@ public class EmpresaServicio {
 
     private ClienteRepositorio clienteRepositorio;
 
+    private PublicacionServicio publicacionServicio;
+
+    private MensajeServicio mensajeServicio;
+
+    private SolicitudServicio solicitudServicio;
+
+    private AmistadServicio amistadServicio;
+
+    private EventoServicio eventoServicio;
+
+    private EntradaServicio entradaServicio;
+
     public List<EmpresaDTO> listarEmpresas() {
         List<Empresa> empresas = empresaRepositorio.findAll();
         List<EmpresaDTO> empresasDTO = new ArrayList<>();
@@ -70,7 +82,12 @@ public class EmpresaServicio {
     }
 
     public void eliminarEmpresa(Integer id) {
-        empresaRepositorio.deleteById(id);
+        Empresa empresa = empresaRepositorio.findById(id)
+                .orElseThrow(() -> new RuntimeException("No existe una empresa con este ID."));
+
+        eventoServicio.eliminarEvento(id);
+        publicacionServicio.eliminarPublicacion(id);
+        empresaRepositorio.delete(empresa);
     }
 
 }
