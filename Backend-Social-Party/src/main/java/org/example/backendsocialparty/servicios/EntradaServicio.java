@@ -24,13 +24,14 @@ public class EntradaServicio {
     private ClienteRepositorio clienteRepositorio;
     private EmpresaRepositorio empresaRepositorio;
 
-    public void canjearEntrada(Integer idEntrada) throws Exception {
+    public void canjearEntrada(Integer idEntrada) {
 
         Entrada entrada = entradaRepositorio.findById(idEntrada)
                 .orElseThrow(() -> new RuntimeException("No existe una entrada con este ID."));
 
         Cliente cliente = clienteRepositorio.findById(entrada.getCliente().getId())
                 .orElseThrow(() -> new RuntimeException("No existe un cliente con este ID."));
+
         Evento evento = eventoRepositorio.findById(entrada.getEvento().getId())
                 .orElseThrow(() -> new RuntimeException("No existe un evento con este ID."));
 

@@ -47,9 +47,13 @@ public class Evento {
     private Empresa empresa;
 
     @OneToMany(mappedBy = "evento", cascade = CascadeType.ALL)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Set<Entrada> entradas = new HashSet<>(0);
 
     @OneToMany(cascade = CascadeType.ALL)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Set<Cliente> asistentes = new HashSet<>(0);
 
 }

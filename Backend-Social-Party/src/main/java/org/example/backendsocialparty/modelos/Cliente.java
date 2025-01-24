@@ -47,17 +47,27 @@ public class Cliente {
     private String biografia;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Set<Amistad> amistades = new HashSet<>(0);
 
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Set<Entrada> entradas = new HashSet<>(0);
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "usuarios")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Set<Grupo> grupos = new HashSet<>(0);
 
     @OneToOne(fetch = FetchType.LAZY)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Usuario usuario;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Evento evento;
 }
