@@ -1,6 +1,9 @@
-<app-nav-superior></app-nav-superior>
+<ion-header>
+  <app-nav-superior></app-nav-superior>
+</ion-header>
 
-<ion-content [style.background]="'#d3e5e5'">
+<ion-content class="page-content">
+
   <ng-container *ngIf="!isLoading; else loading">
     <ion-list>
       <ion-item *ngFor="let noticia of noticias" lines="none">
@@ -21,10 +24,10 @@
     </ion-list>
   </ng-container>
 
-
   <ng-template #loading>
-    <ion-spinner name="crescent"></ion-spinner>
-    <p>Cargando</p>
+    <div class="loading-container">
+      <ion-spinner name="crescent"></ion-spinner>
+      <p>Cargando</p>
+    </div>
   </ng-template>
 </ion-content>
-

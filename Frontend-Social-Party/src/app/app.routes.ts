@@ -68,6 +68,10 @@ export const routes: Routes = [
     loadComponent: () => import('./comprar/comprar.page').then(m => m.ComprarPage)
   },
   {
+    path: 'messages',
+    loadComponent: () => import('./pages/messages/messages.page').then( m => m.MessagesPage)
+  },
+  {
     path: 'noticias',
     component: NoticiasPage,
   },
@@ -75,6 +79,9 @@ export const routes: Routes = [
     path: 'app-chat',
     loadComponent: () => import('./pages/chat/chat.page').then(m => m.ChatPage)
   },
-
+  {
+    path: 'chat/:userId',
+    loadComponent: () => import('./pages/chat/chat.page').then( m => m.ChatPage)
+  },
   { path: '**', redirectTo: 'ver-tickets' },
 ];

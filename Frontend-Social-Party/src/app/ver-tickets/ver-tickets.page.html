@@ -1,26 +1,21 @@
-<app-nav-superior></app-nav-superior>
-
-<ion-content [style.background]="'#d3e5e5'">
-
+<ion-content>
+  <app-nav-superior></app-nav-superior>
   <ion-searchbar
     [(ngModel)]="searchTerm"
     (ionInput)="onSearchChange($event)"
     placeholder="Buscar tickets"
     animated="true"
   ></ion-searchbar>
-
-  <ion-list>
-    <ion-item *ngFor="let ticket of filteredTickets" lines="none" [routerLink]="['/comprar', ticket.id]">
-      <ion-card class="ticket-card">
-        <ion-card-content class="card-content">
-          <ion-img [src]="ticket.image" class="ticket-image"></ion-img>
-          <div class="ticket-details">
-            <h2>{{ ticket.title }}</h2>
-            <p>{{ ticket.description }}</p>
-          </div>
-        </ion-card-content>
-      </ion-card>
-    </ion-item>
-  </ion-list>
+  <div class="ticket-container">
+    <ion-card class="ticket-card" *ngFor="let ticket of filteredTickets" [routerLink]="['/comprar', ticket.id]">
+      <ion-card-content class="card-content">
+        <ion-img [src]="ticket.image" class="ticket-image"></ion-img>
+        <div class="ticket-details">
+          <h2>{{ ticket.title }}</h2>
+          <p>{{ ticket.description }}</p>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
 
 </ion-content>

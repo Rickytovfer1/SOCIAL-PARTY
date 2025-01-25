@@ -6,13 +6,14 @@ import { IonicModule, IonCard } from '@ionic/angular';
 import {RouterLink} from "@angular/router";
 import {NavSuperiorComponent} from "../../nav-superior/nav-superior.component";
 import {NavInferiorComponent} from "../../nav-inferior/nav-inferior.component";
+import {NavLateralComponent} from "../../nav-lateral/nav-lateral.component";
 
 @Component({
   selector: 'app-noticias',
   templateUrl: './noticias.page.html',
   styleUrls: ['./noticias.page.scss'],
   standalone: true,
-  imports: [CommonModule, IonicModule, RouterLink,NavSuperiorComponent,NavInferiorComponent],
+    imports: [CommonModule, IonicModule, RouterLink, NavSuperiorComponent, NavInferiorComponent, NavLateralComponent],
 })
 export class NoticiasPage implements OnInit {
   noticias: Noticia[] = [];

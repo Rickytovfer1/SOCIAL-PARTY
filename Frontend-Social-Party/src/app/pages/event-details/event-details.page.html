@@ -1,42 +1,28 @@
-<app-nav-superior></app-nav-superior>
 <ion-content>
+  <app-nav-superior></app-nav-superior>
+
   <ng-container *ngIf="!isLoading; else loading">
     <ng-container *ngIf="event; else error">
-      <ion-card>
-        <ion-img
-          [src]="event?.image || 'assets/images/example.png'"
-          alt="{{ event?.title }}"
-          class="event-image"
-        ></ion-img>
-        <ion-card-header>
-          <ion-card-title>{{ event?.title }}</ion-card-title>
-          <ion-card-subtitle>{{ event?.date | date:'longDate' }} | {{ event?.hours }}</ion-card-subtitle>
-        </ion-card-header>
-        <ion-card-content>
-          <p>{{ event?.description }}</p>
-        </ion-card-content>
-      </ion-card>
+      <div class="quien-esta-bubble">
+        Quien está por {{ event.title }}
+      </div>
+
+      <div class="horizontal-separator"></div>
 
       <ion-card class="attendees-card">
         <ion-list>
-          <ion-list-header>
-            <ion-label>Participantes</ion-label>
-          </ion-list-header>
           <ion-item
-            *ngFor="let attendee of event?.attendees"
+            *ngFor="let attendee of event.attendees"
             button
             detail="false"
             [routerLink]="['/person-profile', attendee.id]"
+            class="attendee-item"
           >
             <ion-avatar slot="start">
-              <img
-                [src]="attendee.profileImage || 'assets/images/1.png'"
-                alt="{{ attendee.name }}"
-              />
+              <div class="initial-avatar">{{ getInitial(attendee.id) }}</div>
             </ion-avatar>
             <ion-label>
               <h2>{{ attendee.name }}</h2>
-              <p>{{ attendee.bio }}</p>
             </ion-label>
             <ion-icon name="arrow-forward-outline" slot="end"></ion-icon>
           </ion-item>

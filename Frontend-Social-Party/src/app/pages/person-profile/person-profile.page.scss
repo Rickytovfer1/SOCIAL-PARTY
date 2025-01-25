@@ -1,6 +1,8 @@
 ion-content {
-  --background: #306da9;
+  --background: #ffffff;
+  border: 10px solid #471fcd;
 }
+
 
 .profile-image {
   width: 150px;
@@ -17,11 +19,24 @@ ion-card {
   color: #ffffff;
 }
 
+.card-container {
+  background: #306da9;
+  margin: 8px;
+  padding: 8px;
+  border-radius: 8px;
+}
+
+.socials-container {
+  background: #306da9;
+  margin: 8px;
+  padding: 8px;
+  border-radius: 8px;
+}
+
 .socials {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  padding: 16px;
   margin: 24px 0;
 }
 
@@ -71,4 +86,12 @@ ion-button.add-friend {
   border-radius: 20px;
   padding: 12px 24px;
   font-weight: bold;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
 }

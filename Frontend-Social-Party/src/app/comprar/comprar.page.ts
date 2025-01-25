@@ -5,13 +5,14 @@ import { Ticket } from '../models/ticket.model';
 import { Event } from '../models/event.model';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
+import {NavSuperiorComponent} from "../nav-superior/nav-superior.component";
 
 @Component({
   selector: 'app-comprar',
   templateUrl: './comprar.page.html',
   styleUrls: ['./comprar.page.scss'],
   standalone: true,
-  imports: [CommonModule, IonicModule, RouterLink],
+  imports: [CommonModule, IonicModule, RouterLink, NavSuperiorComponent],
 })
 export class ComprarPage implements OnInit {
   ticketId: number | undefined;

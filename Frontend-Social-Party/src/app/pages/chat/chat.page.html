@@ -1,6 +1,6 @@
-<app-nav-superior></app-nav-superior>
-
 <ion-content class="chat-content">
+  <app-nav-superior></app-nav-superior>
+  <div class="horizontal-separator"></div>
   <div class="chat-header">
     <h2>{{ friend?.name }}</h2>
   </div>
@@ -8,7 +8,10 @@
   <div class="messages-container">
     <div
       *ngFor="let msg of messages"
-      [ngClass]="msg.type === 'friend' ? 'message-friend' : 'message-self'"
+      [ngClass]="{
+        'message-friend': msg.type === 'friend',
+        'message-self': msg.type === 'self'
+      }"
       class="message"
     >
       {{ msg.content }}
@@ -16,7 +19,7 @@
   </div>
 </ion-content>
 
-<ion-footer>
+<ion-footer class="message-footer">
   <ion-toolbar>
     <ion-input
       [(ngModel)]="newMessage"

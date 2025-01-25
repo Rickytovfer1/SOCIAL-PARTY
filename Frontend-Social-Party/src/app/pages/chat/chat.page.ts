@@ -5,7 +5,7 @@ import { User } from '../../models/user.model';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { NavSuperiorComponent } from "../../nav-superior/nav-superior.component";
+import { NavSuperiorComponent } from '../../nav-superior/nav-superior.component';
 
 @Component({
   selector: 'app-chat',
@@ -45,17 +45,19 @@ export class ChatPage implements OnInit {
     });
 
     this.messages = [
-      { content: 'mensaje de amigo', type: 'friend' },
-      { content: 'mensaje propio', type: 'self' },
+      { content: 'Hola!', type: 'friend' },
+      { content: 'Respuesta!', type: 'self' },
     ];
   }
 
   sendMessage() {
     if (this.newMessage.trim() !== '') {
       this.messages.push({ content: this.newMessage, type: 'self' });
+
       setTimeout(() => {
-        this.messages.push({ content: 'mensaje de amigo', type: 'friend' });
+        this.messages.push({ content: 'Llego el mensaje!', type: 'friend' });
       }, 1000);
+
       this.newMessage = '';
     }
   }

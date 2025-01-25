@@ -1,16 +1,16 @@
-
-
 .recuadro-ticket,
 .recuadro-descripcion {
   background: #306da9;
   color: #ffffff;
   border-radius: 12px;
   margin: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .ticket-content {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .ticket-image {
@@ -19,10 +19,38 @@
   object-fit: cover;
   border-radius: 8px;
   margin-right: 16px;
+
+  @media (max-width: 600px) {
+    width: 60px;
+    height: 60px;
+    margin-right: 12px;
+  }
+}
+
+.ticket-details {
+  flex: 1;
+  min-width: 200px;
+
+  h2 {
+    font-size: 1.5rem;
+
+    @media (max-width: 600px) {
+      font-size: 1.2rem;
+    }
+  }
 }
 
 .recuadro-descripcion ion-card-content {
   padding: 16px;
+
+  p {
+    font-size: 1.1em;
+    margin-bottom: 8px;
+
+    @media (max-width: 600px) {
+      font-size: 1em;
+    }
+  }
 }
 
 .recuadro-ticket ion-card-content {
@@ -32,10 +60,25 @@
 ion-spinner {
   display: block;
   margin: 50px auto;
+  --width: 50px;
+  --height: 50px;
+
+  @media (max-width: 600px) {
+    --width: 40px;
+    --height: 40px;
+  }
 }
 
 p {
   text-align: center;
   font-size: 1.1em;
 
+  @media (max-width: 600px) {
+    font-size: 1em;
+  }
+}
+
+/* Ensure the overall background is set correctly */
+ion-content {
+  --background: #d3e5e5;
 }

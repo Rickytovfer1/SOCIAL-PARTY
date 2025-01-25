@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { User } from '../models/user.model';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class UserService {
   private users: User[] = [
@@ -13,14 +13,14 @@ export class UserService {
       bio: 'bio de usuario 1',
       instagram: 'https://instagram.com/usuario1',
       tiktok: 'https://tiktok.com/usuario1',
-      bereal: 'https://bere.al/usuario1',
+      bereal: 'https://bere.al/usuario1'
     },
     {
       id: 2,
       name: 'Usuario 2',
       profileImage: 'assets/users/1.png',
       bio: 'bio de usuario 2',
-      instagram: 'https://instagram.com/usuario2',
+      instagram: 'https://instagram.com/usuario2'
     },
     {
       id: 3,
@@ -28,14 +28,16 @@ export class UserService {
       profileImage: 'assets/users/1.png',
       bio: 'bio de usuario 3',
       tiktok: 'https://tiktok.com/@usuario3',
-      bereal: 'https://bere.al/usuario3',
-
-    },
+      bereal: 'https://bere.al/usuario3'
+    }
   ];
 
-  constructor() {}
+  getAllUsers(): User[] {
+    return this.users;
+  }
 
   getUserById(id: number): User | undefined {
     return this.users.find(user => user.id === id);
   }
+
 }
