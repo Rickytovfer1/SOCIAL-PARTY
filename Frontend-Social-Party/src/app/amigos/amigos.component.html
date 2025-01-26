@@ -1,68 +1,57 @@
+<app-nav-superior></app-nav-superior>
+
 <ion-content>
-  <app-nav-superior></app-nav-superior>
-  <app-nav-lateral class="nav-lateral"></app-nav-lateral>
+  <ion-grid>
+    <ion-row class="ion-justify-content-between ion-align-items-center" style="padding: 1%">
+      <ion-img src="assets/iconoNoti.png"></ion-img>
+      <ion-img src="assets/iconoMas.png"></ion-img>
+    </ion-row>
+    <ion-row>
+      <ion-col style="margin: 0 auto" size-lg="4" size-xl="4" size-md="6" size-sm="10" size-xs="12">
 
-  <ion-grid class="ion-justify-content-center">
-    <!-- Carta 1 -->
-    <ion-row class="ion-justify-content-center">
-      <a href="/ruta/ricardo-ruiperez" style="text-decoration: none;">
-        <ion-card color="primary" class="carta responsive-card ion-text-center">
-          <ion-card-content>
-            <ion-grid>
-              <ion-row class="ion-align-items-center ion-justify-content-center">
-                <ion-col size="3" size-md="2">
-                  <ion-img src="assets/iconoCasa.png"></ion-img>
-                </ion-col>
-                <ion-col size="9" size-md="10">
-                  <ion-title>Ricardo Ruiperez</ion-title>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
-          </ion-card-content>
+        <ion-card class="tarjeta_amigo ion-text-center" >
+          <ion-grid>
+            <ion-row>
+              <ion-col size="3">
+                <ion-img src="assets/iconoPerfil.png"></ion-img>
+              </ion-col>
+              <ion-col size="9" style="padding-top: 5%; padding-bottom: 5%;">
+                <ion-text style="color: #ffffff; font-size: 20px">Ricardo Ruiperez</ion-text>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
         </ion-card>
-      </a>
+
+        <ion-card class="tarjeta_amigo ion-text-center" >
+          <ion-grid>
+            <ion-row>
+              <ion-col size="3">
+                <ion-img src="assets/iconoPerfil.png"></ion-img>
+              </ion-col>
+              <ion-col size="9" style="padding-top: 5%; padding-bottom: 5%;">
+                <ion-text style="color: #ffffff; font-size: 20px">Laura Sánchez</ion-text>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card>
+
+        <ion-card class="tarjeta_amigo ion-text-center" >
+          <ion-grid>
+            <ion-row>
+              <ion-col size="3">
+                <ion-img src="assets/iconoPerfil.png"></ion-img>
+              </ion-col>
+              <ion-col size="9" style="padding-top: 5%; padding-bottom: 5%;">
+                <ion-text style="color: #ffffff; font-size: 20px">Carlos Gómez</ion-text>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card>
+      </ion-col>
     </ion-row>
 
-    <!-- Carta 2 -->
-    <ion-row class="ion-justify-content-center">
-      <a href="/ruta/laura-sanchez" style="text-decoration: none;">
-        <ion-card color="primary" class="carta responsive-card ion-text-center">
-          <ion-card-content>
-            <ion-grid>
-              <ion-row class="ion-align-items-center ion-justify-content-center">
-                <ion-col size="3" size-md="2">
-                  <ion-img src="assets/iconoCasa.png"></ion-img>
-                </ion-col>
-                <ion-col size="9" size-md="10">
-                  <ion-title>Laura Sánchez</ion-title>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
-          </ion-card-content>
-        </ion-card>
-      </a>
-    </ion-row>
-
-    <!-- Carta 3 -->
-    <ion-row class="ion-justify-content-center">
-      <a href="/ruta/carlos-gomez" style="text-decoration: none;">
-        <ion-card color="primary" class="carta responsive-card ion-text-center">
-          <ion-card-content>
-            <ion-grid>
-              <ion-row class="ion-align-items-center ion-justify-content-center">
-                <ion-col size="3" size-md="2">
-                  <ion-img src="assets/iconoCasa.png"></ion-img>
-                </ion-col>
-                <ion-col size="9" size-md="10">
-                  <ion-title>Carlos Gómez</ion-title>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
-          </ion-card-content>
-        </ion-card>
-      </a>
-    </ion-row>
   </ion-grid>
 
-  <app-nav-inferior></app-nav-inferior>
 </ion-content>
+
+<app-nav-inferior></app-nav-inferior>

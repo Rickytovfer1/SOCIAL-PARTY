@@ -35,3 +35,24 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import '@ionic/angular/css/palettes/dark.system.css';
+
+
+ion-menu-button {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  ion-menu-button {
+    display: block;
+  }
+}
+
+ion-footer {
+  display: block;
+}
+
+@media (min-width: 768px) {
+  ion-footer {
+    display: none;
+  }
+}

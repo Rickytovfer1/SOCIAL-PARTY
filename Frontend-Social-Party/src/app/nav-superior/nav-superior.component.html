@@ -1,22 +1,52 @@
-<ion-header>
-  <ion-toolbar class="custom-toolbar">
-    <!-- Icono a la izquierda -->
-    <ion-buttons slot="start">
-      <ion-avatar>
-        <img src="assets/img.png" alt="Social Party Logo" />
-      </ion-avatar>
-    </ion-buttons>
+<ion-menu contentId="main-content">
+  <ion-content class="ion-padding">
+    <ion-menu-toggle style="background-color: #471fcd; height: 100%;">
+      <ion-list>
+        <ion-item>
+          <ion-button fill="clear">
+            <ion-img src="assets/iconoPerfil.png" class="small-img"></ion-img>
+          </ion-button>
+        </ion-item>
 
-    <!-- Iconos a la derecha -->
-    <ion-buttons slot="end">
-      <!-- Contenedor para la estrella y el puntaje -->
-      <span class="star-container">
-        <img src="assets/estrella.png" id="estrella" alt="Estrella Party Logo" />
-        <span class="star-points">100</span>
-      </span>
-      <!-- Icono de configuración -->
-      <ion-icon name="settings-outline" class="settings-icon"></ion-icon>
-      <img src="assets/iconoSettings.png" id="iconoSettings" alt="Settings Party Logo" />
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+        <ion-item>
+          <ion-button fill="clear">
+            <ion-img src="assets/tickets.png" class="small-img"></ion-img>
+          </ion-button>
+        </ion-item>
+
+        <ion-item>
+          <ion-button fill="clear">
+            <ion-img src="assets/iconoCasa.png" class="small-img"></ion-img>
+          </ion-button>
+        </ion-item>
+
+        <ion-item>
+          <ion-button fill="clear">
+            <ion-img src="assets/ubicacion.png" class="small-img"></ion-img>
+          </ion-button>
+        </ion-item>
+
+        <ion-item>
+          <ion-button fill="clear">
+            <ion-img src="assets/internetIcono.png" class="small-img"></ion-img>
+          </ion-button>
+        </ion-item>
+      </ion-list>
+    </ion-menu-toggle>
+  </ion-content>
+</ion-menu>
+
+<div id="main-content" main>
+  <ion-header>
+    <ion-toolbar>
+
+      <ion-img slot="start" style="width: 55px" src="assets/img.png" alt="Social Party Logo"/>
+      <ion-menu-button slot="start"></ion-menu-button>
+      <ion-text slot="end" class="star-points">100</ion-text>
+      <ion-img slot="end" style="width: 40px;" src="assets/estrella.png" alt="Estrella Party Logo" />
+      <ion-img slot="end" style="width: 40px;" src="assets/iconoSettings.png" alt="Ajustes Party Logo" />
+
+    </ion-toolbar>
+  </ion-header>
+</div>
+

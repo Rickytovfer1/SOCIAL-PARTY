@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {IonicModule} from "@ionic/angular";
 import {NavSuperiorComponent} from "../nav-superior/nav-superior.component";
-import {NavLateralComponent} from "../nav-lateral/nav-lateral.component";
 import {NavInferiorComponent} from "../nav-inferior/nav-inferior.component";
 
 @Component({
@@ -12,7 +11,6 @@ import {NavInferiorComponent} from "../nav-inferior/nav-inferior.component";
     imports: [
         IonicModule,
         NavSuperiorComponent,
-        NavLateralComponent,
         NavInferiorComponent
     ]
 })

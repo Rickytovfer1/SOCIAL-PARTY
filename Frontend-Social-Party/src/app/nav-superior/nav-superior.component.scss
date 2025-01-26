@@ -1,45 +1,87 @@
-.custom-toolbar {
-  background-color: #471fcd; // Color azul oscuro para el toolbar
-  color: #fff;
-
-  ion-avatar img {
-    width: 350px; // Ajustar tamaño del avatar
-    height: 100px;
-    margin-top: -10px;
-  }
-
-  .star-container {
-    display: flex;
-    align-items: center;
-    gap: 5px; // Espaciado entre el ícono y el puntaje
-
-    .star-points {
-      font-size: 16px;
-      color: #ffd700; // Color dorado para el texto
-      font-weight: bold;
-    }
-  }
-
-  .settings-icon {
-    font-size: 24px;
-    color: #fff; // Color blanco para el ícono
-    margin-left: 15px; // Espaciado entre los íconos de la derecha
-  }
-
-  #estrella {
-    width: 20px;
-    height: 20px;
-    margin-right: 5px; // Espaciado entre el ícono de estrella y el texto
-  }
-
-  #iconoSettings {
-    width: 20px;
-    height: 20px;
-    margin-left: 15px; // Espaciado entre el ícono de estrella y el ícono de configuración
-  }
+ion-toolbar {
+  --background: #234276;
 }
 
-ion-header {
-  --ion-toolbar-background: #471fcd; // Color de fondo
-  --ion-toolbar-color: #fff; // Color del texto y los íconos
+ion-img {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+ion-text {
+  color: #f0d31b;
+  font-size: 16px;
+}
+
+ion-menu {
+  --width: 250px;
+  --background: #234276;
+}
+
+ion-menu-content {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  height: 100%;
+  background-color: #234276;
+}
+ion-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 100%;
+  background-color: #234276;
+}
+
+ion-item {
+  margin: 10px 0;
+  background-color: #471FCD;
+}
+
+ion-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.small-img {
+  width: 40px;  /* Tamaño de los íconos */
+  height: 40px; /* Tamaño de los íconos */
+}
+
+/* Estilo para la barra de navegación */
+ion-toolbar {
+  background-color: #471FCD; /* Fondo del toolbar */
+  color: white; /* Color del texto en el toolbar */
+}
+
+/* Botón para abrir el menú */
+.small-button {
+  width: 50px; /* Ajusta el tamaño según sea necesario */
+  height: 50px; /* Ajusta el tamaño según sea necesario */
+  padding: 0;
+  background: none;
+  border: none;
+}
+
+.small-button ion-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.top-left-button {
+  position: absolute;
+  top: 10px; /* Ajusta la distancia desde la parte superior */
+  left: 10px; /* Ajusta la distancia desde la izquierda */
+}
+
+/* Ajustes para los iconos dentro del botón */
+ion-img {
+  width: 30px;
+  height: 30px;
+}
+
+div {
+  background-color: #234276; /* Fondo del contenedor principal */
+  height: 100%;
 }
