@@ -2,15 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import {IonicModule} from "@ionic/angular";
 
 @Component({
-  selector: 'app-nav-inferior',
-  templateUrl: './nav-inferior.component.html',
-  styleUrls: ['./nav-inferior.component.scss'],
+  selector: 'app-amigos',
+  templateUrl: './amigos.component.html',
+  styleUrls: ['./amigos.component.scss'],
   standalone: true,
   imports: [
     IonicModule
   ]
 })
-export class NavInferiorComponent  implements OnInit {
+export class AmigosComponent  implements OnInit {
 
   constructor() { }
 

@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { RegistroUsuarioComponent } from './registro-usuario.component';
+import { AmigosComponent } from './amigos.component';
 
-describe('RegistroUsuarioComponent', () => {
-  let component: RegistroUsuarioComponent;
-  let fixture: ComponentFixture<RegistroUsuarioComponent>;
+describe('AmigosComponent', () => {
+  let component: AmigosComponent;
+  let fixture: ComponentFixture<AmigosComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [RegistroUsuarioComponent],
+      imports: [AmigosComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(RegistroUsuarioComponent);
+    fixture = TestBed.createComponent(AmigosComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));
