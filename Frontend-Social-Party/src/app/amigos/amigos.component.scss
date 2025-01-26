@@ -1,45 +1,10 @@
-/* src/app/amigos/amigos.component.css */
-.carta {
-  width: 250px; /* Ajusta el ancho de la carta */
-  height: 60px; /* Ajusta la altura de la carta */
+.tarjeta_amigo {
+  --background: #306DA9;
+  border-radius: 40px;
+  vertical-align: center;
+  margin: 20px;
 }
 
-.carta ion-col {
-  padding: 0; /* Elimina el padding entre el icono y el título */
-}
-
-.carta ion-img {
-  margin-right: 10px; /* Ajusta el margen derecho del icono */
-}
-
-ion-title {
-  font-size: 0.8em; /* Ajusta el tamaño de la fuente del título */
-}
-
-
-@media (max-width: 768px) {
-  .nav-lateral {
-    display: none;
-  }
-
-  app-nav-lateral {
-    display: none;
-  }
-
-  app-nav-inferior {
-    display: block;
-  }
-
-}
-
-@media (min-width: 769px) {
-  app-nav-inferior {
-    display: none;
-  }
-}
-
-app-nav-inferior {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
+ion-content {
+  --background: #D3E5E5;
 }
