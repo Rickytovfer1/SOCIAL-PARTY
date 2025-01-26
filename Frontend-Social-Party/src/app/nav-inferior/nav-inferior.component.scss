@@ -1,0 +1,39 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+ion-footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+ion-content {
+  flex: 1;
+  overflow-y: auto;
+}
+
+ion-toolbar {
+  --background: #471fcd; // Color de fondo
+  --color: #fff; // Color del texto y los íconos
+}
+
+.small-img {
+  width: 40px;
+  height: 40px;
+}
+
+/* src/app/perfil/perfil.component.scss */
+ion-content {
+  --background: #471fcd;
+  --color: #fff;
+  min-height: 100vh; /* Asegura que el contenido ocupe al menos toda la altura de la pantalla */
+  padding-bottom: 60px; /* Evita que el contenido se solape con el nav inferior en móviles */
+}
+
+ion-card {
+  background-color: #B3E5E5;
+  border-radius: 2%;
+}
