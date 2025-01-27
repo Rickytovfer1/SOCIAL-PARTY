@@ -27,7 +27,11 @@ export class PerfilComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.cargarPerfil(10);
+        const perfil: Perfil = JSON.parse(localStorage.getItem('usuarioLogeado') as string);
+
+        //TODO ESTO ESTA PUESTO A PELO HAY QUE HACER LOGIN
+        this.cargarPerfil(3);
+        console.log(localStorage.getItem('usuarioLogeado'))
 
     }
 
