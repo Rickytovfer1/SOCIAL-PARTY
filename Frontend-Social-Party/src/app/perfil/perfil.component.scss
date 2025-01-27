@@ -1,9 +1,10 @@
-ion-content {
+.fondo {
   --background: #D3E5E5;
 }
 
 #grid_secundario {
-  height: 100%
+  height: 100%;
+  margin-bottom: 90%;
 }
 
 #fila_icono {
@@ -47,4 +48,9 @@ ion-button {
   --background: #5AB7D5
 }
 
-
+@media (min-width: 768px) {
+  #grid_secundario {
+    height: 100%;
+    margin-bottom: 0;
+  }
+}

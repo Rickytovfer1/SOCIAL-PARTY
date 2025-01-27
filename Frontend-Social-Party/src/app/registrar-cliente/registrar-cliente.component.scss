@@ -11,20 +11,21 @@ ion-content {
 }
 
 #fila_icono {
-  height: 100%;
-  margin: 0 auto;
+    height: 100%;
+    margin: 0 auto;
 }
 
 #col_icono {
-  height: 100%;
-  margin: 0 auto;
-  padding: 0;
+    height: 100%;
+    margin: 0 auto;
+    padding: 0;
+    object-fit: cover;
 }
 
 #icono {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+    width: 80%;
+    height: 80%;
+    margin: 0 auto
 }
 
 #col_principal {
