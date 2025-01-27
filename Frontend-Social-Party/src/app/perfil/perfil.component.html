@@ -1,6 +1,6 @@
 <app-nav-superior></app-nav-superior>
 
-<ion-content>
+<ion-content class="fondo">
 
   <ion-grid id="grid_principal">
     <ion-row id="fila_icono">
@@ -17,15 +17,15 @@
 
             <ion-row>
               <ion-label>Nombre: </ion-label>
-              <ion-input type="text" placeholder="Jose carlos" readonly></ion-input>
+              <ion-input type="text" placeholder="{{perfil.nombre}}" readonly></ion-input>
             </ion-row>
             <ion-row>
               <ion-label>Apellidos: </ion-label>
-              <ion-input type="text" placeholder="Gómez Botana" readonly></ion-input>
+              <ion-input type="text" placeholder="{{perfil.apellidos}}" readonly></ion-input>
             </ion-row>
             <ion-row>
               <ion-label>Correo electrónico: </ion-label>
-              <ion-input type="email" placeholder="josecarlos2gmail.com" readonly></ion-input>
+              <ion-input type="email" placeholder="{{perfil.correo}}" readonly></ion-input>
             </ion-row>
             <ion-row>
               <ion-label>Contraseña: </ion-label>
@@ -33,7 +33,7 @@
             </ion-row>
             <ion-row>
               <ion-label>DNI: </ion-label>
-              <ion-input type="text" placeholder="Introduce tu DNI:" readonly></ion-input>
+              <ion-input type="text" placeholder="{{perfil.dni}}" readonly></ion-input>
             </ion-row>
             <ion-row>
               <ion-label>Fecha de nacimiento: </ion-label>
@@ -41,11 +41,11 @@
             </ion-row>
             <ion-row>
               <ion-label>Foto perfil: </ion-label>
-              <ion-input type="text" placeholder="Foto perfil:" readonly></ion-input>
+              <ion-input type="text" placeholder="{{perfil.fotoPerfil}}" readonly></ion-input>
             </ion-row>
             <ion-row>
               <ion-label>Biografía: </ion-label>
-              <ion-input type="text" placeholder="La biografia que tenga si no Introduce biografia" readonly></ion-input>
+              <ion-input type="text" placeholder="{{perfil.biografia}}" readonly></ion-input>
             </ion-row>
             <ion-row>
               <ion-button>Editar</ion-button>
