@@ -1,4 +1,4 @@
-export class Registro{
+export class RegistroCliente{
   nombre?:string;
   apellidos?:string;
   dni?:string;

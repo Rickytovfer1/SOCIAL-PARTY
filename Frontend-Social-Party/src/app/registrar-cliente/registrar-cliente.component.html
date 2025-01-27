@@ -14,23 +14,23 @@
         <ion-card id="tarjeta_registrar_cliente">
           <ion-grid>
             <ion-row>
-              <ion-img src="assets/back.png"></ion-img>
+              <ion-img (click)="volver()" src="assets/back.png"></ion-img>
             </ion-row>
             <ion-row>
               <ion-label>Nombre: </ion-label>
-              <ion-input type="text" placeholder="Introduce tu nombre"></ion-input>
+              <ion-input [(ngModel)]="registro.nombre" type="text" placeholder="Introduce tu nombre"></ion-input>
             </ion-row>
             <ion-row>
               <ion-label>Apellidos: </ion-label>
-              <ion-input type="text" placeholder="Introduce tus apellidos"></ion-input>
+              <ion-input [(ngModel)]="registro.apellidos" type="text" placeholder="Introduce tus apellidos"></ion-input>
             </ion-row>
             <ion-row>
               <ion-label>Correo electrónico: </ion-label>
-              <ion-input type="email" placeholder="Introduce tu correo electrónico"></ion-input>
+              <ion-input [(ngModel)]="registro.correo" type="email" placeholder="Introduce tu correo electrónico"></ion-input>
             </ion-row>
             <ion-row>
               <ion-label>Contraseña: </ion-label>
-              <ion-input type="password" placeholder="Introduce tu contraseña"></ion-input>
+              <ion-input [(ngModel)]="registro.contrasena" type="password" placeholder="Introduce tu contraseña"></ion-input>
             </ion-row>
             <ion-row>
               <ion-label>Repetir contraseña: </ion-label>
@@ -38,18 +38,18 @@
             </ion-row>
             <ion-row>
               <ion-label>DNI: </ion-label>
-              <ion-input type="text" placeholder="Introduce tu DNI:"></ion-input>
+              <ion-input [(ngModel)]="registro.dni" type="text" placeholder="Introduce tu DNI:"></ion-input>
             </ion-row>
             <ion-row>
               <ion-label>Fecha de nacimiento: </ion-label>
-              <ion-input type="date"></ion-input>
+              <ion-input [(ngModel)]="registro.fechaNacimiento" type="date"></ion-input>
             </ion-row>
 
             <ion-row>
-              <ion-button>Registrar</ion-button>
+              <ion-button (click)="goRegister()">Registrar</ion-button>
             </ion-row>
             <ion-row >
-              <ion-label id="enlace">¿Eres una empresa?</ion-label>
+              <ion-label id="enlace" (click)="irRegistroEmpresa()">¿Eres una empresa?</ion-label>
             </ion-row>
           </ion-grid>
         </ion-card>
