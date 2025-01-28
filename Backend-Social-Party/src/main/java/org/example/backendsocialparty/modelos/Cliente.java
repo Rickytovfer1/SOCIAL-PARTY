@@ -43,6 +43,9 @@ public class Cliente {
     @Column(name = "telelefono", unique = true,  nullable = false)
     private String telefono;
 
+    @Column(name = "fotoPerfil")
+    private String fotoPerfil;
+
     @Column(name = "biografia")
     private String biografia;
 
