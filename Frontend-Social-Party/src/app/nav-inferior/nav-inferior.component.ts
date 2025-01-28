@@ -30,10 +30,10 @@ export class NavInferiorComponent  implements OnInit {
   }
 
   irUbicacion() {
-      this.router.navigate(['/perfil']);
+      this.router.navigate(['/asistentes-evento']);
   }
 
   irPublicaciones() {
-      this.router.navigate(['/perfil']);
+      this.router.navigate(['/publicaciones']);
   }
 }

@@ -2,24 +2,22 @@ ion-content {
     --background: #D3E5E5;
 }
 
-ion-searchbar {
-    --border-radius: 60px;
-    width: 90%;
-    margin: 20px auto;
-}
-
 ion-card {
     margin: 25px auto;
     --background: #306DA9;
     border-radius: 40px;
 }
 
-ion-img {
+.publicacion {
     width: 90%;
     height: 90%;
     margin: 0 auto;
     border-radius: 20px;
     overflow: hidden;
+}
+
+#agregar {
+    margin: 15px auto;
 }
 
 ion-col {
@@ -37,5 +35,5 @@ ion-text {
 }
 
 .nombre {
-    font-size: 30px;
+    font-size: 25px;
 }

@@ -38,4 +38,32 @@ export const routes: Routes = [
     path: 'ver-empresas',
     loadComponent: () => import('./ver-empresas/ver-empresas.component').then((m) => m.VerEmpresasComponent)
   },
+  {
+    path: 'perfil-asistente',
+    loadComponent: () => import('./perfil-asistente/perfil-asistente.component').then((m) => m.PerfilAsistenteComponent)
+  },
+  {
+    path: 'publicaciones',
+    loadComponent: () => import('./publicaciones/publicaciones.component').then((m) => m.PublicacionesComponent)
+  },
+  {
+    path: 'asistentes-evento',
+    loadComponent: () => import('./asistentes-evento/asistentes-evento.component').then((m) => m.AsistentesEventoComponent)
+  },
+  {
+    path: 'crear-evento-empresa',
+    loadComponent: () => import('./crear-evento-empresa/crear-evento-empresa.component').then((m) => m.CrearEventoEmpresaComponent)
+  },
+  {
+    path: 'crear-publicacion-empresa',
+    loadComponent: () => import('./crear-publicacion-empresa/crear-publicacion-empresa.component').then((m) => m.CrearPublicacionEmpresaComponent)
+  },
+  {
+    path: 'crear-publicacion',
+    loadComponent: () => import('./crear-publicacion/crear-publicacion.component').then((m) => m.CrearPublicacionComponent)
+  },
+  {
+    path: 'chat',
+    loadComponent: () => import('./chat/chat.component').then((m) => m.ChatComponent)
+  },
 ];

@@ -1,31 +1,29 @@
 import { Component, OnInit } from '@angular/core';
 import {IonicModule} from "@ionic/angular";
 import {NavSuperiorComponent} from "../nav-superior/nav-superior.component";
-import {FormsModule} from "@angular/forms";
-import {NgForOf} from "@angular/common";
-import {Router, RouterLink} from "@angular/router";
 import {NavInferiorComponent} from "../nav-inferior/nav-inferior.component";
+import {Router} from "@angular/router";
+import {routes} from "../app.routes";
 
 @Component({
-    selector: 'app-ver-empresas',
-    templateUrl: './ver-empresas.component.html',
-    styleUrls: ['./ver-empresas.component.scss'],
+    selector: 'app-publicaciones',
+    templateUrl: './publicaciones.component.html',
+    styleUrls: ['./publicaciones.component.scss'],
     standalone: true,
     imports: [
         IonicModule,
         NavSuperiorComponent,
-        FormsModule,
         NavInferiorComponent
     ]
 })
-export class VerEmpresasComponent  implements OnInit {
+export class PublicacionesComponent  implements OnInit {
 
   constructor(private router: Router) { }
 
   ngOnInit() {}
 
-  verEventosEmpresa() {
-      this.router.navigate(['/ver-eventos']);
+  abrirForm() {
+      this.router.navigate(["/crear-publicacion"])
   }
 
 }
