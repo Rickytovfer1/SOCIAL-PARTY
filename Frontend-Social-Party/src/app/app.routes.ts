@@ -46,4 +46,8 @@ export const routes: Routes = [
         path: 'crear-evento-empresa',
         loadComponent: () => import('./crear-evento-empresa/crear-evento-empresa.component').then((m) => m.CrearEventoEmpresaComponent)
     },
+    {
+        path: 'ver-perfil-empresa',
+        loadComponent: () => import('./ver-perfil-empresa/ver-perfil-empresa.component').then((m) => m.VerPerfilEmpresaComponent)
+    },
 ];
