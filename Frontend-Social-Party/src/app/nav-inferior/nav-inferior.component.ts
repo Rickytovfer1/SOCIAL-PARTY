@@ -22,7 +22,7 @@ export class NavInferiorComponent  implements OnInit {
   }
 
   irEntradas() {
-      this.router.navigate(['/perfil']);
+      this.router.navigate(['/ver-empresas']);
   }
 
   irAmigos() {

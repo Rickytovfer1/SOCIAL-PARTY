@@ -34,4 +34,8 @@ export const routes: Routes = [
     path: 'ver-eventos',
     loadComponent: () => import('./ver-eventos/ver-eventos.component').then((m) => m.VerEventosComponent)
   },
+  {
+    path: 'ver-empresas',
+    loadComponent: () => import('./ver-empresas/ver-empresas.component').then((m) => m.VerEmpresasComponent)
+  },
 ];
