@@ -2,7 +2,9 @@ package org.example.backendsocialparty.controladores;
 
 import lombok.AllArgsConstructor;
 import org.example.backendsocialparty.DTOs.ClienteDTO;
+import org.example.backendsocialparty.modelos.Usuario;
 import org.example.backendsocialparty.servicios.ClienteServicio;
+import org.example.backendsocialparty.servicios.UsuarioServicio;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -11,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 public class ClienteControlador {
 
     private ClienteServicio clienteServicio;
+
+    private UsuarioServicio usuarioServicio;
 
     @GetMapping("/buscar/{id}")
     public ClienteDTO buscarClienteId(@PathVariable Integer id) {
@@ -22,4 +26,8 @@ public class ClienteControlador {
         clienteServicio.eliminarCliente(idCliente);
     }
 
+    @GetMapping("/ver/usuario/{correo}")
+    public Usuario verUsuario(@PathVariable String correo){
+        return (Usuario) usuarioServicio.loadUserByUsername(correo);
+    }
 }

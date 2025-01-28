@@ -8,10 +8,7 @@ import org.example.backendsocialparty.DTOs.RespuestaDTO;
 import org.example.backendsocialparty.modelos.Usuario;
 import org.example.backendsocialparty.servicios.UsuarioServicio;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/autorizacion")
@@ -35,6 +32,5 @@ public class AutorizacionControlador {
     public ResponseEntity<RespuestaDTO> registro(@RequestBody LoginDTO dto){
         return usuarioServicio.login(dto);
     }
-
 
 }

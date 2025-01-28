@@ -1,23 +1,23 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {Observable} from "rxjs";
-import {Perfil} from "../modelos/Perfil";
+import {HttpClient} from "@angular/common/http";
 import {ComunService} from "./comun.service";
 import {environment} from "../../environments/environment";
+import {Observable} from "rxjs";
+import {Perfil} from "../modelos/Perfil";
+import {Usuario} from "../modelos/Usuario";
 
 @Injectable({
   providedIn: 'root'
 })
-export class PerfilServicio {
+export class UsuarioService {
 
     private apiUrl = environment.apiUrl;
 
 
     constructor(private http: HttpClient, private comunService: ComunService) { }
 
-    getPerfil(idUsuario: number): Observable<Perfil> {
+    getUsuario(correo: string): Observable<Usuario> {
         const options = this.comunService.autorizarPeticion();
-        return this.http.get<Perfil>(`${this.apiUrl}/cliente/buscar/${idUsuario}`, options);
+        return this.http.get<Perfil>(`${this.apiUrl}/cliente/ver/usuario/${correo}`, options);
     }
-
 }
