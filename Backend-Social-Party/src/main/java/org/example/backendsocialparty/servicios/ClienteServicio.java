@@ -60,6 +60,8 @@ public class ClienteServicio {
         dtonuevo.setTelefono(c.getTelefono());
         dtonuevo.setFechaNacimiento(c.getFechaNacimiento());
         dtonuevo.setValoracion(c.getValoracion());
+        dtonuevo.setBiografia(c.getBiografia());
+        dtonuevo.setFotoPerfil(c.getFotoPerfil());
 
         if (c.getAmistades() != null) {
             Set<Integer> amigosDTO = new HashSet<>();

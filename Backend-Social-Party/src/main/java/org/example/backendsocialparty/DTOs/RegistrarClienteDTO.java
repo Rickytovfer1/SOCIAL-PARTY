@@ -15,6 +15,8 @@ public class RegistrarClienteDTO {
     private String dni;
     private String fechaNacimiento;
     private String telefono;
+    private String biografia;
+    private String fotoPerfil;
 
     // TABLA USUARIO
     private String correo;

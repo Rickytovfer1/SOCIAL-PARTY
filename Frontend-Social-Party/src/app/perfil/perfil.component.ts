@@ -10,6 +10,10 @@ import { DecodedToken } from "../modelos/DecodedToken";
 import { TokenDataDTO } from "../modelos/TokenDataDTO";
 import { UsuarioService } from "../servicios/usuario.service";
 import { Usuario } from "../modelos/Usuario";
+import {ClienteService} from "../servicios/cliente.service";
+import {RegistroCliente} from "../modelos/RegistroCliente";
+import {ActualizarCliente} from "../modelos/ActualizarCliente";
+import {FormsModule} from "@angular/forms";
 
 @Component({
     selector: 'app-perfil',
@@ -20,6 +24,7 @@ import { Usuario } from "../modelos/Usuario";
         IonicModule,
         NavSuperiorComponent,
         NavInferiorComponent,
+        FormsModule,
     ]
 })
 export class PerfilComponent implements OnInit {
@@ -27,11 +32,27 @@ export class PerfilComponent implements OnInit {
     usuario: Usuario = {} as Usuario;
     perfil: Perfil = {} as Perfil;
     correo?: string;
+    editar: boolean = false;
+
+
+    registro: ActualizarCliente = {
+        id: this.perfil.id,
+        nombre: "",
+        apellidos: "",
+        dni: "",
+        fechaNacimiento: "",
+        telefono: "",
+        correo: "",
+        fotoPerfil: "",
+        biografia: "",
+        contrasena: "123456",
+    }
 
     constructor(
         private perfilService: PerfilServicio,
         private activateRoute: ActivatedRoute,
-        private usuarioService: UsuarioService
+        private usuarioService: UsuarioService,
+        private clienteService:ClienteService
     ) {}
 
     ngOnInit() {
@@ -90,4 +111,25 @@ export class PerfilComponent implements OnInit {
             }
         });
     }
+
+    actualizarCliente(): void {
+        this.clienteService.actualizar(this.registro).subscribe({
+            next: (registro) => {
+                console.log('Usuario actualizado:');
+                this.editar = false;
+            },
+            error: (e) => {
+                console.error("Error al cargar el usuario:", e);
+            }
+        });
+    }
+
+    editarBoton(): void {
+        if (this.editar) {
+            this.actualizarCliente();
+        } else {
+            this.editar = true;
+        }
+    }
+
 }
