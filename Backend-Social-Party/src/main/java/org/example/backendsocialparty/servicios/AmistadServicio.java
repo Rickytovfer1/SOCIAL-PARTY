@@ -31,17 +31,23 @@ public class AmistadServicio {
             throw new RuntimeException("No existe un cliente con este ID.");
         }
 
-        Cliente cliente = clienteRepositorio.findById(idUsuario).get();
-
+        List<Amistad> amistades = amistadRepositorio.findAllByUserId(idUsuario);
         List<ClienteDTO> clientesDTOs = new ArrayList<>();
-        for (Amistad a : cliente.getAmistades()) {
-            Cliente c = clienteRepositorio.findById(a.getAmigo().getId()).get();
-            ClienteDTO dto = clienteServicio.getClienteDTO(c);
-            clientesDTOs.add(dto);
+
+        for (Amistad a : amistades) {
+            Cliente amigo;
+            if (a.getUsuario().getId().equals(idUsuario)) {
+                amigo = a.getAmigo();
+            } else {
+                amigo = a.getUsuario();
+            }
+            ClienteDTO dto = clienteServicio.getClienteDTO(amigo);
+            if (!clientesDTOs.contains(dto)) {
+                clientesDTOs.add(dto);
+            }
         }
 
         return clientesDTOs;
-
     }
 
     public Amistad aceptarSolicitud(Integer idUsuario, Integer idUsuario2){
