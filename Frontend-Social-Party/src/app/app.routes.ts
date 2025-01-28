@@ -38,5 +38,12 @@ export const routes: Routes = [
         path: 'crear-publicacion',
         loadComponent: () => import('./crear-publicacion/crear-publicacion.component').then((m) => m.CrearPublicacionComponent)
     },
-
+    {
+        path: 'crear-publicacion-empresa',
+        loadComponent: () => import('./crear-publicacion-empresa/crear-publicacion-empresa.component').then((m) => m.CrearPublicacionEmpresaComponent)
+    },
+    {
+        path: 'crear-evento-empresa',
+        loadComponent: () => import('./crear-evento-empresa/crear-evento-empresa.component').then((m) => m.CrearEventoEmpresaComponent)
+    },
 ];
