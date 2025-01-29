@@ -74,4 +74,16 @@ export const routes: Routes = [
         path: 'chat',
         loadComponent: () => import('./chat/chat.component').then((m) => m.ChatComponent)
     },
+    {
+        path: 'asistentes-evento-empresa',
+        loadComponent: () => import('./asistentes-evento-empresa/asistentes-evento-empresa.component').then((m) => m.AsistentesEventoEmpresaComponent)
+    },
+    {
+        path: 'perfil-empresa',
+        loadComponent: () => import('./perfil-empresa/perfil-empresa.component').then((m) => m.PerfilEmpresaComponent)
+    },
+    {
+        path: 'canjear-entrada-empresa',
+        loadComponent: () => import('./canjear-entrada-empresa/canjear-entrada-empresa.component').then((m) => m.CanjearEntradaEmpresaComponent)
+    },
 ];

@@ -63,6 +63,7 @@ public class EmpresaServicio {
         dtonuevo.setDireccion(e.getDireccion());
         dtonuevo.setCp(e.getCodigoPostal());
         dtonuevo.setNif(e.getNif());
+        dtonuevo.setFotoPerfil(e.getFotoPerfil());
         dtonuevo.setTelefono(e.getTelefono());
         dtonuevo.setValoracionMinima(e.getValoracionMinima());
 
@@ -90,4 +91,8 @@ public class EmpresaServicio {
         empresaRepositorio.delete(empresa);
     }
 
+    public EmpresaDTO verPerfilEmpresa(Integer idUsuario){
+        Empresa empresa = empresaRepositorio.findByUsuario_Id(idUsuario);
+        return getEmpresaDTO(empresa);
+    }
 }
