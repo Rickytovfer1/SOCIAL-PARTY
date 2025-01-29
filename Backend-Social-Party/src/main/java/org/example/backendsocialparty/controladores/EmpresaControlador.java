@@ -4,14 +4,12 @@ import lombok.AllArgsConstructor;
 import org.example.backendsocialparty.DTOs.ClienteDTO;
 import org.example.backendsocialparty.DTOs.EmpresaDTO;
 import org.example.backendsocialparty.DTOs.RestarPuntoDTO;
-import org.example.backendsocialparty.modelos.Usuario;
 import org.example.backendsocialparty.servicios.ClienteServicio;
 import org.example.backendsocialparty.servicios.EmpresaServicio;
-import org.example.backendsocialparty.servicios.UsuarioServicio;
 import org.springframework.web.bind.annotation.*;
-
+import org.example.backendsocialparty.servicios.UsuarioServicio;
 import java.util.List;
-
+import org.example.backendsocialparty.modelos.Usuario;
 @RestController
 @RequestMapping()
 @AllArgsConstructor
@@ -20,7 +18,9 @@ public class EmpresaControlador {
     private ClienteServicio clienteServicio;
 
     private EmpresaServicio empresaServicio;
+
     private UsuarioServicio usuarioServicio;
+
     @GetMapping("/empresa/buscar/{id}")
     public ClienteDTO buscarClienteId(@PathVariable Integer id) {
         return clienteServicio.buscarClienteId(id);
@@ -31,6 +31,15 @@ public class EmpresaControlador {
         return empresaServicio.listarEmpresas();
     }
 
+    @GetMapping("/empresa/perfil/{idUsuario}")
+    public EmpresaDTO verPerfil(@PathVariable Integer idUsuario){
+        return empresaServicio.verPerfilEmpresa(idUsuario);
+    }
+
+    @GetMapping("/empresa/ver/perfil/{correo}")
+    public Usuario verUsuario(@PathVariable String correo){
+        return (Usuario) usuarioServicio.loadUserByUsername(correo);
+    }
     @PostMapping("/empresa/restar/puntos")
     public void restarPuntos(@RequestBody RestarPuntoDTO dto){
         empresaServicio.restarPuntosCliente(dto);
@@ -45,7 +54,6 @@ public class EmpresaControlador {
     public void eliminarCliente(@PathVariable Integer idCliente){
         clienteServicio.eliminarCliente(idCliente);
     }
-
     @GetMapping("/empresa/ver/empresa/{correo}")
     public Usuario verUsuario(@PathVariable String correo){
         return (Usuario) usuarioServicio.loadUserByUsername(correo);

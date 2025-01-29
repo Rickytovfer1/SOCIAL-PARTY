@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {IonicModule} from "@ionic/angular";
 import {NavInferiorComponent} from "../nav-inferior/nav-inferior.component";
 import {NavSuperiorComponent} from "../nav-superior/nav-superior.component";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'app-asistentes-evento',
@@ -16,8 +17,11 @@ import {NavSuperiorComponent} from "../nav-superior/nav-superior.component";
 })
 export class AsistentesEventoComponent  implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {}
 
+  verPerfil() {
+      this.router.navigate(["/perfil-asistente"])
+  }
 }

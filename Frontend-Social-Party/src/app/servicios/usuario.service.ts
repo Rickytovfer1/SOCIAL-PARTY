@@ -6,6 +6,7 @@ import {Observable} from "rxjs";
 import {Perfil} from "../modelos/Perfil";
 import {Usuario} from "../modelos/Usuario";
 import {EmpresaDTO} from "./empresa.service";
+import {PerfilEmpresa} from "../modelos/PerfilEmpresa";
 
 @Injectable({
   providedIn: 'root'
@@ -21,9 +22,8 @@ export class UsuarioService {
         const options = this.comunService.autorizarPeticion();
         return this.http.get<Perfil>(`${this.apiUrl}/cliente/ver/usuario/${correo}`, options);
     }
-    getUsuarioEmpresa(correo: string): Observable<EmpresaDTO> {
+    getUsuarioEmpresa(correo: string): Observable<Usuario> {
         const options = this.comunService.autorizarPeticion();
-        return this.http.get<EmpresaDTO>(`${this.apiUrl}/empresa/ver/empresa/${correo}`, options);
+        return this.http.get<PerfilEmpresa>(`${this.apiUrl}/empresa/ver/perfil/${correo}`, options);
     }
-
 }

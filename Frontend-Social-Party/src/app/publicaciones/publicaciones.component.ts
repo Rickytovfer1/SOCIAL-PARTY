@@ -63,4 +63,12 @@ export class PublicacionesComponent implements OnInit {
             return `${this.baseUrl}${publicacion.foto}`;
         }
     }
+
+    verPublicacion() {
+        this.router.navigate(["/ver-noticia"]);
+    }
+
+    ionViewWillEnter() {
+        this.ngOnInit();
+    }
 }

@@ -42,6 +42,9 @@ public class Empresa {
     @Column(name = "edad_minima", nullable = false)
     private Integer edadMinima;
 
+    @Column(name = "fotoPerfil")
+    private String fotoPerfil;
+
     @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL, orphanRemoval = true)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude

@@ -31,4 +31,8 @@ public class ClienteControlador {
         return (Usuario) usuarioServicio.loadUserByUsername(correo);
     }
 
+    @GetMapping("/ver/perfil/{idUsuario}")
+    public ClienteDTO buscarClienteUsuarioId(@PathVariable Integer idUsuario){
+        return clienteServicio.busccarClienteUsuarioID(idUsuario);
+    }
 }

@@ -1,0 +1,66 @@
+<app-nav-superior-empresa></app-nav-superior-empresa>
+
+<ion-content class="fondo">
+
+    <ion-grid id="grid_principal">
+        <ion-row id="fila_icono">
+            <ion-col size-lg="4" size-xl="4" size-md="4" size-sm="6" size-xs="8" id="col_icono">
+                <ion-img id="icono" src="assets/iconoUsuario.png" alt="Icono"></ion-img>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+    <ion-grid id="grid_secundario">
+        <ion-row>
+            <ion-col size-lg="4" size-xl="4" size-md="6" size-sm="8" size-xs="10" id="col_principal">
+                <ion-grid>
+
+                    <ion-row>
+                        <ion-label>Nombre:</ion-label>
+                        <ion-input type="text"  placeholder="{{perfilEmpresa.nombre}}" [readonly]="!editar"></ion-input>
+                    </ion-row>
+                    <ion-row>
+                        <ion-label>Dirección:</ion-label>
+                        <ion-input type="text"  placeholder="{{perfilEmpresa.direccion}}" [readonly]="!editar"></ion-input>
+                    </ion-row>
+                    <ion-row>
+                        <ion-label>Codigo postal:</ion-label>
+                        <ion-input type="text" readonly placeholder="{{perfilEmpresa.cp}}" [readonly]="!editar"></ion-input>
+                    </ion-row>
+                    <ion-row>
+                        <ion-label>Correo electrónico:</ion-label>
+                        <ion-input type="email" placeholder="{{usuario.correo}}" [readonly]="!editar"></ion-input>
+                    </ion-row>
+                    <ion-row>
+                        <ion-label>Número de teléfono:</ion-label>
+                        <ion-input type="phone" placeholder="{{perfilEmpresa.telefono}}" [readonly]="!editar"></ion-input>
+                    </ion-row>
+                    <ion-row>
+                        <ion-label>NIF:</ion-label>
+                        <ion-input type="text" placeholder="{{perfilEmpresa.nif}}" [readonly]="!editar"></ion-input>
+                    </ion-row>
+                    <ion-row>
+                        <ion-label>Foto perfil:</ion-label>
+                        <ion-input type="text" placeholder="{{perfilEmpresa.fotoPerfil}}" [readonly]="!editar"></ion-input>
+                    </ion-row>
+                    <ion-row>
+                        <ion-label>Edad mínima:</ion-label>
+                        <ion-range min="16" value="{{perfilEmpresa.edadMinima}}" pin="true" [disabled]="!editar"></ion-range>
+                    </ion-row>
+                    <ion-row>
+                        <ion-label>Valoración mínima:</ion-label>
+                        <ion-range min="16" value="{{perfilEmpresa.valoracionMinima}}" pin="true" [disabled]="!editar"></ion-range>
+                    </ion-row>
+                    <ion-row>
+                    <ion-button (click)="editarBoton()" >{{ editar ? 'Guardar' : 'Editar' }}</ion-button>
+                    </ion-row>
+                </ion-grid>
+
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+</ion-content>
+
+<app-nav-inferior-empresa></app-nav-inferior-empresa>
+

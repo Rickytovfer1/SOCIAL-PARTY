@@ -5,6 +5,8 @@ import {Router} from "@angular/router";
 import {Login} from "../modelos/Login";
 import {LoginService} from "../servicios/login.service";
 import {HttpClient, HttpHandler} from "@angular/common/http";
+import {jwtDecode} from "jwt-decode";
+import {TokenDataDTO} from "../modelos/TokenDataDTO";
 
 @Component({
   selector: 'app-login',
@@ -28,29 +30,45 @@ export class LoginComponent  implements OnInit {
 
   ngOnInit() {}
 
-  doLogin(): void {
+    doLogin(): void {
+        if (!this.login.correo || !this.login.contrasena) {
+            const toast = document.getElementById("toastCampos") as any;
+            toast.present();
+            return;
+        }
 
-    if (this.login.correo || this.login.contrasena) {
-      this.loginService.loguear(this.login).subscribe({
-        next: (respuesta) => {
-          const token = respuesta.token;
-          sessionStorage.setItem("authToken", token);
+        this.loginService.loguear(this.login).subscribe({
+            next: (respuesta) => {
+                const token = respuesta.token;
+                sessionStorage.setItem("authToken", token);
+                this.loginService.setAuthState(true);
 
-          this.loginService.setAuthState(true);
+                try {
+                    const decodedToken = jwtDecode(token) as { tokenDataDTO: TokenDataDTO };
+                    console.log('Decoded Token:', decodedToken);
 
-        },
-        error: (e) => console.error(e),
-        complete: () => this.router.navigate(['/amigos'])
-      })
+                    const rol = decodedToken?.tokenDataDTO.rol;
 
+                    if (rol == "CLIENTE") {
+                        this.router.navigate(['/amigos']);
+                    }else if (rol === "EMPRESA") {
+                        this.router.navigate(['/asistentes-evento-empresa']);
+                    }
+                } catch (e) {
+                    console.error('Error al decodificar el token:', e);
+                }
+            },
+            error: (e) => {
+                console.error(e);
+                const toast = document.getElementById("toastContrasenaIncorrecta") as any;
+                toast.present();
 
-    } else {
-      console.log('Formulario inválido. Por favor verifica los datos.');
+            }
+        });
     }
 
-  }
 
-  goLogin() {
+    goLogin() {
     this.doLogin()
   }
 

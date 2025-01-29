@@ -1,0 +1,149 @@
+.fondo {
+    --background: #D3E5E5;
+}
+
+#icono {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+}
+
+ion-button {
+    color: #000000;
+    --border-radius: 25px;
+    --background: #306DA9;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    height: 50px;
+    margin: 0 auto;
+}
+
+ion-input {
+    --padding-start: 10px;
+    --background: #ffffff;
+    --border-radius: 15px;
+    margin: 15px 0 30px;
+}
+
+.end-column {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+#estrellaicono {
+    width: 20px;
+    height: 20px;
+}
+
+#num_estrellas {
+    color: #F0FF00;
+    font-size: 20px;
+    margin-left: 2px;
+}
+
+.cartaBaja {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-width: 200px;
+    margin: 0 auto;
+}
+
+#col1 {
+    margin-left: -20px;
+}
+
+#col2 {
+    margin-left: 8px;
+    padding-top: 15px;
+    font-size: 20px;
+}
+
+#col3 {
+    margin-right: -20px;
+}
+
+#iconoPlus, #iconoClose, #iconoPersonaAdd {
+    width: 40px;
+}
+
+#iconoClose {
+    width: 50px;
+}
+
+#iconoPersonaAdd {
+    margin-right: 30px;
+}
+
+#biografia {
+    margin-left: 40px;
+}
+
+@media (min-width: 768px) {
+    #cartaouter {
+        margin: 0 auto;
+        margin-top: 20px;
+    }
+
+    #biografia {
+        margin-left: 110px;
+    }
+}
+
+@media (max-width: 767px) {
+    #cartaouter {
+        margin: 35px;
+    }
+
+    .cartaBaja {
+        margin-left: -20px;
+    }
+}
+
+.card-outer {
+    --background: #471FCD;
+    margin: 5px auto;
+    padding: 5px;
+    margin-top: 50px;
+    border-radius: 25px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.8);
+    border: 2px solid #000000;
+}
+
+.card-middle {
+    --background: #ffffff;
+    margin: 5px 15px;
+    padding: 5px;
+    border-radius: 25px;
+    border: 2px solid #000000;
+}
+
+.card-inner {
+    --background: #306DA9;
+    margin: 20px 10px;
+    padding: 5px;
+    border-radius: 20px;
+    border: 2px solid #000000;
+}
+
+ion-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+ion-card {
+    max-width: 400px;
+    --background: #471FCD;
+    margin: 5px;
+}
+
+ion-label {
+    color: #ffffff;
+}

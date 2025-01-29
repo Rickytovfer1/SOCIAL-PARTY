@@ -5,7 +5,7 @@
     <ion-grid id="grid_principal">
         <ion-row id="fila_icono">
             <ion-col size-lg="4" size-xl="4" size-md="4" size-sm="6" size-xs="8" id="col_icono">
-                <ion-img id="icono" src="assets/iconoMas.png" alt="Icono"></ion-img>
+                <ion-img id="icono" src="assets/iconoUsuario.png" alt="Icono"></ion-img>
             </ion-col>
         </ion-row>
     </ion-grid>
@@ -26,6 +26,10 @@
                     <ion-row>
                         <ion-label>Correo electrónico:</ion-label>
                         <ion-input type="email" [(ngModel)]="registro.correo" placeholder="{{usuario.correo}}" [readonly]="!editar"></ion-input>
+                    </ion-row>
+                    <ion-row>
+                        <ion-label>Número de teléfono:</ion-label>
+                        <ion-input type="phone" [(ngModel)]="registro.telefono" placeholder="{{perfil.telefono}}" [readonly]="!editar"></ion-input>
                     </ion-row>
                     <ion-row>
                         <ion-label>DNI:</ion-label>

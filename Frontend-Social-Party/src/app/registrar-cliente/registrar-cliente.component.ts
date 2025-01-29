@@ -32,17 +32,31 @@ export class RegistrarClienteComponent  implements OnInit {
   ngOnInit() {}
 
   doRegister() {
-    if (this.registro) {
 
+      const repetirContrasena = (document.querySelector('ion-input[placeholder="Por favor, repita la contaseña"]') as HTMLInputElement)?.value;
+
+      if (
+          !this.registro.nombre ||
+          !this.registro.apellidos ||
+          !this.registro.correo ||
+          !this.registro.dni ||
+          !this.registro.contrasena ||
+          !this.registro.fechaNacimiento ||
+          !this.registro.telefono) {
+          const toast = document.getElementById("toastCampos") as any;
+          toast.present();
+          return;
+      }
+      if (this.registro.contrasena !== repetirContrasena) {
+          const toast = document.getElementById("toastContrasena") as any;
+          toast.present();
+          return;
+      }
       this.registroClienteService.registrar(this.registro).subscribe({
         next: (respuesta) => console.info("registro exitoso"),
         error: (e) => console.error(e),
         complete: () => this.router.navigate(['/login'])
       })
-
-    } else {
-      console.log('Formulario inválido. Por favor verifica los datos.');
-    }
   }
 
   goRegister() {

@@ -37,9 +37,9 @@ export class VerEmpresasComponent implements OnInit {
         });
     }
 
-    verEventosEmpresa(id: number) {
-        this.router.navigate(['/ver-eventos', id]);
-    }
+    // verEventosEmpresa(id: number) {
+    //     this.router.navigate(['/ver-eventos', id]);
+    // }
 
     onSearchChange(event: any) {
         const val = event.target.value.toLowerCase();
@@ -51,5 +51,10 @@ export class VerEmpresasComponent implements OnInit {
         } else {
             this.empresasFiltradas = this.empresas;
         }
+    }
+
+    //Función provisional hasta que se le aplique lógica a "ver-eventos"
+    verEventos() {
+        this.router.navigate(['/ver-eventos']);
     }
 }

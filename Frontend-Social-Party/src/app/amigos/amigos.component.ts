@@ -10,6 +10,7 @@ import { ClienteDTO } from "../modelos/ClienteDTO";
 import { jwtDecode } from "jwt-decode";
 import { DecodedToken } from "../modelos/DecodedToken";
 import { TokenDataDTO } from "../modelos/TokenDataDTO";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'app-amigos',
@@ -31,7 +32,8 @@ export class AmigosComponent implements OnInit {
 
     constructor(
         private usuarioService: UsuarioService,
-        private amigoService: AmigoService
+        private amigoService: AmigoService,
+        private router: Router,
     ) {}
 
     ngOnInit() {
@@ -89,5 +91,9 @@ export class AmigosComponent implements OnInit {
                 console.error("Error al cargar los amigos:", e);
             }
         });
+    }
+
+    abrirChat() {
+        this.router.navigate(["/chat"])
     }
 }

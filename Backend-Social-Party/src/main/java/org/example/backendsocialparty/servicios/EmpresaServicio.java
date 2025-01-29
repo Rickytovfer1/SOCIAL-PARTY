@@ -36,6 +36,7 @@ public class EmpresaServicio {
     private EventoServicio eventoServicio;
 
     private EntradaServicio entradaServicio;
+
     public List<EmpresaDTO> listarEmpresas() {
         List<Empresa> empresas = empresaRepositorio.findAll();
         List<EmpresaDTO> empresasDTO = new ArrayList<>();
@@ -63,6 +64,7 @@ public class EmpresaServicio {
         dtonuevo.setDireccion(e.getDireccion());
         dtonuevo.setCp(e.getCodigoPostal());
         dtonuevo.setNif(e.getNif());
+        dtonuevo.setFotoPerfil(e.getFotoPerfil());
         dtonuevo.setTelefono(e.getTelefono());
         dtonuevo.setValoracionMinima(e.getValoracionMinima());
 
@@ -89,8 +91,10 @@ public class EmpresaServicio {
         publicacionServicio.eliminarPublicacion(id);
         empresaRepositorio.delete(empresa);
     }
-
-
+    public EmpresaDTO verPerfilEmpresa(Integer idUsuario){
+        Empresa empresa = empresaRepositorio.findByUsuario_Id(idUsuario);
+        return getEmpresaDTO(empresa);
+    }
     public EmpresaDTO buscarEmpresaPorCorreo(String correo) {
         Empresa empresa = empresaRepositorio.findByUsuarioCorreo(correo)
                 .orElseThrow(() -> new RuntimeException("Empresa no encontrada con correo: " + correo));
@@ -108,5 +112,4 @@ public class EmpresaServicio {
                 empresa.getUsuario().getId()
         );
     }
-
 }

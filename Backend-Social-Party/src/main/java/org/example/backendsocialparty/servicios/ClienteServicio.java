@@ -51,6 +51,11 @@ public class ClienteServicio {
         return getClienteDTO(cliente);
     }
 
+    public ClienteDTO busccarClienteUsuarioID(Integer idUsuario){
+        Cliente cliente = clienteRepositorio.findByUsuario_Id(idUsuario);
+        return getClienteDTO(cliente);
+    }
+
     public static ClienteDTO getClienteDTO(Cliente c) {
         ClienteDTO dtonuevo = new ClienteDTO();
         dtonuevo.setId(c.getId());
