@@ -50,11 +50,11 @@
             </ion-row>
             <ion-row>
               <ion-label>Valoración mínima: </ion-label>
-              <ion-range [(ngModel)]="registro.valoracionMinima" min="0" max="100" value="100" step="10" pin="true"></ion-range>
+              <ion-range [(ngModel)]="registro.valoracionMinima" min="0" max="100" value="100" step="5" pin="true"></ion-range>
             </ion-row>
             <ion-row>
               <ion-label>Edad mínima: </ion-label>
-              <ion-range [(ngModel)]="registro.edadMinima" min="3" value="18" pin="true"></ion-range>
+              <ion-range [(ngModel)]="registro.edadMinima" min="16" value="18" pin="true"></ion-range>
             </ion-row>
             <ion-row>
               <ion-button (click)="goRegister()">Registrar</ion-button>
@@ -67,3 +67,18 @@
 
 </ion-content>
 
+<ion-toast
+    id="toastCampos"
+    message="Por favor, complete todos los campos obligatorios."
+    duration="3000"
+    position="top"
+    color="danger"
+></ion-toast>
+
+<ion-toast
+    id="toastContrasena"
+    message="Las contraseñas no coinciden. Inténtelo de nuevo."
+    duration="3000"
+    position="top"
+    color="warning"
+></ion-toast>

@@ -23,7 +23,7 @@ export class RegistrarEmpresaComponent  implements OnInit {
     codigoPostal: "",
     nif: "",
     telefono: "",
-    valoracionMinima: 0,
+    valoracionMinima: 50,
     edadMinima: 18,
     correo: "",
     contrasena: ""
@@ -33,21 +33,41 @@ export class RegistrarEmpresaComponent  implements OnInit {
 
   ngOnInit() {}
 
-  doRegister() {
-    if (this.registro) {
+    doRegister() {
+        const repetirContrasena = (document.querySelector('ion-input[placeholder="Por favor, repita la contaseña"]') as HTMLInputElement)?.value;
 
-      this.registroEmpresaService.registrar(this.registro).subscribe({
-        next: (respuesta) => console.info("registro exitoso"),
-        error: (e) => console.error(e),
-        complete: () => this.router.navigate(['/login'])
-      })
+        if (
+            !this.registro.nombre ||
+            !this.registro.direccion ||
+            !this.registro.codigoPostal ||
+            !this.registro.nif ||
+            !this.registro.telefono ||
+            !this.registro.correo ||
+            !this.registro.contrasena
+        ) {
+            const toast = document.getElementById("toastCampos") as any;
+            toast.present();
+            return;
+        }
 
-    } else {
-      console.log('Formulario inválido. Por favor verifica los datos.');
+        if (this.registro.contrasena !== repetirContrasena) {
+            const toast = document.getElementById("toastContrasena") as any;
+            toast.present();
+            return;
+        }
+
+        this.registroEmpresaService.registrar(this.registro).subscribe({
+            next: () => {
+                console.info("Registro exitoso");
+                this.router.navigate(['/login']);
+            },
+            error: (e) => console.error(e),
+        });
     }
-  }
 
-  goRegister() {
+
+
+    goRegister() {
     this.doRegister()
   }
 
