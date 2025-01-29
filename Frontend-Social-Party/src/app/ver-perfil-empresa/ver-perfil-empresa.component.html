@@ -1,0 +1,62 @@
+<app-nav-superior></app-nav-superior>
+
+<ion-content class="fondo">
+
+    <ion-card id="cartaouter" class="card-outer">
+
+        <ion-card class="card-middle">
+            <ion-card class="card-inner" id="inner1">
+                <ion-card-content>
+                    <ion-grid>
+                        <ion-row>
+                            <ion-col id="col1">
+                                <ion-img id="icono" src="assets/img.png" alt="Icono"></ion-img>
+                            </ion-col>
+                            <ion-col id="col2">
+                                <ion-label>Lucia</ion-label>
+                            </ion-col>
+                            <ion-col class="end-column" id="col3">
+                                <ion-img id="estrellaicono" src="assets/estrella.png" alt="Estrella Party Logo"/>
+                                <ion-text id="num_estrellas" class="star-points">100</ion-text>
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
+                </ion-card-content>
+            </ion-card>
+
+
+            <ion-card class="card-inner" id="inner2">
+                <ion-card-content>
+                    <ion-grid>
+                        <ion-row class="cartaBaja">
+                            <ion-button aria-label="Favorite">
+                                <ion-img id="iconoPlus" src="assets/iconoPlus.png"/>
+                                <ion-label>Sumar puntos</ion-label>
+                            </ion-button>
+                        </ion-row>
+
+                        <ion-row class="cartaBaja">
+                            <ion-button aria-label="Favorite">
+                                <ion-img id="iconoClose" src="assets/iconoClose.png"/>
+                                <ion-label>Canjear Entradas</ion-label>
+                            </ion-button>
+                        </ion-row>
+
+                        <ion-row class="cartaBaja">
+                            <ion-button aria-label="Favorite">
+                                <ion-img id="iconoPersonaAdd" src="assets/iconoPersonaAdd.png"/>
+                                <ion-label>Banear</ion-label>
+                            </ion-button>
+                        </ion-row>
+
+                    </ion-grid>
+                    <ion-label id="biografia">BIOGRAFIA</ion-label>
+                </ion-card-content>
+            </ion-card>
+
+        </ion-card>
+    </ion-card>
+
+</ion-content>
+
+<app-nav-inferior></app-nav-inferior>
