@@ -7,14 +7,14 @@
             <ion-card class="card-inner">
                 <ion-card-header>
                     <ion-label>Escribe tu texto:</ion-label>
-                    <ion-input type="text" placeholder="Escribe tu texto"></ion-input>
+                    <ion-textarea [(ngModel)]="texto" placeholder="Escribe tu texto"></ion-textarea>
                 </ion-card-header>
 
                 <ion-card-content>
                     <ion-label>Sube tu foto:</ion-label>
-                    <ion-input type="text" placeholder="Sube tu foto"></ion-input>
+                    <input type="file" (change)="seleccionarFoto($event)" accept="image/*" />
                 </ion-card-content>
-                <ion-button>Publicar</ion-button>
+                <ion-button (click)="publicar()">Publicar</ion-button>
             </ion-card>
         </ion-card>
     </ion-card>

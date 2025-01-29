@@ -1,37 +1,44 @@
 package org.example.backendsocialparty.servicios;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.example.backendsocialparty.DTOs.ClientePublicacionDTO;
 import org.example.backendsocialparty.DTOs.MostrarPublicacionDTO;
 import org.example.backendsocialparty.DTOs.PublicacionDTO;
 import org.example.backendsocialparty.enumerados.Rol;
-import org.example.backendsocialparty.modelos.*;
+import org.example.backendsocialparty.modelos.Cliente;
+import org.example.backendsocialparty.modelos.Empresa;
+import org.example.backendsocialparty.modelos.Publicacion;
+import org.example.backendsocialparty.modelos.Usuario;
 import org.example.backendsocialparty.repositorios.ClienteRepositorio;
 import org.example.backendsocialparty.repositorios.EmpresaRepositorio;
 import org.example.backendsocialparty.repositorios.PublicacionRepositorio;
 import org.example.backendsocialparty.repositorios.UsuarioRepositorio;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class PublicacionServicio {
 
-    private PublicacionRepositorio publicacionRepositorio;
+    private final PublicacionRepositorio publicacionRepositorio;
+    private final UsuarioRepositorio usuarioRepositorio;
+    private final ClienteRepositorio clienteRepositorio;
+    private final EmpresaRepositorio empresaRepositorio;
 
-    private UsuarioRepositorio usuarioRepositorio;
+    @Value("${upload.dir}")
+    private String uploadDir;
 
-    private ClienteRepositorio clienteRepositorio;
-
-    private EmpresaRepositorio empresaRepositorio;
-
-    public void guardarPublicacion(PublicacionDTO dto) {
-
+    public void guardarPublicacion(PublicacionDTO dto, MultipartFile foto) {
         if (dto.getIdUsuario() == null) {
             throw new IllegalArgumentException("El ID de usuario no puede ser nulo");
         }
@@ -41,17 +48,20 @@ public class PublicacionServicio {
         publicacion.setTitulo(dto.getTitulo());
         publicacion.setHora(LocalTime.now());
         publicacion.setFecha(LocalDate.now());
-        publicacion.setFoto(dto.getFoto());
+
+        String fotoUrl = guardarImagen(foto);
+        publicacion.setFoto(fotoUrl);
+
         publicacion.setDireccion(dto.getDireccion());
 
-        Usuario usuario = usuarioRepositorio.findById(dto.getIdUsuario()).orElse(null);
-        publicacion.setUsuario(usuario);
+        Usuario usuario = usuarioRepositorio.findById(dto.getIdUsuario())
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
+        publicacion.setUsuario(usuario);
         publicacionRepositorio.save(publicacion);
     }
 
-    public void guardarPublicacionCliente(ClientePublicacionDTO dto) {
-
+    public void guardarPublicacionCliente(ClientePublicacionDTO dto, MultipartFile foto) {
         if (dto.getIdUsuario() == null) {
             throw new IllegalArgumentException("El ID de usuario no puede ser nulo");
         }
@@ -60,39 +70,63 @@ public class PublicacionServicio {
         publicacion.setTexto(dto.getTexto());
         publicacion.setHora(LocalTime.now());
         publicacion.setFecha(LocalDate.now());
-        publicacion.setFoto(dto.getFoto());
 
-        Usuario usuario = usuarioRepositorio.findById(dto.getIdUsuario()).orElse(null);
+        String fotoUrl = guardarImagen(foto);
+        publicacion.setFoto(fotoUrl);
+
+        Usuario usuario = usuarioRepositorio.findById(dto.getIdUsuario())
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
         publicacion.setUsuario(usuario);
-
         publicacionRepositorio.save(publicacion);
     }
 
-    public List<MostrarPublicacionDTO> mostrarPublicaciones() {
+    private String guardarImagen(MultipartFile foto) {
+        if (foto.isEmpty()) {
+            return null;
+        }
 
+        String extension = getFileExtension(foto.getOriginalFilename());
+        String filename = UUID.randomUUID().toString() + "." + extension;
+        Path path = Paths.get(uploadDir, filename);
+        try {
+            Files.createDirectories(path.getParent());
+            Files.copy(foto.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+            return "/uploads/" + filename;
+        } catch (IOException e) {
+            throw new RuntimeException("Error al guardar la imagen", e);
+        }
+    }
+
+    private String getFileExtension(String filename) {
+        if (filename == null) {
+            return "";
+        }
+        int lastIndex = filename.lastIndexOf(".");
+        return (lastIndex == -1) ? "" : filename.substring(lastIndex + 1);
+    }
+
+    public List<MostrarPublicacionDTO> mostrarPublicaciones() {
         List<Publicacion> publicaciones = publicacionRepositorio.findAll();
         List<MostrarPublicacionDTO> publicacionDTO = new ArrayList<>();
 
         for (Publicacion publicacion : publicaciones) {
-            publicacionDTO.add(getEventoDTO(publicacion));
+            publicacionDTO.add(getPublicacionDTO(publicacion));
         }
 
         return publicacionDTO;
-
     }
 
-    private static MostrarPublicacionDTO getEventoDTO(Publicacion p) {
+    private static MostrarPublicacionDTO getPublicacionDTO(Publicacion p) {
         MostrarPublicacionDTO publicacionDTO = new MostrarPublicacionDTO();
-
         publicacionDTO.setId(p.getId());
         publicacionDTO.setTexto(p.getTexto());
         publicacionDTO.setHora(p.getHora());
         publicacionDTO.setFecha(p.getFecha());
         publicacionDTO.setFoto(p.getFoto());
         publicacionDTO.setTitulo(p.getTitulo());
-        publicacionDTO.setDireccion(p.getFoto());
+        publicacionDTO.setDireccion(p.getDireccion()); // Corregido: anteriormente era p.getFoto()
         publicacionDTO.setIdUsuario(p.getUsuario().getId());
-
         return publicacionDTO;
     }
 
@@ -107,7 +141,6 @@ public class PublicacionServicio {
 
                 if (Objects.equals(cliente.getUsuario().getId(), publicacion.getUsuario().getId())){
                     publicacionRepositorio.deleteAll(publicaciones);
-
                 }
             }
             if (publicacion.getUsuario().getRol() == Rol.EMPRESA){
@@ -117,9 +150,6 @@ public class PublicacionServicio {
                     publicacionRepositorio.deleteAll(publicaciones);
                 }
             }
-
         }
     }
-
-
 }
