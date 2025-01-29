@@ -4,9 +4,10 @@ import lombok.AllArgsConstructor;
 import org.example.backendsocialparty.DTOs.ClientePublicacionDTO;
 import org.example.backendsocialparty.DTOs.MostrarPublicacionDTO;
 import org.example.backendsocialparty.DTOs.PublicacionDTO;
-import org.example.backendsocialparty.modelos.Publicacion;
 import org.example.backendsocialparty.servicios.PublicacionServicio;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -17,14 +18,16 @@ public class PublicacionControlador {
 
     private PublicacionServicio publicacionServicio;
 
-    @PostMapping("/cliente/crear/publicacion")
-    public void guardarPublicacionCliente(@RequestBody ClientePublicacionDTO dto) {
-        publicacionServicio.guardarPublicacionCliente(dto);
+    @PostMapping(value = "/cliente/crear/publicacion", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public void guardarPublicacionCliente(@ModelAttribute ClientePublicacionDTO dto,
+                                          @RequestParam("foto") MultipartFile foto) {
+        publicacionServicio.guardarPublicacionCliente(dto, foto);
     }
 
-    @PostMapping("/empresa/crear/publicacion")
-    public void guardarPublicacionEmpresa(@RequestBody PublicacionDTO dto) {
-        publicacionServicio.guardarPublicacion(dto);
+    @PostMapping(value = "/empresa/crear/publicacion", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public void guardarPublicacionEmpresa(@ModelAttribute PublicacionDTO dto,
+                                          @RequestParam("foto") MultipartFile foto) {
+        publicacionServicio.guardarPublicacion(dto, foto);
     }
 
     @GetMapping("/cliente/ver/publicaciones")
