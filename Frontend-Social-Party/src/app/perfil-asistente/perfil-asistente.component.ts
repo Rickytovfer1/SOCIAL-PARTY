@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {IonicModule} from "@ionic/angular";
 import {NavSuperiorComponent} from "../nav-superior/nav-superior.component";
 import {NgIf} from "@angular/common";
+import {NavInferiorComponent} from "../nav-inferior/nav-inferior.component";
 
 @Component({
     selector: 'app-perfil-asistente',
@@ -10,7 +11,8 @@ import {NgIf} from "@angular/common";
     standalone: true,
     imports: [
         IonicModule,
-        NavSuperiorComponent
+        NavSuperiorComponent,
+        NavInferiorComponent
     ]
 })
 export class PerfilAsistenteComponent  implements OnInit {

@@ -17,6 +17,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+import static org.aspectj.weaver.tools.cache.SimpleCacheFactory.path;
+
 @Component
 @AllArgsConstructor
 public class JWTFilter extends OncePerRequestFilter {
@@ -45,7 +47,10 @@ public class JWTFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-
+        if (path.startsWith("/uploads")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
         if(authHeader== null || !authHeader.startsWith("Bearer")){
             filterChain.doFilter(request,response);
             return;
@@ -67,6 +72,7 @@ public class JWTFilter extends OncePerRequestFilter {
             }
 
         }
+
 
         filterChain.doFilter(request, response);
     }

@@ -6,81 +6,23 @@
             <ion-img id="agregar" (click)="abrirForm()" src="assets/iconoMas.png"></ion-img>
         </ion-row>
         <ion-row>
-            <ion-col size-lg="4" size-xl="4" size-md="6" size-sm="10" size-xs="12">
-
+            <ion-searchbar placeholder="Buscar publicaciones" animated="true" [(ngModel)]="buscar" (ionInput)="onSearchChange($event)"></ion-searchbar>
+        </ion-row>
+        <ion-row>
+            <ion-col size-lg="4" size-xl="4" size-md="6" size-sm="10" size-xs="12" *ngFor="let publicacion of publicacionesFiltradas">
                 <ion-card>
                     <ion-grid>
                         <ion-row>
                             <ion-col size="5">
-                                <ion-img class="publicacion" src="https://ionicframework.com/docs/img/demos/card-media.png"></ion-img>
+                                <img [ngSrc]="getImageUrl(publicacion)" class="publicacion" alt="Foto Publicacion">
                             </ion-col>
                             <ion-col size="7">
                                 <ion-grid class="textos">
                                     <ion-row>
-                                        <ion-text class="nombre">Dj Totote la lía</ion-text>
+                                        <ion-text class="nombre">{{publicacion.titulo}}</ion-text>
                                     </ion-row>
                                     <ion-row>
-                                        <ion-text class="direccion">Rosso by Antique</ion-text>
-                                    </ion-row>
-                                </ion-grid>
-                            </ion-col>
-                        </ion-row>
-                    </ion-grid>
-                </ion-card>
-
-                <ion-card>
-                    <ion-grid>
-                        <ion-row>
-                            <ion-col size="5">
-                                <ion-img class="publicacion" src="https://ionicframework.com/docs/img/demos/card-media.png"></ion-img>
-                            </ion-col>
-                            <ion-col size="7">
-                                <ion-grid class="textos">
-                                    <ion-row>
-                                        <ion-text class="nombre">Dj Manolito pincha con una estrela ...</ion-text>
-                                    </ion-row>
-                                    <ion-row>
-                                        <ion-text class="direccion">Maffia The Club</ion-text>
-                                    </ion-row>
-                                </ion-grid>
-                            </ion-col>
-                        </ion-row>
-                    </ion-grid>
-                </ion-card>
-
-                <ion-card>
-                    <ion-grid>
-                        <ion-row>
-                            <ion-col size="5">
-                                <ion-img class="publicacion" src="https://ionicframework.com/docs/img/demos/card-media.png"></ion-img>
-                            </ion-col>
-                            <ion-col size="7">
-                                <ion-grid class="textos">
-                                    <ion-row>
-                                        <ion-text class="nombre">Título Noticia</ion-text>
-                                    </ion-row>
-                                    <ion-row>
-                                        <ion-text class="direccion">Rosso by Antique</ion-text>
-                                    </ion-row>
-                                </ion-grid>
-                            </ion-col>
-                        </ion-row>
-                    </ion-grid>
-                </ion-card>
-
-                <ion-card>
-                    <ion-grid>
-                        <ion-row>
-                            <ion-col size="5">
-                                <ion-img class="publicacion" src="https://ionicframework.com/docs/img/demos/card-media.png"></ion-img>
-                            </ion-col>
-                            <ion-col size="7">
-                                <ion-grid class="textos">
-                                    <ion-row>
-                                        <ion-text class="nombre">Título Noticia</ion-text>
-                                    </ion-row>
-                                    <ion-row>
-                                        <ion-text class="direccion">Maffia The Club</ion-text>
+                                        <ion-text class="direccion">{{publicacion.texto}}</ion-text>
                                     </ion-row>
                                 </ion-grid>
                             </ion-col>
@@ -90,8 +32,6 @@
             </ion-col>
         </ion-row>
     </ion-grid>
-
 </ion-content>
 
 <app-nav-inferior></app-nav-inferior>
-

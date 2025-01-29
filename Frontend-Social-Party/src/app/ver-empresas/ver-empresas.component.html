@@ -1,12 +1,11 @@
 <app-nav-superior></app-nav-superior>
 
 <ion-content>
-    <ion-searchbar placeholder="Buscar sitios" animated="true"></ion-searchbar>
+    <ion-searchbar placeholder="Buscar sitios" animated="true" [(ngModel)]="buscar" (ionInput)="onSearchChange($event)"></ion-searchbar>
     <ion-grid>
         <ion-row>
             <ion-col size-lg="4" size-xl="4" size-md="6" size-sm="10" size-xs="12">
-
-                <ion-card (click)="verEventosEmpresa()">
+                <ion-card *ngFor="let empresa of empresasFiltradas" (click)="verEventosEmpresa(empresa.id)">
                     <ion-grid>
                         <ion-row>
                             <ion-col size="5">
@@ -15,50 +14,10 @@
                             <ion-col size="7">
                                 <ion-grid class="textos">
                                     <ion-row>
-                                        <ion-text class="nombre">Rosso by Antique</ion-text>
+                                        <ion-text class="nombre">{{empresa.nombre}}</ion-text>
                                     </ion-row>
                                     <ion-row>
-                                        <ion-text class="direccion">C/ Fresa Nº 8</ion-text>
-                                    </ion-row>
-                                </ion-grid>
-                            </ion-col>
-                        </ion-row>
-                    </ion-grid>
-                </ion-card>
-
-                <ion-card (click)="verEventosEmpresa()">
-                    <ion-grid>
-                        <ion-row>
-                            <ion-col size="5">
-                                <ion-img src="https://ionicframework.com/docs/img/demos/card-media.png"></ion-img>
-                            </ion-col>
-                            <ion-col size="7">
-                                <ion-grid class="textos">
-                                    <ion-row>
-                                        <ion-text class="nombre">Maffia The Club</ion-text>
-                                    </ion-row>
-                                    <ion-row>
-                                        <ion-text class="direccion">C/ Calatrava Nº 8</ion-text>
-                                    </ion-row>
-                                </ion-grid>
-                            </ion-col>
-                        </ion-row>
-                    </ion-grid>
-                </ion-card>
-
-                <ion-card (click)="verEventosEmpresa()">
-                    <ion-grid>
-                        <ion-row>
-                            <ion-col size="5">
-                                <ion-img src="https://ionicframework.com/docs/img/demos/card-media.png"></ion-img>
-                            </ion-col>
-                            <ion-col size="7">
-                                <ion-grid class="textos">
-                                    <ion-row>
-                                        <ion-text class="nombre">Occo</ion-text>
-                                    </ion-row>
-                                    <ion-row>
-                                        <ion-text class="direccion">C/ Sevilla Nº 8</ion-text>
+                                        <ion-text class="direccion">{{empresa.direccion}}</ion-text>
                                     </ion-row>
                                 </ion-grid>
                             </ion-col>
@@ -68,7 +27,6 @@
             </ion-col>
         </ion-row>
     </ion-grid>
-
 </ion-content>
 
 <app-nav-inferior></app-nav-inferior>

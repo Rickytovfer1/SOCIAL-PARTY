@@ -9,4 +9,6 @@ public interface ClienteRepositorio extends JpaRepository<Cliente, Integer> {
 
     Cliente findClienteByDni(String dni);
     Cliente findByUsuario_Id(Integer id);
+    boolean existsByUsuarioId(Integer usuarioId);
+    Cliente findByUsuarioId(Integer usuarioId);
 }
