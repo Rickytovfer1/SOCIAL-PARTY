@@ -27,9 +27,11 @@ public class AmistadServicio {
 
     public List<ClienteDTO> getAmistad(Integer idUsuario) {
 
-        if (!clienteRepositorio.existsById(idUsuario)) {
-            throw new RuntimeException("No existe un cliente con este ID.");
+        if (!clienteRepositorio.existsByUsuarioId(idUsuario)) {
+            throw new RuntimeException("No existe un cliente asociado a este Usuario ID.");
         }
+
+        Cliente cliente = clienteRepositorio.findByUsuarioId(idUsuario);
 
         List<Amistad> amistades = amistadRepositorio.findAllByUserId(idUsuario);
         List<ClienteDTO> clientesDTOs = new ArrayList<>();
@@ -49,6 +51,7 @@ public class AmistadServicio {
 
         return clientesDTOs;
     }
+
 
     public Amistad aceptarSolicitud(Integer idUsuario, Integer idUsuario2){
         Cliente usuario = clienteRepositorio.getReferenceById(idUsuario);
