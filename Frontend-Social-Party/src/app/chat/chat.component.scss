@@ -19,6 +19,13 @@ ion-content {
     height: 100%;
 }
 
+ion-grid {
+    position: absolute;
+    bottom: 10%;
+    width: 100%;
+    overflow-y: auto;
+}
+
 #nombre {
     vertical-align: center;
     color: #ffffff;
@@ -36,33 +43,40 @@ ion-input {
 
 ion-img {
     width: 8%;
-    margin: 0 auto;
+    margin: 0 5px 0 auto;
+    padding: 0;
 }
 
 #enviar_mensaje {
     display: flex;
     margin-left: 5px;
     margin-right: 5px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    margin-bottom: 10px;
 }
 
-#receptor {
+.receptor {
     padding: 10px;
     background-color: #306DA9;
     color: white;
     border-radius: 35px;
     display: inline-block;
-    white-space: nowrap;
+    white-space: wrap;
     float: left;
+    max-width: 90%;
 }
 
-#emisor {
+.emisor {
     padding: 10px;
     background-color: #5AB7D5;
     color: white;
     border-radius: 35px;
     display: inline-block;
-    white-space: nowrap;
+    white-space: wrap;
     float: right;
+    max-width: 90%;
 }
 
 hr {

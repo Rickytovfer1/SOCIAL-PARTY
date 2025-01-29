@@ -5,7 +5,7 @@ ion-content {
 ion-card {
     margin: 25px auto;
     --background: #306DA9;
-    border-radius: 40px;
+    border-radius: 20px;
 }
 
 .publicacion {
@@ -36,4 +36,10 @@ ion-text {
 
 .nombre {
     font-size: 25px;
+}
+
+ion-searchbar {
+    --border-radius: 60px;
+    width: 90%;
+    margin: 20px auto;
 }

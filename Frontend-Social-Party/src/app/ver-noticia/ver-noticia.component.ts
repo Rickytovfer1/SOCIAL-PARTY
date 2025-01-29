@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {IonicModule} from "@ionic/angular";
 import {NavSuperiorComponent} from "../nav-superior/nav-superior.component";
+import {NavInferiorComponent} from "../nav-inferior/nav-inferior.component";
 
 @Component({
     selector: 'app-ver-noticia',
@@ -9,7 +10,8 @@ import {NavSuperiorComponent} from "../nav-superior/nav-superior.component";
     standalone: true,
     imports: [
         IonicModule,
-        NavSuperiorComponent
+        NavSuperiorComponent,
+        NavInferiorComponent
     ]
 })
 export class VerNoticiaComponent  implements OnInit {
