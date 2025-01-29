@@ -10,6 +10,8 @@ import { UsuarioService } from "../servicios/usuario.service";
 import { TokenDataDTO } from "../modelos/TokenDataDTO";
 import { Usuario } from "../modelos/Usuario";
 import {jwtDecode }from "jwt-decode";
+import {NavSuperiorEmpresaComponent} from "../nav-superior-empresa/nav-superior-empresa.component";
+import {NavInferiorEmpresaComponent} from "../nav-inferior-empresa/nav-inferior-empresa.component";
 
 @Component({
     selector: 'app-crear-publicacion-empresa',
@@ -21,7 +23,9 @@ import {jwtDecode }from "jwt-decode";
         NavSuperiorComponent,
         NavInferiorComponent,
         CommonModule,
-        FormsModule
+        FormsModule,
+        NavSuperiorEmpresaComponent,
+        NavInferiorEmpresaComponent
     ]
 })
 export class CrearPublicacionEmpresaComponent implements OnInit {

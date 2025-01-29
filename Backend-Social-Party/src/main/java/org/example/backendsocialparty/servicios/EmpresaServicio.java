@@ -105,6 +105,7 @@ public class EmpresaServicio {
                 empresa.getDireccion(),
                 empresa.getCodigoPostal(),
                 empresa.getNif(),
+                empresa.getFotoPerfil(),
                 empresa.getTelefono(),
                 empresa.getValoracionMinima(),
                 empresa.getEdadMinima(),

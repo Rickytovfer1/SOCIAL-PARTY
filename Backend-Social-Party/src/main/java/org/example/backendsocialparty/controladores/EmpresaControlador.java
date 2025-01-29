@@ -54,8 +54,4 @@ public class EmpresaControlador {
     public void eliminarCliente(@PathVariable Integer idCliente){
         clienteServicio.eliminarCliente(idCliente);
     }
-    @GetMapping("/empresa/ver/empresa/{correo}")
-    public Usuario verUsuario(@PathVariable String correo){
-        return (Usuario) usuarioServicio.loadUserByUsername(correo);
-    }
 }
