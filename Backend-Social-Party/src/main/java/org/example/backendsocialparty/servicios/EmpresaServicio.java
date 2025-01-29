@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -35,7 +36,6 @@ public class EmpresaServicio {
     private EventoServicio eventoServicio;
 
     private EntradaServicio entradaServicio;
-
     public List<EmpresaDTO> listarEmpresas() {
         List<Empresa> empresas = empresaRepositorio.findAll();
         List<EmpresaDTO> empresasDTO = new ArrayList<>();
@@ -88,6 +88,25 @@ public class EmpresaServicio {
         eventoServicio.eliminarEvento(id);
         publicacionServicio.eliminarPublicacion(id);
         empresaRepositorio.delete(empresa);
+    }
+
+
+    public EmpresaDTO buscarEmpresaPorCorreo(String correo) {
+        Empresa empresa = empresaRepositorio.findByUsuarioCorreo(correo)
+                .orElseThrow(() -> new RuntimeException("Empresa no encontrada con correo: " + correo));
+
+        return new EmpresaDTO(
+                empresa.getId(),
+                empresa.getNombre(),
+                empresa.getDireccion(),
+                empresa.getCodigoPostal(),
+                empresa.getNif(),
+                empresa.getTelefono(),
+                empresa.getValoracionMinima(),
+                empresa.getEdadMinima(),
+                empresa.getEventos().stream().map(Evento::getId).collect(Collectors.toSet()),
+                empresa.getUsuario().getId()
+        );
     }
 
 }

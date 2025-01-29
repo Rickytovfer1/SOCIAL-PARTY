@@ -30,4 +30,5 @@ public class ClienteControlador {
     public Usuario verUsuario(@PathVariable String correo){
         return (Usuario) usuarioServicio.loadUserByUsername(correo);
     }
+
 }

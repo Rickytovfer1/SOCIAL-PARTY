@@ -1,27 +1,30 @@
 <app-nav-superior></app-nav-superior>
 
 <ion-content class="fondo">
-
     <ion-card id="cartaouter" class="card-outer">
         <ion-card class="card-middle">
             <ion-card class="card-inner">
                 <ion-card-header>
-                    <ion-label>Escribe tu texto:</ion-label>
-                    <ion-input type="text" placeholder="Escribe tu texto"></ion-input>
+                    <ion-label position="stacked">Título:</ion-label>
+                    <ion-input [(ngModel)]="titulo" type="text" placeholder="Escribe el título"></ion-input>
+                </ion-card-header>
+
+                <ion-card-header>
+                    <ion-label position="stacked">Escribe tu texto:</ion-label>
+                    <ion-textarea [(ngModel)]="texto" placeholder="Escribe tu texto"></ion-textarea>
                 </ion-card-header>
 
                 <ion-card-content>
-                    <ion-label>Descripción de la noticia:</ion-label>
-                    <ion-input type="text" placeholder="Excribe la descripción de la noticia"></ion-input>
+                    <ion-label position="stacked">Dirección:</ion-label>
+                    <ion-input [(ngModel)]="direccion" type="text" placeholder="Escribe la dirección"></ion-input>
 
-                    <ion-label>Sube tu foto:</ion-label>
-                    <ion-input type="text" placeholder="Sube tu foto"></ion-input>
+                    <ion-label position="stacked">Sube tu foto:</ion-label>
+                    <input type="file" (change)="seleccionarFoto($event)" accept="image/*" />
                 </ion-card-content>
-                <ion-button>Publicar</ion-button>
+                <ion-button expand="full" (click)="publicar()">Publicar</ion-button>
             </ion-card>
         </ion-card>
     </ion-card>
-
 </ion-content>
 
 <app-nav-inferior></app-nav-inferior>

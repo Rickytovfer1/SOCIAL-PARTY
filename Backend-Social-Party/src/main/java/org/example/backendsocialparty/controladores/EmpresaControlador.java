@@ -4,8 +4,10 @@ import lombok.AllArgsConstructor;
 import org.example.backendsocialparty.DTOs.ClienteDTO;
 import org.example.backendsocialparty.DTOs.EmpresaDTO;
 import org.example.backendsocialparty.DTOs.RestarPuntoDTO;
+import org.example.backendsocialparty.modelos.Usuario;
 import org.example.backendsocialparty.servicios.ClienteServicio;
 import org.example.backendsocialparty.servicios.EmpresaServicio;
+import org.example.backendsocialparty.servicios.UsuarioServicio;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,7 +20,7 @@ public class EmpresaControlador {
     private ClienteServicio clienteServicio;
 
     private EmpresaServicio empresaServicio;
-
+    private UsuarioServicio usuarioServicio;
     @GetMapping("/empresa/buscar/{id}")
     public ClienteDTO buscarClienteId(@PathVariable Integer id) {
         return clienteServicio.buscarClienteId(id);
@@ -44,4 +46,8 @@ public class EmpresaControlador {
         clienteServicio.eliminarCliente(idCliente);
     }
 
+    @GetMapping("/empresa/ver/empresa/{correo}")
+    public Usuario verUsuario(@PathVariable String correo){
+        return (Usuario) usuarioServicio.loadUserByUsername(correo);
+    }
 }

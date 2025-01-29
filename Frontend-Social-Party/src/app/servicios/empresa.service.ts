@@ -13,7 +13,7 @@ export interface EmpresaDTO {
     nif: string;
     telefono: string;
     valoracionMinima: number;
-    edadMinima: number;
+    edadMinimsa: number;
     eventos: number[];
     idUsuario: number;
 }
