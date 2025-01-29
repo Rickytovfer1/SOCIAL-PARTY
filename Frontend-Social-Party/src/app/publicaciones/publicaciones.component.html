@@ -1,48 +1,30 @@
 <app-nav-superior></app-nav-superior>
 
 <ion-content>
-    <ion-header>
-        <ion-toolbar>
-            <ion-title>Publicaciones</ion-title>
-            <ion-buttons slot="end">
-                <ion-button (click)="abrirForm()">
-                    <ion-icon name="add-circle-outline"></ion-icon>
-                </ion-button>
-            </ion-buttons>
-        </ion-toolbar>
-    </ion-header>
-
-    <ion-searchbar placeholder="Buscar publicaciones" animated="true" [(ngModel)]="buscar" (ionInput)="onSearchChange($event)"></ion-searchbar>
     <ion-grid>
+        <ion-row>
+            <ion-img id="agregar" (click)="abrirForm()" src="assets/iconoMas.png"></ion-img>
+        </ion-row>
+        <ion-row>
+            <ion-searchbar placeholder="Buscar publicaciones" animated="true" [(ngModel)]="buscar" (ionInput)="onSearchChange($event)"></ion-searchbar>
+        </ion-row>
         <ion-row>
             <ion-col size-lg="4" size-xl="4" size-md="6" size-sm="10" size-xs="12" *ngFor="let publicacion of publicacionesFiltradas">
                 <ion-card>
                     <ion-grid>
                         <ion-row>
-                            <ion-col size="12">
-                                <img
-                                    [ngSrc]="getImageUrl(publicacion)"
-                                    width="150"
-                                    height="150"
-                                    alt="Foto Publicacion">
+                            <ion-col size="5">
+                                <img [ngSrc]="getImageUrl(publicacion)" class="publicacion" alt="Foto Publicacion">
                             </ion-col>
-                        </ion-row>
-                        <ion-row>
-                            <ion-col size="12">
-                                <ion-text class="titulo"><h2>{{publicacion.titulo}}</h2></ion-text>
-                            </ion-col>
-                        </ion-row>
-                        <ion-row>
-                            <ion-col size="12">
-                                <ion-text class="texto">{{publicacion.texto}}</ion-text>
-                            </ion-col>
-                        </ion-row>
-                        <ion-row>
-                            <ion-col size="6">
-                                <ion-text class="fecha">{{publicacion.fecha}} {{publicacion.hora}}</ion-text>
-                            </ion-col>
-                            <ion-col size="6" class="ion-text-right">
-                                <ion-text class="direccion">{{publicacion.direccion}}</ion-text>
+                            <ion-col size="7">
+                                <ion-grid class="textos">
+                                    <ion-row>
+                                        <ion-text class="nombre">{{publicacion.titulo}}</ion-text>
+                                    </ion-row>
+                                    <ion-row>
+                                        <ion-text class="direccion">{{publicacion.texto}}</ion-text>
+                                    </ion-row>
+                                </ion-grid>
                             </ion-col>
                         </ion-row>
                     </ion-grid>

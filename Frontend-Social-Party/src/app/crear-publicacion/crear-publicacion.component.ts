@@ -4,9 +4,12 @@ import { NavSuperiorComponent } from "../nav-superior/nav-superior.component";
 import { NavInferiorComponent } from "../nav-inferior/nav-inferior.component";
 import { Router } from "@angular/router";
 import { PublicacionService } from '../servicios/publicacion.service';
+import { UsuarioService } from "../servicios/usuario.service";
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
+import { TokenDataDTO } from "../modelos/TokenDataDTO";
+import { Usuario } from "../modelos/Usuario";
+import { jwtDecode } from "jwt-decode";
 @Component({
     selector: 'app-crear-publicacion',
     templateUrl: './crear-publicacion.component.html',
@@ -25,15 +28,50 @@ export class CrearPublicacionComponent implements OnInit {
     titulo: string = '';
     direccion: string = '';
     foto: File | null = null;
-    idUsuario: number = 1;
+    idUsuario?: number;
 
     constructor(
         private router: Router,
         private publicacionService: PublicacionService,
-        private alertController: AlertController
+        private alertController: AlertController,
+        private usuarioService: UsuarioService
     ) { }
 
-    ngOnInit() { }
+    ngOnInit() {
+        const token = sessionStorage.getItem('authToken');
+
+        if (token) {
+            try {
+                const decodedToken = jwtDecode<{ tokenDataDTO: TokenDataDTO }>(token);
+                const correo = decodedToken.tokenDataDTO.correo;
+
+                if (correo) {
+                    this.cargarUsuario(correo);
+                } else {
+                    this.presentAlert('Error', 'Correo no encontrado en el token.');
+                }
+            } catch (e) {
+                this.presentAlert('Error', 'Token inválido.');
+            }
+        } else {
+            this.presentAlert('Error', 'No se encontró el token de autenticación.');
+        }
+    }
+
+    cargarUsuario(correo: string): void {
+        this.usuarioService.getUsuario(correo).subscribe({
+            next: (usuario: Usuario) => {
+                if (usuario.id !== undefined) {
+                    this.idUsuario = usuario.id;
+                } else {
+                    this.presentAlert('Error', 'El usuario no tiene un ID válido.');
+                }
+            },
+            error: () => {
+                this.presentAlert('Error', 'No se pudo cargar el usuario.');
+            }
+        });
+    }
 
     seleccionarFoto(event: any) {
         if (event.target.files && event.target.files.length > 0) {
@@ -47,6 +85,11 @@ export class CrearPublicacionComponent implements OnInit {
             return;
         }
 
+        if (this.idUsuario === undefined) {
+            this.presentAlert('Error', 'Usuario no autenticado.');
+            return;
+        }
+
         const dto = {
             texto: this.texto,
             titulo: this.titulo,
@@ -57,8 +100,7 @@ export class CrearPublicacionComponent implements OnInit {
         this.publicacionService.crearPublicacionCliente(dto, this.foto).subscribe(() => {
             this.presentAlert('Éxito', 'Publicación creada exitosamente.');
             this.router.navigate(['/publicaciones']);
-        }, (error: any) => {
-            console.error('Error al crear publicación', error);
+        }, () => {
             this.presentAlert('Error', 'Error al crear publicación.');
         });
     }
