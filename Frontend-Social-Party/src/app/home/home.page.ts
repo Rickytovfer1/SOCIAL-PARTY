@@ -17,7 +17,7 @@ import {Router} from "@angular/router";
     selector: 'app-home',
     templateUrl: 'home.page.html',
     styleUrls: ['home.page.scss'],
-    imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonRow, IonGrid, IonCol, IonImg, NgForOf, IonButton, NgIf],
+    imports: [IonContent, IonRow, IonGrid, IonCol, IonImg, NgForOf, IonButton, NgIf],
     standalone: true
 })
 export class HomePage implements OnInit{
