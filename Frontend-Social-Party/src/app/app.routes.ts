@@ -71,7 +71,7 @@ export const routes: Routes = [
         loadComponent: () => import('./ver-noticia/ver-noticia.component').then((m) => m.VerNoticiaComponent)
     },
     {
-      path: 'chat',
-      loadComponent: () => import('./chat/chat.component').then((m) => m.ChatComponent)
+        path: 'chat',
+        loadComponent: () => import('./chat/chat.component').then((m) => m.ChatComponent)
     },
 ];
