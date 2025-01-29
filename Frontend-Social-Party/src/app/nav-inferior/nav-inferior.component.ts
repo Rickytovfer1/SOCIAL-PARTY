@@ -22,7 +22,7 @@ export class NavInferiorComponent  implements OnInit {
   }
 
   irEntradas() {
-      this.router.navigate(['/perfil']);
+      this.router.navigate(['/ver-empresas']);
   }
 
   irAmigos() {
@@ -30,10 +30,10 @@ export class NavInferiorComponent  implements OnInit {
   }
 
   irUbicacion() {
-      this.router.navigate(['/perfil']);
+      this.router.navigate(['/asistentes-evento']);
   }
 
   irPublicaciones() {
-      this.router.navigate(['/perfil']);
+      this.router.navigate(['/publicaciones']);
   }
 }
