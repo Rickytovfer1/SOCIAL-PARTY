@@ -33,12 +33,12 @@ public class AmistadServicio {
 
         Cliente cliente = clienteRepositorio.findByUsuarioId(idUsuario);
 
-        List<Amistad> amistades = amistadRepositorio.findAllByUserId(idUsuario);
+        List<Amistad> amistades = amistadRepositorio.findAllByUsuario_IdOrAmigo_Id(cliente.getId(), cliente.getId());
         List<ClienteDTO> clientesDTOs = new ArrayList<>();
 
         for (Amistad a : amistades) {
             Cliente amigo;
-            if (a.getUsuario().getId().equals(idUsuario)) {
+            if (a.getUsuario().getId().equals(cliente.getId())) {
                 amigo = a.getAmigo();
             } else {
                 amigo = a.getUsuario();
@@ -51,6 +51,7 @@ public class AmistadServicio {
 
         return clientesDTOs;
     }
+
 
 
     public Amistad aceptarSolicitud(Integer idUsuario, Integer idUsuario2){
