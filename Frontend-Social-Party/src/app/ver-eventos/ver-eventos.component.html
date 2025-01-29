@@ -1,31 +1,38 @@
 <app-nav-superior></app-nav-superior>
 <ion-content>
-    <div class="fondo"></div>
-    <div class="banda ion-justify-content-between ion-align-items-center">
+    <ion-content class="fondo">
         <ion-img id="imagenEmpresa" src="https://ionicframework.com/docs/img/demos/card-media.png"/>
-        <ion-text style="color: #ffffff">Rosso By Antique</ion-text>
+    </ion-content>
+    <div class="banda ion-justify-content-between ion-align-items-center">
+        <ion-text style="color: #ffffff; margin: 0 auto">Rosso By Antique</ion-text>
     </div>
     <ion-grid>
         <ion-row>
-            <ion-col>
+            <ion-col style="margin: 0 auto" size-lg="4" size-xl="4" size-md="6" size-sm="10" size-xs="12">
                 <ion-card>
                     <ion-grid>
                         <ion-row>
-                            <ion-col style="margin: 0 auto" size-lg="4" size-xl="4" size-md="6" size-sm="6" size-xs="6">
-                                <ion-img src="https://ionicframework.com/docs/img/demos/card-media.png"/>
+                            <ion-col size="5" style="margin: 0 auto">
+                                <ion-img class="foto_evento" src="https://ionicframework.com/docs/img/demos/card-media.png"/>
                             </ion-col>
-                            <ion-col >
+                            <ion-col size="7">
                                 <ion-grid>
-                                    <ion-row class="espacio">
-                                        <ion-col class="fecha">
-                                            <ion-label >23/12/2024</ion-label>
+                                    <ion-row>
+                                        <ion-col>
+                                            <div class="info">
+                                                <ion-label >23/12/2024</ion-label>
+                                            </div>
                                         </ion-col>
-                                        <ion-col class="fecha">
-                                            <ion-label >23:00-6:00</ion-label>
+                                        <ion-col>
+                                            <div class="info">
+                                                <ion-label >23:00-6:00</ion-label>
+                                            </div>
                                         </ion-col>
                                     </ion-row>
                                     <ion-row>
-                                        <ion-label>NOMBRE EVENTO</ion-label>
+                                        <ion-col style="display: flex" class="ion-align-items-center">
+                                            <ion-label class="nombre_evento">Fin de exámenes</ion-label>
+                                        </ion-col>
                                     </ion-row>
                                 </ion-grid>
                             </ion-col>
