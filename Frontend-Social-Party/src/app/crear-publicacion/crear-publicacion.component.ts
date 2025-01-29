@@ -7,7 +7,6 @@ import { PublicacionService } from '../servicios/publicacion.service';
 import { UsuarioService } from "../servicios/usuario.service";
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
 import { TokenDataDTO } from "../modelos/TokenDataDTO";
 import { Usuario } from "../modelos/Usuario";
 import { jwtDecode } from "jwt-decode";
