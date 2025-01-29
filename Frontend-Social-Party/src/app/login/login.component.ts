@@ -5,6 +5,8 @@ import {Router} from "@angular/router";
 import {Login} from "../modelos/Login";
 import {LoginService} from "../servicios/login.service";
 import {HttpClient, HttpHandler} from "@angular/common/http";
+import {jwtDecode} from "jwt-decode";
+import {TokenDataDTO} from "../modelos/TokenDataDTO";
 
 @Component({
   selector: 'app-login',
@@ -40,7 +42,21 @@ export class LoginComponent  implements OnInit {
                 const token = respuesta.token;
                 sessionStorage.setItem("authToken", token);
                 this.loginService.setAuthState(true);
-                this.router.navigate(['/amigos']);
+
+                try {
+                    const decodedToken = jwtDecode(token) as { tokenDataDTO: TokenDataDTO };
+                    console.log('Decoded Token:', decodedToken);
+
+                    const rol = decodedToken?.tokenDataDTO.rol;
+
+                    if (rol == "CLIENTE") {
+                        this.router.navigate(['/amigos']);
+                    }else if (rol === "EMPRESA") {
+                        this.router.navigate(['/asistentes-evento']);
+                    }
+                } catch (e) {
+                    console.error('Error al decodificar el token:', e);
+                }
             },
             error: (e) => {
                 console.error(e);

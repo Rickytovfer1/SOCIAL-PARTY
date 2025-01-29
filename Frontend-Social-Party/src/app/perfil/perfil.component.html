@@ -28,6 +28,10 @@
                         <ion-input type="email" [(ngModel)]="registro.correo" placeholder="{{usuario.correo}}" [readonly]="!editar"></ion-input>
                     </ion-row>
                     <ion-row>
+                        <ion-label>Número de teléfono:</ion-label>
+                        <ion-input type="phone" [(ngModel)]="registro.telefono" placeholder="{{perfil.telefono}}" [readonly]="!editar"></ion-input>
+                    </ion-row>
+                    <ion-row>
                         <ion-label>DNI:</ion-label>
                         <ion-input type="text" [(ngModel)]="registro.dni" placeholder="{{perfil.dni}}" [readonly]="!editar"></ion-input>
                     </ion-row>

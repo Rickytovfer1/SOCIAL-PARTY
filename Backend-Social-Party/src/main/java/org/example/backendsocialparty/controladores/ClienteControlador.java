@@ -30,4 +30,9 @@ public class ClienteControlador {
     public Usuario verUsuario(@PathVariable String correo){
         return (Usuario) usuarioServicio.loadUserByUsername(correo);
     }
+
+    @GetMapping("/ver/perfil/{idUsuario}")
+    public ClienteDTO buscarClienteUsuarioId(@PathVariable Integer idUsuario){
+        return clienteServicio.busccarClienteUsuarioID(idUsuario);
+    }
 }
