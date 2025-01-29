@@ -2,11 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import {IonicModule} from "@ionic/angular";
 import {NavSuperiorComponent} from "../nav-superior/nav-superior.component";
 import {NavInferiorComponent} from "../nav-inferior/nav-inferior.component";
+import {Router} from "@angular/router";
+import {routes} from "../app.routes";
 
 @Component({
-    selector: 'app-crear-publicacion',
-    templateUrl: './crear-publicacion.component.html',
-    styleUrls: ['./crear-publicacion.component.scss'],
+    selector: 'app-publicaciones',
+    templateUrl: './publicaciones.component.html',
+    styleUrls: ['./publicaciones.component.scss'],
     standalone: true,
     imports: [
         IonicModule,
@@ -14,10 +16,14 @@ import {NavInferiorComponent} from "../nav-inferior/nav-inferior.component";
         NavInferiorComponent
     ]
 })
-export class CrearPublicacionComponent  implements OnInit {
+export class PublicacionesComponent  implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {}
+
+  abrirForm() {
+      this.router.navigate(["/crear-publicacion"])
+  }
 
 }

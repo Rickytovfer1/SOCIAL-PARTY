@@ -37,6 +37,10 @@
               <ion-input type="password" placeholder="Por favor, repita la contaseña"></ion-input>
             </ion-row>
             <ion-row>
+              <ion-label>Teléfono: </ion-label>
+              <ion-input [(ngModel)]="registro.telefono" type="phone" placeholder="Introduce un número de télefono"></ion-input>
+            </ion-row>
+            <ion-row>
               <ion-label>DNI: </ion-label>
               <ion-input [(ngModel)]="registro.dni" type="text" placeholder="Introduce tu DNI:"></ion-input>
             </ion-row>

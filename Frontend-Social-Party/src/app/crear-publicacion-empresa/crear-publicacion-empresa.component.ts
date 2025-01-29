@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import {NavSuperiorComponent} from "../nav-superior/nav-superior.component";
 import {IonicModule} from "@ionic/angular";
 import {NavInferiorComponent} from "../nav-inferior/nav-inferior.component";
-import {NavSuperiorComponent} from "../nav-superior/nav-superior.component";
 
 @Component({
     selector: 'app-crear-publicacion-empresa',
@@ -9,9 +9,9 @@ import {NavSuperiorComponent} from "../nav-superior/nav-superior.component";
     styleUrls: ['./crear-publicacion-empresa.component.scss'],
     standalone: true,
     imports: [
+        NavSuperiorComponent,
         IonicModule,
-        NavInferiorComponent,
-        NavSuperiorComponent
+        NavInferiorComponent
     ]
 })
 export class CrearPublicacionEmpresaComponent  implements OnInit {

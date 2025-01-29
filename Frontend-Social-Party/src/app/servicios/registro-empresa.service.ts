@@ -11,9 +11,6 @@ export class RegistroEmpresaService {
 
   private apiUrl = environment.apiUrl;
 
-  private authState = new BehaviorSubject<boolean>(!!sessionStorage.getItem('authToken'));
-  authState$ = this.authState.asObservable();
-
   constructor(private http: HttpClient) { }
 
   registrar(registro: RegistroEmpresa): Observable<any>{

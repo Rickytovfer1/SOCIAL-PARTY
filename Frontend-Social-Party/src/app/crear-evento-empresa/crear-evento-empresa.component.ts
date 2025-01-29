@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {IonicModule} from "@ionic/angular";
-import {NavInferiorComponent} from "../nav-inferior/nav-inferior.component";
 import {NavSuperiorComponent} from "../nav-superior/nav-superior.component";
+import {NavInferiorComponent} from "../nav-inferior/nav-inferior.component";
 
 @Component({
     selector: 'app-crear-evento-empresa',
@@ -10,8 +10,8 @@ import {NavSuperiorComponent} from "../nav-superior/nav-superior.component";
     standalone: true,
     imports: [
         IonicModule,
-        NavInferiorComponent,
-        NavSuperiorComponent
+        NavSuperiorComponent,
+        NavInferiorComponent
     ]
 })
 export class CrearEventoEmpresaComponent  implements OnInit {

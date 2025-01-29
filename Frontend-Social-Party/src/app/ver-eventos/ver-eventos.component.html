@@ -1,32 +1,38 @@
 <app-nav-superior></app-nav-superior>
 <ion-content>
+    <div class="fondo"></div>
+    <div class="banda ion-justify-content-between ion-align-items-center">
+        <ion-img id="imagenEmpresa" src="https://ionicframework.com/docs/img/demos/card-media.png"/>
+        <ion-text style="color: #ffffff">Rosso By Antique</ion-text>
+    </div>
     <ion-grid>
         <ion-row>
-            <ion-card class="evento-card">
-                <ion-grid>
-                    <ion-row>
-                        <ion-col style="margin: 0 auto" size-lg="4¡" size-xl="4" size-md="6" size-sm="6" size-xs="6">
-                            <ion-img class="imagen" alt="Silhouette of mountains"
-                                     src="https://ionicframework.com/docs/img/demos/card-media.png"/>
-                        </ion-col>
-                        <ion-col >
-                            <ion-grid>
-                                <ion-row class="espacio">
-                                    <ion-col class="fecha">
-                                        <ion-label >23/12/2024</ion-label>
-                                    </ion-col>
-                                    <ion-col class="fecha">
-                                        <ion-label >23:00-6:00</ion-label>
-                                    </ion-col>
-                                </ion-row>
-                                <ion-row>
-                                    <ion-label>NOMBRE EVENTO</ion-label>
-                                </ion-row>
-                            </ion-grid>
-                        </ion-col>
-                    </ion-row>
-                </ion-grid>
-            </ion-card>
+            <ion-col>
+                <ion-card>
+                    <ion-grid>
+                        <ion-row>
+                            <ion-col style="margin: 0 auto" size-lg="4" size-xl="4" size-md="6" size-sm="6" size-xs="6">
+                                <ion-img src="https://ionicframework.com/docs/img/demos/card-media.png"/>
+                            </ion-col>
+                            <ion-col >
+                                <ion-grid>
+                                    <ion-row class="espacio">
+                                        <ion-col class="fecha">
+                                            <ion-label >23/12/2024</ion-label>
+                                        </ion-col>
+                                        <ion-col class="fecha">
+                                            <ion-label >23:00-6:00</ion-label>
+                                        </ion-col>
+                                    </ion-row>
+                                    <ion-row>
+                                        <ion-label>NOMBRE EVENTO</ion-label>
+                                    </ion-row>
+                                </ion-grid>
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
+                </ion-card>
+            </ion-col>
         </ion-row>
     </ion-grid>
 </ion-content>
