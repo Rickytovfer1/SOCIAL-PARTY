@@ -1,28 +1,32 @@
-<ion-header>
-    <ion-toolbar>
-        <ion-title>Chat</ion-title>
-    </ion-toolbar>
-</ion-header>
+<app-nav-superior></app-nav-superior>
 
 <ion-content>
-
-    <app-nav-superior></app-nav-superior>
-
-    <div *ngFor="let mensaje of mensajes"
-         [ngClass]="mensaje.idEmisor === usuario.id ? 'emisor' : 'receptor'">
-        <p class="mensaje-texto">{{ mensaje.texto }}</p>
-        <small class="mensaje-fecha">
-            {{ mensaje.fecha }} {{ mensaje.hora }}
-        </small>
+    <div class="fondo"></div>
+    <div class="banda ion-align-items-center">
+        <ion-text id="nombre">{{ perfil.nombre }} {{ perfil.apellidos }}</ion-text>
     </div>
-
-
-    <ion-item>
-        <ion-input placeholder="Escribe un mensaje..."
-                   [(ngModel)]="nuevoTexto"></ion-input>
-        <ion-button (click)="enviar()">Enviar</ion-button>
-    </ion-item>
-
-    <app-nav-inferior></app-nav-inferior>
-
+    <ion-grid>
+        <ion-row>
+            <ion-col>
+                <div class="ion-justify-content-between ion-align-items-center div_dia">
+                    <hr>
+                    <ion-text>Hoy</ion-text>
+                    <hr>
+                </div>
+            </ion-col>
+        </ion-row>
+        <ion-row *ngFor="let mensaje of mensajes">
+            <ion-col>
+                <div [ngClass]="mensaje.idEmisor === usuario.id ? 'emisor' : 'receptor'">
+                    {{ mensaje.texto }}
+                </div>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <div class="ion-justify-content-between ion-align-items-center" id="enviar_mensaje">
+        <ion-input [(ngModel)]="nuevoTexto" placeholder="Envía un mensaje..."/>
+        <ion-img (click)="enviar()" src="assets/iconoEnviar.png"/>
+    </div>
 </ion-content>
+
+<app-nav-inferior></app-nav-inferior>

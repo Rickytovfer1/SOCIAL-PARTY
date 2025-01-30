@@ -16,7 +16,7 @@ export class PerfilServicio {
 
     constructor(private http: HttpClient, private comunService: ComunService) { }
 
-    getPerfil(idUsuario: number): Observable<Perfil> {
+    getPerfil(idUsuario: number | undefined): Observable<Perfil> {
         const options = this.comunService.autorizarPeticion();
         return this.http.get<Perfil>(`${this.apiUrl}/cliente/ver/perfil/${idUsuario}`, options);
     }

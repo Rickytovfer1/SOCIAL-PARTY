@@ -12,8 +12,6 @@ import {NavInferiorEmpresaComponent} from "../nav-inferior-empresa/nav-inferior-
     standalone: true,
     imports: [
         IonicModule,
-        NavSuperiorComponent,
-        NavInferiorComponent,
         NavSuperiorEmpresaComponent,
         NavInferiorEmpresaComponent
     ]

@@ -13,8 +13,6 @@ import {Router} from "@angular/router";
     standalone: true,
     imports: [
         IonicModule,
-        NavInferiorComponent,
-        NavSuperiorComponent,
         NavSuperiorEmpresaComponent,
         NavInferiorEmpresaComponent
     ]

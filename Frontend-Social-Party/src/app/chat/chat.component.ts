@@ -14,6 +14,8 @@ import { jwtDecode }  from "jwt-decode";
 import { FormsModule } from "@angular/forms";
 import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
+import {Perfil} from "../modelos/Perfil";
+import {PerfilServicio} from "../servicios/perfil.service";
 
 @Component({
     standalone: true,
@@ -34,12 +36,14 @@ export class ChatComponent implements OnInit {
     mensajes: MensajeDTO[] = [];
     nuevoTexto: string = '';
     idReceptor: number = 0;
+    perfil: Perfil = {} as Perfil;
 
     constructor(
         private mensajeService: MensajeService,
         private usuarioService: UsuarioService,
         private route: ActivatedRoute,
-        private router: Router
+        private router: Router,
+        private perfilService: PerfilServicio
     ) {}
 
     ngOnInit() {
@@ -86,6 +90,7 @@ export class ChatComponent implements OnInit {
                 if (receptorId > 0 && this.usuario.id > 0) {
                     this.idReceptor = receptorId;
                     this.cargarConversacion(this.usuario.id, this.idReceptor);
+                    this.cargarPerfil(this.usuario.id)
                 } else {
                     console.warn('Receptor ID o Usuario ID inválidos.');
                 }
@@ -143,6 +148,18 @@ export class ChatComponent implements OnInit {
             },
             error: (err) => {
                 console.error('Error al enviar mensaje:', err);
+            }
+        });
+    }
+
+    cargarPerfil(idUsuario: number | undefined): void {
+        this.perfilService.getPerfil(idUsuario).subscribe({
+            next: (perfil: Perfil) => {
+                this.perfil = perfil;
+                console.log('Perfil cargado:', this.perfil);
+            },
+            error: (e) => {
+                console.error("Error al cargar el perfil:", e);
             }
         });
     }

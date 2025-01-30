@@ -21,8 +21,6 @@ import {TokenDataDTO} from "../modelos/TokenDataDTO";
     standalone: true,
     imports: [
         IonicModule,
-        NavInferiorComponent,
-        NavSuperiorComponent,
         NavSuperiorEmpresaComponent,
         NavInferiorEmpresaComponent
     ]
