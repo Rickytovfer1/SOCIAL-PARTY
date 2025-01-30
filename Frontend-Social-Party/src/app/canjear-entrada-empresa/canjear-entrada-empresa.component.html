@@ -1,3 +1,26 @@
-<app-nav-superior-empresa></app-nav-superior-empresa>
+<app-nav-superior></app-nav-superior>
 
-<app-nav-inferior-empresa></app-nav-inferior-empresa>
+<ion-content class="fondo">
+    <ion-card id="cartaouter" class="card-outer">
+        <ion-card class="card-middle">
+            <ion-card class="card-inner">
+                <ion-card-header>
+                    <ion-label>Código de entrada: </ion-label>
+                    <ion-textarea placeholder="Escribe tu texto"></ion-textarea>
+                </ion-card-header>
+
+                <ion-card-content>
+                    <ion-card-content>
+                        <ion-label>Verificar QR:</ion-label>
+                        <video #videoElement autoplay playsinline style="width: 100%; border-radius: 10px;"></video>
+                    </ion-card-content>
+
+                </ion-card-content>
+
+                <ion-button>Canjear</ion-button>
+            </ion-card>
+        </ion-card>
+    </ion-card>
+</ion-content>
+
+<app-nav-inferior></app-nav-inferior>
