@@ -36,4 +36,9 @@ export class NavSuperiorComponent  implements OnInit {
   irPublicaciones() {
       this.router.navigate(['/publicaciones']);
   }
+
+  cerrarSesion() {
+      sessionStorage.clear();
+      this.router.navigate(['/login']);
+  }
 }

@@ -90,7 +90,7 @@ export class ChatComponent implements OnInit {
                 if (receptorId > 0 && this.usuario.id > 0) {
                     this.idReceptor = receptorId;
                     this.cargarConversacion(this.usuario.id, this.idReceptor);
-                    this.cargarPerfil(this.usuario.id)
+                    this.cargarPerfil(this.idReceptor)
                 } else {
                     console.warn('Receptor ID o Usuario ID inválidos.');
                 }
