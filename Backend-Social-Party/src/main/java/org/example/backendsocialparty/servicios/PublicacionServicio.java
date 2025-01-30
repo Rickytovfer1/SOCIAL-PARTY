@@ -151,5 +151,22 @@ public class PublicacionServicio {
                 }
             }
         }
+
     }
+    public List<MostrarPublicacionDTO> mostrarPublicacionesPorEmpresa(Integer idEmpresa) {
+        Empresa empresa = empresaRepositorio.findByUsuario_Id(idEmpresa);
+        if (empresa == null) {
+            throw new RuntimeException("Empresa no encontrada");
+        }
+
+        List<Publicacion> publicaciones = publicacionRepositorio.findByUsuario_Id(empresa.getUsuario().getId());
+        List<MostrarPublicacionDTO> publicacionDTO = new ArrayList<>();
+
+        for (Publicacion publicacion : publicaciones) {
+            publicacionDTO.add(getPublicacionDTO(publicacion));
+        }
+
+        return publicacionDTO;
+    }
+
 }

@@ -108,7 +108,7 @@ export class CrearPublicacionEmpresaComponent implements OnInit {
         this.publicacionService.crearPublicacionEmpresa(dto, this.foto).subscribe({
             next: () => {
                 this.presentAlert('Éxito', 'Publicación creada exitosamente.');
-                this.router.navigate(['/publicaciones']);
+                this.router.navigate(['/publicaciones-empresa']);
             },
             error: () => {
                 this.presentAlert('Error', 'Error al crear la publicación.');
