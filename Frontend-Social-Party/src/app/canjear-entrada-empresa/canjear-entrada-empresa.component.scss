@@ -1,0 +1,102 @@
+.fondo {
+    --background: #D3E5E5;
+}
+ion-button {
+    color: #000000;
+    --border-radius: 25px;
+    margin: 0 auto;
+    --background: #5AB7D5
+}
+
+ion-textarea {
+    --padding-start: 10px;
+    --padding-end: 10px;
+    --background: #ffffff;
+    --border-radius: 15px;
+    margin-top: 15px;
+    margin-bottom: 30px
+}
+
+input {
+    color: #FFFFFF;
+    display: inline-block;
+    white-space: nowrap;
+}
+
+input[type="file"]::file-selector-button {
+    font-size: 16px;
+}
+
+input[type="file"] {
+    font-size: 0;
+}
+
+@media (min-width: 768px) {
+    #grid_secundario {
+        height: 100%;
+        margin-bottom: 0;
+    }
+}
+
+@media (max-width: 767px) {
+
+    #cartaouter{
+        margin: 35px;
+    }
+}
+
+.card-outer {
+    --background: #471FCD;
+    padding: 5px;
+    margin: 50px auto 5px;
+    border-radius: 25px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.8);
+    border: 2px solid #000000;
+}
+
+
+.card-middle {
+    --background: #ffffff;
+    margin: 5px 15px;
+    padding: 5px;
+    border-radius: 25px;
+    border: 2px solid #000000;
+}
+
+.card-inner {
+    --background: #306DA9;
+    margin: 20px 10px;
+    padding: 5px;
+    border-radius: 20px;
+    border: 2px solid #000000;
+}
+
+ion-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+ion-card {
+    max-width: 400px;
+    --background: #471FCD;
+    margin: 5px;
+
+}
+
+ion-button {
+    --background: #5AB7D5;
+    --border-radius: 25px;
+    margin: 5px auto;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+}
+
+ion-label {
+    color: #ffffff;
+    font-size: 18px;
+}
