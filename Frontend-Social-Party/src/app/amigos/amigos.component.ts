@@ -10,7 +10,7 @@ import { ClienteDTO } from "../modelos/ClienteDTO";
 import { jwtDecode } from "jwt-decode";
 import { DecodedToken } from "../modelos/DecodedToken";
 import { TokenDataDTO } from "../modelos/TokenDataDTO";
-import {Router} from "@angular/router";
+import { Router } from "@angular/router";
 
 @Component({
     selector: 'app-amigos',
@@ -93,7 +93,10 @@ export class AmigosComponent implements OnInit {
         });
     }
 
-    abrirChat() {
-        this.router.navigate(["/chat"])
+    // Component
+    abrirChat(idUsuario: number) {
+        this.router.navigate(['/chat', idUsuario]);
     }
+
+
 }

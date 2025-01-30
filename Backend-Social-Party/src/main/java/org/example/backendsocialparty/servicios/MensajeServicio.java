@@ -23,18 +23,18 @@ public class MensajeServicio {
         this.clienteRepositorio = clienteRepositorio;
     }
 
-    public void enviarMensaje (MensajeDTO mensajeDTO) {
+    public void enviarMensaje(MensajeDTO mensajeDTO) {
 
         Mensaje mensaje = new Mensaje();
         mensaje.setTexto(mensajeDTO.getTexto());
         mensaje.setHora(LocalTime.now());
         mensaje.setFecha(LocalDate.now());
 
-        Cliente emisor = clienteRepositorio.findById(mensajeDTO.getIdEmisor())
-                .orElseThrow(() -> new RuntimeException("No existe un cliente con este ID."));
+        Cliente emisor = clienteRepositorio.findByUsuarioId(mensajeDTO.getIdEmisor())
+                .orElseThrow(() -> new RuntimeException("No existe un cliente con este Usuario ID de emisor."));
 
-        Cliente receptor = clienteRepositorio.findById(mensajeDTO.getIdReceptor())
-                .orElseThrow(() -> new RuntimeException("No existe un cliente con este ID."));
+        Cliente receptor = clienteRepositorio.findByUsuarioId(mensajeDTO.getIdReceptor())
+                .orElseThrow(() -> new RuntimeException("No existe un cliente con este Usuario ID de receptor."));
 
         mensaje.setEmisor(emisor);
         mensaje.setReceptor(receptor);
@@ -42,18 +42,23 @@ public class MensajeServicio {
         mensajeRepositorio.save(mensaje);
     }
 
-    public List<MensajeDTO> mostrarConversacion(Integer idEmisor, Integer idReceptor) {
+    public List<MensajeDTO> mostrarConversacion(Integer idUsuarioEmisor, Integer idUsuarioReceptor) {
 
-        List<Mensaje> mensajes = mensajeRepositorio.findAll();
+        // Convertir idUsuario a idCliente para el emisor
+        Cliente clienteEmisor = clienteRepositorio.findByUsuarioId(idUsuarioEmisor)
+                .orElseThrow(() -> new RuntimeException("No existe un cliente con este Usuario ID de emisor."));
 
-        List<Mensaje> conversacion = new ArrayList<>();
+        // Convertir idUsuario a idCliente para el receptor
+        Cliente clienteReceptor = clienteRepositorio.findByUsuarioId(idUsuarioReceptor)
+                .orElseThrow(() -> new RuntimeException("No existe un cliente con este Usuario ID de receptor."));
 
-        for (Mensaje mensaje : mensajes) {
-            if (mensaje.getEmisor().getId() == idEmisor && mensaje.getReceptor().getId() == idReceptor
-                || mensaje.getEmisor().getId() == idReceptor && mensaje.getReceptor().getId() == idEmisor) {
-                conversacion.add(mensaje);
-            }
-        }
+        Integer idEmisorCliente = clienteEmisor.getId();
+        Integer idReceptorCliente = clienteReceptor.getId();
+
+        // Realizar la consulta usando idCliente
+        List<Mensaje> conversacion = mensajeRepositorio
+                .findByEmisor_IdAndReceptor_IdOrEmisor_IdAndReceptor_IdOrderByFechaAscHoraAsc(
+                        idEmisorCliente, idReceptorCliente, idReceptorCliente, idEmisorCliente);
 
         List<MensajeDTO> mensajesDTO = new ArrayList<>();
 
@@ -61,26 +66,35 @@ public class MensajeServicio {
             mensajesDTO.add(getMensajeDTO(mensaje));
         }
 
-        mensajesDTO.sort(Comparator.comparing(MensajeDTO::getFecha).thenComparing(MensajeDTO::getHora));
-
         return mensajesDTO;
     }
 
-    private static MensajeDTO getMensajeDTO(Mensaje e) {
+    private MensajeDTO getMensajeDTO(Mensaje e) {
         MensajeDTO dtonuevo = new MensajeDTO();
 
         dtonuevo.setId(e.getId());
         dtonuevo.setTexto(e.getTexto());
         dtonuevo.setHora(e.getHora());
         dtonuevo.setFecha(e.getFecha());
-        dtonuevo.setIdEmisor(e.getEmisor().getId());
-        dtonuevo.setIdReceptor(e.getReceptor().getId());
+
+        // Asignar idUsuario del emisor
+        if (e.getEmisor() != null && e.getEmisor().getUsuario() != null) {
+            dtonuevo.setIdEmisor(e.getEmisor().getUsuario().getId());
+        } else {
+            dtonuevo.setIdEmisor(null);
+        }
+
+        // Asignar idUsuario del receptor
+        if (e.getReceptor() != null && e.getReceptor().getUsuario() != null) {
+            dtonuevo.setIdReceptor(e.getReceptor().getUsuario().getId());
+        } else {
+            dtonuevo.setIdReceptor(null);
+        }
 
         return dtonuevo;
     }
 
-    public void eliminarMensaje (Integer id) {
-
+    public void eliminarMensaje(Integer id) {
         List<Mensaje> mensajes = mensajeRepositorio.findByReceptor_IdOrEmisor_Id(id, id);
         mensajeRepositorio.deleteAll(mensajes);
     }

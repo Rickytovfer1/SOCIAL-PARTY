@@ -31,7 +31,7 @@ public class AmistadServicio {
             throw new RuntimeException("No existe un cliente asociado a este Usuario ID.");
         }
 
-        Cliente cliente = clienteRepositorio.findByUsuarioId(idUsuario);
+        Cliente cliente = clienteRepositorio.findByUsuario_Id(idUsuario);
 
         List<Amistad> amistades = amistadRepositorio.findAllByUsuario_IdOrAmigo_Id(cliente.getId(), cliente.getId());
         List<ClienteDTO> clientesDTOs = new ArrayList<>();

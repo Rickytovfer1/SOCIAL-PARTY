@@ -55,6 +55,10 @@ export const routes: Routes = [
         loadComponent: () => import('./crear-evento-empresa/crear-evento-empresa.component').then((m) => m.CrearEventoEmpresaComponent)
     },
     {
+        path: 'chat/:id',
+        loadComponent: () => import('./chat/chat.component').then((m) => m.ChatComponent)
+    },
+    {
         path: 'crear-publicacion-empresa',
         loadComponent: () => import('./crear-publicacion-empresa/crear-publicacion-empresa.component').then((m) => m.CrearPublicacionEmpresaComponent)
     },

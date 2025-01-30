@@ -1,58 +1,28 @@
-<app-nav-superior></app-nav-superior>
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Chat</ion-title>
+    </ion-toolbar>
+</ion-header>
+
 <ion-content>
-    <div class="fondo"></div>
-    <div class="banda ion-align-items-center">
-        <ion-text id="nombre">José Francisco</ion-text>
+
+    <app-nav-superior></app-nav-superior>
+
+    <div *ngFor="let mensaje of mensajes"
+         [ngClass]="mensaje.idEmisor === usuario.id ? 'emisor' : 'receptor'">
+        <p class="mensaje-texto">{{ mensaje.texto }}</p>
+        <small class="mensaje-fecha">
+            {{ mensaje.fecha }} {{ mensaje.hora }}
+        </small>
     </div>
-    <ion-grid>
-        <ion-row>
-            <ion-col>
-                <div class="ion-justify-content-between ion-align-items-center div_dia">
-                    <hr>
-                    <ion-text>Hoy</ion-text>
-                    <hr>
-                </div>
-            </ion-col>
-        </ion-row>
-        <ion-row>
-            <ion-col>
-                <div class="receptor">
-                    Illoooooo
-                </div>
-            </ion-col>
-        </ion-row>
-        <ion-row>
-            <ion-col>
-                <div class="emisor">
-                    Illoooooo
-                </div>
-            </ion-col>
-        </ion-row>
-        <ion-row>
-            <ion-col>
-                <div class="emisor">
-                    Llamame
-                </div>
-            </ion-col>
-        </ion-row>
-        <ion-row>
-            <ion-col>
-                <div class="receptor">
-                    Vooooyyy
-                </div>
-            </ion-col>
-        </ion-row>
-        <ion-row>
-            <ion-col>
-                <div class="emisor">
-                    NIGSNEIGINGNSEGIGSEIGNSINEGISENGINESIGNEGI NSIEGNIESN
-                </div>
-            </ion-col>
-        </ion-row>
-    </ion-grid>
-    <div class="ion-justify-content-between ion-align-items-center" id="enviar_mensaje">
-        <ion-input placeholder="Envía un mensaje..."/>
-        <ion-img src="assets/iconoEnviar.png"/>
-    </div>
+
+
+    <ion-item>
+        <ion-input placeholder="Escribe un mensaje..."
+                   [(ngModel)]="nuevoTexto"></ion-input>
+        <ion-button (click)="enviar()">Enviar</ion-button>
+    </ion-item>
+
+    <app-nav-inferior></app-nav-inferior>
+
 </ion-content>
-<app-nav-inferior></app-nav-inferior>
