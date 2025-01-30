@@ -4,8 +4,10 @@ import lombok.AllArgsConstructor;
 import org.example.backendsocialparty.DTOs.ClientePublicacionDTO;
 import org.example.backendsocialparty.DTOs.MostrarPublicacionDTO;
 import org.example.backendsocialparty.DTOs.PublicacionDTO;
+import org.example.backendsocialparty.modelos.Usuario;
 import org.example.backendsocialparty.servicios.PublicacionServicio;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,5 +35,13 @@ public class PublicacionControlador {
     @GetMapping("/cliente/ver/publicaciones")
     public List<MostrarPublicacionDTO> mostrarPublicaciones() {
         return publicacionServicio.mostrarPublicaciones();
+    };
+
+    @GetMapping("/empresa/publicaciones-empresa/{idUsuario}")
+    public List<MostrarPublicacionDTO> mostrarPublicacionesEmpresa(@PathVariable Integer idUsuario) {
+        return publicacionServicio.mostrarPublicacionesPorEmpresa(idUsuario);
     }
+
 }
+
+

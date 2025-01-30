@@ -59,4 +59,6 @@ public class Empresa {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Usuario usuario;
+
+
 }

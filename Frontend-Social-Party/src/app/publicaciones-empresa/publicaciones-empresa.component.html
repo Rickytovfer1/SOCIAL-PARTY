@@ -1,0 +1,22 @@
+<app-nav-superior></app-nav-superior>
+<ion-content>
+    <ion-searchbar [(ngModel)]="buscar" (ionInput)="onSearchChange($event)"></ion-searchbar>
+    <ion-list>
+        <ion-item *ngFor="let publicacion of publicacionesFiltradas">
+            <ion-thumbnail slot="start">
+                <img [src]="getImageUrl(publicacion)" />
+            </ion-thumbnail>
+            <ion-label>
+                <h2>{{ publicacion.titulo }}</h2>
+                <p>{{ publicacion.texto }}</p>
+                <p>{{ publicacion.direccion }}</p>
+                <p>{{ publicacion.fecha }} {{ publicacion.hora }}</p>
+            </ion-label>
+            <ion-button fill="clear" (click)="verPublicacion(publicacion.id)">
+                <ion-icon name="eye-outline"></ion-icon>
+            </ion-button>
+        </ion-item>
+    </ion-list>
+</ion-content>
+
+<app-nav-inferior></app-nav-inferior>

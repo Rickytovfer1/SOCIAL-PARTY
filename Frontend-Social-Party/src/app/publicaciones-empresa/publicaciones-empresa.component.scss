@@ -1,0 +1,45 @@
+ion-content {
+    --background: #D3E5E5;
+}
+
+ion-card {
+    margin: 25px auto;
+    --background: #306DA9;
+    border-radius: 20px;
+}
+
+.publicacion {
+    width: 90%;
+    height: 90%;
+    margin: 0 auto;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+#agregar {
+    margin: 15px auto;
+}
+
+ion-col {
+    margin: 0 auto;
+    text-align: center;
+}
+
+ion-text {
+    margin: 10px auto;
+    color: #ffffff;
+}
+
+.direccion {
+    font-size: 15px;
+}
+
+.nombre {
+    font-size: 25px;
+}
+
+ion-searchbar {
+    --border-radius: 60px;
+    width: 90%;
+    margin: 20px auto;
+}
