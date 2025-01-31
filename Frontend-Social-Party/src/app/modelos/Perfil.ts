@@ -1,4 +1,5 @@
 export interface Perfil{
+    fechaNacimiento: any;
     id: number;
     nombre?: string;
     apellidos?: string;

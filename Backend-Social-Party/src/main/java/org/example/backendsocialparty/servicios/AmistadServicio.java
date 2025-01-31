@@ -17,12 +17,10 @@ public class AmistadServicio {
 
     private final AmistadRepositorio amistadRepositorio;
     private final ClienteRepositorio clienteRepositorio;
-    private final ClienteServicio clienteServicio;
 
     public AmistadServicio(AmistadRepositorio amistadRepositorio, ClienteRepositorio clienteRepositorio, ClienteServicio clienteServicio) {
         this.amistadRepositorio = amistadRepositorio;
         this.clienteRepositorio = clienteRepositorio;
-        this.clienteServicio = clienteServicio;
     }
 
     public List<ClienteDTO> getAmistad(Integer idUsuario) {
@@ -43,7 +41,7 @@ public class AmistadServicio {
             } else {
                 amigo = a.getUsuario();
             }
-            ClienteDTO dto = clienteServicio.getClienteDTO(amigo);
+            ClienteDTO dto = ClienteServicio.getClienteDTO(amigo);
             if (!clientesDTOs.contains(dto)) {
                 clientesDTOs.add(dto);
             }

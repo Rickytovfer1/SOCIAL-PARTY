@@ -1,65 +1,62 @@
-<app-nav-superior></app-nav-superior>
+<ion-header>
+    <app-nav-superior></app-nav-superior>
+</ion-header>
 
-<ion-content class="fondo">
+<ion-content>
+    <div *ngIf="perfil">
+        <h2>Perfil de {{ perfil.nombre }} {{ perfil.apellidos }}</h2>
 
-    <ion-grid id="grid_principal">
-        <ion-row id="fila_icono">
-            <ion-col size-lg="4" size-xl="4" size-md="4" size-sm="6" size-xs="8" id="col_icono">
-                <ion-img id="icono" src="assets/iconoUsuario.png" alt="Icono"></ion-img>
-            </ion-col>
-        </ion-row>
-    </ion-grid>
+        <img [src]="perfil.fotoPerfil" alt="Foto de Perfil" *ngIf="perfil.fotoPerfil">
 
-    <ion-grid id="grid_secundario">
-        <ion-row>
-            <ion-col size-lg="4" size-xl="4" size-md="6" size-sm="8" size-xs="10" id="col_principal">
-                <ion-grid>
+        <form *ngIf="editar" (ngSubmit)="editarBoton()">
+            <ion-item>
+                <ion-label position="floating">Nombre</ion-label>
+                <ion-input [(ngModel)]="registro.nombre" name="nombre" required></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label position="floating">Apellidos</ion-label>
+                <ion-input [(ngModel)]="registro.apellidos" name="apellidos" required></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label position="floating">DNI</ion-label>
+                <ion-input [(ngModel)]="registro.dni" name="dni" required></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label position="floating">Fecha de Nacimiento</ion-label>
+                <ion-datetime
+                    displayFormat="YYYY-MM-DD"
+                    pickerFormat="YYYY-MM-DD"
+                    [(ngModel)]="registro.fechaNacimiento"
+                    name="fechaNacimiento"
+                    required>
+                </ion-datetime>
+            </ion-item>
+            <ion-item>
+                <ion-label position="floating">Teléfono</ion-label>
+                <ion-input [(ngModel)]="registro.telefono" name="telefono" required></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label position="floating">Correo</ion-label>
+                <ion-input [(ngModel)]="registro.correo" name="correo" required type="email"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label position="floating">Biografía</ion-label>
+                <ion-textarea [(ngModel)]="registro.biografia" name="biografia"></ion-textarea>
+            </ion-item>
+            <ion-button type="submit" expand="full">Guardar Cambios</ion-button>
+        </form>
 
-                    <ion-row>
-                        <ion-label>Nombre:</ion-label>
-                        <ion-input type="text" [(ngModel)]="registro.nombre" placeholder="{{perfil.nombre}}" [readonly]="!editar"></ion-input>
-                    </ion-row>
-                    <ion-row>
-                        <ion-label>Apellidos:</ion-label>
-                        <ion-input type="text" [(ngModel)]="registro.apellidos" placeholder="{{perfil.apellidos}}" [readonly]="!editar"></ion-input>
-                    </ion-row>
-                    <ion-row>
-                        <ion-label>Correo electrónico:</ion-label>
-                        <ion-input type="email" [(ngModel)]="registro.correo" placeholder="{{usuario.correo}}" [readonly]="!editar"></ion-input>
-                    </ion-row>
-                    <ion-row>
-                        <ion-label>Número de teléfono:</ion-label>
-                        <ion-input type="phone" [(ngModel)]="registro.telefono" placeholder="{{perfil.telefono}}" [readonly]="!editar"></ion-input>
-                    </ion-row>
-                    <ion-row>
-                        <ion-label>DNI:</ion-label>
-                        <ion-input type="text" [(ngModel)]="registro.dni" placeholder="{{perfil.dni}}" [readonly]="!editar"></ion-input>
-                    </ion-row>
-                    <ion-row>
-                        <ion-label>Fecha de nacimiento:</ion-label>
-                        <ion-input type="date" readonly [(ngModel)]="registro.fechaNacimiento"
-                                   [readonly]="!editar"></ion-input>
-                    </ion-row>
-                    <ion-row>
-                        <ion-label>Foto perfil:</ion-label>
-                        <ion-input type="text" placeholder="{{perfil.fotoPerfil}}"
-                                   [(ngModel)]="registro.fotoPerfil" [readonly]="!editar"></ion-input>
-                    </ion-row>
-                    <ion-row>
-                        <ion-label>Biografía:</ion-label>
-                        <ion-input type="text" placeholder="{{perfil.biografia}}" [value]="perfil.biografia"
-                                   [readonly]="!editar"></ion-input>
-                    </ion-row>
-                    <ion-row>
-                        <ion-button (click)="editarBoton()">{{ editar ? 'Guardar' : 'Editar' }}</ion-button>
-                    </ion-row>
-                </ion-grid>
-
-            </ion-col>
-        </ion-row>
-    </ion-grid>
-
+        <div *ngIf="!editar">
+            <p><strong>DNI:</strong> {{ perfil.dni }}</p>
+            <p><strong>Fecha de Nacimiento:</strong> {{ perfil.fechaNacimiento | date }}</p>
+            <p><strong>Teléfono:</strong> {{ perfil.telefono }}</p>
+            <p><strong>Correo:</strong> {{ perfil.correo }}</p>
+            <p><strong>Biografía:</strong> {{ perfil.biografia }}</p>
+            <ion-button (click)="editarBoton()" expand="full">Editar Perfil</ion-button>
+        </div>
+    </div>
 </ion-content>
 
-<app-nav-inferior></app-nav-inferior>
-
+<ion-footer>
+    <app-nav-inferior></app-nav-inferior>
+</ion-footer>

@@ -5,15 +5,15 @@ import { NavInferiorComponent } from "../nav-inferior/nav-inferior.component";
 import { ActivatedRoute } from "@angular/router";
 import { Perfil } from "../modelos/Perfil";
 import { PerfilServicio } from "../servicios/perfil.service";
-import { jwtDecode } from "jwt-decode";
+import {jwtDecode }from "jwt-decode";
 import { DecodedToken } from "../modelos/DecodedToken";
 import { TokenDataDTO } from "../modelos/TokenDataDTO";
 import { UsuarioService } from "../servicios/usuario.service";
 import { Usuario } from "../modelos/Usuario";
-import {ClienteService} from "../servicios/cliente.service";
-import {RegistroCliente} from "../modelos/RegistroCliente";
-import {ActualizarCliente} from "../modelos/ActualizarCliente";
-import {FormsModule} from "@angular/forms";
+import { ClienteService } from "../servicios/cliente.service";
+import { ActualizarCliente } from "../modelos/ActualizarCliente";
+import { FormsModule } from "@angular/forms";
+import {DatePipe, NgIf} from "@angular/common";
 
 @Component({
     selector: 'app-perfil',
@@ -25,6 +25,8 @@ import {FormsModule} from "@angular/forms";
         NavSuperiorComponent,
         NavInferiorComponent,
         FormsModule,
+        DatePipe,
+        NgIf,
     ]
 })
 export class PerfilComponent implements OnInit {
@@ -34,9 +36,8 @@ export class PerfilComponent implements OnInit {
     correo?: string;
     editar: boolean = false;
 
-
     registro: ActualizarCliente = {
-        id: this.perfil.id,
+        id: 0,
         nombre: "",
         apellidos: "",
         dni: "",
@@ -45,14 +46,14 @@ export class PerfilComponent implements OnInit {
         correo: "",
         fotoPerfil: "",
         biografia: "",
-        contrasena: "123456",
+        contrasena: "", // Es recomendable manejar la contraseña por separado
     }
 
     constructor(
         private perfilService: PerfilServicio,
         private activateRoute: ActivatedRoute,
         private usuarioService: UsuarioService,
-        private clienteService:ClienteService
+        private clienteService: ClienteService
     ) {}
 
     ngOnInit() {
@@ -61,7 +62,7 @@ export class PerfilComponent implements OnInit {
 
         if (token) {
             try {
-                const decodedToken = jwtDecode(token) as { tokenDataDTO: TokenDataDTO };
+                const decodedToken = jwtDecode<{ tokenDataDTO: TokenDataDTO }>(token);
                 console.log('Decoded Token:', decodedToken);
 
                 const tokenDataDTO = decodedToken?.tokenDataDTO;
@@ -82,11 +83,28 @@ export class PerfilComponent implements OnInit {
         }
     }
 
-    cargarPerfil(idUsuario: number): void {
+    cargarPerfil(idUsuario: number | undefined): void {
         this.perfilService.getPerfil(idUsuario).subscribe({
             next: (perfil: Perfil) => {
                 this.perfil = perfil;
                 console.log('Perfil cargado:', this.perfil);
+
+                if (this.perfil.id) {
+                    this.registro = {
+                        id: this.perfil.id,
+                        nombre: this.perfil.nombre,
+                        apellidos: this.perfil.apellidos,
+                        dni: this.perfil.dni,
+                        fechaNacimiento: this.perfil.fechaNacimiento || "",
+                        telefono: this.perfil.telefono,
+                        correo: this.perfil.correo,
+                        fotoPerfil: this.perfil.fotoPerfil || "",
+                        biografia: this.perfil.biografia || "",
+                        contrasena: ""
+                    };
+                } else {
+                    console.error('El perfil no tiene un ID válido.');
+                }
             },
             error: (e) => {
                 console.error("Error al cargar el perfil:", e);
@@ -94,7 +112,7 @@ export class PerfilComponent implements OnInit {
         });
     }
 
-    cargarUsuario(correo: string): void {
+    cargarUsuario(correo: string | undefined): void {
         this.usuarioService.getUsuario(correo).subscribe({
             next: (usuario: Usuario) => {
                 this.usuario = usuario;
@@ -113,13 +131,19 @@ export class PerfilComponent implements OnInit {
     }
 
     actualizarCliente(): void {
-        this.clienteService.actualizar(this.registro).subscribe({
-            next: (registro) => {
-                console.log('Usuario actualizado:');
+        if (this.registro.id === 0 || !this.registro.id) {
+            console.error("ID del cliente no válido.");
+            return;
+        }
+
+        this.perfilService.actualizarPerfil(this.registro).subscribe({
+            next: (respuesta) => {
+                console.log('Usuario actualizado:', respuesta);
                 this.editar = false;
+                this.cargarPerfil(this.registro.id);
             },
             error: (e) => {
-                console.error("Error al cargar el usuario:", e);
+                console.error("Error al actualizar el usuario:", e);
             }
         });
     }

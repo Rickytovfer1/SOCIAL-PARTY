@@ -1,3 +1,5 @@
+// EmpresaDTO.java
+
 package org.example.backendsocialparty.DTOs;
 
 import lombok.AllArgsConstructor;
@@ -18,7 +20,8 @@ public class EmpresaDTO {
     private String fotoPerfil;
     private String telefono;
     private Integer valoracionMinima;
-    private Integer edadMinimsa;
+    private Integer edadMinima;
     private Set<Integer> eventos;
     private Integer idUsuario;
+    private String correo;
 }

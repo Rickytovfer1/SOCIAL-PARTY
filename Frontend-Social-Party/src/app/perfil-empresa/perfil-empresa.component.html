@@ -17,45 +17,98 @@
 
                     <ion-row>
                         <ion-label>Nombre:</ion-label>
-                        <ion-input type="text"  placeholder="{{perfilEmpresa.nombre}}" [readonly]="!editar"></ion-input>
+                        <ion-input
+                            type="text"
+                            [readonly]="!editar"
+                            [(ngModel)]="perfilEmpresa.nombre"
+                            [placeholder]="!editar ? perfilEmpresa.nombre : ''"
+                        ></ion-input>
                     </ion-row>
+
                     <ion-row>
                         <ion-label>Dirección:</ion-label>
-                        <ion-input type="text"  placeholder="{{perfilEmpresa.direccion}}" [readonly]="!editar"></ion-input>
+                        <ion-input
+                            type="text"
+                            [readonly]="!editar"
+                            [(ngModel)]="perfilEmpresa.direccion"
+                            [placeholder]="!editar ? perfilEmpresa.direccion : ''"
+                        ></ion-input>
                     </ion-row>
+
                     <ion-row>
                         <ion-label>Codigo postal:</ion-label>
-                        <ion-input type="text" readonly placeholder="{{perfilEmpresa.cp}}" [readonly]="!editar"></ion-input>
+                        <ion-input
+                            type="text"
+                            [readonly]="!editar"
+                            [(ngModel)]="perfilEmpresa.cp"
+                            [placeholder]="!editar ? perfilEmpresa.cp : ''"
+                        ></ion-input>
                     </ion-row>
+
                     <ion-row>
                         <ion-label>Correo electrónico:</ion-label>
-                        <ion-input type="email" placeholder="{{usuario.correo}}" [readonly]="!editar"></ion-input>
+                        <ion-input
+                            type="email"
+                            [readonly]="!editar"
+                            [(ngModel)]="usuario.correo"
+                            [placeholder]="!editar ? usuario.correo : ''"
+                        ></ion-input>
                     </ion-row>
+
                     <ion-row>
                         <ion-label>Número de teléfono:</ion-label>
-                        <ion-input type="phone" placeholder="{{perfilEmpresa.telefono}}" [readonly]="!editar"></ion-input>
+                        <ion-input
+                            type="phone"
+                            [readonly]="!editar"
+                            [(ngModel)]="perfilEmpresa.telefono"
+                            [placeholder]="!editar ? perfilEmpresa.telefono : ''"
+                        ></ion-input>
                     </ion-row>
+
                     <ion-row>
                         <ion-label>NIF:</ion-label>
-                        <ion-input type="text" placeholder="{{perfilEmpresa.nif}}" [readonly]="!editar"></ion-input>
+                        <ion-input
+                            type="text"
+                            [readonly]="!editar"
+                            [(ngModel)]="perfilEmpresa.nif"
+                            [placeholder]="!editar ? perfilEmpresa.nif : ''"
+                        ></ion-input>
                     </ion-row>
+
                     <ion-row>
                         <ion-label>Foto perfil:</ion-label>
-                        <ion-input type="text" placeholder="{{perfilEmpresa.fotoPerfil}}" [readonly]="!editar"></ion-input>
+                        <ion-input
+                            type="text"
+                            [readonly]="!editar"
+                            [(ngModel)]="perfilEmpresa.fotoPerfil"
+                            [placeholder]="!editar ? perfilEmpresa.fotoPerfil : ''"
+                        ></ion-input>
                     </ion-row>
+
                     <ion-row>
                         <ion-label>Edad mínima:</ion-label>
-                        <ion-range min="16" value="{{perfilEmpresa.edadMinima}}" pin="true" [disabled]="!editar"></ion-range>
+                        <ion-range
+                            min="16"
+                            pin="true"
+                            [disabled]="!editar"
+                            [(ngModel)]="perfilEmpresa.edadMinima"
+                        ></ion-range>
                     </ion-row>
+
                     <ion-row>
                         <ion-label>Valoración mínima:</ion-label>
-                        <ion-range min="16" value="{{perfilEmpresa.valoracionMinima}}" pin="true" [disabled]="!editar"></ion-range>
+                        <ion-range
+                            min="16"
+                            pin="true"
+                            [disabled]="!editar"
+                            [(ngModel)]="perfilEmpresa.valoracionMinima"
+                        ></ion-range>
                     </ion-row>
                     <ion-row>
-                    <ion-button (click)="editarBoton()" >{{ editar ? 'Guardar' : 'Editar' }}</ion-button>
+                        <ion-button (click)="editarBoton()">{{ editar ? 'Guardar' : 'Editar' }}</ion-button>
                     </ion-row>
-                </ion-grid>
 
+                </ion-grid>
             </ion-col>
         </ion-row>
     </ion-grid>
@@ -63,4 +116,3 @@
 </ion-content>
 
 <app-nav-inferior-empresa></app-nav-inferior-empresa>
-

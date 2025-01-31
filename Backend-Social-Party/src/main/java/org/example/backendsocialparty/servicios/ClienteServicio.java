@@ -2,16 +2,15 @@ package org.example.backendsocialparty.servicios;
 
 import lombok.AllArgsConstructor;
 import org.example.backendsocialparty.DTOs.ClienteDTO;
-import org.example.backendsocialparty.modelos.Amistad;
-import org.example.backendsocialparty.modelos.Cliente;
-import org.example.backendsocialparty.modelos.Entrada;
-import org.example.backendsocialparty.modelos.Grupo;
+import org.example.backendsocialparty.modelos.*;
 import org.example.backendsocialparty.repositorios.AmistadRepositorio;
 import org.example.backendsocialparty.repositorios.ClienteRepositorio;
+import org.example.backendsocialparty.repositorios.UsuarioRepositorio;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -30,12 +29,12 @@ public class ClienteServicio {
     private final EventoServicio eventoServicio;
 
     private final EntradaServicio entradaServicio;
-
+    private final UsuarioRepositorio usuarioRepositorio;
 
     public ClienteServicio(ClienteRepositorio clienteRepositorio, PublicacionServicio publicacionServicio,
                            MensajeServicio mensajeServicio, SolicitudServicio solicitudServicio,
                            @Lazy AmistadServicio amistadServicio, EventoServicio eventoServicio,
-                           EntradaServicio entradaServicio) {
+                           EntradaServicio entradaServicio, UsuarioRepositorio usuarioRepositorio) {
         this.clienteRepositorio = clienteRepositorio;
         this.publicacionServicio = publicacionServicio;
         this.mensajeServicio = mensajeServicio;
@@ -43,6 +42,7 @@ public class ClienteServicio {
         this.amistadServicio = amistadServicio;
         this.eventoServicio = eventoServicio;
         this.entradaServicio = entradaServicio;
+        this.usuarioRepositorio = usuarioRepositorio;
     }
 
     public ClienteDTO buscarClienteId(Integer id) {
@@ -112,5 +112,37 @@ public class ClienteServicio {
         mensajeServicio.eliminarMensaje(id);
         clienteRepositorio.delete(cliente);
 
+    }
+
+    public ClienteDTO actualizarCliente(ClienteDTO clienteDTO) {
+        Cliente cliente = clienteRepositorio.findById(clienteDTO.getId())
+                .orElseThrow(() -> new RuntimeException("No existe un cliente con este ID."));
+
+        cliente.setNombre(clienteDTO.getNombre());
+        cliente.setApellidos(clienteDTO.getApellidos());
+        cliente.setDni(clienteDTO.getDni());
+        cliente.setTelefono(clienteDTO.getTelefono());
+        cliente.setFechaNacimiento(clienteDTO.getFechaNacimiento());
+        cliente.setBiografia(clienteDTO.getBiografia());
+        cliente.setFotoPerfil(clienteDTO.getFotoPerfil());
+
+        Usuario usuario = cliente.getUsuario();
+        if (usuario != null) {
+            String nuevoCorreo = clienteDTO.getCorreo();
+            if (nuevoCorreo != null && !nuevoCorreo.equals(usuario.getCorreo())) {
+                Optional<Usuario> usuarioExistente = usuarioRepositorio.findTopByCorreo(nuevoCorreo);
+                if (usuarioExistente.isPresent() && !usuarioExistente.get().getId().equals(usuario.getId())) {
+                    throw new RuntimeException("El correo ya está en uso por otro usuario.");
+                }
+                usuario.setCorreo(nuevoCorreo);
+                usuarioRepositorio.save(usuario);
+            }
+        } else {
+            throw new RuntimeException("El cliente no está asociado a ningún usuario.");
+        }
+
+        Cliente clienteActualizado = clienteRepositorio.save(cliente);
+
+        return getClienteDTO(clienteActualizado);
     }
 }

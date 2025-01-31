@@ -7,14 +7,13 @@ import org.example.backendsocialparty.DTOs.RestarPuntoDTO;
 import org.example.backendsocialparty.modelos.Cliente;
 import org.example.backendsocialparty.modelos.Empresa;
 import org.example.backendsocialparty.modelos.Evento;
+import org.example.backendsocialparty.modelos.Usuario;
 import org.example.backendsocialparty.repositorios.ClienteRepositorio;
 import org.example.backendsocialparty.repositorios.EmpresaRepositorio;
+import org.example.backendsocialparty.repositorios.UsuarioRepositorio;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,6 +33,7 @@ public class EmpresaServicio {
     private AmistadServicio amistadServicio;
 
     private EventoServicio eventoServicio;
+    private UsuarioRepositorio usuarioRepositorio;
 
     private EntradaServicio entradaServicio;
 
@@ -95,22 +95,55 @@ public class EmpresaServicio {
         Empresa empresa = empresaRepositorio.findByUsuario_Id(idUsuario);
         return getEmpresaDTO(empresa);
     }
-    public EmpresaDTO buscarEmpresaPorCorreo(String correo) {
-        Empresa empresa = empresaRepositorio.findByUsuarioCorreo(correo)
-                .orElseThrow(() -> new RuntimeException("Empresa no encontrada con correo: " + correo));
 
-        return new EmpresaDTO(
-                empresa.getId(),
-                empresa.getNombre(),
-                empresa.getDireccion(),
-                empresa.getCodigoPostal(),
-                empresa.getNif(),
-                empresa.getFotoPerfil(),
-                empresa.getTelefono(),
-                empresa.getValoracionMinima(),
-                empresa.getEdadMinima(),
-                empresa.getEventos().stream().map(Evento::getId).collect(Collectors.toSet()),
-                empresa.getUsuario().getId()
-        );
+
+    public EmpresaDTO actualizarEmpresa(EmpresaDTO empresaDTO) {
+        Empresa empresa = empresaRepositorio.findById(empresaDTO.getId())
+                .orElseThrow(() -> new RuntimeException("No existe una empresa con este ID."));
+
+        if (empresaDTO.getNombre() != null) {
+            empresa.setNombre(empresaDTO.getNombre());
+        }
+        if (empresaDTO.getDireccion() != null) {
+            empresa.setDireccion(empresaDTO.getDireccion());
+        }
+        if (empresaDTO.getCp() != null) {
+            empresa.setCodigoPostal(empresaDTO.getCp());
+        }
+        if (empresaDTO.getNif() != null) {
+            empresa.setNif(empresaDTO.getNif());
+        }
+        if (empresaDTO.getTelefono() != null) {
+            empresa.setTelefono(empresaDTO.getTelefono());
+        }
+        if (empresaDTO.getValoracionMinima() != null) {
+            empresa.setValoracionMinima(empresaDTO.getValoracionMinima());
+        }
+        if (empresaDTO.getEdadMinima() != null) {
+            empresa.setEdadMinima(empresaDTO.getEdadMinima());
+        }
+        if (empresaDTO.getFotoPerfil() != null) {
+            empresa.setFotoPerfil(empresaDTO.getFotoPerfil());
+        }
+
+        Usuario usuario = empresa.getUsuario();
+        if (usuario != null) {
+            String nuevoCorreo = empresaDTO.getCorreo();
+            if (nuevoCorreo != null && !nuevoCorreo.equals(usuario.getCorreo())) {
+                Optional<Usuario> usuarioExistente = usuarioRepositorio.findTopByCorreo(nuevoCorreo);
+                if (usuarioExistente.isPresent() && !usuarioExistente.get().getId().equals(usuario.getId())) {
+                    throw new RuntimeException("El correo ya está en uso por otra empresa.");
+                }
+                usuario.setCorreo(nuevoCorreo);
+                usuarioRepositorio.save(usuario);
+            }
+        } else {
+            throw new RuntimeException("La empresa no está asociada a ningún usuario.");
+        }
+
+        Empresa empresaActualizada = empresaRepositorio.save(empresa);
+
+        return getEmpresaDTO(empresaActualizada);
     }
+
 }
