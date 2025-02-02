@@ -5,4 +5,6 @@ export interface MensajeDTO {
     fecha?: string;
     idEmisor: number;
     idReceptor: number;
+    editado?: boolean;
+    borrado?: boolean;
 }
