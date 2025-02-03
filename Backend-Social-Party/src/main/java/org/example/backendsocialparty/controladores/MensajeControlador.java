@@ -1,4 +1,3 @@
-// MensajeControlador.java
 package org.example.backendsocialparty.controladores;
 
 import lombok.AllArgsConstructor;

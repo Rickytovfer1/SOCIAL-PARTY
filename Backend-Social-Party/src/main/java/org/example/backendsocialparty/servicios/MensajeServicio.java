@@ -1,4 +1,3 @@
-// MensajeServicio.java
 package org.example.backendsocialparty.servicios;
 
 import org.example.backendsocialparty.DTOs.MensajeDTO;

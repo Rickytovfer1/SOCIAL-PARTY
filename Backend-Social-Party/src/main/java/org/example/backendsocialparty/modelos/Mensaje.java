@@ -1,4 +1,3 @@
-// Mensaje.java
 package org.example.backendsocialparty.modelos;
 
 import jakarta.persistence.*;

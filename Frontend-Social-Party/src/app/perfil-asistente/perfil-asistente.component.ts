@@ -17,8 +17,8 @@ import {NavInferiorComponent} from "../nav-inferior/nav-inferior.component";
 })
 export class PerfilAsistenteComponent  implements OnInit {
 
-  constructor() { }
+    constructor() { }
 
-  ngOnInit() {}
+    ngOnInit() {}
 
 }

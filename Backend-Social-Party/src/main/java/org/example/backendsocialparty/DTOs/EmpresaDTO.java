@@ -1,5 +1,3 @@
-// EmpresaDTO.java
-
 package org.example.backendsocialparty.DTOs;
 
 import lombok.AllArgsConstructor;
