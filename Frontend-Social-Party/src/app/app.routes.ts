@@ -31,7 +31,7 @@ export const routes: Routes = [
         loadComponent: () => import('./perfil/perfil.component').then((m) => m.PerfilComponent)
     },
     {
-        path: 'ver-eventos',
+        path: 'ver-eventos/:id',
         loadComponent: () => import('./ver-eventos/ver-eventos.component').then((m) => m.VerEventosComponent)
     },
     {

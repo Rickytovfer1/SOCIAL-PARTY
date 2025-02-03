@@ -55,7 +55,7 @@ export class VerEmpresasComponent implements OnInit {
     }
 
     //Función provisional hasta que se le aplique lógica a "ver-eventos"
-    verEventos() {
-        this.router.navigate(['/ver-eventos']);
+    verEventos(idEmpresa: number) {
+        this.router.navigate(['/ver-eventos', idEmpresa]);
     }
 }
