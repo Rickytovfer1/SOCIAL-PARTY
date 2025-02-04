@@ -12,8 +12,8 @@ import { NavSuperiorComponent } from '../nav-superior/nav-superior.component';
     standalone: true,
     imports: [
         IonicModule,
-        NavInferiorComponent,
-        NavSuperiorComponent,
+        NavSuperiorEmpresaComponent,
+        NavInferiorEmpresaComponent,
     ]
 })
 export class CanjearEntradaEmpresaComponent implements AfterViewInit {
