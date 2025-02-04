@@ -258,24 +258,4 @@ export class ChatComponent implements OnInit, AfterViewChecked {
         });
         await alert.present();
     }
-
-    irPerfil() {
-        this.router.navigate(['/perfil']);
-    }
-
-    irEntradas() {
-        this.router.navigate(['/ver-empresas']);
-    }
-
-    irAmigos() {
-        this.router.navigate(['/amigos']);
-    }
-
-    irUbicacion() {
-        this.router.navigate(['/asistentes-evento']);
-    }
-
-    irPublicaciones() {
-        this.router.navigate(['/publicaciones']);
-    }
 }

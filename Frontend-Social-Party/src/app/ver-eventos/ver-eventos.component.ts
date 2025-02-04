@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { EventoService } from "../servicios/evento.service";
 import { Evento } from "../modelos/Evento";
 import {NavSuperiorComponent} from "../nav-superior/nav-superior.component";
@@ -32,6 +32,7 @@ export class VerEventosComponent implements OnInit {
     constructor(
         private eventoService: EventoService,
         private activateRoute: ActivatedRoute,
+        private router: Router
     ) {}
 
     ngOnInit() {
@@ -61,5 +62,9 @@ export class VerEventosComponent implements OnInit {
         } else {
             return `${this.baseUrl}${evento.foto}`;
         }
+    }
+
+    verEvento(idEvento: number) {
+        this.router.navigate(["/ver-evento-info", idEvento])
     }
 }

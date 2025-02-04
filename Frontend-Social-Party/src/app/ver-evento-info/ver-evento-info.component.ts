@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {IonicModule} from "@ionic/angular";
 import {NavInferiorComponent} from "../nav-inferior/nav-inferior.component";
 import {NavSuperiorComponent} from "../nav-superior/nav-superior.component";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'app-ver-evento-info',
@@ -16,8 +17,12 @@ import {NavSuperiorComponent} from "../nav-superior/nav-superior.component";
 })
 export class VerEventoInfoComponent  implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {}
+
+  comprarEntrada(idEvento: number) {
+      this.router.navigate(["/confirmacion-pago", idEvento])
+  }
 
 }
