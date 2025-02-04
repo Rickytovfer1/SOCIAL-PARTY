@@ -12,13 +12,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { Perfil } from '../modelos/Perfil';
 import { PerfilServicio } from '../servicios/perfil.service';
+import {NavInferiorComponent} from "../nav-inferior/nav-inferior.component";
 
 @Component({
     selector: 'app-chat',
     templateUrl: './chat.component.html',
     styleUrls: ['./chat.component.scss'],
     standalone: true,
-    imports: [CommonModule, FormsModule, NavSuperiorComponent, IonicModule],
+    imports: [CommonModule, FormsModule, NavSuperiorComponent, IonicModule, NavInferiorComponent],
     providers: [DatePipe]
 })
 export class ChatComponent implements OnInit, AfterViewChecked {

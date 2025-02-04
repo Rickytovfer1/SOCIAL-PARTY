@@ -33,4 +33,9 @@ export class NavSuperiorEmpresaComponent  implements OnInit {
         this.router.navigate(['/crear-publicacion-empresa']);
     }
 
+    cerrarSesion() {
+        sessionStorage.clear();
+        this.router.navigate(['/login']);
+    }
+
 }
