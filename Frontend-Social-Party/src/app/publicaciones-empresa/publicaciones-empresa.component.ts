@@ -13,6 +13,8 @@ import { TokenDataDTO } from "../modelos/TokenDataDTO";
 import { Usuario } from "../modelos/Usuario";
 import { jwtDecode } from "jwt-decode";
 import {CommonModule, NgOptimizedImage} from "@angular/common";
+import {NavSuperiorEmpresaComponent} from "../nav-superior-empresa/nav-superior-empresa.component";
+import {NavInferiorEmpresaComponent} from "../nav-inferior-empresa/nav-inferior-empresa.component";
 
 @Component({
     selector: 'app-publicaciones-empresa',
@@ -25,7 +27,9 @@ import {CommonModule, NgOptimizedImage} from "@angular/common";
         NavInferiorComponent,
         CommonModule,
         NgOptimizedImage,
-        FormsModule
+        FormsModule,
+        NavSuperiorEmpresaComponent,
+        NavInferiorEmpresaComponent
     ]
 })
 export class PublicacionesEmpresaComponent implements OnInit {
