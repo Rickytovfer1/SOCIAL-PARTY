@@ -93,7 +93,6 @@ export class AmigosComponent implements OnInit {
         });
     }
 
-    // Component
     abrirChat(idUsuario: number) {
         this.router.navigate(['/chat', idUsuario]);
     }

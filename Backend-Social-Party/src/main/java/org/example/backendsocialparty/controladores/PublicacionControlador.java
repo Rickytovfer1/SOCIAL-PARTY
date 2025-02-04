@@ -41,7 +41,10 @@ public class PublicacionControlador {
     public List<MostrarPublicacionDTO> mostrarPublicacionesEmpresa(@PathVariable Integer idUsuario) {
         return publicacionServicio.mostrarPublicacionesPorEmpresa(idUsuario);
     }
-
+    @GetMapping("/feed/{idUsuario}")
+    public List<MostrarPublicacionDTO> mostrarFeed(@PathVariable Integer idUsuario) {
+        return publicacionServicio.mostrarPublicacionesFeed(idUsuario);
+    }
 }
 
 

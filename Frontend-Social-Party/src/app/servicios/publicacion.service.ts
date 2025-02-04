@@ -51,6 +51,17 @@ export class PublicacionService {
             );
     }
 
+    listarFeed(idUsuario: number | undefined): Observable<MostrarPublicacionDTO[]> {
+        const options = this.comunService.autorizarPeticion();
+        return this.http.get<MostrarPublicacionDTO[]>(`${this.baseUrl}/feed/${idUsuario}`, options)
+            .pipe(
+                catchError(error => {
+                    console.error('Error fetching feed:', error);
+                    return throwError(() => new Error('Error fetching feed'));
+                })
+            );
+    }
+
     crearPublicacionEmpresa(dto: any, foto: File): Observable<void> {
         const formData: FormData = new FormData();
         formData.append('texto', dto.texto);
