@@ -94,4 +94,12 @@ export const routes: Routes = [
         path: 'canjear-entrada-empresa',
         loadComponent: () => import('./canjear-entrada-empresa/canjear-entrada-empresa.component').then((m) => m.CanjearEntradaEmpresaComponent)
     },
+    {
+        path: 'ver-evento-info',
+        loadComponent: () => import('./ver-evento-info/ver-evento-info.component').then((m) => m.VerEventoInfoComponent)
+    },
+    {
+        path: 'confirmacion-pago',
+        loadComponent: () => import('./confirmacion-pago/confirmacion-pago.component').then((m) => m.ConfirmacionPagoComponent)
+    },
 ];
