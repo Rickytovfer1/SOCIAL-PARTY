@@ -5,9 +5,10 @@ import { FormsModule } from "@angular/forms";
 import { NgForOf } from "@angular/common";
 import { Router } from "@angular/router";
 import { NavInferiorComponent } from "../nav-inferior/nav-inferior.component";
-import { EmpresaService, EmpresaDTO } from '../servicios/empresa.service';
+import { EmpresaService } from '../servicios/empresa.service';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import {EmpresaDTO} from "../modelos/EmpresaDTO";
 
 @Component({
     selector: 'app-ver-empresas',

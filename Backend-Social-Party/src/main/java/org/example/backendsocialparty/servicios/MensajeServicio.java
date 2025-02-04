@@ -1,6 +1,5 @@
 package org.example.backendsocialparty.servicios;
 
-
 import org.example.backendsocialparty.DTOs.MensajeDTO;
 import org.example.backendsocialparty.modelos.Cliente;
 import org.example.backendsocialparty.modelos.Mensaje;
@@ -24,7 +23,6 @@ public class MensajeServicio {
     }
 
     public void enviarMensaje(MensajeDTO mensajeDTO) {
-
         Mensaje mensaje = new Mensaje();
         mensaje.setTexto(mensajeDTO.getTexto());
         mensaje.setHora(LocalTime.now());
@@ -43,19 +41,15 @@ public class MensajeServicio {
     }
 
     public List<MensajeDTO> mostrarConversacion(Integer idUsuarioEmisor, Integer idUsuarioReceptor) {
-
-        // Convertir idUsuario a idCliente para el emisor
         Cliente clienteEmisor = clienteRepositorio.findByUsuarioId(idUsuarioEmisor)
                 .orElseThrow(() -> new RuntimeException("No existe un cliente con este Usuario ID de emisor."));
 
-        // Convertir idUsuario a idCliente para el receptor
         Cliente clienteReceptor = clienteRepositorio.findByUsuarioId(idUsuarioReceptor)
                 .orElseThrow(() -> new RuntimeException("No existe un cliente con este Usuario ID de receptor."));
 
         Integer idEmisorCliente = clienteEmisor.getId();
         Integer idReceptorCliente = clienteReceptor.getId();
 
-        // Realizar la consulta usando idCliente
         List<Mensaje> conversacion = mensajeRepositorio
                 .findByEmisor_IdAndReceptor_IdOrEmisor_IdAndReceptor_IdOrderByFechaAscHoraAsc(
                         idEmisorCliente, idReceptorCliente, idReceptorCliente, idEmisorCliente);
@@ -76,15 +70,15 @@ public class MensajeServicio {
         dtonuevo.setTexto(e.getTexto());
         dtonuevo.setHora(e.getHora());
         dtonuevo.setFecha(e.getFecha());
+        dtonuevo.setEditado(e.isEditado());
+        dtonuevo.setBorrado(e.isBorrado());
 
-        // Asignar idUsuario del emisor
         if (e.getEmisor() != null && e.getEmisor().getUsuario() != null) {
             dtonuevo.setIdEmisor(e.getEmisor().getUsuario().getId());
         } else {
             dtonuevo.setIdEmisor(null);
         }
 
-        // Asignar idUsuario del receptor
         if (e.getReceptor() != null && e.getReceptor().getUsuario() != null) {
             dtonuevo.setIdReceptor(e.getReceptor().getUsuario().getId());
         } else {
@@ -94,8 +88,21 @@ public class MensajeServicio {
         return dtonuevo;
     }
 
-    public void eliminarMensaje(Integer id) {
-        List<Mensaje> mensajes = mensajeRepositorio.findByReceptor_IdOrEmisor_Id(id, id);
-        mensajeRepositorio.deleteAll(mensajes);
+    public MensajeDTO editarMensaje(Integer id, String nuevoTexto) {
+        Mensaje mensaje = mensajeRepositorio.findById(id)
+                .orElseThrow(() -> new RuntimeException("Mensaje no encontrado"));
+        mensaje.setTexto(nuevoTexto);
+        mensaje.setEditado(true);
+        mensajeRepositorio.save(mensaje);
+        return getMensajeDTO(mensaje);
+    }
+
+    public MensajeDTO eliminarMensaje(Integer id) {
+        Mensaje mensaje = mensajeRepositorio.findById(id)
+                .orElseThrow(() -> new RuntimeException("Mensaje no encontrado"));
+        mensaje.setTexto("Este mensaje ha sido borrado");
+        mensaje.setBorrado(true);
+        mensajeRepositorio.save(mensaje);
+        return getMensajeDTO(mensaje);
     }
 }

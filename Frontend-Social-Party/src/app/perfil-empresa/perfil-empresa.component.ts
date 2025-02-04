@@ -1,18 +1,16 @@
-import {Component, OnInit} from '@angular/core';
-import {IonicModule} from "@ionic/angular";
-import {NavInferiorComponent} from "../nav-inferior/nav-inferior.component";
-import {NavSuperiorComponent} from "../nav-superior/nav-superior.component";
-import {Usuario} from "../modelos/Usuario";
-import {Perfil} from "../modelos/Perfil";
-import {PerfilEmpresa} from "../modelos/PerfilEmpresa";
-import {PerfilServicio} from "../servicios/perfil.service";
-import {ActivatedRoute} from "@angular/router";
-import {UsuarioService} from "../servicios/usuario.service";
-import {ClienteService} from "../servicios/cliente.service";
-import {NavSuperiorEmpresaComponent} from "../nav-superior-empresa/nav-superior-empresa.component";
-import {NavInferiorEmpresaComponent} from "../nav-inferior-empresa/nav-inferior-empresa.component";
-import {jwtDecode} from "jwt-decode";
-import {TokenDataDTO} from "../modelos/TokenDataDTO";
+import { Component, OnInit } from '@angular/core';
+import { IonicModule } from "@ionic/angular";
+import { NavSuperiorEmpresaComponent } from "../nav-superior-empresa/nav-superior-empresa.component";
+import { NavInferiorEmpresaComponent } from "../nav-inferior-empresa/nav-inferior-empresa.component";
+import { Usuario } from "../modelos/Usuario";
+import { PerfilEmpresa } from "../modelos/PerfilEmpresa";
+import { PerfilServicio } from "../servicios/perfil.service";
+import { ActivatedRoute } from "@angular/router";
+import { UsuarioService } from "../servicios/usuario.service";
+import { jwtDecode } from "jwt-decode";
+import { TokenDataDTO } from "../modelos/TokenDataDTO";
+import { FormsModule } from "@angular/forms";
+import { CommonModule } from "@angular/common";
 
 @Component({
     selector: 'app-perfil-empresa',
@@ -21,22 +19,24 @@ import {TokenDataDTO} from "../modelos/TokenDataDTO";
     standalone: true,
     imports: [
         IonicModule,
+        FormsModule,
+        CommonModule,
         NavSuperiorEmpresaComponent,
         NavInferiorEmpresaComponent
     ]
 })
 export class PerfilEmpresaComponent implements OnInit {
 
-
     usuario: Usuario = {} as Usuario;
     perfilEmpresa: PerfilEmpresa = {} as PerfilEmpresa;
     correo?: string;
     editar: boolean = false;
 
-    constructor(private perfilService: PerfilServicio,
-                private activateRoute: ActivatedRoute,
-                private usuarioService: UsuarioService,) {
-    }
+    constructor(
+        private perfilService: PerfilServicio,
+        private activateRoute: ActivatedRoute,
+        private usuarioService: UsuarioService
+    ) {}
 
     ngOnInit() {
         const token = sessionStorage.getItem('authToken');
@@ -65,18 +65,6 @@ export class PerfilEmpresaComponent implements OnInit {
         }
     }
 
-    cargarPerfil(idUsuario: number): void {
-        this.perfilService.getPerfilEmpresa(idUsuario).subscribe({
-            next: (perfilEmpresa: PerfilEmpresa) => {
-                this.perfilEmpresa = perfilEmpresa;
-                console.log('Perfil de la empresa cargado:', this.perfilEmpresa);
-            },
-            error: (e) => {
-                console.error("Error al cargar el perfil:", e);
-            }
-        });
-    }
-
     cargarUsuario(correo: string): void {
         this.usuarioService.getUsuarioEmpresa(correo).subscribe({
             next: (usuario: Usuario) => {
@@ -95,11 +83,38 @@ export class PerfilEmpresaComponent implements OnInit {
         });
     }
 
+    cargarPerfil(idUsuario: number): void {
+        this.perfilService.getPerfilEmpresa(idUsuario).subscribe({
+            next: (perfilEmpresa: PerfilEmpresa) => {
+                this.perfilEmpresa = perfilEmpresa;
+                console.log('Perfil de la empresa cargado:', this.perfilEmpresa);
+            },
+            error: (e) => {
+                console.error("Error al cargar el perfil:", e);
+            }
+        });
+    }
+
     editarBoton(): void {
         if (this.editar) {
+            this.guardarCambios();
             this.editar = false;
         } else {
             this.editar = true;
         }
+    }
+
+    guardarCambios(): void {
+        console.log('Guardando cambios...', this.perfilEmpresa);
+
+        this.perfilService.updatePerfilEmpresa(this.perfilEmpresa).subscribe({
+            next: (updatedPerfil: PerfilEmpresa) => {
+                console.log('Perfil empresa actualizado:', updatedPerfil);
+                this.perfilEmpresa = updatedPerfil;
+            },
+            error: (err) => {
+                console.error('Error al actualizar la empresa:', err);
+            }
+        });
     }
 }

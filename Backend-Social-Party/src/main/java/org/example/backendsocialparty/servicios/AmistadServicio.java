@@ -11,22 +11,20 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class AmistadServicio {
 
     private final AmistadRepositorio amistadRepositorio;
     private final ClienteRepositorio clienteRepositorio;
-    private final ClienteServicio clienteServicio;
 
-    public AmistadServicio(AmistadRepositorio amistadRepositorio, ClienteRepositorio clienteRepositorio, ClienteServicio clienteServicio) {
+    public AmistadServicio(AmistadRepositorio amistadRepositorio, ClienteRepositorio clienteRepositorio) {
         this.amistadRepositorio = amistadRepositorio;
         this.clienteRepositorio = clienteRepositorio;
-        this.clienteServicio = clienteServicio;
     }
 
     public List<ClienteDTO> getAmistad(Integer idUsuario) {
-
         if (!clienteRepositorio.existsByUsuarioId(idUsuario)) {
             throw new RuntimeException("No existe un cliente asociado a este Usuario ID.");
         }
@@ -34,27 +32,24 @@ public class AmistadServicio {
         Cliente cliente = clienteRepositorio.findByUsuario_Id(idUsuario);
 
         List<Amistad> amistades = amistadRepositorio.findAllByUsuario_IdOrAmigo_Id(cliente.getId(), cliente.getId());
-        List<ClienteDTO> clientesDTOs = new ArrayList<>();
 
+        Set<Integer> amigosIds = new HashSet<>();
         for (Amistad a : amistades) {
-            Cliente amigo;
-            if (a.getUsuario().getId().equals(cliente.getId())) {
-                amigo = a.getAmigo();
-            } else {
-                amigo = a.getUsuario();
-            }
-            ClienteDTO dto = clienteServicio.getClienteDTO(amigo);
-            if (!clientesDTOs.contains(dto)) {
-                clientesDTOs.add(dto);
-            }
+            amigosIds.add(a.getUsuario().getId());
+            amigosIds.add(a.getAmigo().getId());
         }
 
-        return clientesDTOs;
+        amigosIds.remove(cliente.getId());
+
+        List<Cliente> amigos = clienteRepositorio.findAllById(amigosIds);
+
+        return amigos.stream()
+                .map(ClienteServicio::getClienteDTO)
+                .collect(Collectors.toList());
     }
 
 
-
-    public Amistad aceptarSolicitud(Integer idUsuario, Integer idUsuario2){
+    public Amistad aceptarSolicitud(Integer idUsuario, Integer idUsuario2) {
         Cliente usuario = clienteRepositorio.getReferenceById(idUsuario);
         Cliente amigo = clienteRepositorio.getReferenceById(idUsuario2);
 
@@ -63,12 +58,10 @@ public class AmistadServicio {
         amistad.setAmigo(amigo);
 
         return amistadRepositorio.save(amistad);
-
     }
 
     public void eliminarAmistad(Integer id) {
         List<Amistad> amistades = amistadRepositorio.findAmistadByUsuario_IdAndAmigo_Id(id, id);
         amistadRepositorio.deleteAll(amistades);
     }
-
 }

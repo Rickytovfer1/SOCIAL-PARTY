@@ -54,4 +54,8 @@ public class EmpresaControlador {
     public void eliminarCliente(@PathVariable Integer idCliente){
         clienteServicio.eliminarCliente(idCliente);
     }
+    @PutMapping("/empresa/actualizar")
+    public EmpresaDTO actualizarEmpresa(@RequestBody EmpresaDTO empresaDTO) {
+        return empresaServicio.actualizarEmpresa(empresaDTO);
+    }
 }

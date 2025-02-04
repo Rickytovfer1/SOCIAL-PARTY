@@ -4,10 +4,15 @@ import { NavSuperiorComponent } from "../nav-superior/nav-superior.component";
 import { NavInferiorComponent } from "../nav-inferior/nav-inferior.component";
 import { Router } from "@angular/router";
 import { PublicacionService, MostrarPublicacionDTO } from '../servicios/publicacion.service';
+import { UsuarioService } from '../servicios/usuario.service';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { FormsModule } from "@angular/forms";
+import {jwtDecode } from 'jwt-decode';
+import {TokenDataDTO} from "../modelos/TokenDataDTO";
+
+
 
 @Component({
     selector: 'app-publicaciones',
@@ -29,14 +34,48 @@ export class PublicacionesComponent implements OnInit {
     publicacionesFiltradas: MostrarPublicacionDTO[] = [];
     buscar: string = '';
     baseUrl: string = environment.apiUrl;
+    currentUserId: number | undefined = 0;
 
-    constructor(private router: Router, private publicacionService: PublicacionService) { }
+    constructor(
+        private router: Router,
+        private publicacionService: PublicacionService,
+        private usuarioService: UsuarioService
+    ) {}
 
     ngOnInit() {
-        this.publicacionService.listarPublicaciones().subscribe(data => {
-            this.publicaciones = data;
-            this.publicacionesFiltradas = data;
-        });
+        const token = sessionStorage.getItem('authToken');
+        if (token) {
+            try {
+                const decodedToken = jwtDecode<{ tokenDataDTO: TokenDataDTO }>(token);
+                const tokenDataDTO = decodedToken?.tokenDataDTO;
+                if (tokenDataDTO && tokenDataDTO.correo) {
+                    const correo = tokenDataDTO.correo;
+                    this.usuarioService.getUsuario(correo).subscribe({
+                        next: usuario => {
+                            this.currentUserId = usuario.id;
+                            this.publicacionService.listarFeed(this.currentUserId).subscribe({
+                                next: (data: MostrarPublicacionDTO[]) => {
+                                    this.publicaciones = data;
+                                    this.publicacionesFiltradas = data;
+                                },
+                                error: err => {
+                                    console.error('Error fetching publicaciones:', err);
+                                }
+                            });
+                        },
+                        error: err => {
+                            console.error("Error al cargar el usuario:", err);
+                        }
+                    });
+                } else {
+                    console.error('El token no contiene un correo válido en tokenDataDTO');
+                }
+            } catch (e) {
+                console.error('Error al decodificar el token:', e);
+            }
+        } else {
+            console.warn('No se encontró el token de autenticación en sessionStorage');
+        }
     }
 
     abrirForm() {
@@ -46,7 +85,7 @@ export class PublicacionesComponent implements OnInit {
     onSearchChange(event: any) {
         const val = event.target.value.toLowerCase();
         if (val) {
-            this.publicacionesFiltradas = this.publicaciones.filter((publicacion) =>
+            this.publicacionesFiltradas = this.publicaciones.filter(publicacion =>
                 (publicacion.titulo?.toLowerCase().includes(val)) ||
                 publicacion.texto.toLowerCase().includes(val) ||
                 (publicacion.direccion?.toLowerCase().includes(val))

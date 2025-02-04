@@ -17,4 +17,6 @@ public class MensajeDTO {
     private LocalDate fecha;
     private Integer idEmisor;
     private Integer idReceptor;
+    private boolean editado;
+    private boolean borrado;
 }

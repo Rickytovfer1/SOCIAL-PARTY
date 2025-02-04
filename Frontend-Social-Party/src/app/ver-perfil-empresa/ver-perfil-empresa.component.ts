@@ -1,7 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import {IonicModule} from "@ionic/angular";
-import {NavInferiorComponent} from "../nav-inferior/nav-inferior.component";
-import {NavSuperiorComponent} from "../nav-superior/nav-superior.component";
+import { IonicModule, IonDatetime } from "@ionic/angular";
+import { NavInferiorComponent } from "../nav-inferior/nav-inferior.component";
+import { NavSuperiorComponent } from "../nav-superior/nav-superior.component";
+import { EmpresaService } from "../servicios/empresa.service";
+import {jwtDecode } from "jwt-decode";
+import { DecodedToken } from "../modelos/DecodedToken";
+import { TokenDataDTO } from "../modelos/TokenDataDTO";
+import { FormsModule } from "@angular/forms";
+import { EmpresaDTO } from "../modelos/EmpresaDTO";
 
 @Component({
     selector: 'app-ver-perfil-empresa',
@@ -11,13 +17,19 @@ import {NavSuperiorComponent} from "../nav-superior/nav-superior.component";
     imports: [
         IonicModule,
         NavInferiorComponent,
-        NavSuperiorComponent
+        NavSuperiorComponent,
+        FormsModule
     ]
 })
-export class VerPerfilEmpresaComponent  implements OnInit {
+export class VerPerfilEmpresaComponent implements OnInit {
 
-  constructor() { }
 
-  ngOnInit() {}
+
+    constructor(private empresaService: EmpresaService) { }
+
+    ngOnInit(): void {
+    }
+
+
 
 }

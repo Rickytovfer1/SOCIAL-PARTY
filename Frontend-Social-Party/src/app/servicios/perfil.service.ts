@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {Observable} from "rxjs";
-import {Perfil} from "../modelos/Perfil";
-import {ComunService} from "./comun.service";
-import {environment} from "../../environments/environment";
-import {PerfilEmpresa} from "../modelos/PerfilEmpresa";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { Observable } from "rxjs";
+import { Perfil } from "../modelos/Perfil";
+import { ComunService } from "./comun.service";
+import { environment } from "../../environments/environment";
+import { PerfilEmpresa } from "../modelos/PerfilEmpresa";
+import { ActualizarCliente } from "../modelos/ActualizarCliente";
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class PerfilServicio {
 
     private apiUrl = environment.apiUrl;
-
 
     constructor(private http: HttpClient, private comunService: ComunService) { }
 
@@ -26,4 +26,17 @@ export class PerfilServicio {
         return this.http.get<PerfilEmpresa>(`${this.apiUrl}/empresa/perfil/${idUsuario}`, options);
     }
 
+    actualizarPerfil(actualizarCliente: ActualizarCliente): Observable<ActualizarCliente> {
+        const options = this.comunService.autorizarPeticion();
+        return this.http.put<ActualizarCliente>(`${this.apiUrl}/cliente/actualizar`, actualizarCliente, options);
+    }
+
+    updatePerfilEmpresa(perfilEmpresa: PerfilEmpresa): Observable<PerfilEmpresa> {
+        const options = this.comunService.autorizarPeticion();
+        return this.http.put<PerfilEmpresa>(
+            `${this.apiUrl}/empresa/actualizar`,
+            perfilEmpresa,
+            options
+        );
+    }
 }

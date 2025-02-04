@@ -22,8 +22,18 @@ export class MensajeService {
         return this.http.get<MensajeDTO[]>(`${this.baseUrl}/ver/${idEmisor}/${idReceptor}`, options);
     }
 
-    enviarMensaje(mensaje: MensajeDTO): Observable<void> {
+    enviarMensaje(mensaje: MensajeDTO): Observable<MensajeDTO> {
         const options = this.comunService.autorizarPeticion();
-        return this.http.post<void>(`${this.baseUrl}/enviar`, mensaje, options);
+        return this.http.post<MensajeDTO>(`${this.baseUrl}/enviar`, mensaje, options);
+    }
+
+    editarMensaje(id: number, nuevoTexto: string): Observable<MensajeDTO> {
+        const options = this.comunService.autorizarPeticion();
+        return this.http.put<MensajeDTO>(`${this.baseUrl}/editar/${id}`, { texto: nuevoTexto }, options);
+    }
+
+    eliminarMensaje(id: number): Observable<MensajeDTO> {
+        const options = this.comunService.autorizarPeticion();
+        return this.http.delete<MensajeDTO>(`${this.baseUrl}/eliminar/${id}`, options);
     }
 }

@@ -4,12 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "mensaje")
@@ -36,10 +31,16 @@ public class Mensaje {
     private LocalDate fecha;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "emisor", unique = false)
+    @JoinColumn(name = "emisor", nullable = false)
     private Cliente emisor;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "receptor", unique = false)
+    @JoinColumn(name = "receptor", nullable = false)
     private Cliente receptor;
+
+    @Column(name = "editado", nullable = false)
+    private boolean editado = false;
+
+    @Column(name = "borrado", nullable = false)
+    private boolean borrado = false;
 }

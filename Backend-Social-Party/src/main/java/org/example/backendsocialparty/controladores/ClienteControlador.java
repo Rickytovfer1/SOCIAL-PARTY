@@ -35,4 +35,8 @@ public class ClienteControlador {
     public ClienteDTO buscarClienteUsuarioId(@PathVariable Integer idUsuario){
         return clienteServicio.busccarClienteUsuarioID(idUsuario);
     }
+    @PutMapping("/actualizar")
+    public ClienteDTO actualizarCliente(@RequestBody ClienteDTO clienteDTO) {
+        return clienteServicio.actualizarCliente(clienteDTO);
+    }
 }

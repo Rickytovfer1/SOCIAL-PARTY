@@ -24,4 +24,5 @@ public class ClienteDTO {
     private Set<Integer> entradas;
     private Set<Integer> grupos;
     private Integer idUsuario;
+    private String correo;
 }
