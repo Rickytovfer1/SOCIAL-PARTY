@@ -2,7 +2,6 @@
     --background: #D3E5E5;
 }
 
-
 #icono {
     width: 50%;
     height: 50%;
@@ -14,6 +13,14 @@
     margin: 0 auto
 }
 
+input[type="file"]::file-selector-button {
+    font-size: 16px;
+}
+
+input[type="file"] {
+    font-size: 0;
+}
+
 ion-button {
     color: #000000;
     --border-radius: 25px;
@@ -21,9 +28,15 @@ ion-button {
     --background: #5AB7D5
 }
 
-
-
 ion-input {
+    --padding-start: 10px;
+    --background: #ffffff;
+    --border-radius: 15px;
+    margin-top: 15px;
+    margin-bottom: 30px
+}
+
+ion-textarea {
     --padding-start: 10px;
     --background: #ffffff;
     --border-radius: 15px;
@@ -44,10 +57,6 @@ ion-input {
         margin: 35px;
     }
 }
-
-
-
-
 
 .card-outer {
     --background: #471FCD;
@@ -106,6 +115,7 @@ ion-button {
     justify-content: center;
     align-items: center;
     width: 200px;
+    color: white;
 }
 
 ion-label {

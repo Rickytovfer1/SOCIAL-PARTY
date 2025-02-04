@@ -5,23 +5,23 @@
         <ion-card class="card-middle">
             <ion-card class="card-inner">
                 <ion-card-header>
-                    <ion-label position="stacked">Título:</ion-label>
+                    <ion-label>Título:</ion-label>
                     <ion-input [(ngModel)]="titulo" type="text" placeholder="Escribe el título"></ion-input>
                 </ion-card-header>
 
                 <ion-card-header>
-                    <ion-label position="stacked">Escribe tu texto:</ion-label>
+                    <ion-label>Escribe tu texto:</ion-label>
                     <ion-textarea [(ngModel)]="texto" placeholder="Escribe tu texto"></ion-textarea>
                 </ion-card-header>
 
                 <ion-card-content>
-                    <ion-label position="stacked">Dirección:</ion-label>
+                    <ion-label>Dirección:</ion-label>
                     <ion-input [(ngModel)]="direccion" type="text" placeholder="Escribe la dirección"></ion-input>
 
-                    <ion-label position="stacked">Sube tu foto:</ion-label>
+                    <ion-label>Sube tu foto:</ion-label>
                     <input type="file" (change)="seleccionarFoto($event)" accept="image/*" />
                 </ion-card-content>
-                <ion-button expand="full" (click)="publicar()">Publicar</ion-button>
+                <ion-button (click)="publicar()">Publicar</ion-button>
             </ion-card>
         </ion-card>
     </ion-card>
