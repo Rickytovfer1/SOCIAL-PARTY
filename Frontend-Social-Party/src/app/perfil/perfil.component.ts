@@ -25,8 +25,6 @@ import {DatePipe, NgIf} from "@angular/common";
         NavSuperiorComponent,
         NavInferiorComponent,
         FormsModule,
-        DatePipe,
-        NgIf,
     ]
 })
 export class PerfilComponent implements OnInit {

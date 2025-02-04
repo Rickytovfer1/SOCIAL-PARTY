@@ -11,8 +11,6 @@ import { NavSuperiorComponent } from '../nav-superior/nav-superior.component';
     styleUrls: ['./canjear-entrada-empresa.component.scss'],
     standalone: true,
     imports: [
-        NavSuperiorEmpresaComponent,
-        NavInferiorEmpresaComponent,
         IonicModule,
         NavInferiorComponent,
         NavSuperiorComponent,
