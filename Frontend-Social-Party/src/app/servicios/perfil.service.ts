@@ -26,17 +26,18 @@ export class PerfilServicio {
         return this.http.get<PerfilEmpresa>(`${this.apiUrl}/empresa/perfil/${idUsuario}`, options);
     }
 
-    actualizarPerfil(actualizarCliente: ActualizarCliente): Observable<ActualizarCliente> {
-        const options = this.comunService.autorizarPeticion();
+    actualizarPerfil(actualizarCliente: FormData): Observable<ActualizarCliente> {
+        const options = this.comunService.autorizarPeticionFormData();
         return this.http.put<ActualizarCliente>(`${this.apiUrl}/cliente/actualizar`, actualizarCliente, options);
     }
 
-    updatePerfilEmpresa(perfilEmpresa: PerfilEmpresa): Observable<PerfilEmpresa> {
-        const options = this.comunService.autorizarPeticion();
+    updatePerfilEmpresa(perfilEmpresa: FormData): Observable<PerfilEmpresa> {
+        const options = this.comunService.autorizarPeticionFormData();
         return this.http.put<PerfilEmpresa>(
             `${this.apiUrl}/empresa/actualizar`,
             perfilEmpresa,
             options
         );
     }
+
 }

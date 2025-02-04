@@ -1,30 +1,62 @@
-<app-nav-superior-empresa></app-nav-superior-empresa>
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Crear Evento</ion-title>
+    </ion-toolbar>
+</ion-header>
 
-<ion-content class="fondo">
-
-    <ion-card id="cartaouter" class="card-outer">
-        <ion-card class="card-middle">
-            <ion-card class="card-inner">
-                <ion-card-header>
-                    <ion-label>Escribe tu texto:</ion-label>
-                    <ion-input type="text" placeholder="Escribe tu texto"></ion-input>
-                </ion-card-header>
-
-                <ion-card-content>
-                    <ion-label>Descripción de la noticia:</ion-label>
-                    <ion-input type="text" placeholder="Excribe la descripción de la noticia"></ion-input>
-
-                    <ion-label>Sube tu foto:</ion-label>
-                    <ion-input type="text" placeholder="Sube tu foto"></ion-input>
-
-                    <ion-label>Fecha del evento:</ion-label>
-                    <ion-input type="date" placeholder="Selecciona una fecha"></ion-input>
-                </ion-card-content>
-                <ion-button>Publicar</ion-button>
-            </ion-card>
-        </ion-card>
-    </ion-card>
-
+<ion-content class="ion-padding">
+    <form (ngSubmit)="crearEvento()">
+        <ion-item>
+            <ion-label position="floating">Título</ion-label>
+            <ion-input [(ngModel)]="titulo" name="titulo" required></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label position="floating">Descripción</ion-label>
+            <ion-input [(ngModel)]="descripcion" name="descripcion" required></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label position="floating">Fecha</ion-label>
+            <ion-datetime
+                presentation="date"
+                displayFormat="YYYY-MM-DD"
+                pickerFormat="YYYY-MM-DD"
+                [(ngModel)]="fecha"
+                name="fecha"
+                required>
+            </ion-datetime>
+        </ion-item>
+        <ion-item>
+            <ion-label position="floating">Hora de Apertura</ion-label>
+            <ion-datetime
+                presentation="time"
+                displayFormat="HH:mm"
+                pickerFormat="HH:mm"
+                [(ngModel)]="horaApertura"
+                name="horaApertura"
+                required>
+            </ion-datetime>
+        </ion-item>
+        <ion-item>
+            <ion-label position="floating">Hora de Finalización</ion-label>
+            <ion-datetime
+                presentation="time"
+                displayFormat="HH:mm"
+                pickerFormat="HH:mm"
+                [(ngModel)]="horaFinalizacion"
+                name="horaFinalizacion"
+                required>
+            </ion-datetime>
+        </ion-item>
+        <ion-item>
+            <ion-label position="floating">Precio</ion-label>
+            <ion-input type="number" [(ngModel)]="precio" name="precio" required></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label>Foto</ion-label>
+            <input type="file" (change)="seleccionarFoto($event)" accept="image/*">
+        </ion-item>
+        <ion-button expand="full" type="submit" class="ion-margin-top">
+            Crear Evento
+        </ion-button>
+    </form>
 </ion-content>
-
-<app-nav-inferior-empresa></app-nav-inferior-empresa>

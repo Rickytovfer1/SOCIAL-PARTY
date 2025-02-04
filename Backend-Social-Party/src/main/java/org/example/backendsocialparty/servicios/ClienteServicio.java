@@ -1,40 +1,42 @@
 package org.example.backendsocialparty.servicios;
 
-import lombok.AllArgsConstructor;
 import org.example.backendsocialparty.DTOs.ClienteDTO;
 import org.example.backendsocialparty.modelos.*;
-import org.example.backendsocialparty.repositorios.AmistadRepositorio;
 import org.example.backendsocialparty.repositorios.ClienteRepositorio;
 import org.example.backendsocialparty.repositorios.UsuarioRepositorio;
+import org.example.backendsocialparty.servicios.*;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Value;
+import java.util.*;
+import java.time.LocalDate;
+import java.nio.file.*;
+import java.io.*;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class ClienteServicio {
-
     private final ClienteRepositorio clienteRepositorio;
-
     private final PublicacionServicio publicacionServicio;
-
     private final MensajeServicio mensajeServicio;
-
     private final SolicitudServicio solicitudServicio;
-
     private final AmistadServicio amistadServicio;
-
-    private final EventoServicio eventoServicio;
-
     private final EntradaServicio entradaServicio;
     private final UsuarioRepositorio usuarioRepositorio;
-
-    public ClienteServicio(ClienteRepositorio clienteRepositorio, PublicacionServicio publicacionServicio,
-                           MensajeServicio mensajeServicio, SolicitudServicio solicitudServicio,
-                           @Lazy AmistadServicio amistadServicio, EventoServicio eventoServicio,
-                           EntradaServicio entradaServicio, UsuarioRepositorio usuarioRepositorio) {
+    private final EventoServicio eventoServicio;
+    @Value("${upload.dir}")
+    private String uploadDir;
+    public ClienteServicio(
+            ClienteRepositorio clienteRepositorio,
+            PublicacionServicio publicacionServicio,
+            MensajeServicio mensajeServicio,
+            SolicitudServicio solicitudServicio,
+            @Lazy AmistadServicio amistadServicio,
+            @Lazy EventoServicio eventoServicio,
+            EntradaServicio entradaServicio,
+            UsuarioRepositorio usuarioRepositorio) {
         this.clienteRepositorio = clienteRepositorio;
         this.publicacionServicio = publicacionServicio;
         this.mensajeServicio = mensajeServicio;
@@ -51,7 +53,7 @@ public class ClienteServicio {
         return getClienteDTO(cliente);
     }
 
-    public ClienteDTO busccarClienteUsuarioID(Integer idUsuario){
+    public ClienteDTO busccarClienteUsuarioID(Integer idUsuario) {
         Cliente cliente = clienteRepositorio.findByUsuario_Id(idUsuario);
         return getClienteDTO(cliente);
     }
@@ -99,8 +101,7 @@ public class ClienteServicio {
         return dtonuevo;
     }
 
-    public void eliminarCliente(Integer id){
-
+    public void eliminarCliente(Integer id) {
         Cliente cliente = clienteRepositorio.findById(id)
                 .orElseThrow(() -> new RuntimeException("No existe un cliente con este ID."));
 
@@ -111,7 +112,6 @@ public class ClienteServicio {
         publicacionServicio.eliminarPublicacion(id);
         mensajeServicio.eliminarMensaje(id);
         clienteRepositorio.delete(cliente);
-
     }
 
     public ClienteDTO actualizarCliente(ClienteDTO clienteDTO) {
@@ -142,7 +142,29 @@ public class ClienteServicio {
         }
 
         Cliente clienteActualizado = clienteRepositorio.save(cliente);
-
         return getClienteDTO(clienteActualizado);
+    }
+
+    public String guardarFoto(MultipartFile foto) {
+        if (foto.isEmpty()) {
+            return null;
+        }
+        String extension = getFileExtension(foto.getOriginalFilename());
+        String filename = UUID.randomUUID().toString() + "." + extension;
+        Path path = Paths.get(uploadDir, filename);
+        try {
+            Files.createDirectories(path.getParent());
+            Files.copy(foto.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+            return "/uploads/" + filename;
+        } catch (IOException e) {
+            throw new RuntimeException("Error al guardar la imagen", e);
+        }
+    }
+    private String getFileExtension(String filename) {
+        if (filename == null) {
+            return "";
+        }
+        int lastIndex = filename.lastIndexOf(".");
+        return (lastIndex == -1) ? "" : filename.substring(lastIndex + 1);
     }
 }

@@ -5,7 +5,9 @@ import org.example.backendsocialparty.DTOs.ClienteDTO;
 import org.example.backendsocialparty.modelos.Usuario;
 import org.example.backendsocialparty.servicios.ClienteServicio;
 import org.example.backendsocialparty.servicios.UsuarioServicio;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/cliente")
@@ -35,8 +37,14 @@ public class ClienteControlador {
     public ClienteDTO buscarClienteUsuarioId(@PathVariable Integer idUsuario){
         return clienteServicio.busccarClienteUsuarioID(idUsuario);
     }
-    @PutMapping("/actualizar")
-    public ClienteDTO actualizarCliente(@RequestBody ClienteDTO clienteDTO) {
+    @PutMapping(value = "/actualizar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ClienteDTO actualizarCliente(
+            @RequestPart("cliente") ClienteDTO clienteDTO,
+            @RequestPart(value = "fotoPerfil", required = false) MultipartFile fotoPerfil) {
+        if (fotoPerfil != null && !fotoPerfil.isEmpty()){
+            String urlFoto = clienteServicio.guardarFoto(fotoPerfil);
+            clienteDTO.setFotoPerfil(urlFoto);
+        }
         return clienteServicio.actualizarCliente(clienteDTO);
     }
 }

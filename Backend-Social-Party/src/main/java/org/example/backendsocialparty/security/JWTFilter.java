@@ -47,7 +47,7 @@ public class JWTFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-        if (path.startsWith("/uploads")) {
+        if (request.getServletPath().startsWith("/uploads")) {
             filterChain.doFilter(request, response);
             return;
         }

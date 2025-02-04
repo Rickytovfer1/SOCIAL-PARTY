@@ -3,9 +3,10 @@ package org.example.backendsocialparty.controladores;
 import lombok.AllArgsConstructor;
 import org.example.backendsocialparty.DTOs.ClienteDTO;
 import org.example.backendsocialparty.DTOs.EventoDTO;
-import org.example.backendsocialparty.modelos.Evento;
 import org.example.backendsocialparty.servicios.EventoServicio;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -16,9 +17,10 @@ public class EventoControlador {
 
     private EventoServicio eventoServicio;
 
-    @PostMapping("/empresa/crear/evento")
-    public void crearEvento(@RequestBody EventoDTO eventoDTO) {
-        eventoServicio.crearEvento(eventoDTO);
+    @PostMapping(value = "/empresa/crear/evento", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public void crearEventoEmpresa(@ModelAttribute EventoDTO eventoDTO,
+                                   @RequestParam("foto") MultipartFile foto) {
+        eventoServicio.crearEvento(eventoDTO, foto);
     }
 
     @GetMapping("/cliente/ver/evento/{idEmpresa}")
@@ -35,4 +37,5 @@ public class EventoControlador {
     public EventoDTO buscarEventoId(@PathVariable Integer idEvento) {
         return eventoServicio.buscarEventoId(idEvento);
     }
+
 }

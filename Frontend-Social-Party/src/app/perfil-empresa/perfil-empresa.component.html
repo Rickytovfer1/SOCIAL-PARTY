@@ -49,9 +49,9 @@
                         <ion-label>Correo electrónico:</ion-label>
                         <ion-input
                             type="email"
-                            [readonly]="!editar"
+                            readonly
                             [(ngModel)]="usuario.correo"
-                            [placeholder]="!editar ? usuario.correo : ''"
+                            [placeholder]="usuario.correo"
                         ></ion-input>
                     </ion-row>
 
@@ -77,12 +77,11 @@
 
                     <ion-row>
                         <ion-label>Foto perfil:</ion-label>
-                        <ion-input
-                            type="text"
-                            [readonly]="!editar"
-                            [(ngModel)]="perfilEmpresa.fotoPerfil"
-                            [placeholder]="!editar ? perfilEmpresa.fotoPerfil : ''"
-                        ></ion-input>
+                        <input
+                            type="file"
+                            (change)="seleccionarFoto($event)"
+                            accept="image/*"
+                            [disabled]="!editar" />
                     </ion-row>
 
                     <ion-row>
