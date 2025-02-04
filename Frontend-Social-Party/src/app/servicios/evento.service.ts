@@ -21,5 +21,8 @@ export class EventoService {
         const options = this.comunService.autorizarPeticion();
         return this.http.get<Evento[]>(`${this.apiUrl}/cliente/ver/evento/${idEmpresa}`, options);
     }
-
+    crearEvento(evento: FormData): Observable<any> {
+        const options = this.comunService.autorizarPeticionFormData();
+        return this.http.post(`${this.apiUrl}/empresa/crear/evento`, evento, options);
+    }
 }

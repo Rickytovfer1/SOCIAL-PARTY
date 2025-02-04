@@ -1,10 +1,11 @@
-export interface Evento{
+export interface Evento {
     id: number;
-    horaApertura?: string;
-    horaFinalizacion?: string;
-    fecha?: string;
-    titulo?: string;
+    horaApertura: string;
+    horaFinalizacion: string;
+    fecha: string;
+    titulo: string;
+    descripcion: string;
     foto: string;
-    descripcion?: string;
-    idReceptor?: number;
+    idEmpresa?: number;
+    precio: number;
 }

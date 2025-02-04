@@ -5,15 +5,14 @@ import { NavInferiorComponent } from "../nav-inferior/nav-inferior.component";
 import { ActivatedRoute } from "@angular/router";
 import { Perfil } from "../modelos/Perfil";
 import { PerfilServicio } from "../servicios/perfil.service";
-import {jwtDecode }from "jwt-decode";
-import { DecodedToken } from "../modelos/DecodedToken";
+import { jwtDecode } from "jwt-decode";
 import { TokenDataDTO } from "../modelos/TokenDataDTO";
 import { UsuarioService } from "../servicios/usuario.service";
 import { Usuario } from "../modelos/Usuario";
 import { ClienteService } from "../servicios/cliente.service";
 import { ActualizarCliente } from "../modelos/ActualizarCliente";
 import { FormsModule } from "@angular/forms";
-import {DatePipe, NgIf} from "@angular/common";
+import { DatePipe, NgIf } from "@angular/common";
 
 @Component({
     selector: 'app-perfil',
@@ -25,15 +24,15 @@ import {DatePipe, NgIf} from "@angular/common";
         NavSuperiorComponent,
         NavInferiorComponent,
         FormsModule,
+        DatePipe,
+        NgIf
     ]
 })
 export class PerfilComponent implements OnInit {
-
     usuario: Usuario = {} as Usuario;
     perfil: Perfil = {} as Perfil;
     correo?: string;
     editar: boolean = false;
-
     registro: ActualizarCliente = {
         id: 0,
         nombre: "",
@@ -44,8 +43,9 @@ export class PerfilComponent implements OnInit {
         correo: "",
         fotoPerfil: "",
         biografia: "",
-        contrasena: "", // Es recomendable manejar la contraseña por separado
-    }
+        contrasena: ""
+    };
+    foto: File | null = null;
 
     constructor(
         private perfilService: PerfilServicio,
@@ -56,28 +56,17 @@ export class PerfilComponent implements OnInit {
 
     ngOnInit() {
         const token = sessionStorage.getItem('authToken');
-        console.log('Auth Token:', token);
-
         if (token) {
             try {
                 const decodedToken = jwtDecode<{ tokenDataDTO: TokenDataDTO }>(token);
-                console.log('Decoded Token:', decodedToken);
-
                 const tokenDataDTO = decodedToken?.tokenDataDTO;
-
                 if (tokenDataDTO && tokenDataDTO.correo) {
                     this.correo = tokenDataDTO.correo;
-                    console.log('Correo obtenido del token:', this.correo);
-
                     this.cargarUsuario(this.correo);
-                } else {
-                    console.error('El token no contiene un correo válido en tokenDataDTO');
                 }
             } catch (e) {
                 console.error('Error al decodificar el token:', e);
             }
-        } else {
-            console.warn('No se encontró el token de autenticación en sessionStorage');
         }
     }
 
@@ -85,23 +74,19 @@ export class PerfilComponent implements OnInit {
         this.perfilService.getPerfil(idUsuario).subscribe({
             next: (perfil: Perfil) => {
                 this.perfil = perfil;
-                console.log('Perfil cargado:', this.perfil);
-
                 if (this.perfil.id) {
                     this.registro = {
                         id: this.perfil.id,
-                        nombre: this.perfil.nombre,
-                        apellidos: this.perfil.apellidos,
-                        dni: this.perfil.dni,
+                        nombre: this.perfil.nombre || "",
+                        apellidos: this.perfil.apellidos || "",
+                        dni: this.perfil.dni || "",
                         fechaNacimiento: this.perfil.fechaNacimiento || "",
-                        telefono: this.perfil.telefono,
-                        correo: this.perfil.correo,
+                        telefono: this.perfil.telefono || "",
+                        correo: this.perfil.correo || "",
                         fotoPerfil: this.perfil.fotoPerfil || "",
                         biografia: this.perfil.biografia || "",
                         contrasena: ""
                     };
-                } else {
-                    console.error('El perfil no tiene un ID válido.');
                 }
             },
             error: (e) => {
@@ -114,12 +99,8 @@ export class PerfilComponent implements OnInit {
         this.usuarioService.getUsuario(correo).subscribe({
             next: (usuario: Usuario) => {
                 this.usuario = usuario;
-                console.log('Usuario cargado:', this.usuario);
-
                 if (usuario && usuario.id) {
                     this.cargarPerfil(usuario.id);
-                } else {
-                    console.error('El usuario no tiene un ID válido.');
                 }
             },
             error: (e) => {
@@ -128,17 +109,45 @@ export class PerfilComponent implements OnInit {
         });
     }
 
+    seleccionarFoto(event: any): void {
+        if (event.target.files && event.target.files.length > 0) {
+            this.foto = event.target.files[0];
+            // @ts-ignore
+            console.log('Foto seleccionada:', this.foto.name);
+        }
+    }
+
     actualizarCliente(): void {
         if (this.registro.id === 0 || !this.registro.id) {
             console.error("ID del cliente no válido.");
             return;
         }
 
-        this.perfilService.actualizarPerfil(this.registro).subscribe({
+        this.registro.correo = this.usuario.correo;
+
+        const formData = new FormData();
+        const clienteData = {
+            id: this.registro.id,
+            nombre: this.registro.nombre,
+            apellidos: this.registro.apellidos,
+            dni: this.registro.dni,
+            fechaNacimiento: this.registro.fechaNacimiento,
+            telefono: this.registro.telefono,
+            correo: this.registro.correo,
+            biografia: this.registro.biografia,
+            fotoPerfil: this.registro.fotoPerfil
+        };
+
+        formData.append("cliente", new Blob([JSON.stringify(clienteData)], { type: "application/json" }));
+        if (this.foto) {
+            formData.append("fotoPerfil", this.foto);
+        }
+        this.perfilService.actualizarPerfil(formData).subscribe({
             next: (respuesta) => {
                 console.log('Usuario actualizado:', respuesta);
                 this.editar = false;
                 this.cargarPerfil(this.registro.id);
+                this.foto = null;
             },
             error: (e) => {
                 console.error("Error al actualizar el usuario:", e);
@@ -153,5 +162,4 @@ export class PerfilComponent implements OnInit {
             this.editar = true;
         }
     }
-
 }
