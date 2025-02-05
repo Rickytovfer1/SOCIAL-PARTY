@@ -1,13 +1,13 @@
 <app-nav-superior></app-nav-superior>
 
-<div class="name-header">
+<div class="fondo"></div>
+<div class="banda ion-align-items-center">
     <ion-text id="nombre">{{ perfil.nombre }} {{ perfil.apellidos }}</ion-text>
 </div>
 
-<ion-content class="messages-content">
-    <div class="messages-container" #scrollContent>
+<ion-content id="content_principal">
         <ion-grid>
-            <ng-container *ngFor="let grupo of gruposMensajes">
+            <div *ngFor="let grupo of gruposMensajes">
                 <ion-row>
                     <ion-col>
                         <div class="div_dia">
@@ -40,13 +40,12 @@
                         </div>
                     </ion-col>
                 </ion-row>
-            </ng-container>
+            </div>
         </ion-grid>
-    </div>
 </ion-content>
 
-<ion-footer>
-    <div class="input-container">
+<div style="background-color: #D3E5E5">
+    <div id="enviar_mensaje">
         <ion-input
             [(ngModel)]="nuevoTexto"
             placeholder="Envía un mensaje..."
@@ -54,25 +53,6 @@
         </ion-input>
         <ion-img (click)="enviar()" src="assets/iconoEnviar.png"></ion-img>
     </div>
-    <ion-toolbar class="toolbar-footer">
-        <ion-grid>
-            <ion-row>
-                <ion-col size="2.4">
-                    <ion-img (click)="irPerfil()" src="assets/iconoPerfil.png"></ion-img>
-                </ion-col>
-                <ion-col size="2.4">
-                    <ion-img (click)="irEntradas()" src="assets/tickets.png"></ion-img>
-                </ion-col>
-                <ion-col size="2.4">
-                    <ion-img (click)="irAmigos()" src="assets/iconoCasa.png"></ion-img>
-                </ion-col>
-                <ion-col size="2.4">
-                    <ion-img (click)="irUbicacion()" src="assets/ubicacion.png"></ion-img>
-                </ion-col>
-                <ion-col size="2.4">
-                    <ion-img (click)="irPublicaciones()" src="assets/internetIcono.png"></ion-img>
-                </ion-col>
-            </ion-row>
-        </ion-grid>
-    </ion-toolbar>
-</ion-footer>
+</div>
+
+<app-nav-inferior></app-nav-inferior>
