@@ -20,4 +20,8 @@ export class EntradaService {
         return this.http.post<Entrada>(`${this.apiUrl}/cliente/comprar/entrada/${idEvento}/${idEmpresa}/${idCliente}`,{}, options);
     }
 
+    verEntradas(idCliente: number): Observable<Entrada[]> {
+        const options = this.comunService.autorizarPeticion();
+        return this.http.get<Entrada[]>(`${this.apiUrl}/cliente/ver/entradas/${idCliente}`, options);
+    }
 }
