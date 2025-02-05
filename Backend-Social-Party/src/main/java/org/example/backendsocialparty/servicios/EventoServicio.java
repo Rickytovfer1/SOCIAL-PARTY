@@ -115,6 +115,7 @@ public class EventoServicio {
         dtonuevo.setFecha(e.getFecha());
         dtonuevo.setTitulo(e.getTitulo());
         dtonuevo.setDescripcion(e.getDescripcion());
+        dtonuevo.setFoto(e.getFoto());
         dtonuevo.setPrecio(e.getPrecio());
         if (e.getEmpresa() != null) {
             dtonuevo.setIdEmpresa(e.getEmpresa().getId());

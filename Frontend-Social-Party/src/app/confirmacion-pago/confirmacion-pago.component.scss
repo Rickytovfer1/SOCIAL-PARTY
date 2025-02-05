@@ -1,8 +1,8 @@
 ion-card{
     margin: 15px 15px;
     padding: 5px 5px;
-    background-color: #471FCD;
-    box-shadow: 0 0 10px 0 rgb(71, 31, 205);
+    background-color: #306DA9;
+    box-shadow: 0 0 10px 0 rgb(48, 109, 169);
     border: 2px solid #000000;
     width: 80%;
     margin-left: 10%;
@@ -13,7 +13,7 @@ ion-card{
 hr {
     width: 70%;
     border: 2px solid #f5f5f5;
-    background-color: #471FCD;
+    background-color: #306DA9;
 }
 
 ion-card-content{
@@ -30,11 +30,11 @@ ion-title {
         margin-left: 20%;
     }
 
-     ion-input{
+    ion-input{
         font-size: 20px;
         margin-left: 20%;
-         max-width: 60%;
-     }
+        max-width: 60%;
+    }
 }
 
 ion-button {
@@ -50,7 +50,8 @@ ion-button {
 }
 
 .cardOuter{
-    border: 8px solid #471FCD;
+    border: 10px solid #471fcd;
     background-color: #ffffff;
     border-radius: 25px;
+    padding: -150;
 }
