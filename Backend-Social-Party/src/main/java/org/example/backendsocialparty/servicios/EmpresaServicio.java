@@ -44,6 +44,10 @@ public class EmpresaServicio {
         return empresasDTO;
     }
 
+    public EmpresaDTO verEmpresa(Integer idEmpresa) {
+        Empresa empresa = empresaRepositorio.getReferenceById(idEmpresa);
+        return convertirAEmpresaDTO(empresa);
+    }
     public EmpresaDTO verPerfilEmpresa(Integer idUsuario) {
         Empresa empresa = empresaRepositorio.findByUsuario_Id(idUsuario);
         return convertirAEmpresaDTO(empresa);

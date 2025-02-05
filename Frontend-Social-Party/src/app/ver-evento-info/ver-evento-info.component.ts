@@ -1,8 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {IonicModule} from "@ionic/angular";
 import {NavInferiorComponent} from "../nav-inferior/nav-inferior.component";
 import {NavSuperiorComponent} from "../nav-superior/nav-superior.component";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
+import {Perfil} from "../modelos/Perfil";
+import {Evento} from "../modelos/Evento";
+import {Usuario} from "../modelos/Usuario";
+import {EventoService} from "../servicios/evento.service";
+import {EmpresaDTO} from "../modelos/EmpresaDTO";
+import {environment} from "../../environments/environment";
+import {NgOptimizedImage} from "@angular/common";
 
 @Component({
     selector: 'app-ver-evento-info',
@@ -12,17 +19,65 @@ import {Router} from "@angular/router";
     imports: [
         IonicModule,
         NavInferiorComponent,
-        NavSuperiorComponent
+        NavSuperiorComponent,
+        NgOptimizedImage
     ]
 })
-export class VerEventoInfoComponent  implements OnInit {
+export class VerEventoInfoComponent implements OnInit {
 
-  constructor(private router: Router) { }
+    evento: Evento = {} as Evento;
+    empresa: EmpresaDTO = {} as EmpresaDTO;
+    idEvento!: number;
+    baseUrl: string = environment.apiUrl;
 
-  ngOnInit() {}
+    constructor(private router: Router,
+                private eventoService: EventoService,
+                private activateRoute: ActivatedRoute) {
+    }
 
-  comprarEntrada(idEvento: number) {
-      this.router.navigate(["/confirmacion-pago", idEvento])
-  }
+    ngOnInit() {
+        this.activateRoute.params.subscribe(params => {
+            this.idEvento = Number(params['id']);
+        });
+        this.verEvento(this.idEvento)
+    }
+
+    comprarEntrada(idEvento: number) {
+        this.router.navigate(["/confirmacion-pago", idEvento])
+    }
+
+    verEvento(idEvento: number): void {
+        this.eventoService.verEvento(idEvento).subscribe({
+            next: (eventos: Evento) => {
+                this.evento = eventos;
+                this.verEmpresa(this.evento.idEmpresa)
+                console.log(this.evento)
+            },
+            error: (e) => {
+                console.error("Error al cargar el usuario:", e);
+            }
+        });
+    }
+
+    verEmpresa(idEmpresa: number | undefined): void {
+        this.eventoService.verEmpresa(idEmpresa).subscribe({
+            next: (empresa: EmpresaDTO) => {
+                this.empresa = empresa;
+                console.log(this.empresa)
+            },
+            error: (e) => {
+                console.error("Error al cargar el usuario:", e);
+            }
+        });
+    }
+
+    getImageUrl(evento: Evento): string {
+        if (evento.foto.startsWith('http')) {
+            return evento.foto;
+        } else {
+            return `${this.baseUrl}${evento.foto}`;
+        }
+    }
+
 
 }
