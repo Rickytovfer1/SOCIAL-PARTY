@@ -6,26 +6,25 @@ import { MensajeDTO } from '../modelos/MensajeDTO';
 import { Usuario } from '../modelos/Usuario';
 import { MensajeService } from '../servicios/mensaje.service';
 import { UsuarioService } from '../servicios/usuario.service';
-import { jwtDecode } from 'jwt-decode';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { Perfil } from '../modelos/Perfil';
 import { PerfilServicio } from '../servicios/perfil.service';
-import {NavInferiorComponent} from "../nav-inferior/nav-inferior.component";
+import { SocketService } from '../servicios/SocketService';
+import { jwtDecode }from 'jwt-decode';
 
 @Component({
     selector: 'app-chat',
     templateUrl: './chat.component.html',
     styleUrls: ['./chat.component.scss'],
     standalone: true,
-    imports: [CommonModule, FormsModule, NavSuperiorComponent, IonicModule, NavInferiorComponent],
+    imports: [CommonModule, FormsModule, NavSuperiorComponent, IonicModule],
     providers: [DatePipe]
 })
 export class ChatComponent implements OnInit, AfterViewChecked {
     @ViewChild('scrollContent') private scrollContent!: ElementRef;
     @ViewChild(IonContent, { static: false }) content!: IonContent;
-
     usuario: Usuario = { id: 0, correo: '' };
     mensajes: MensajeDTO[] = [];
     gruposMensajes: { fecha: string; mensajes: MensajeDTO[] }[] = [];
@@ -42,7 +41,8 @@ export class ChatComponent implements OnInit, AfterViewChecked {
         private perfilService: PerfilServicio,
         private datePipe: DatePipe,
         private actionSheetController: ActionSheetController,
-        private alertController: AlertController
+        private alertController: AlertController,
+        private socketService: SocketService
     ) {}
 
     ngOnInit() {
@@ -76,13 +76,17 @@ export class ChatComponent implements OnInit, AfterViewChecked {
             next: (params) => {
                 const receptorIdStr = params.get('id');
                 const receptorId = receptorIdStr ? Number(receptorIdStr) : 0;
-                // @ts-ignore
-                if (receptorId > 0 && this.usuario.id > 0) {
+                if (receptorId > 0 && this.usuario.id !== undefined && this.usuario.id > 0) {
                     this.idReceptor = receptorId;
                     this.cargarConversacion(this.usuario.id, this.idReceptor, true);
                     this.cargarPerfil(this.idReceptor);
+                    this.socketService.subscribeToConversation(this.usuario.id, this.idReceptor);
+                    this.socketService.listenEvent().subscribe((data: any) => {
+                        this.handleSocketEvent(data);
+                    });
                 }
-            },
+            }
+            ,
             error: () => {}
         });
     }
@@ -94,8 +98,49 @@ export class ChatComponent implements OnInit, AfterViewChecked {
         }
     }
 
+    handleSocketEvent(data: any) {
+        const action = data.action;
+        const mensajeData: MensajeDTO = data.mensaje;
+        if (!action || !mensajeData) {
+            this.addNewMessage(data);
+            return;
+        }
+        if (action === 'create') {
+            this.addNewMessage(mensajeData);
+        } else if (action === 'update' || action === 'delete') {
+            this.content.getScrollElement().then(el => {
+                const currentScroll = el.scrollTop;
+                const index = this.mensajes.findIndex(m => m.id === mensajeData.id);
+                if (index !== -1) {
+                    this.mensajes[index] = mensajeData;
+                    this.agruparMensajesPorFecha();
+                    setTimeout(() => {
+                        this.content.scrollToPoint(0, currentScroll, 0);
+                    }, 50);
+                }
+            });
+        }
+    }
+
+    addNewMessage(mensaje: MensajeDTO) {
+        this.content.getScrollElement().then(el => {
+            const currentScroll = el.scrollTop;
+            const threshold = 50;
+            const isAtBottom = (el.scrollHeight - currentScroll) <= (el.clientHeight + threshold);
+            this.mensajes.push(mensaje);
+            this.agruparMensajesPorFecha();
+            if (isAtBottom) {
+                this.needScroll = true;
+            } else {
+                this.content.scrollToPoint(0, currentScroll, 0);
+            }
+        });
+    }
+
     cargarConversacion(idEmisor?: number, idReceptor?: number, scroll: boolean = true, preserveScrollPosition?: number) {
-        if (idEmisor === undefined || idReceptor === undefined) return;
+        if (idEmisor === undefined || idReceptor === undefined) {
+            return;
+        }
         this.mensajeService.verConversacion(idEmisor, idReceptor).subscribe({
             next: (mensajes) => {
                 mensajes.sort((a, b) => new Date(a.fecha!).getTime() - new Date(b.fecha!).getTime());
@@ -114,8 +159,12 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     }
 
     enviar() {
-        if (!this.nuevoTexto.trim()) return;
-        if (!this.usuario.id || !this.idReceptor) return;
+        if (!this.nuevoTexto.trim()) {
+            return;
+        }
+        if (!this.usuario.id || !this.idReceptor) {
+            return;
+        }
         const now = new Date();
         const mensaje: MensajeDTO = {
             texto: this.nuevoTexto.trim(),
@@ -126,7 +175,6 @@ export class ChatComponent implements OnInit, AfterViewChecked {
         };
         this.mensajeService.enviarMensaje(mensaje).subscribe({
             next: () => {
-                this.cargarConversacion(this.usuario.id, this.idReceptor, true);
                 this.nuevoTexto = '';
             },
             error: () => {}
@@ -145,12 +193,12 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     agruparMensajesPorFecha() {
         const grupos: { fecha: string; mensajes: MensajeDTO[] }[] = [];
         let grupoActual: { fecha: string; mensajes: MensajeDTO[] } | null = null;
-        this.mensajes.forEach((mensaje) => {
-            const fechaMensaje = new Date(mensaje.fecha!);
+        this.mensajes.forEach(m => {
+            const fechaMensaje = new Date(m.fecha!);
             const hoy = new Date();
             const ayer = new Date();
             ayer.setDate(hoy.getDate() - 1);
-            let fechaFormateada = this.getFormattedDate(mensaje.fecha!);
+            let fechaFormateada = this.getFormattedDate(m.fecha!);
             if (this.esMismoDia(fechaMensaje, hoy)) {
                 fechaFormateada = 'Hoy';
             } else if (this.esMismoDia(fechaMensaje, ayer)) {
@@ -160,24 +208,22 @@ export class ChatComponent implements OnInit, AfterViewChecked {
                 grupoActual = { fecha: fechaFormateada, mensajes: [] };
                 grupos.push(grupoActual);
             }
-            grupoActual.mensajes.push(mensaje);
+            grupoActual.mensajes.push(m);
         });
         this.gruposMensajes = grupos;
     }
 
     esMismoDia(fecha1: Date, fecha2: Date): boolean {
-        return (
-            fecha1.getDate() === fecha2.getDate() &&
+        return fecha1.getDate() === fecha2.getDate() &&
             fecha1.getMonth() === fecha2.getMonth() &&
-            fecha1.getFullYear() === fecha2.getFullYear()
-        );
+            fecha1.getFullYear() === fecha2.getFullYear();
     }
 
     getFormattedDate(fecha: string): string {
         const date = new Date(fecha);
         const day = date.getDate().toString().padStart(2, '0');
         const month = (date.getMonth() + 1).toString().padStart(2, '0');
-        return `${day}/${month}`;
+        return day + '/' + month;
     }
 
     scrollToBottom() {
@@ -190,18 +236,9 @@ export class ChatComponent implements OnInit, AfterViewChecked {
         const actionSheet = await this.actionSheetController.create({
             header: 'Opciones',
             buttons: [
-                {
-                    text: 'Editar',
-                    handler: () => this.editarMensaje(mensaje)
-                },
-                {
-                    text: 'Eliminar',
-                    handler: () => this.eliminarMensaje(mensaje)
-                },
-                {
-                    text: 'Cancelar',
-                    role: 'cancel'
-                }
+                { text: 'Editar', handler: () => this.editarMensaje(mensaje) },
+                { text: 'Eliminar', handler: () => this.eliminarMensaje(mensaje) },
+                { text: 'Cancelar', role: 'cancel' }
             ]
         });
         await actionSheet.present();
@@ -215,15 +252,10 @@ export class ChatComponent implements OnInit, AfterViewChecked {
                 { text: 'Cancelar', role: 'cancel' },
                 {
                     text: 'Guardar',
-                    handler: (data) => {
+                    handler: data => {
                         if (data.texto.trim()) {
                             this.mensajeService.editarMensaje(mensaje.id!, data.texto.trim()).subscribe({
-                                next: () => {
-                                    this.content.getScrollElement().then(el => {
-                                        const pos = el.scrollTop;
-                                        this.cargarConversacion(this.usuario.id, this.idReceptor, false, pos);
-                                    });
-                                },
+                                next: () => {},
                                 error: () => {}
                             });
                         }
@@ -244,12 +276,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
                     text: 'Eliminar',
                     handler: () => {
                         this.mensajeService.eliminarMensaje(mensaje.id!).subscribe({
-                            next: () => {
-                                this.content.getScrollElement().then(el => {
-                                    const pos = el.scrollTop;
-                                    this.cargarConversacion(this.usuario.id, this.idReceptor, false, pos);
-                                });
-                            },
+                            next: () => {},
                             error: () => {}
                         });
                     }

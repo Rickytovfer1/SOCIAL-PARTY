@@ -22,26 +22,30 @@ public class SecurityConfig {
     private final AuthenticationProvider authenticationProvider;
 
     @Bean
-    public AccessDeniedHandler accessDeniedHandler() {
-        return new CustomAccessDeniedHandler();
-    }
-
-    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .cors(AbstractHttpConfigurer::disable)
+                .cors(cors -> {})
                 .authorizeHttpRequests(req -> req
                         .requestMatchers("/uploads/**").permitAll()
                         .requestMatchers("/autorizacion/**").permitAll()
+                        .requestMatchers("/ws/**").permitAll()
                         .requestMatchers("/cliente/**").hasAuthority("CLIENTE")
                         .requestMatchers("/empresa/**").hasAuthority("EMPRESA")
                         .requestMatchers("/admin/**").hasAuthority("ADMIN")
-                        .anyRequest().authenticated())
+                        .anyRequest().authenticated()
+                )
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtFilterChain, UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling(exception -> exception.accessDeniedHandler(accessDeniedHandler()));
+                .exceptionHandling(exception ->
+                        exception.accessDeniedHandler(accessDeniedHandler())
+                );
 
         return http.build();
+    }
+
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler() {
+        return new CustomAccessDeniedHandler();
     }
 }
