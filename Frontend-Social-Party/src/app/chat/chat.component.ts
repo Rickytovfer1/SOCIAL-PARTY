@@ -12,7 +12,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { Perfil } from '../modelos/Perfil';
 import { PerfilServicio } from '../servicios/perfil.service';
-import {NavInferiorComponent} from "../nav-inferior/nav-inferior.component";
+import { NavInferiorComponent } from "../nav-inferior/nav-inferior.component";
+import { SocketService } from '../servicios/SocketService';
 
 @Component({
     selector: 'app-chat',
@@ -25,7 +26,6 @@ import {NavInferiorComponent} from "../nav-inferior/nav-inferior.component";
 export class ChatComponent implements OnInit, AfterViewChecked {
     @ViewChild('scrollContent') private scrollContent!: ElementRef;
     @ViewChild(IonContent, { static: false }) content!: IonContent;
-
     usuario: Usuario = { id: 0, correo: '' };
     mensajes: MensajeDTO[] = [];
     gruposMensajes: { fecha: string; mensajes: MensajeDTO[] }[] = [];
@@ -33,7 +33,6 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     idReceptor = 0;
     perfil: Perfil = {} as Perfil;
     private needScroll = false;
-
     constructor(
         private mensajeService: MensajeService,
         private usuarioService: UsuarioService,
@@ -42,9 +41,9 @@ export class ChatComponent implements OnInit, AfterViewChecked {
         private perfilService: PerfilServicio,
         private datePipe: DatePipe,
         private actionSheetController: ActionSheetController,
-        private alertController: AlertController
+        private alertController: AlertController,
+        private socketService: SocketService
     ) {}
-
     ngOnInit() {
         const token = sessionStorage.getItem('authToken');
         if (!token) {
@@ -85,15 +84,30 @@ export class ChatComponent implements OnInit, AfterViewChecked {
             },
             error: () => {}
         });
+        this.socketService.listenEvent().subscribe((mensaje: MensajeDTO) => {
+            this.actualizarConversacion(mensaje);
+        });
     }
-
     ngAfterViewChecked() {
         if (this.needScroll) {
             this.scrollToBottom();
             this.needScroll = false;
         }
     }
-
+    actualizarConversacion(nuevoMensaje: MensajeDTO) {
+        this.content.getScrollElement().then(el => {
+            const currentScroll = el.scrollTop;
+            const threshold = 50;
+            const isAtBottom = (el.scrollHeight - currentScroll) <= (el.clientHeight + threshold);
+            this.mensajes.push(nuevoMensaje);
+            this.agruparMensajesPorFecha();
+            if (isAtBottom) {
+                this.needScroll = true;
+            } else {
+                this.content.scrollToPoint(0, currentScroll, 0);
+            }
+        });
+    }
     cargarConversacion(idEmisor?: number, idReceptor?: number, scroll: boolean = true, preserveScrollPosition?: number) {
         if (idEmisor === undefined || idReceptor === undefined) return;
         this.mensajeService.verConversacion(idEmisor, idReceptor).subscribe({
@@ -112,7 +126,6 @@ export class ChatComponent implements OnInit, AfterViewChecked {
             error: () => {}
         });
     }
-
     enviar() {
         if (!this.nuevoTexto.trim()) return;
         if (!this.usuario.id || !this.idReceptor) return;
@@ -132,7 +145,6 @@ export class ChatComponent implements OnInit, AfterViewChecked {
             error: () => {}
         });
     }
-
     cargarPerfil(idUsuario: number | undefined) {
         this.perfilService.getPerfil(idUsuario).subscribe({
             next: (perfil: Perfil) => {
@@ -141,7 +153,6 @@ export class ChatComponent implements OnInit, AfterViewChecked {
             error: () => {}
         });
     }
-
     agruparMensajesPorFecha() {
         const grupos: { fecha: string; mensajes: MensajeDTO[] }[] = [];
         let grupoActual: { fecha: string; mensajes: MensajeDTO[] } | null = null;
@@ -164,49 +175,31 @@ export class ChatComponent implements OnInit, AfterViewChecked {
         });
         this.gruposMensajes = grupos;
     }
-
     esMismoDia(fecha1: Date, fecha2: Date): boolean {
-        return (
-            fecha1.getDate() === fecha2.getDate() &&
-            fecha1.getMonth() === fecha2.getMonth() &&
-            fecha1.getFullYear() === fecha2.getFullYear()
-        );
+        return fecha1.getDate() === fecha2.getDate() && fecha1.getMonth() === fecha2.getMonth() && fecha1.getFullYear() === fecha2.getFullYear();
     }
-
     getFormattedDate(fecha: string): string {
         const date = new Date(fecha);
         const day = date.getDate().toString().padStart(2, '0');
         const month = (date.getMonth() + 1).toString().padStart(2, '0');
         return `${day}/${month}`;
     }
-
     scrollToBottom() {
         setTimeout(() => {
             this.content.scrollToBottom(300);
         }, 100);
     }
-
     async mostrarOpciones(mensaje: MensajeDTO) {
         const actionSheet = await this.actionSheetController.create({
             header: 'Opciones',
             buttons: [
-                {
-                    text: 'Editar',
-                    handler: () => this.editarMensaje(mensaje)
-                },
-                {
-                    text: 'Eliminar',
-                    handler: () => this.eliminarMensaje(mensaje)
-                },
-                {
-                    text: 'Cancelar',
-                    role: 'cancel'
-                }
+                { text: 'Editar', handler: () => this.editarMensaje(mensaje) },
+                { text: 'Eliminar', handler: () => this.eliminarMensaje(mensaje) },
+                { text: 'Cancelar', role: 'cancel' }
             ]
         });
         await actionSheet.present();
     }
-
     async editarMensaje(mensaje: MensajeDTO) {
         const alert = await this.alertController.create({
             header: 'Editar Mensaje',
@@ -233,7 +226,6 @@ export class ChatComponent implements OnInit, AfterViewChecked {
         });
         await alert.present();
     }
-
     async eliminarMensaje(mensaje: MensajeDTO) {
         const alert = await this.alertController.create({
             header: 'Eliminar Mensaje',
@@ -258,23 +250,18 @@ export class ChatComponent implements OnInit, AfterViewChecked {
         });
         await alert.present();
     }
-
     irPerfil() {
         this.router.navigate(['/perfil']);
     }
-
     irEntradas() {
         this.router.navigate(['/ver-empresas']);
     }
-
     irAmigos() {
         this.router.navigate(['/amigos']);
     }
-
     irUbicacion() {
         this.router.navigate(['/asistentes-evento']);
     }
-
     irPublicaciones() {
         this.router.navigate(['/publicaciones']);
     }

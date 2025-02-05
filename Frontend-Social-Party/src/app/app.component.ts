@@ -3,6 +3,7 @@ import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LoggingInterceptor } from './LoggingInterceptor';
 
+
 @Component({
     selector: 'app-root',
     templateUrl: 'app.component.html',
