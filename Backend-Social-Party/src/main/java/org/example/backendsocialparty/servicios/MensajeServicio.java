@@ -5,7 +5,9 @@ import org.example.backendsocialparty.modelos.Cliente;
 import org.example.backendsocialparty.modelos.Mensaje;
 import org.example.backendsocialparty.repositorios.ClienteRepositorio;
 import org.example.backendsocialparty.repositorios.MensajeRepositorio;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -13,14 +15,17 @@ import java.util.List;
 
 @Service
 public class MensajeServicio {
+
     private final MensajeRepositorio mensajeRepositorio;
     private final ClienteRepositorio clienteRepositorio;
     private final WebSocketMensajeService webSocketMensajeService;
-    public MensajeServicio(MensajeRepositorio mensajeRepositorio, ClienteRepositorio clienteRepositorio, WebSocketMensajeService webSocketMensajeService) {
+
+    public MensajeServicio(MensajeRepositorio mensajeRepositorio, ClienteRepositorio clienteRepositorio, @Lazy WebSocketMensajeService webSocketMensajeService) {
         this.mensajeRepositorio = mensajeRepositorio;
         this.clienteRepositorio = clienteRepositorio;
         this.webSocketMensajeService = webSocketMensajeService;
     }
+
     public void enviarMensaje(MensajeDTO mensajeDTO) {
         Mensaje mensaje = new Mensaje();
         mensaje.setTexto(mensajeDTO.getTexto());
@@ -34,6 +39,7 @@ public class MensajeServicio {
         MensajeDTO mensajeEnviado = getMensajeDTO(mensaje);
         webSocketMensajeService.enviarMensaje(mensajeEnviado);
     }
+
     public List<MensajeDTO> mostrarConversacion(Integer idUsuarioEmisor, Integer idUsuarioReceptor) {
         Cliente clienteEmisor = clienteRepositorio.findByUsuarioId(idUsuarioEmisor).orElseThrow(() -> new RuntimeException("No existe un cliente con este Usuario ID de emisor."));
         Cliente clienteReceptor = clienteRepositorio.findByUsuarioId(idUsuarioReceptor).orElseThrow(() -> new RuntimeException("No existe un cliente con este Usuario ID de receptor."));
@@ -41,11 +47,12 @@ public class MensajeServicio {
         Integer idReceptorCliente = clienteReceptor.getId();
         List<Mensaje> conversacion = mensajeRepositorio.findByEmisor_IdAndReceptor_IdOrEmisor_IdAndReceptor_IdOrderByFechaAscHoraAsc(idEmisorCliente, idReceptorCliente, idReceptorCliente, idEmisorCliente);
         List<MensajeDTO> mensajesDTO = new ArrayList<>();
-        for (Mensaje mensaje : conversacion) {
-            mensajesDTO.add(getMensajeDTO(mensaje));
+        for (Mensaje m : conversacion) {
+            mensajesDTO.add(getMensajeDTO(m));
         }
         return mensajesDTO;
     }
+
     private MensajeDTO getMensajeDTO(Mensaje e) {
         MensajeDTO dtonuevo = new MensajeDTO();
         dtonuevo.setId(e.getId());
@@ -66,6 +73,7 @@ public class MensajeServicio {
         }
         return dtonuevo;
     }
+
     public MensajeDTO editarMensaje(Integer id, String nuevoTexto) {
         Mensaje mensaje = mensajeRepositorio.findById(id).orElseThrow(() -> new RuntimeException("Mensaje no encontrado"));
         mensaje.setTexto(nuevoTexto);
@@ -75,6 +83,7 @@ public class MensajeServicio {
         webSocketMensajeService.enviarMensajeEditado(mensajeEditado);
         return mensajeEditado;
     }
+
     public MensajeDTO eliminarMensaje(Integer id) {
         Mensaje mensaje = mensajeRepositorio.findById(id).orElseThrow(() -> new RuntimeException("Mensaje no encontrado"));
         mensaje.setTexto("Este mensaje ha sido borrado");

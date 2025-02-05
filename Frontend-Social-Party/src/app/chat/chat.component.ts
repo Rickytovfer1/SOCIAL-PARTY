@@ -6,13 +6,13 @@ import { MensajeDTO } from '../modelos/MensajeDTO';
 import { Usuario } from '../modelos/Usuario';
 import { MensajeService } from '../servicios/mensaje.service';
 import { UsuarioService } from '../servicios/usuario.service';
-import { jwtDecode } from 'jwt-decode';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { Perfil } from '../modelos/Perfil';
 import { PerfilServicio } from '../servicios/perfil.service';
 import { SocketService } from '../servicios/SocketService';
+import { jwtDecode }from 'jwt-decode';
 
 @Component({
     selector: 'app-chat',
@@ -32,6 +32,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     idReceptor = 0;
     perfil: Perfil = {} as Perfil;
     private needScroll = false;
+
     constructor(
         private mensajeService: MensajeService,
         private usuarioService: UsuarioService,
@@ -42,7 +43,8 @@ export class ChatComponent implements OnInit, AfterViewChecked {
         private actionSheetController: ActionSheetController,
         private alertController: AlertController,
         private socketService: SocketService
-    ) { }
+    ) {}
+
     ngOnInit() {
         const token = sessionStorage.getItem('authToken');
         if (!token) {
@@ -74,25 +76,28 @@ export class ChatComponent implements OnInit, AfterViewChecked {
             next: (params) => {
                 const receptorIdStr = params.get('id');
                 const receptorId = receptorIdStr ? Number(receptorIdStr) : 0;
-                // @ts-ignore
-                if (receptorId > 0 && this.usuario.id > 0) {
+                if (receptorId > 0 && this.usuario.id !== undefined && this.usuario.id > 0) {
                     this.idReceptor = receptorId;
                     this.cargarConversacion(this.usuario.id, this.idReceptor, true);
                     this.cargarPerfil(this.idReceptor);
+                    this.socketService.subscribeToConversation(this.usuario.id, this.idReceptor);
+                    this.socketService.listenEvent().subscribe((data: any) => {
+                        this.handleSocketEvent(data);
+                    });
                 }
-            },
-            error: () => { }
-        });
-        this.socketService.listenEvent().subscribe((data: any) => {
-            this.handleSocketEvent(data);
+            }
+            ,
+            error: () => {}
         });
     }
+
     ngAfterViewChecked() {
         if (this.needScroll) {
             this.scrollToBottom();
             this.needScroll = false;
         }
     }
+
     handleSocketEvent(data: any) {
         const action = data.action;
         const mensajeData: MensajeDTO = data.mensaje;
@@ -116,6 +121,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
             });
         }
     }
+
     addNewMessage(mensaje: MensajeDTO) {
         this.content.getScrollElement().then(el => {
             const currentScroll = el.scrollTop;
@@ -130,8 +136,11 @@ export class ChatComponent implements OnInit, AfterViewChecked {
             }
         });
     }
+
     cargarConversacion(idEmisor?: number, idReceptor?: number, scroll: boolean = true, preserveScrollPosition?: number) {
-        if (idEmisor === undefined || idReceptor === undefined) return;
+        if (idEmisor === undefined || idReceptor === undefined) {
+            return;
+        }
         this.mensajeService.verConversacion(idEmisor, idReceptor).subscribe({
             next: (mensajes) => {
                 mensajes.sort((a, b) => new Date(a.fecha!).getTime() - new Date(b.fecha!).getTime());
@@ -145,12 +154,17 @@ export class ChatComponent implements OnInit, AfterViewChecked {
                     }, 100);
                 }
             },
-            error: () => { }
+            error: () => {}
         });
     }
+
     enviar() {
-        if (!this.nuevoTexto.trim()) return;
-        if (!this.usuario.id || !this.idReceptor) return;
+        if (!this.nuevoTexto.trim()) {
+            return;
+        }
+        if (!this.usuario.id || !this.idReceptor) {
+            return;
+        }
         const now = new Date();
         const mensaje: MensajeDTO = {
             texto: this.nuevoTexto.trim(),
@@ -163,26 +177,28 @@ export class ChatComponent implements OnInit, AfterViewChecked {
             next: () => {
                 this.nuevoTexto = '';
             },
-            error: () => { }
+            error: () => {}
         });
     }
+
     cargarPerfil(idUsuario: number | undefined) {
         this.perfilService.getPerfil(idUsuario).subscribe({
             next: (perfil: Perfil) => {
                 this.perfil = perfil;
             },
-            error: () => { }
+            error: () => {}
         });
     }
+
     agruparMensajesPorFecha() {
         const grupos: { fecha: string; mensajes: MensajeDTO[] }[] = [];
         let grupoActual: { fecha: string; mensajes: MensajeDTO[] } | null = null;
-        this.mensajes.forEach((mensaje) => {
-            const fechaMensaje = new Date(mensaje.fecha!);
+        this.mensajes.forEach(m => {
+            const fechaMensaje = new Date(m.fecha!);
             const hoy = new Date();
             const ayer = new Date();
             ayer.setDate(hoy.getDate() - 1);
-            let fechaFormateada = this.getFormattedDate(mensaje.fecha!);
+            let fechaFormateada = this.getFormattedDate(m.fecha!);
             if (this.esMismoDia(fechaMensaje, hoy)) {
                 fechaFormateada = 'Hoy';
             } else if (this.esMismoDia(fechaMensaje, ayer)) {
@@ -192,28 +208,30 @@ export class ChatComponent implements OnInit, AfterViewChecked {
                 grupoActual = { fecha: fechaFormateada, mensajes: [] };
                 grupos.push(grupoActual);
             }
-            grupoActual.mensajes.push(mensaje);
+            grupoActual.mensajes.push(m);
         });
         this.gruposMensajes = grupos;
     }
+
     esMismoDia(fecha1: Date, fecha2: Date): boolean {
-        return (
-            fecha1.getDate() === fecha2.getDate() &&
+        return fecha1.getDate() === fecha2.getDate() &&
             fecha1.getMonth() === fecha2.getMonth() &&
-            fecha1.getFullYear() === fecha2.getFullYear()
-        );
+            fecha1.getFullYear() === fecha2.getFullYear();
     }
+
     getFormattedDate(fecha: string): string {
         const date = new Date(fecha);
         const day = date.getDate().toString().padStart(2, '0');
         const month = (date.getMonth() + 1).toString().padStart(2, '0');
-        return `${day}/${month}`;
+        return day + '/' + month;
     }
+
     scrollToBottom() {
         setTimeout(() => {
             this.content.scrollToBottom(300);
         }, 100);
     }
+
     async mostrarOpciones(mensaje: MensajeDTO) {
         const actionSheet = await this.actionSheetController.create({
             header: 'Opciones',
@@ -225,6 +243,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
         });
         await actionSheet.present();
     }
+
     async editarMensaje(mensaje: MensajeDTO) {
         const alert = await this.alertController.create({
             header: 'Editar Mensaje',
@@ -233,11 +252,11 @@ export class ChatComponent implements OnInit, AfterViewChecked {
                 { text: 'Cancelar', role: 'cancel' },
                 {
                     text: 'Guardar',
-                    handler: (data) => {
+                    handler: data => {
                         if (data.texto.trim()) {
                             this.mensajeService.editarMensaje(mensaje.id!, data.texto.trim()).subscribe({
-                                next: () => { },
-                                error: () => { }
+                                next: () => {},
+                                error: () => {}
                             });
                         }
                     }
@@ -246,6 +265,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
         });
         await alert.present();
     }
+
     async eliminarMensaje(mensaje: MensajeDTO) {
         const alert = await this.alertController.create({
             header: 'Eliminar Mensaje',
@@ -256,8 +276,8 @@ export class ChatComponent implements OnInit, AfterViewChecked {
                     text: 'Eliminar',
                     handler: () => {
                         this.mensajeService.eliminarMensaje(mensaje.id!).subscribe({
-                            next: () => { },
-                            error: () => { }
+                            next: () => {},
+                            error: () => {}
                         });
                     }
                 }
@@ -265,18 +285,23 @@ export class ChatComponent implements OnInit, AfterViewChecked {
         });
         await alert.present();
     }
+
     irPerfil() {
         this.router.navigate(['/perfil']);
     }
+
     irEntradas() {
         this.router.navigate(['/ver-empresas']);
     }
+
     irAmigos() {
         this.router.navigate(['/amigos']);
     }
+
     irUbicacion() {
         this.router.navigate(['/asistentes-evento']);
     }
+
     irPublicaciones() {
         this.router.navigate(['/publicaciones']);
     }

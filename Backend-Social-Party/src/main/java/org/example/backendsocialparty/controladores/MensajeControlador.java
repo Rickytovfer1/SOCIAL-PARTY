@@ -14,7 +14,6 @@ import java.util.Map;
 @RequestMapping("/cliente/mensaje")
 @AllArgsConstructor
 public class MensajeControlador {
-
     private MensajeServicio mensajeServicio;
 
     @PostMapping("/enviar")
