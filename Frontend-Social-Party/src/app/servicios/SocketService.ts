@@ -1,8 +1,7 @@
 import { Client, Message } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 import { Subject, Observable } from 'rxjs';
-import { environment } from "../../environments/environment";
-import {Injectable} from "@angular/core";
+import { Injectable } from "@angular/core";
 
 @Injectable({
     providedIn: 'root'
@@ -20,14 +19,18 @@ export class SocketService {
             reconnectDelay: 5000
         });
 
-
-
-
         this.client.onConnect = () => {
             this.client.subscribe('/topic/nuevoMensaje', (message: Message) => {
                 this.messageSubject.next(JSON.parse(message.body));
             });
+            this.client.subscribe('/topic/mensajeEditado', (message: Message) => {
+                this.messageSubject.next(JSON.parse(message.body));
+            });
+            this.client.subscribe('/topic/mensajeEliminado', (message: Message) => {
+                this.messageSubject.next(JSON.parse(message.body));
+            });
         };
+
         this.client.activate();
     }
 

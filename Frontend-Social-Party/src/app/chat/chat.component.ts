@@ -12,7 +12,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { Perfil } from '../modelos/Perfil';
 import { PerfilServicio } from '../servicios/perfil.service';
-import { NavInferiorComponent } from "../nav-inferior/nav-inferior.component";
 import { SocketService } from '../servicios/SocketService';
 
 @Component({
@@ -20,7 +19,7 @@ import { SocketService } from '../servicios/SocketService';
     templateUrl: './chat.component.html',
     styleUrls: ['./chat.component.scss'],
     standalone: true,
-    imports: [CommonModule, FormsModule, NavSuperiorComponent, IonicModule, NavInferiorComponent],
+    imports: [CommonModule, FormsModule, NavSuperiorComponent, IonicModule],
     providers: [DatePipe]
 })
 export class ChatComponent implements OnInit, AfterViewChecked {
@@ -43,7 +42,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
         private actionSheetController: ActionSheetController,
         private alertController: AlertController,
         private socketService: SocketService
-    ) {}
+    ) { }
     ngOnInit() {
         const token = sessionStorage.getItem('authToken');
         if (!token) {
@@ -82,10 +81,10 @@ export class ChatComponent implements OnInit, AfterViewChecked {
                     this.cargarPerfil(this.idReceptor);
                 }
             },
-            error: () => {}
+            error: () => { }
         });
-        this.socketService.listenEvent().subscribe((mensaje: MensajeDTO) => {
-            this.actualizarConversacion(mensaje);
+        this.socketService.listenEvent().subscribe((data: any) => {
+            this.handleSocketEvent(data);
         });
     }
     ngAfterViewChecked() {
@@ -94,12 +93,35 @@ export class ChatComponent implements OnInit, AfterViewChecked {
             this.needScroll = false;
         }
     }
-    actualizarConversacion(nuevoMensaje: MensajeDTO) {
+    handleSocketEvent(data: any) {
+        const action = data.action;
+        const mensajeData: MensajeDTO = data.mensaje;
+        if (!action || !mensajeData) {
+            this.addNewMessage(data);
+            return;
+        }
+        if (action === 'create') {
+            this.addNewMessage(mensajeData);
+        } else if (action === 'update' || action === 'delete') {
+            this.content.getScrollElement().then(el => {
+                const currentScroll = el.scrollTop;
+                const index = this.mensajes.findIndex(m => m.id === mensajeData.id);
+                if (index !== -1) {
+                    this.mensajes[index] = mensajeData;
+                    this.agruparMensajesPorFecha();
+                    setTimeout(() => {
+                        this.content.scrollToPoint(0, currentScroll, 0);
+                    }, 50);
+                }
+            });
+        }
+    }
+    addNewMessage(mensaje: MensajeDTO) {
         this.content.getScrollElement().then(el => {
             const currentScroll = el.scrollTop;
             const threshold = 50;
             const isAtBottom = (el.scrollHeight - currentScroll) <= (el.clientHeight + threshold);
-            this.mensajes.push(nuevoMensaje);
+            this.mensajes.push(mensaje);
             this.agruparMensajesPorFecha();
             if (isAtBottom) {
                 this.needScroll = true;
@@ -123,7 +145,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
                     }, 100);
                 }
             },
-            error: () => {}
+            error: () => { }
         });
     }
     enviar() {
@@ -139,10 +161,9 @@ export class ChatComponent implements OnInit, AfterViewChecked {
         };
         this.mensajeService.enviarMensaje(mensaje).subscribe({
             next: () => {
-                this.cargarConversacion(this.usuario.id, this.idReceptor, true);
                 this.nuevoTexto = '';
             },
-            error: () => {}
+            error: () => { }
         });
     }
     cargarPerfil(idUsuario: number | undefined) {
@@ -150,7 +171,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
             next: (perfil: Perfil) => {
                 this.perfil = perfil;
             },
-            error: () => {}
+            error: () => { }
         });
     }
     agruparMensajesPorFecha() {
@@ -176,7 +197,11 @@ export class ChatComponent implements OnInit, AfterViewChecked {
         this.gruposMensajes = grupos;
     }
     esMismoDia(fecha1: Date, fecha2: Date): boolean {
-        return fecha1.getDate() === fecha2.getDate() && fecha1.getMonth() === fecha2.getMonth() && fecha1.getFullYear() === fecha2.getFullYear();
+        return (
+            fecha1.getDate() === fecha2.getDate() &&
+            fecha1.getMonth() === fecha2.getMonth() &&
+            fecha1.getFullYear() === fecha2.getFullYear()
+        );
     }
     getFormattedDate(fecha: string): string {
         const date = new Date(fecha);
@@ -211,13 +236,8 @@ export class ChatComponent implements OnInit, AfterViewChecked {
                     handler: (data) => {
                         if (data.texto.trim()) {
                             this.mensajeService.editarMensaje(mensaje.id!, data.texto.trim()).subscribe({
-                                next: () => {
-                                    this.content.getScrollElement().then(el => {
-                                        const pos = el.scrollTop;
-                                        this.cargarConversacion(this.usuario.id, this.idReceptor, false, pos);
-                                    });
-                                },
-                                error: () => {}
+                                next: () => { },
+                                error: () => { }
                             });
                         }
                     }
@@ -236,13 +256,8 @@ export class ChatComponent implements OnInit, AfterViewChecked {
                     text: 'Eliminar',
                     handler: () => {
                         this.mensajeService.eliminarMensaje(mensaje.id!).subscribe({
-                            next: () => {
-                                this.content.getScrollElement().then(el => {
-                                    const pos = el.scrollTop;
-                                    this.cargarConversacion(this.usuario.id, this.idReceptor, false, pos);
-                                });
-                            },
-                            error: () => {}
+                            next: () => { },
+                            error: () => { }
                         });
                     }
                 }

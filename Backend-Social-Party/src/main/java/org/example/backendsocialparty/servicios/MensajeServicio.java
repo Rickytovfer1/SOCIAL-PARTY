@@ -26,10 +26,8 @@ public class MensajeServicio {
         mensaje.setTexto(mensajeDTO.getTexto());
         mensaje.setHora(LocalTime.now());
         mensaje.setFecha(LocalDate.now());
-        Cliente emisor = clienteRepositorio.findByUsuarioId(mensajeDTO.getIdEmisor())
-                .orElseThrow(() -> new RuntimeException("No existe un cliente con este Usuario ID de emisor."));
-        Cliente receptor = clienteRepositorio.findByUsuarioId(mensajeDTO.getIdReceptor())
-                .orElseThrow(() -> new RuntimeException("No existe un cliente con este Usuario ID de receptor."));
+        Cliente emisor = clienteRepositorio.findByUsuarioId(mensajeDTO.getIdEmisor()).orElseThrow(() -> new RuntimeException("No existe un cliente con este Usuario ID de emisor."));
+        Cliente receptor = clienteRepositorio.findByUsuarioId(mensajeDTO.getIdReceptor()).orElseThrow(() -> new RuntimeException("No existe un cliente con este Usuario ID de receptor."));
         mensaje.setEmisor(emisor);
         mensaje.setReceptor(receptor);
         mensajeRepositorio.save(mensaje);
@@ -37,15 +35,11 @@ public class MensajeServicio {
         webSocketMensajeService.enviarMensaje(mensajeEnviado);
     }
     public List<MensajeDTO> mostrarConversacion(Integer idUsuarioEmisor, Integer idUsuarioReceptor) {
-        Cliente clienteEmisor = clienteRepositorio.findByUsuarioId(idUsuarioEmisor)
-                .orElseThrow(() -> new RuntimeException("No existe un cliente con este Usuario ID de emisor."));
-        Cliente clienteReceptor = clienteRepositorio.findByUsuarioId(idUsuarioReceptor)
-                .orElseThrow(() -> new RuntimeException("No existe un cliente con este Usuario ID de receptor."));
+        Cliente clienteEmisor = clienteRepositorio.findByUsuarioId(idUsuarioEmisor).orElseThrow(() -> new RuntimeException("No existe un cliente con este Usuario ID de emisor."));
+        Cliente clienteReceptor = clienteRepositorio.findByUsuarioId(idUsuarioReceptor).orElseThrow(() -> new RuntimeException("No existe un cliente con este Usuario ID de receptor."));
         Integer idEmisorCliente = clienteEmisor.getId();
         Integer idReceptorCliente = clienteReceptor.getId();
-        List<Mensaje> conversacion = mensajeRepositorio
-                .findByEmisor_IdAndReceptor_IdOrEmisor_IdAndReceptor_IdOrderByFechaAscHoraAsc(
-                        idEmisorCliente, idReceptorCliente, idReceptorCliente, idEmisorCliente);
+        List<Mensaje> conversacion = mensajeRepositorio.findByEmisor_IdAndReceptor_IdOrEmisor_IdAndReceptor_IdOrderByFechaAscHoraAsc(idEmisorCliente, idReceptorCliente, idReceptorCliente, idEmisorCliente);
         List<MensajeDTO> mensajesDTO = new ArrayList<>();
         for (Mensaje mensaje : conversacion) {
             mensajesDTO.add(getMensajeDTO(mensaje));
@@ -73,19 +67,21 @@ public class MensajeServicio {
         return dtonuevo;
     }
     public MensajeDTO editarMensaje(Integer id, String nuevoTexto) {
-        Mensaje mensaje = mensajeRepositorio.findById(id)
-                .orElseThrow(() -> new RuntimeException("Mensaje no encontrado"));
+        Mensaje mensaje = mensajeRepositorio.findById(id).orElseThrow(() -> new RuntimeException("Mensaje no encontrado"));
         mensaje.setTexto(nuevoTexto);
         mensaje.setEditado(true);
         mensajeRepositorio.save(mensaje);
-        return getMensajeDTO(mensaje);
+        MensajeDTO mensajeEditado = getMensajeDTO(mensaje);
+        webSocketMensajeService.enviarMensajeEditado(mensajeEditado);
+        return mensajeEditado;
     }
     public MensajeDTO eliminarMensaje(Integer id) {
-        Mensaje mensaje = mensajeRepositorio.findById(id)
-                .orElseThrow(() -> new RuntimeException("Mensaje no encontrado"));
+        Mensaje mensaje = mensajeRepositorio.findById(id).orElseThrow(() -> new RuntimeException("Mensaje no encontrado"));
         mensaje.setTexto("Este mensaje ha sido borrado");
         mensaje.setBorrado(true);
         mensajeRepositorio.save(mensaje);
-        return getMensajeDTO(mensaje);
+        MensajeDTO mensajeEliminado = getMensajeDTO(mensaje);
+        webSocketMensajeService.enviarMensajeEliminado(mensajeEliminado);
+        return mensajeEliminado;
     }
 }
