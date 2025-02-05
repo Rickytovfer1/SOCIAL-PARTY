@@ -58,4 +58,8 @@ export class VerEmpresasComponent implements OnInit {
     verEventos(idEmpresa: number) {
         this.router.navigate(['/ver-eventos', idEmpresa]);
     }
+
+    verEntradas() {
+        this.router.navigate(['/ver-entradas']);
+    }
 }

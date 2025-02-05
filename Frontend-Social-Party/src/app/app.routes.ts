@@ -106,4 +106,8 @@ export const routes: Routes = [
         path: 'ver-solicitudes',
         loadComponent: () => import('./ver-solicitudes/ver-solicitudes.component').then((m) => m.VerSolicitudesComponent)
     },
+    {
+        path: 'ver-entradas',
+        loadComponent: () => import('./ver-entradas/ver-entradas.component').then((m) => m.VerEntradasComponent)
+    },
 ];
