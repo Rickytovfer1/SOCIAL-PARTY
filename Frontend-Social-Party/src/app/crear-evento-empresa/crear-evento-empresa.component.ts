@@ -116,7 +116,7 @@ export class CrearEventoEmpresaComponent implements OnInit {
         this.eventoService.crearEvento(formData).subscribe({
             next: () => {
                 this.presentAlert('Éxito', 'Evento creado exitosamente.');
-                this.router.navigate(['/eventos-empresa']);
+                this.router.navigate(['/asistentes-evento-empresa']);
             },
             error: () => {
                 this.presentAlert('Error', 'Error al crear el evento.');

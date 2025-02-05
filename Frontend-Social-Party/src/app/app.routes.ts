@@ -102,4 +102,8 @@ export const routes: Routes = [
         path: 'confirmacion-pago/:id',
         loadComponent: () => import('./confirmacion-pago/confirmacion-pago.component').then((m) => m.ConfirmacionPagoComponent)
     },
+    {
+        path: 'ver-solicitudes',
+        loadComponent: () => import('./ver-solicitudes/ver-solicitudes.component').then((m) => m.VerSolicitudesComponent)
+    },
 ];
