@@ -147,7 +147,6 @@ export class ChatComponent implements OnInit, AfterViewChecked {
             setTimeout(() => {
                 const newScrollHeight = el.scrollHeight;
                 const newClientHeight = el.clientHeight;
-                // Keep the user the same distance from the bottom
                 const newScrollTop = newScrollHeight - newClientHeight - distanceFromBottom;
                 this.content.scrollToPoint(0, newScrollTop, 0);
             }, 50);
@@ -256,7 +255,6 @@ export class ChatComponent implements OnInit, AfterViewChecked {
         const date = new Date(fecha);
         const day = date.getDate().toString().padStart(2, '0');
         const month = (date.getMonth() + 1).toString().padStart(2, '0');
-        // For simplicity, we do dd/MM. Adjust to your locale or datePipe if desired.
         return day + '/' + month;
     }
     scrollToBottom() {
