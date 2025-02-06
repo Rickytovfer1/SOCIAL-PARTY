@@ -1,13 +1,15 @@
 <app-nav-superior></app-nav-superior>
 
 <div class="name-header">
-    <ion-text id="nombre">{{ perfil.nombre }} {{ perfil.apellidos }}</ion-text>
+    <ion-text id="nombre">
+        {{ perfil.nombre }} {{ perfil.apellidos }}
+    </ion-text>
 </div>
 
-<ion-content class="messages-content">
-    <div class="messages-container" #scrollContent>
+<ion-content class="messages-content" #ionContent>
+    <div class="messages-container">
         <ion-grid>
-            <ng-container *ngFor="let grupo of gruposMensajes">
+            <ng-container *ngFor="let grupo of gruposMensajes; trackBy: trackByGrupo">
                 <ion-row>
                     <ion-col>
                         <div class="div_dia">
@@ -17,12 +19,14 @@
                         </div>
                     </ion-col>
                 </ion-row>
-                <ion-row *ngFor="let mensaje of grupo.mensajes">
+
+                <ion-row *ngFor="let mensaje of grupo.mensajes; trackBy: trackByMensaje">
                     <ion-col>
                         <div
                             [ngClass]="mensaje.idEmisor === usuario.id ? 'emisor' : 'receptor'"
                             (click)="!mensaje.borrado && mensaje.idEmisor === usuario.id ? mostrarOpciones(mensaje) : null"
-                            (press)="!mensaje.borrado && mensaje.idEmisor === usuario.id ? mostrarOpciones(mensaje) : null">
+                            (press)="!mensaje.borrado && mensaje.idEmisor === usuario.id ? mostrarOpciones(mensaje) : null"
+                        >
                             <ng-container *ngIf="mensaje.borrado; else normalMessage">
                                 <strong>Este mensaje ha sido borrado</strong>
                             </ng-container>
@@ -30,7 +34,9 @@
                                 <div class="message-content">
                                     <div class="message-text">
                                         {{ mensaje.texto }}
-                                        <span *ngIf="mensaje.editado" class="editado"> (editado)</span>
+                                        <span *ngIf="mensaje.editado" class="editado">
+                      (editado)
+                    </span>
                                     </div>
                                     <div class="message-time">
                                         {{ mensaje.hora ? (mensaje.hora | slice:0:5) : '' }}
@@ -50,10 +56,14 @@
         <ion-input
             [(ngModel)]="nuevoTexto"
             placeholder="Envía un mensaje..."
-            (keydown.enter)="enviar()">
-        </ion-input>
-        <ion-img (click)="enviar()" src="assets/iconoEnviar.png"></ion-img>
+            (keydown.enter)="enviar()"
+        ></ion-input>
+        <ion-img
+            (click)="enviar()"
+            src="assets/iconoEnviar.png"
+        ></ion-img>
     </div>
+
     <ion-toolbar class="toolbar-footer">
         <ion-grid>
             <ion-row>

@@ -12,7 +12,7 @@ import { switchMap } from 'rxjs/operators';
 import { Perfil } from '../modelos/Perfil';
 import { PerfilServicio } from '../servicios/perfil.service';
 import { SocketService } from '../servicios/SocketService';
-import { jwtDecode }from 'jwt-decode';
+import {jwtDecode} from 'jwt-decode';
 
 @Component({
     selector: 'app-chat',
@@ -25,12 +25,14 @@ import { jwtDecode }from 'jwt-decode';
 export class ChatComponent implements OnInit, AfterViewChecked {
     @ViewChild('scrollContent') private scrollContent!: ElementRef;
     @ViewChild(IonContent, { static: false }) content!: IonContent;
+
     usuario: Usuario = { id: 0, correo: '' };
     mensajes: MensajeDTO[] = [];
     gruposMensajes: { fecha: string; mensajes: MensajeDTO[] }[] = [];
     nuevoTexto = '';
     idReceptor = 0;
     perfil: Perfil = {} as Perfil;
+
     private needScroll = false;
 
     constructor(
@@ -51,6 +53,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
             this.router.navigate(['/login']);
             return;
         }
+
         let decoded: any;
         try {
             decoded = jwtDecode(token);
@@ -58,37 +61,45 @@ export class ChatComponent implements OnInit, AfterViewChecked {
             this.router.navigate(['/login']);
             return;
         }
+
         const tokenData = decoded?.tokenDataDTO;
         if (!tokenData?.correo) {
             this.router.navigate(['/login']);
             return;
         }
-        this.usuarioService.getUsuario(tokenData.correo).pipe(
-            switchMap((user: Usuario | undefined) => {
-                if (!user || user.id === undefined) {
-                    this.router.navigate(['/login']);
-                    throw new Error('Usuario no encontrado');
-                }
-                this.usuario = user;
-                return this.route.paramMap;
-            })
-        ).subscribe({
-            next: (params) => {
-                const receptorIdStr = params.get('id');
-                const receptorId = receptorIdStr ? Number(receptorIdStr) : 0;
-                if (receptorId > 0 && this.usuario.id !== undefined && this.usuario.id > 0) {
-                    this.idReceptor = receptorId;
-                    this.cargarConversacion(this.usuario.id, this.idReceptor, true);
-                    this.cargarPerfil(this.idReceptor);
-                    this.socketService.subscribeToConversation(this.usuario.id, this.idReceptor);
-                    this.socketService.listenEvent().subscribe((data: any) => {
-                        this.handleSocketEvent(data);
-                    });
-                }
-            }
-            ,
-            error: () => {}
-        });
+
+        this.usuarioService
+            .getUsuario(tokenData.correo)
+            .pipe(
+                switchMap((user: Usuario | undefined) => {
+                    if (!user || user.id === undefined) {
+                        this.router.navigate(['/login']);
+                        throw new Error('Usuario no encontrado');
+                    }
+                    this.usuario = user;
+                    return this.route.paramMap;
+                })
+            )
+            .subscribe({
+                next: (params) => {
+                    const receptorIdStr = params.get('id');
+                    const receptorId = receptorIdStr ? Number(receptorIdStr) : 0;
+
+                    if (receptorId > 0 && this.usuario.id !== undefined && this.usuario.id > 0) {
+                        this.idReceptor = receptorId;
+
+                        this.cargarConversacion(this.usuario.id, this.idReceptor, true);
+                        this.cargarPerfil(this.idReceptor);
+
+                        this.socketService.subscribeToConversation(this.usuario.id, this.idReceptor);
+
+                        this.socketService.listenEvent().subscribe((data: any) => {
+                            this.handleSocketEvent(data);
+                        });
+                    }
+                },
+                error: () => {}
+            });
     }
 
     ngAfterViewChecked() {
@@ -101,51 +112,64 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     handleSocketEvent(data: any) {
         const action = data.action;
         const mensajeData: MensajeDTO = data.mensaje;
+
         if (!action || !mensajeData) {
-            this.addNewMessage(data);
             return;
         }
-        if (action === 'create') {
-            this.addNewMessage(mensajeData);
-        } else if (action === 'update' || action === 'delete') {
-            this.content.getScrollElement().then(el => {
-                const currentScroll = el.scrollTop;
-                const index = this.mensajes.findIndex(m => m.id === mensajeData.id);
-                if (index !== -1) {
-                    this.mensajes[index] = mensajeData;
-                    this.agruparMensajesPorFecha();
-                    setTimeout(() => {
-                        this.content.scrollToPoint(0, currentScroll, 0);
-                    }, 50);
-                }
-            });
-        }
-    }
 
-    addNewMessage(mensaje: MensajeDTO) {
-        this.content.getScrollElement().then(el => {
-            const currentScroll = el.scrollTop;
-            const threshold = 50;
-            const isAtBottom = (el.scrollHeight - currentScroll) <= (el.clientHeight + threshold);
-            this.mensajes.push(mensaje);
-            this.agruparMensajesPorFecha();
-            if (isAtBottom) {
-                this.needScroll = true;
-            } else {
-                this.content.scrollToPoint(0, currentScroll, 0);
+        this.content.getScrollElement().then((el) => {
+            const oldScrollHeight = el.scrollHeight;
+            const oldScrollTop = el.scrollTop;
+            const oldClientHeight = el.clientHeight;
+
+            const distanceFromBottom = oldScrollHeight - (oldScrollTop + oldClientHeight);
+
+            if (action === 'create') {
+                this.mensajes.push(mensajeData);
+            } else if (action === 'update') {
+                const index = this.mensajes.findIndex((m) => m.id === mensajeData.id);
+                if (index !== -1) {
+                    this.mensajes[index].texto = mensajeData.texto;
+                    this.mensajes[index].editado = mensajeData.editado;
+                    this.mensajes[index].borrado = mensajeData.borrado;
+                    this.mensajes[index].fecha = mensajeData.fecha;
+                    this.mensajes[index].hora = mensajeData.hora;
+                }
+            } else if (action === 'delete') {
+               const index = this.mensajes.findIndex((m) => m.id === mensajeData.id);
+                if (index !== -1) {
+                    this.mensajes[index].borrado = true;
+                }
             }
+
+            this.agruparMensajesPorFecha();
+
+            setTimeout(() => {
+                const newScrollHeight = el.scrollHeight;
+                const newClientHeight = el.clientHeight;
+                // Keep the user the same distance from the bottom
+                const newScrollTop = newScrollHeight - newClientHeight - distanceFromBottom;
+                this.content.scrollToPoint(0, newScrollTop, 0);
+            }, 50);
         });
     }
 
-    cargarConversacion(idEmisor?: number, idReceptor?: number, scroll: boolean = true, preserveScrollPosition?: number) {
+    cargarConversacion(
+        idEmisor?: number,
+        idReceptor?: number,
+        scroll: boolean = true,
+        preserveScrollPosition?: number
+    ) {
         if (idEmisor === undefined || idReceptor === undefined) {
             return;
         }
+
         this.mensajeService.verConversacion(idEmisor, idReceptor).subscribe({
             next: (mensajes) => {
                 mensajes.sort((a, b) => new Date(a.fecha!).getTime() - new Date(b.fecha!).getTime());
                 this.mensajes = mensajes;
                 this.agruparMensajesPorFecha();
+
                 if (scroll) {
                     this.needScroll = true;
                 } else if (preserveScrollPosition !== undefined) {
@@ -165,6 +189,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
         if (!this.usuario.id || !this.idReceptor) {
             return;
         }
+
         const now = new Date();
         const mensaje: MensajeDTO = {
             texto: this.nuevoTexto.trim(),
@@ -173,6 +198,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
             fecha: this.datePipe.transform(now, 'yyyy-MM-dd') || '',
             hora: this.datePipe.transform(now, 'HH:mm:ss') || ''
         };
+
         this.mensajeService.enviarMensaje(mensaje).subscribe({
             next: () => {
                 this.nuevoTexto = '';
@@ -182,6 +208,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     }
 
     cargarPerfil(idUsuario: number | undefined) {
+        if (!idUsuario) return;
         this.perfilService.getPerfil(idUsuario).subscribe({
             next: (perfil: Perfil) => {
                 this.perfil = perfil;
@@ -193,52 +220,66 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     agruparMensajesPorFecha() {
         const grupos: { fecha: string; mensajes: MensajeDTO[] }[] = [];
         let grupoActual: { fecha: string; mensajes: MensajeDTO[] } | null = null;
-        this.mensajes.forEach(m => {
+
+        this.mensajes.forEach((m) => {
             const fechaMensaje = new Date(m.fecha!);
             const hoy = new Date();
             const ayer = new Date();
             ayer.setDate(hoy.getDate() - 1);
+
             let fechaFormateada = this.getFormattedDate(m.fecha!);
             if (this.esMismoDia(fechaMensaje, hoy)) {
                 fechaFormateada = 'Hoy';
             } else if (this.esMismoDia(fechaMensaje, ayer)) {
                 fechaFormateada = 'Ayer';
             }
+
             if (!grupoActual || grupoActual.fecha !== fechaFormateada) {
                 grupoActual = { fecha: fechaFormateada, mensajes: [] };
                 grupos.push(grupoActual);
             }
             grupoActual.mensajes.push(m);
         });
+
         this.gruposMensajes = grupos;
     }
 
     esMismoDia(fecha1: Date, fecha2: Date): boolean {
-        return fecha1.getDate() === fecha2.getDate() &&
+        return (
+            fecha1.getDate() === fecha2.getDate() &&
             fecha1.getMonth() === fecha2.getMonth() &&
-            fecha1.getFullYear() === fecha2.getFullYear();
+            fecha1.getFullYear() === fecha2.getFullYear()
+        );
     }
 
     getFormattedDate(fecha: string): string {
         const date = new Date(fecha);
         const day = date.getDate().toString().padStart(2, '0');
         const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        // For simplicity, we do dd/MM. Adjust to your locale or datePipe if desired.
         return day + '/' + month;
     }
-
     scrollToBottom() {
         setTimeout(() => {
             this.content.scrollToBottom(300);
         }, 100);
     }
-
     async mostrarOpciones(mensaje: MensajeDTO) {
         const actionSheet = await this.actionSheetController.create({
             header: 'Opciones',
             buttons: [
-                { text: 'Editar', handler: () => this.editarMensaje(mensaje) },
-                { text: 'Eliminar', handler: () => this.eliminarMensaje(mensaje) },
-                { text: 'Cancelar', role: 'cancel' }
+                {
+                    text: 'Editar',
+                    handler: () => this.editarMensaje(mensaje)
+                },
+                {
+                    text: 'Eliminar',
+                    handler: () => this.eliminarMensaje(mensaje)
+                },
+                {
+                    text: 'Cancelar',
+                    role: 'cancel'
+                }
             ]
         });
         await actionSheet.present();
@@ -249,10 +290,13 @@ export class ChatComponent implements OnInit, AfterViewChecked {
             header: 'Editar Mensaje',
             inputs: [{ name: 'texto', type: 'text', value: mensaje.texto }],
             buttons: [
-                { text: 'Cancelar', role: 'cancel' },
+                {
+                    text: 'Cancelar',
+                    role: 'cancel'
+                },
                 {
                     text: 'Guardar',
-                    handler: data => {
+                    handler: (data) => {
                         if (data.texto.trim()) {
                             this.mensajeService.editarMensaje(mensaje.id!, data.texto.trim()).subscribe({
                                 next: () => {},
@@ -271,7 +315,10 @@ export class ChatComponent implements OnInit, AfterViewChecked {
             header: 'Eliminar Mensaje',
             message: '¿Estás seguro de que deseas eliminar este mensaje?',
             buttons: [
-                { text: 'Cancelar', role: 'cancel' },
+                {
+                    text: 'Cancelar',
+                    role: 'cancel'
+                },
                 {
                     text: 'Eliminar',
                     handler: () => {
@@ -284,6 +331,14 @@ export class ChatComponent implements OnInit, AfterViewChecked {
             ]
         });
         await alert.present();
+    }
+
+    trackByGrupo(index: number, grupo: { fecha: string; mensajes: MensajeDTO[] }): string {
+        return grupo.fecha;
+    }
+
+    trackByMensaje(index: number, mensaje: MensajeDTO): number | undefined {
+        return mensaje.id;
     }
 
     irPerfil() {
