@@ -26,7 +26,7 @@ public class EntradaControlador {
     }
 
     @GetMapping("/cliente/ver/entradas/{idCliente}")
-    public List<EntradaDTO> comprarEntrada(@PathVariable Integer idCliente) {
+    public List<EntradaDTO> verEntrada(@PathVariable Integer idCliente) {
         return entradaServicio.listarEntradas(idCliente);
     }
 
