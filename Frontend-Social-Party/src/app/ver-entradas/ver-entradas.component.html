@@ -5,20 +5,20 @@
 <ion-content>
 
     <ion-grid>
-        <ion-row>
+        <ion-row *ngFor="let entrada of entradas">
             <ion-col>
                 <ion-grid>
                     <ion-row class="entrada">
                         <ion-col size="4">
-                            <ion-img src="https://ionicframework.com/docs/img/demos/card-media.png"></ion-img>
+                            <img [ngSrc]="getImageUrl(entrada.evento.empresa)" fill>
                         </ion-col>
                         <ion-col class="col_nombre ion-align-items-center" size="6">
                             <ion-grid>
                                 <ion-row>
-                                    <ion-text class="nombre_empresa">Occo</ion-text>
+                                    <ion-text class="nombre_empresa">{{ entrada.evento.empresa.nombre}}</ion-text>
                                 </ion-row>
                                 <ion-row>
-                                    <ion-text>Fin de examenes</ion-text>
+                                    <ion-text>{{ entrada.evento.titulo}}</ion-text>
                                 </ion-row>
                             </ion-grid>
                         </ion-col>

@@ -8,6 +8,7 @@ import {NavInferiorComponent} from "../nav-inferior/nav-inferior.component";
 import {NgForOf, NgOptimizedImage} from "@angular/common";
 import {MostrarPublicacionDTO} from "../servicios/publicacion.service";
 import {environment} from "../../environments/environment";
+import {EmpresaDTO} from "../modelos/EmpresaDTO";
 
 @Component({
     selector: 'app-ver-eventos',
@@ -23,7 +24,7 @@ import {environment} from "../../environments/environment";
     ]
 })
 export class VerEventosComponent implements OnInit {
-
+    empresa: EmpresaDTO = {} as EmpresaDTO;
     eventos: Evento[] = [];
     idEmpresa!: number;
     publicaciones: MostrarPublicacionDTO[] = [];
@@ -39,6 +40,7 @@ export class VerEventosComponent implements OnInit {
         this.activateRoute.params.subscribe(params => {
             this.idEmpresa = Number(params['id']);
         });
+        this.verEmpresa(this.idEmpresa)
         this.cargarGrupos(this.idEmpresa)
     }
 
@@ -66,5 +68,26 @@ export class VerEventosComponent implements OnInit {
 
     verEvento(idEvento: number) {
         this.router.navigate(["/ver-evento-info", idEvento])
+    }
+
+    getImageUrlEmpresa(): string {
+        if (this.empresa && this.empresa.fotoPerfil) {
+            if (this.empresa.fotoPerfil.startsWith('http')) {
+                return this.empresa.fotoPerfil;
+            } else {
+                return `${this.baseUrl}${this.empresa.fotoPerfil}`;
+            }
+        }
+        return 'assets/iconoPerfil.png';
+    }
+    verEmpresa(idEmpresa: number | undefined): void {
+        this.eventoService.verEmpresa(idEmpresa).subscribe({
+            next: (empresa: EmpresaDTO) => {
+                this.empresa = empresa;
+            },
+            error: (e) => {
+                console.error("Error al cargar el usuario:", e);
+            }
+        });
     }
 }

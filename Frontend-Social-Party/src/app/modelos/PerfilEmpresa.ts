@@ -6,7 +6,7 @@ export interface PerfilEmpresa{
     nif?: string;
     correo?: string;
     telefono?: string;
-    fotoPerfil?: string;
+    fotoPerfil: string;
     edadMinima?: string;
     valoracionMinima?: string;
 }
