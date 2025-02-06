@@ -110,7 +110,7 @@ export class CrearEventoEmpresaComponent implements OnInit {
         formData.append('horaFinalizacion', horaFinalizacionFormateada);
         formData.append('idEmpresa', this.empresaId.toString());
         formData.append('precio', this.precio.toString());
-        formData.append('foto', this.foto);
+        formData.append('imagenFile', this.foto);
         this.eventoService.crearEvento(formData).subscribe({
             next: () => {
                 this.presentAlert('Éxito', 'Evento creado exitosamente.');
