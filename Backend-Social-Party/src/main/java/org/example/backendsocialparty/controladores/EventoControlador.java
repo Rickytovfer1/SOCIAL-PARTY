@@ -19,7 +19,7 @@ public class EventoControlador {
 
     @PostMapping(value = "/empresa/crear/evento", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void crearEventoEmpresa(@ModelAttribute EventoDTO eventoDTO,
-                                   @RequestParam("foto") MultipartFile foto) {
+                                   @RequestParam("imagenFile") MultipartFile foto) {
         eventoServicio.crearEvento(eventoDTO, foto);
     }
 
