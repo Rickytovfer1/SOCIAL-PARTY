@@ -99,10 +99,9 @@ export class CrearEventoEmpresaComponent implements OnInit {
             this.presentAlert('Error', 'Por favor, completa todos los campos.');
             return;
         }
-        const fechaFormateada = this.fecha.split('T')[0]; // "2025-02-04"
+        const fechaFormateada = this.fecha.split('T')[0];
         const horaAperturaFormateada = this.horaApertura.split('T')[1]?.slice(0, 5) || this.horaApertura;
         const horaFinalizacionFormateada = this.horaFinalizacion.split('T')[1]?.slice(0, 5) || this.horaFinalizacion;
-
         const formData = new FormData();
         formData.append('titulo', this.titulo);
         formData.append('descripcion', this.descripcion);
@@ -111,8 +110,7 @@ export class CrearEventoEmpresaComponent implements OnInit {
         formData.append('horaFinalizacion', horaFinalizacionFormateada);
         formData.append('idEmpresa', this.empresaId.toString());
         formData.append('precio', this.precio.toString());
-        formData.append('foto', this.foto);
-
+        formData.append('imagenFile', this.foto);
         this.eventoService.crearEvento(formData).subscribe({
             next: () => {
                 this.presentAlert('Éxito', 'Evento creado exitosamente.');
@@ -123,7 +121,6 @@ export class CrearEventoEmpresaComponent implements OnInit {
             }
         });
     }
-
 
     async presentAlert(header: string, message: string) {
         const alert = await this.alertController.create({

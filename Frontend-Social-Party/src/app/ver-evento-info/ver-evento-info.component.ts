@@ -70,12 +70,17 @@ export class VerEventoInfoComponent implements OnInit {
     }
 
     getImageUrl(evento: Evento): string {
+        if (!evento.foto) {
+            return 'placebo';
+        }
+
         if (evento.foto.startsWith('http')) {
             return evento.foto;
         } else {
             return `${this.baseUrl}${evento.foto}`;
         }
     }
+
 
 
 }
