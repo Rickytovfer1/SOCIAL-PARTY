@@ -35,6 +35,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
 
     private needScroll = false;
 
+
     constructor(
         private mensajeService: MensajeService,
         private usuarioService: UsuarioService,
