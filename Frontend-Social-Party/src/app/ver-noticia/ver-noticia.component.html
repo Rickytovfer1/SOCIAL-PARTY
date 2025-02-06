@@ -4,18 +4,24 @@
     <ion-grid>
         <ion-row>
             <ion-col size-lg="4" size-xl="4" size-md="6" size-sm="10" size-xs="12">
-                <ion-card id="cardG">
+                <ion-card id="cardG" *ngIf="publicacion; else loading">
                     <ion-card id="card_info">
                         <ion-grid>
                             <ion-row>
                                 <ion-col size="4" class="ion-align-items-center">
-                                    <ion-img id="foto_perfil" src="assets/iconoPerfil.png"/>
+                                    <ion-img
+                                        id="foto_perfil"
+                                        [src]="getImageUrl()"
+                                        alt="Imagen de la publicación">
+                                    </ion-img>
                                 </ion-col>
                                 <ion-col size="8">
                                     <ion-grid>
                                         <ion-row>
                                             <ion-col class="ion-align-items-center">
-                                                <ion-text id="nombre">Rosso By Antique</ion-text>
+                                                <ion-text id="nombre">
+                                                    {{ perfilEmpresa?.nombre }}
+                                                </ion-text>
                                             </ion-col>
                                         </ion-row>
                                     </ion-grid>
@@ -24,20 +30,22 @@
                         </ion-grid>
                     </ion-card>
                     <ion-card id="card_bio">
-                        <ion-title>Dj Totote la lía</ion-title>
+                        <ion-title>{{ publicacion.titulo }}</ion-title>
                         <div>
                             <ion-text id="textDescripcion">
-                                En la noche de hoy, está comn nosotros DJ Totote. Y esta poniendo mucha diversidad de música.
-
-                                <hr>¡Corre, te esperamos ...?
+                                {{ publicacion.texto }}
+                                <hr>
                             </ion-text>
                         </div>
                     </ion-card>
                 </ion-card>
+
+                <ng-template #loading>
+                    <ion-text>Cargando publicacion</ion-text>
+                </ng-template>
             </ion-col>
         </ion-row>
     </ion-grid>
-
 </ion-content>
 
 <app-nav-inferior></app-nav-inferior>

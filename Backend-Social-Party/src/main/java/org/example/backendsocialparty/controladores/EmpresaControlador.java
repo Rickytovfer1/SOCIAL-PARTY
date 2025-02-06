@@ -43,6 +43,7 @@ public class EmpresaControlador {
         return empresaServicio.verPerfilEmpresa(idUsuario);
     }
 
+
     @GetMapping("/empresa/ver/perfil/{correo}")
     public Usuario verUsuario(@PathVariable String correo){
         return (Usuario) usuarioServicio.loadUserByUsername(correo);
