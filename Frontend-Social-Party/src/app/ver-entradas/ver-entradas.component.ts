@@ -13,9 +13,11 @@ import {Perfil} from "../modelos/Perfil";
 import {Usuario} from "../modelos/Usuario";
 import {PerfilServicio} from "../servicios/perfil.service";
 import {UsuarioService} from "../servicios/usuario.service";
-import {NgForOf} from "@angular/common";
+import {NgForOf, NgOptimizedImage} from "@angular/common";
 import {EmpresaDTO} from "../modelos/EmpresaDTO";
 import {FormsModule} from "@angular/forms";
+import {environment} from "../../environments/environment";
+import {EmpresaEntradaDTO} from "../modelos/EmpresaEntradaDTO";
 
 @Component({
     selector: 'app-ver-entradas',
@@ -27,17 +29,19 @@ import {FormsModule} from "@angular/forms";
         NavInferiorComponent,
         NavSuperiorComponent,
         NgForOf,
-        FormsModule
+        FormsModule,
+        NgOptimizedImage
     ]
 })
 export class VerEntradasComponent implements OnInit {
-
+    empresaEntrada: EmpresaEntradaDTO = {} as EmpresaDTO;
     empresa: EmpresaDTO = {} as EmpresaDTO;
     evento: Evento = {} as Evento;
     usuario: Usuario = {} as Usuario;
     perfil: Perfil = {} as Perfil;
     entradas: Entrada[] = [];
     correo?: string;
+    baseUrl: string = environment.apiUrl;
 
 
     constructor(private entradaService: EntradaService,
@@ -127,4 +131,16 @@ export class VerEntradasComponent implements OnInit {
             }
         });
     }
+
+    getImageUrl(empresaEntradaDTO: EmpresaEntradaDTO): string {
+        if (!empresaEntradaDTO.fotoPerfil) {
+            return 'assets/iconoPerfil.png'; // Imagen por defecto si no hay fotoPerfil
+        }
+        if (empresaEntradaDTO.fotoPerfil.startsWith('http')) {
+            return empresaEntradaDTO.fotoPerfil;
+        } else {
+            return `${this.baseUrl}${empresaEntradaDTO.fotoPerfil}`;
+        }
+    }
+
 }

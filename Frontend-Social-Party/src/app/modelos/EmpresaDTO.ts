@@ -10,5 +10,5 @@ export interface EmpresaDTO {
     eventos?: number[];
     idUsuario: number;
     correo?: string;
-    fotoPerfil?: string;
+    fotoPerfil: string;
 }

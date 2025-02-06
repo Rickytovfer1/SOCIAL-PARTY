@@ -13,13 +13,14 @@ import { Perfil } from '../modelos/Perfil';
 import { PerfilServicio } from '../servicios/perfil.service';
 import { SocketService } from '../servicios/SocketService';
 import {jwtDecode} from 'jwt-decode';
+import {NavInferiorComponent} from "../nav-inferior/nav-inferior.component";
 
 @Component({
     selector: 'app-chat',
     templateUrl: './chat.component.html',
     styleUrls: ['./chat.component.scss'],
     standalone: true,
-    imports: [CommonModule, FormsModule, NavSuperiorComponent, IonicModule],
+    imports: [CommonModule, FormsModule, NavSuperiorComponent, IonicModule, NavInferiorComponent],
     providers: [DatePipe]
 })
 export class ChatComponent implements OnInit, AfterViewChecked {
@@ -338,25 +339,5 @@ export class ChatComponent implements OnInit, AfterViewChecked {
 
     trackByMensaje(index: number, mensaje: MensajeDTO): number | undefined {
         return mensaje.id;
-    }
-
-    irPerfil() {
-        this.router.navigate(['/perfil']);
-    }
-
-    irEntradas() {
-        this.router.navigate(['/ver-empresas']);
-    }
-
-    irAmigos() {
-        this.router.navigate(['/amigos']);
-    }
-
-    irUbicacion() {
-        this.router.navigate(['/asistentes-evento']);
-    }
-
-    irPublicaciones() {
-        this.router.navigate(['/publicaciones']);
     }
 }

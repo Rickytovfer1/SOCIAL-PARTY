@@ -10,7 +10,10 @@ import { UsuarioService } from "../servicios/usuario.service";
 import { jwtDecode } from "jwt-decode";
 import { TokenDataDTO } from "../modelos/TokenDataDTO";
 import { FormsModule } from "@angular/forms";
-import { CommonModule } from "@angular/common";
+import {CommonModule, NgOptimizedImage} from "@angular/common";
+import {MostrarPublicacionDTO} from "../servicios/publicacion.service";
+import {EmpresaDTO} from "../modelos/EmpresaDTO";
+import {environment} from "../../environments/environment";
 
 @Component({
     selector: 'app-perfil-empresa',
@@ -22,10 +25,12 @@ import { CommonModule } from "@angular/common";
         FormsModule,
         CommonModule,
         NavSuperiorEmpresaComponent,
-        NavInferiorEmpresaComponent
+        NavInferiorEmpresaComponent,
+        NgOptimizedImage
     ]
 })
 export class PerfilEmpresaComponent implements OnInit {
+    baseUrl: string = environment.apiUrl;
 
     usuario: Usuario = {} as Usuario;
     perfilEmpresa: PerfilEmpresa = {} as PerfilEmpresa;
@@ -125,7 +130,16 @@ export class PerfilEmpresaComponent implements OnInit {
         });
     }
 
-
+    getImageUrl(empresaDTO: PerfilEmpresa): string {
+        if (!empresaDTO.fotoPerfil) {
+            return 'assets/iconoPerfil.png';
+        }
+        if (empresaDTO.fotoPerfil.startsWith('http')) {
+            return empresaDTO.fotoPerfil;
+        } else {
+            return `${this.baseUrl}${empresaDTO.fotoPerfil}`;
+        }
+    }
 
 
 }

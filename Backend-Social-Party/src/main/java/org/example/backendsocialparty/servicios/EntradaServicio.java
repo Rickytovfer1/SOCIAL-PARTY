@@ -1,8 +1,7 @@
 package org.example.backendsocialparty.servicios;
 
 import lombok.AllArgsConstructor;
-import org.example.backendsocialparty.DTOs.EntradaDTO;
-import org.example.backendsocialparty.DTOs.EventoDTO;
+import org.example.backendsocialparty.DTOs.*;
 import org.example.backendsocialparty.modelos.Cliente;
 import org.example.backendsocialparty.modelos.Empresa;
 import org.example.backendsocialparty.modelos.Entrada;
@@ -93,8 +92,29 @@ public class EntradaServicio {
         EntradaDTO dtonuevo = new EntradaDTO();
         dtonuevo.setId(a.getId());
         dtonuevo.setFecha(a.getFecha());
-        dtonuevo.setIdCliente(a.getCliente().getId());
-        dtonuevo.setIdEvento(a.getEvento().getId());
+
+        ClienteDTO dto = new ClienteDTO();
+        dto.setId(a.getCliente().getId());
+        dtonuevo.setCliente(dto);
+
+
+        dtonuevo.setEvento(getEventoEntradaDTO(a.getEvento()));
         return dtonuevo;
+    }
+
+    private static EventoEntradaDTO getEventoEntradaDTO(Evento evento) {
+        EventoEntradaDTO dto = new EventoEntradaDTO();
+        dto.setId(evento.getId());
+        dto.setTitulo(evento.getTitulo());
+        dto.setEmpresa(getEmpresaEntradaDTO(evento.getEmpresa()));
+        return dto;
+    }
+
+    private static EmpresaEntradaDTO getEmpresaEntradaDTO(Empresa empresa) {
+        EmpresaEntradaDTO dto = new EmpresaEntradaDTO();
+        dto.setId(empresa.getId());
+        dto.setNombre(empresa.getNombre());
+        dto.setFotoPerfil(empresa.getFotoPerfil());
+        return dto;
     }
 }
