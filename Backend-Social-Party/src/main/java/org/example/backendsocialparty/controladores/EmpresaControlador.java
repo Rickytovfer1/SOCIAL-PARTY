@@ -33,6 +33,11 @@ public class EmpresaControlador {
         return empresaServicio.listarEmpresas();
     }
 
+    @GetMapping("/cliente/ver/{idEmpresa}")
+    public EmpresaDTO buscarEmpresa(@PathVariable Integer idEmpresa){
+        return empresaServicio.verEmpresa(idEmpresa);
+    }
+
     @GetMapping("/empresa/perfil/{idUsuario}")
     public EmpresaDTO verPerfil(@PathVariable Integer idUsuario){
         return empresaServicio.verPerfilEmpresa(idUsuario);

@@ -97,5 +97,9 @@ export class AmigosComponent implements OnInit {
         this.router.navigate(['/chat', idUsuario]);
     }
 
+    verSolicitudes() {
+        this.router.navigate(['/ver-solicitudes']);
+    }
+
 
 }

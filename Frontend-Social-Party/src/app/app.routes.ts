@@ -95,11 +95,19 @@ export const routes: Routes = [
         loadComponent: () => import('./canjear-entrada-empresa/canjear-entrada-empresa.component').then((m) => m.CanjearEntradaEmpresaComponent)
     },
     {
-        path: 'ver-evento-info',
+        path: 'ver-evento-info/:id',
         loadComponent: () => import('./ver-evento-info/ver-evento-info.component').then((m) => m.VerEventoInfoComponent)
     },
     {
-        path: 'confirmacion-pago',
+        path: 'confirmacion-pago/:id',
         loadComponent: () => import('./confirmacion-pago/confirmacion-pago.component').then((m) => m.ConfirmacionPagoComponent)
+    },
+    {
+        path: 'ver-solicitudes',
+        loadComponent: () => import('./ver-solicitudes/ver-solicitudes.component').then((m) => m.VerSolicitudesComponent)
+    },
+    {
+        path: 'ver-entradas',
+        loadComponent: () => import('./ver-entradas/ver-entradas.component').then((m) => m.VerEntradasComponent)
     },
 ];

@@ -38,7 +38,8 @@ export class NavSuperiorComponent  implements OnInit {
   }
 
   cerrarSesion() {
-      sessionStorage.clear();
+      const token = "";
+      sessionStorage.setItem("authToken", token);
       this.router.navigate(['/login']);
   }
 }

@@ -9,6 +9,8 @@ import { EventoService } from '../servicios/evento.service';
 import { UsuarioService } from '../servicios/usuario.service';
 import { jwtDecode } from 'jwt-decode';
 import { TokenDataDTO } from '../modelos/TokenDataDTO';
+import {NavInferiorComponent} from "../nav-inferior/nav-inferior.component";
+import {NavSuperiorComponent} from "../nav-superior/nav-superior.component";
 
 @Component({
     selector: 'app-crear-evento-empresa',
@@ -20,7 +22,9 @@ import { TokenDataDTO } from '../modelos/TokenDataDTO';
         FormsModule,
         CommonModule,
         NavSuperiorEmpresaComponent,
-        NavInferiorEmpresaComponent
+        NavInferiorEmpresaComponent,
+        NavInferiorComponent,
+        NavSuperiorComponent
     ]
 })
 export class CrearEventoEmpresaComponent implements OnInit {
@@ -110,7 +114,7 @@ export class CrearEventoEmpresaComponent implements OnInit {
         this.eventoService.crearEvento(formData).subscribe({
             next: () => {
                 this.presentAlert('Éxito', 'Evento creado exitosamente.');
-                this.router.navigate(['/eventos-empresa']);
+                this.router.navigate(['/asistentes-evento-empresa']);
             },
             error: () => {
                 this.presentAlert('Error', 'Error al crear el evento.');

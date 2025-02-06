@@ -23,9 +23,7 @@ import { DatePipe, NgIf } from "@angular/common";
         IonicModule,
         NavSuperiorComponent,
         NavInferiorComponent,
-        FormsModule,
-        DatePipe,
-        NgIf
+        FormsModule
     ]
 })
 export class PerfilComponent implements OnInit {

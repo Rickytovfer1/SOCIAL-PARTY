@@ -1,127 +1,66 @@
-#foto_perfil {
-    width: 80%;
-    height: 80%;
-    margin: 0 auto;
-    padding: 0;
-}
-
-#estrella {
-    width: 70%;
-    height: 70%;
-}
-
-#cardG {
-    --background: #ffffff;
-    border: 15px solid #471FCD;
-    border-radius: 40px;
-    margin: 20% auto 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
 ion-content {
     --background: #D3E5E5;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    height: 100%;
+    height: 84%;
 }
 
 ion-col {
-    display: flex;
     margin: 0 auto;
-    justify-content: center;
-    align-items: center;
 }
 
-#card_info, #card_bio {
+#cardG {
+    border: 5px solid #471FCD;
+    border-radius: 40px;
+    padding: 10px;
+    margin: 0 auto;
+    width: 80%;
+}
+
+#card_info {
     --background: #306DA9;
+    color: white;
+    border: 1px solid black;
+    padding: 5px;
     border-radius: 20px;
-    border: 2px solid black;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    max-width: 600px;
 }
 
-ion-button {
-    --background: #5AB7D5;
-    --border-radius: 30px;
-    font-size: 10px;
-    margin: 0 auto;
+#card_bio {
+    --background: #306DA9;
+    color: white;
+    border: 1px solid black;
+    padding: 15px;
+    border-radius: 20px;
+    text-align: center;
 }
 
-ion-text {
-    color: #ffffff;
-
+img {
+    border-radius: 15px;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
 }
 
 #nombre {
-    font-size: 22px;
-    text-align: center;
+    font-size: 30px;
 }
 
 ion-title {
-    text-align: center;
-    color: white;
-    font-size: 25px;
+    margin-top: 15px;
+    margin-bottom: 15px;
 }
 
-div {
-    align-content: center;
-    padding-bottom: 100px;
+ion-button {
+    color: #ffffff;
+    --border-radius: 25px;
+    --background: #5AB7D5;
+    margin: 20px auto;
 }
 
 @media (max-width: 768px) {
-    ion-title{
-        margin-top: -40px;
-    }
-
-    ion-button {
-        font-size: 15px;
-    }
-
-
-    #card_bio{
-        height: 350px;
-    }
-
-    ion-text{
-        font-size: 17px;
-    }
-}
-
-
-@media (min-width: 769px) {
-
-    ion-title{
-        margin-top: -40px;
-    }
-
-    ion-button {
-        font-size: 15px;
-    }
-
-    #card_bio{
-        height: 350px;
-    }
-
-    ion-text{
-        font-size: 17px;
-    }
-
-    #card_info {
+    #cardG {
+        border: 5px solid #471FCD;
+        border-radius: 40px;
+        padding: 10px;
         margin: 0 auto;
-        margin-top: 5px;
         width: 100%;
-        max-width: 420px;
-    }
-    #cardG{
-        margin-top: 20px;
     }
 }
-
-
