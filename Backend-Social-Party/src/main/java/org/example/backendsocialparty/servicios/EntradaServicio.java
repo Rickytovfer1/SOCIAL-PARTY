@@ -1,6 +1,8 @@
 package org.example.backendsocialparty.servicios;
 
 import lombok.AllArgsConstructor;
+import org.example.backendsocialparty.DTOs.EntradaDTO;
+import org.example.backendsocialparty.DTOs.EventoDTO;
 import org.example.backendsocialparty.modelos.Cliente;
 import org.example.backendsocialparty.modelos.Empresa;
 import org.example.backendsocialparty.modelos.Entrada;
@@ -14,7 +16,10 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @AllArgsConstructor
@@ -73,5 +78,23 @@ public class EntradaServicio {
     public void eliminarEntrada(Integer id) {
         List<Entrada> entradas = entradaRepositorio.findByCliente_Id(id);
         entradaRepositorio.deleteAll(entradas);
+    }
+
+    public List<EntradaDTO> listarEntradas(Integer idCliente) {
+        List<Entrada> entradas = entradaRepositorio.findByCliente_Id(idCliente);
+        List<EntradaDTO> entradaDTOS = new ArrayList<>();
+        for (Entrada entrada : entradas) {
+            entradaDTOS.add(getEntradaDTO(entrada));
+        }
+        return entradaDTOS;
+    }
+
+    private static EntradaDTO getEntradaDTO(Entrada a) {
+        EntradaDTO dtonuevo = new EntradaDTO();
+        dtonuevo.setId(a.getId());
+        dtonuevo.setFecha(a.getFecha());
+        dtonuevo.setIdCliente(a.getCliente().getId());
+        dtonuevo.setIdEvento(a.getEvento().getId());
+        return dtonuevo;
     }
 }
