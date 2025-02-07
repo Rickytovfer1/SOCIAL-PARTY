@@ -28,9 +28,6 @@ public class Entrada {
     @Column(name = "codigoEntrada")
     private Integer codigoEntrada;
 
-    @Lob
-    @Column(nullable = false)
-    private byte[] imagenQR = new byte[0];
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cliente")

@@ -59,7 +59,6 @@ public class EntradaServicio {
 
             clienteRepositorio.save(cliente);
 
-            System.out.println("Entrada con código " + codigoEntrada + " canjeada correctamente.");
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El cliente ya ha canjeado esta entrada.");
         }
@@ -87,18 +86,9 @@ public class EntradaServicio {
         Random random = new Random();
         int codigoEntrada = 10000 + random.nextInt(90000);
         entrada.setCodigoEntrada(codigoEntrada);
-
-        String qrData = "Evento: " + evento.getTitulo() + "\nCliente: " + cliente.getNombre() + "\nCódigo: " + codigoEntrada;
-        byte[] qrBytes = generateQRBytes(qrData, 300, 300);
-        if (qrBytes == null || qrBytes.length == 0) {
-            throw new RuntimeException("Error: El código QR no se generó correctamente.");
-        }
-
-        entrada.setImagenQR(qrBytes);
         entrada.setCliente(cliente);
         entrada.setEvento(evento);
 
-        System.out.println("Guardando entrada con código QR de " + qrBytes.length + " bytes");
 
         entradaRepositorio.save(entrada);
     }

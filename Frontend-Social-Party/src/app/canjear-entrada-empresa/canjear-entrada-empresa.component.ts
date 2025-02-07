@@ -53,13 +53,11 @@ export class CanjearEntradaEmpresaComponent implements AfterViewInit {
                 console.log('Entrada canjeada con éxito.', entradacanjeada);
             },
             error: (error) => {
-                if (error.status === 400) {
-                    // Código 400 → La entrada ya fue canjeada
+                if (error.status === 403) {
                     const toast = document.getElementById("toastCanjeada") as any;
                     toast.present();
                     console.log("La entrada ya fue canjeada.");
                 } else if (error.status === 404) {
-                    // Código 404 → No existe la entrada
                     const toast = document.getElementById("toastNoExiste") as any;
                     toast.present();
                     console.log("La entrada no existe.");
