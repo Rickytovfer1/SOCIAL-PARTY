@@ -25,4 +25,8 @@ export class UsuarioService {
         const options = this.comunService.autorizarPeticion();
         return this.http.get<PerfilEmpresa>(`${this.apiUrl}/empresa/ver/perfil/${correo}`, options);
     }
+    getUsuarioPublicacion(id: number): Observable<string> {
+        const options = this.comunService.autorizarPeticion();
+        return this.http.get<string>(`${this.apiUrl}/cliente/publicacion/${id}`, options);
+    }
 }
