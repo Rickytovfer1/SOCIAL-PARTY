@@ -1,86 +1,63 @@
 package org.example.backendsocialparty.servicios;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.example.backendsocialparty.DTOs.ClienteDTO;
 import org.example.backendsocialparty.DTOs.EmpresaDTO;
 import org.example.backendsocialparty.DTOs.RestarPuntoDTO;
 import org.example.backendsocialparty.modelos.Cliente;
 import org.example.backendsocialparty.modelos.Empresa;
 import org.example.backendsocialparty.modelos.Evento;
-import org.example.backendsocialparty.modelos.Usuario;
 import org.example.backendsocialparty.repositorios.ClienteRepositorio;
 import org.example.backendsocialparty.repositorios.EmpresaRepositorio;
 import org.example.backendsocialparty.repositorios.UsuarioRepositorio;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.*;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class EmpresaServicio {
 
-    private EmpresaRepositorio empresaRepositorio;
+    @Value("${upload.dir:/tmp}")
+    private String uploadDir;
 
-    private ClienteRepositorio clienteRepositorio;
-
-    private PublicacionServicio publicacionServicio;
-
-    private MensajeServicio mensajeServicio;
-
-    private SolicitudServicio solicitudServicio;
-
-    private AmistadServicio amistadServicio;
-
-    private EventoServicio eventoServicio;
-    private UsuarioRepositorio usuarioRepositorio;
-
-    private EntradaServicio entradaServicio;
+    private final EmpresaRepositorio empresaRepositorio;
+    private final ClienteRepositorio clienteRepositorio;
+    private final PublicacionServicio publicacionServicio;
+    private final MensajeServicio mensajeServicio;
+    private final SolicitudServicio solicitudServicio;
+    private final AmistadServicio amistadServicio;
+    private final EventoServicio eventoServicio;
+    private final UsuarioRepositorio usuarioRepositorio;
+    private final EntradaServicio entradaServicio;
 
     public List<EmpresaDTO> listarEmpresas() {
         List<Empresa> empresas = empresaRepositorio.findAll();
         List<EmpresaDTO> empresasDTO = new ArrayList<>();
         for (Empresa empresa : empresas) {
-            empresasDTO.add(getEmpresaDTO(empresa));
+            empresasDTO.add(convertirAEmpresaDTO(empresa));
         }
         return empresasDTO;
     }
 
-    public void restarPuntosCliente(RestarPuntoDTO dto) {
-
-        Cliente cliente = clienteRepositorio.findById(dto.getIdCliente())
-                .orElseThrow(() -> new RuntimeException("No existe un liente con este ID."));
-
-        cliente.setValoracion(cliente.getValoracion() - dto.getPuntos());
-
-        clienteRepositorio.save(cliente);
+    public EmpresaDTO verEmpresa(Integer idEmpresa) {
+        Empresa empresa = empresaRepositorio.getReferenceById(idEmpresa);
+        return convertirAEmpresaDTO(empresa);
+    }
+    public EmpresaDTO verPerfilEmpresa(Integer idUsuario) {
+        Empresa empresa = empresaRepositorio.findByUsuario_Id(idUsuario);
+        return convertirAEmpresaDTO(empresa);
     }
 
-    private static EmpresaDTO getEmpresaDTO(Empresa e) {
-        EmpresaDTO dtonuevo = new EmpresaDTO();
-
-        dtonuevo.setId(e.getId());
-        dtonuevo.setNombre(e.getNombre());
-        dtonuevo.setDireccion(e.getDireccion());
-        dtonuevo.setCp(e.getCodigoPostal());
-        dtonuevo.setNif(e.getNif());
-        dtonuevo.setFotoPerfil(e.getFotoPerfil());
-        dtonuevo.setTelefono(e.getTelefono());
-        dtonuevo.setValoracionMinima(e.getValoracionMinima());
-
-        if (e.getEventos() != null) {
-            Set<Integer> eventosDTO = new HashSet<>();
-            for (Evento ev : e.getEventos()) {
-                eventosDTO.add(ev.getId());
-            }
-            dtonuevo.setEventos(eventosDTO);
-        }
-
-        if (e.getUsuario() != null) {
-            dtonuevo.setIdUsuario(e.getUsuario().getId());
-        }
-
-        return dtonuevo;
+    public void restarPuntosCliente(RestarPuntoDTO dto) {
+        Cliente cliente = clienteRepositorio.findById(dto.getIdCliente())
+                .orElseThrow(() -> new RuntimeException("No existe un cliente con este ID."));
+        cliente.setValoracion(cliente.getValoracion() - dto.getPuntos());
+        clienteRepositorio.save(cliente);
     }
 
     public void eliminarEmpresa(Integer id) {
@@ -91,11 +68,22 @@ public class EmpresaServicio {
         publicacionServicio.eliminarPublicacion(id);
         empresaRepositorio.delete(empresa);
     }
-    public EmpresaDTO verPerfilEmpresa(Integer idUsuario){
-        Empresa empresa = empresaRepositorio.findByUsuario_Id(idUsuario);
-        return getEmpresaDTO(empresa);
-    }
 
+    public String guardarFoto(MultipartFile foto) {
+        if (foto == null || foto.isEmpty()) {
+            return null;
+        }
+        String extension = getFileExtension(foto.getOriginalFilename());
+        String filename = UUID.randomUUID().toString() + "." + extension;
+        Path path = Paths.get(uploadDir, filename);
+        try {
+            Files.createDirectories(path.getParent());
+            Files.copy(foto.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+            return "/uploads/" + filename;
+        } catch (IOException e) {
+            throw new RuntimeException("Error al guardar la imagen", e);
+        }
+    }
 
     public EmpresaDTO actualizarEmpresa(EmpresaDTO empresaDTO) {
         Empresa empresa = empresaRepositorio.findById(empresaDTO.getId())
@@ -126,24 +114,42 @@ public class EmpresaServicio {
             empresa.setFotoPerfil(empresaDTO.getFotoPerfil());
         }
 
-        Usuario usuario = empresa.getUsuario();
-        if (usuario != null) {
-            String nuevoCorreo = empresaDTO.getCorreo();
-            if (nuevoCorreo != null && !nuevoCorreo.equals(usuario.getCorreo())) {
-                Optional<Usuario> usuarioExistente = usuarioRepositorio.findTopByCorreo(nuevoCorreo);
-                if (usuarioExistente.isPresent() && !usuarioExistente.get().getId().equals(usuario.getId())) {
-                    throw new RuntimeException("El correo ya está en uso por otra empresa.");
-                }
-                usuario.setCorreo(nuevoCorreo);
-                usuarioRepositorio.save(usuario);
-            }
-        } else {
-            throw new RuntimeException("La empresa no está asociada a ningún usuario.");
-        }
-
         Empresa empresaActualizada = empresaRepositorio.save(empresa);
-
-        return getEmpresaDTO(empresaActualizada);
+        return convertirAEmpresaDTO(empresaActualizada);
     }
 
+    private EmpresaDTO convertirAEmpresaDTO(Empresa e) {
+        if (e == null) {
+            return null;
+        }
+        EmpresaDTO dto = new EmpresaDTO();
+        dto.setId(e.getId());
+        dto.setNombre(e.getNombre());
+        dto.setDireccion(e.getDireccion());
+        dto.setCp(e.getCodigoPostal());
+        dto.setNif(e.getNif());
+        dto.setFotoPerfil(e.getFotoPerfil());
+        dto.setTelefono(e.getTelefono());
+        dto.setValoracionMinima(e.getValoracionMinima());
+        dto.setEdadMinima(e.getEdadMinima());
+
+        if (e.getUsuario() != null) {
+            dto.setIdUsuario(e.getUsuario().getId());
+        }
+
+        if (e.getEventos() != null) {
+            Set<Integer> eventosIds = new HashSet<>();
+            e.getEventos().forEach(ev -> eventosIds.add(ev.getId()));
+            dto.setEventos(eventosIds);
+        }
+        return dto;
+    }
+
+    private String getFileExtension(String filename) {
+        if (filename == null) {
+            return "";
+        }
+        int lastIndex = filename.lastIndexOf(".");
+        return (lastIndex == -1) ? "" : filename.substring(lastIndex + 1);
+    }
 }

@@ -11,11 +11,9 @@ import { NavSuperiorComponent } from '../nav-superior/nav-superior.component';
     styleUrls: ['./canjear-entrada-empresa.component.scss'],
     standalone: true,
     imports: [
+        IonicModule,
         NavSuperiorEmpresaComponent,
         NavInferiorEmpresaComponent,
-        IonicModule,
-        NavInferiorComponent,
-        NavSuperiorComponent,
     ]
 })
 export class CanjearEntradaEmpresaComponent implements AfterViewInit {

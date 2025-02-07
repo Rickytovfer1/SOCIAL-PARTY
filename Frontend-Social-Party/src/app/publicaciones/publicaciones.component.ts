@@ -103,9 +103,11 @@ export class PublicacionesComponent implements OnInit {
         }
     }
 
-    verPublicacion() {
-        this.router.navigate(["/ver-noticia"]);
+    verPublicacion(publicacion: MostrarPublicacionDTO) {
+        this.router.navigate(['/ver-noticia', publicacion.id], { state: { publicacion } });
     }
+
+
 
     ionViewWillEnter() {
         this.ngOnInit();

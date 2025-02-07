@@ -16,7 +16,6 @@ import java.util.Set;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-
 public class Evento {
 
     @Id
@@ -41,6 +40,9 @@ public class Evento {
 
     @Column(name = "descripcion", nullable = false)
     private String descripcion;
+
+    @Column(name = "precio", nullable = false)
+    private Double precio;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "empresa")

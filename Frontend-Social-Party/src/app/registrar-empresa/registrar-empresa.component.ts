@@ -29,6 +29,8 @@ export class RegistrarEmpresaComponent  implements OnInit {
     contrasena: ""
   }
 
+  repContrasena = ""
+
   constructor(private registroEmpresaService: RegistroEmpresaService, private router: Router) { }
 
   ngOnInit() {}
@@ -50,7 +52,7 @@ export class RegistrarEmpresaComponent  implements OnInit {
             return;
         }
 
-        if (this.registro.contrasena !== repetirContrasena) {
+        if (this.registro.contrasena !== this.repContrasena) {
             const toast = document.getElementById("toastContrasena") as any;
             toast.present();
             return;
@@ -73,5 +75,9 @@ export class RegistrarEmpresaComponent  implements OnInit {
 
   volver() {
     this.router.navigate(['/registrar-cliente'])
+  }
+
+  ionViewWillEnter() {
+      this.ngOnInit()
   }
 }

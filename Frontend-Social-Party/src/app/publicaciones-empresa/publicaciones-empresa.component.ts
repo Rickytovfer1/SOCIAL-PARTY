@@ -23,10 +23,7 @@ import {NavInferiorEmpresaComponent} from "../nav-inferior-empresa/nav-inferior-
     standalone: true,
     imports: [
         IonicModule,
-        NavSuperiorComponent,
-        NavInferiorComponent,
         CommonModule,
-        NgOptimizedImage,
         FormsModule,
         NavSuperiorEmpresaComponent,
         NavInferiorEmpresaComponent

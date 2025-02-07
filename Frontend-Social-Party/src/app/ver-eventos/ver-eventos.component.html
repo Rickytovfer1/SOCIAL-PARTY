@@ -1,7 +1,7 @@
 <app-nav-superior></app-nav-superior>
 <ion-content>
     <ion-content class="fondo">
-        <ion-img id="imagenEmpresa" src="https://ionicframework.com/docs/img/demos/card-media.png"/>
+        <img id="imagenEmpresa" [ngSrc]="getImageUrlEmpresa()" fill/>
     </ion-content>
     <div class="banda ion-justify-content-between ion-align-items-center">
         <ion-text style="color: #ffffff; margin: 0 auto">Rosso By Antique</ion-text>
@@ -9,9 +9,9 @@
     <ion-grid>
         <ion-row>
             <ion-col style="margin: 0 auto" size-lg="4" size-xl="4" size-md="6" size-sm="10" size-xs="12">
-                <ion-card>
+                <ion-card *ngFor="let evento of eventos">
                     <ion-grid>
-                        <ion-row *ngFor="let evento of eventos">
+                        <ion-row (click)="verEvento(evento.id)">
                             <ion-col size="5" style="margin: 0 auto">
                                 <img class="foto_evento" [ngSrc]="getImageUrl(evento)" fill/>
                             </ion-col>

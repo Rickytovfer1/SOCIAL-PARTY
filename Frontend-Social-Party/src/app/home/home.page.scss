@@ -50,8 +50,8 @@ ion-img{
 .mensaje-fin {
     text-align: justify;
     font-size: 1.2rem;
-    color: white;
-    width: 40%;
+    color: black;
+    width: 70%;
     margin: 0 auto;
 }
 ion-button {
@@ -67,6 +67,17 @@ ion-button {
 .imagenes{
     border: #FFFFFF 5px inset;
 }
+
+.contenedor-mensaje {
+    background-color: #FFFFFF;
+    border: 3px solid #5ab7d5;
+    border-radius: 15px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    margin: 20px auto;
+    width: 30%;
+}
+
 @media (max-width: 768px) {
     ion-button {
         width: 50%;
@@ -79,10 +90,23 @@ ion-button {
     .mensaje-fin {
         text-align: justify;
         font-size: 1.2rem;
-        color: white;
+        color: black;
         width: 75%;
     }
     .imagenes{
         border: 0;
     }
+    .contenedor-mensaje {
+        background-color: #FFFFFF;
+        border: 3px solid #5ab7d5;
+        border-radius: 15px;
+        padding-top: 15px;
+        padding-bottom: 15px;
+        width: 75%;
+        margin: 0 auto;
+    }
+}
+
+ion-grid {
+    padding: 0;
 }

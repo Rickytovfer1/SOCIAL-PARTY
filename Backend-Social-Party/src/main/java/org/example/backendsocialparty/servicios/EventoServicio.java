@@ -1,8 +1,7 @@
 package org.example.backendsocialparty.servicios;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.example.backendsocialparty.DTOs.ClienteDTO;
-import org.example.backendsocialparty.DTOs.EmpresaDTO;
 import org.example.backendsocialparty.DTOs.EventoDTO;
 import org.example.backendsocialparty.modelos.Cliente;
 import org.example.backendsocialparty.modelos.Empresa;
@@ -10,23 +9,26 @@ import org.example.backendsocialparty.modelos.Evento;
 import org.example.backendsocialparty.repositorios.ClienteRepositorio;
 import org.example.backendsocialparty.repositorios.EmpresaRepositorio;
 import org.example.backendsocialparty.repositorios.EventoRepositorio;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
+import java.util.*;
 import static org.example.backendsocialparty.servicios.ClienteServicio.getClienteDTO;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class EventoServicio {
 
-    private ClienteRepositorio clienteRepositorio;
-    private EventoRepositorio eventoRepositorio;
-    private EmpresaRepositorio empresaRepositorio;
+    private final ClienteRepositorio clienteRepositorio;
+    private final EventoRepositorio eventoRepositorio;
+    private final EmpresaRepositorio empresaRepositorio;
+
+    @Value("${upload.dir}")
+    private String uploadDir;
 
     public EventoDTO buscarEventoId(Integer id) {
         Evento evento = eventoRepositorio.findById(id)
@@ -50,8 +52,7 @@ public class EventoServicio {
 
     public List<ClienteDTO> listarClientesEvento(Integer idEvento) {
         Evento e = eventoRepositorio.findById(idEvento)
-                .orElseThrow(() -> new RuntimeException("No existe un evento con este ID."));;
-
+                .orElseThrow(() -> new RuntimeException("No existe un evento con este ID."));
         Set<Cliente> clientes = e.getAsistentes();
         List<ClienteDTO> clientesDTO = new ArrayList<>();
         for (Cliente cliente : clientes) {
@@ -60,69 +61,80 @@ public class EventoServicio {
         return clientesDTO;
     }
 
-    public void crearEvento(EventoDTO eventoDTO) {
-
-        Evento evento = null;
-
-        if (eventoDTO.getId() != null){
-            evento = eventoRepositorio.findById(eventoDTO.getId()).orElse(null);
-        }
-
-        if (eventoDTO.getId() == null){
-            evento = new Evento();
-        }
+    public void crearEvento(EventoDTO eventoDTO, MultipartFile foto) {
+        Evento evento = (eventoDTO.getId() != null)
+                ? eventoRepositorio.findById(eventoDTO.getId()).orElse(new Evento())
+                : new Evento();
 
         evento.setHoraApertura(eventoDTO.getHoraApertura());
         evento.setHoraFinalizacion(eventoDTO.getHoraFinalizacion());
-        evento.setFecha(LocalDate.now());
+        evento.setFecha(eventoDTO.getFecha() != null ? eventoDTO.getFecha() : LocalDate.now());
         evento.setTitulo(eventoDTO.getTitulo());
-        evento.setFoto(eventoDTO.getFoto());
         evento.setDescripcion(eventoDTO.getDescripcion());
+        evento.setPrecio(eventoDTO.getPrecio());
 
-        Empresa empresa = empresaRepositorio.findById(eventoDTO.getIdEmpresa())
-                .orElseThrow(() -> new RuntimeException("No existe una empresa con este ID."));
-
+        String fotoUrl = guardarImagen(foto);
+        evento.setFoto(fotoUrl);
+        Integer idUsuario = eventoDTO.getIdEmpresa();
+        Empresa empresa = empresaRepositorio.findByUsuarioId(idUsuario)
+                .orElseThrow(() -> new RuntimeException("No existe una empresa con usuario_id " + idUsuario));
         evento.setEmpresa(empresa);
 
         eventoRepositorio.save(evento);
+    }
 
+    private String guardarImagen(MultipartFile foto) {
+        if (foto.isEmpty()) {
+            return null;
+        }
+        String extension = getFileExtension(foto.getOriginalFilename());
+        String filename = UUID.randomUUID().toString() + "." + extension;
+        Path path = Paths.get(uploadDir, filename);
+        try {
+            Files.createDirectories(path.getParent());
+            Files.copy(foto.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+            return "/uploads/" + filename;
+        } catch (IOException e) {
+            throw new RuntimeException("Error al guardar la imagen", e);
+        }
+    }
+
+    private String getFileExtension(String filename) {
+        if (filename == null) {
+            return "";
+        }
+        int lastIndex = filename.lastIndexOf(".");
+        return (lastIndex == -1) ? "" : filename.substring(lastIndex + 1);
     }
 
     private static EventoDTO getEventoDTO(Evento e) {
-
         EventoDTO dtonuevo = new EventoDTO();
-
         dtonuevo.setId(e.getId());
         dtonuevo.setHoraApertura(e.getHoraApertura());
         dtonuevo.setHoraFinalizacion(e.getHoraFinalizacion());
         dtonuevo.setFecha(e.getFecha());
         dtonuevo.setTitulo(e.getTitulo());
-        dtonuevo.setFoto(e.getFoto());
         dtonuevo.setDescripcion(e.getDescripcion());
-
+        dtonuevo.setFoto(e.getFoto());
+        dtonuevo.setPrecio(e.getPrecio());
         if (e.getEmpresa() != null) {
             dtonuevo.setIdEmpresa(e.getEmpresa().getId());
         }
-
         return dtonuevo;
     }
 
     public void eliminarPersonaEvento(Integer id) {
-
-        Cliente cliente = clienteRepositorio.findById(id).orElseThrow();
-
+        Cliente cliente = clienteRepositorio.findById(id)
+                .orElseThrow(() -> new RuntimeException("Cliente no encontrado."));
         if (cliente.getEvento() != null) {
             Evento evento = cliente.getEvento();
             evento.getAsistentes().remove(cliente);
             eventoRepositorio.save(evento);
         }
-
     }
 
-    public void eliminarEvento(Integer id){
+    public void eliminarEvento(Integer id) {
         List<Evento> eventos = eventoRepositorio.findByEmpresa_Id(id);
         eventoRepositorio.deleteAll(eventos);
-
     }
-
 }

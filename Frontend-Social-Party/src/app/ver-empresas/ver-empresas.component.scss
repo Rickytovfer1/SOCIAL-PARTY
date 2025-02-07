@@ -4,8 +4,8 @@ ion-content {
 
 ion-searchbar {
     --border-radius: 60px;
-    width: 90%;
-    margin: 20px auto;
+    width: 85%;
+    margin: 10px auto;
 }
 
 ion-card {
@@ -14,7 +14,7 @@ ion-card {
     border-radius: 40px;
 }
 
-ion-img {
+.img_empresa {
     width: 90%;
     height: 90%;
     margin: 0 auto;
@@ -38,4 +38,10 @@ ion-text {
 
 .nombre {
     font-size: 30px;
+}
+
+#icono_entradas {
+    width: 10%;
+    height: 10%;
+    margin: 0 auto;
 }

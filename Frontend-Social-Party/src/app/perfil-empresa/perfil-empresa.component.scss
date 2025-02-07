@@ -1,6 +1,14 @@
 .fondo {
     --background: #D3E5E5;
 }
+#grid_principal {
+    height: 35%;
+}
+img {
+    width: 40px; /* Ajusta el tamaño según necesites */
+    height: 40px;
+    border-radius: 50%;
+}
 
 #grid_secundario {
     height: 100%;
@@ -52,5 +60,10 @@ ion-button {
     #grid_secundario {
         height: 100%;
         margin-bottom: 0;
+    }
+    img {
+        width: 40px;
+        height: 40px;
+        border-radius: 30%;
     }
 }

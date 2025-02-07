@@ -12,4 +12,5 @@ public class PublicacionDTO {
     private String titulo;
     private String direccion;
     private Integer idUsuario;
+
 }

@@ -22,7 +22,7 @@ import {Router} from "@angular/router";
 })
 export class HomePage implements OnInit{
 
-    imagenes = ['assets/imagen1.jpg', 'assets/imagen2.jpg', 'assets/imagen3.jpg'];
+    imagenes = ['assets/imagen1.webp', 'assets/imagen2.webp', 'assets/imagen3.jpg'];
     imagenActual = this.imagenes[0];
     indice = 0;
     esUltimaImagen = false;

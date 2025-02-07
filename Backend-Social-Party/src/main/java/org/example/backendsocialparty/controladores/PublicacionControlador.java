@@ -4,7 +4,9 @@ import lombok.AllArgsConstructor;
 import org.example.backendsocialparty.DTOs.ClientePublicacionDTO;
 import org.example.backendsocialparty.DTOs.MostrarPublicacionDTO;
 import org.example.backendsocialparty.DTOs.PublicacionDTO;
+import org.example.backendsocialparty.modelos.Publicacion;
 import org.example.backendsocialparty.modelos.Usuario;
+import org.example.backendsocialparty.repositorios.PublicacionRepositorio;
 import org.example.backendsocialparty.servicios.PublicacionServicio;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -18,6 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 public class PublicacionControlador {
 
+    private final PublicacionRepositorio publicacionRepositorio;
     private PublicacionServicio publicacionServicio;
 
     @PostMapping(value = "/cliente/crear/publicacion", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -45,6 +48,13 @@ public class PublicacionControlador {
     public List<MostrarPublicacionDTO> mostrarFeed(@PathVariable Integer idUsuario) {
         return publicacionServicio.mostrarPublicacionesFeed(idUsuario);
     }
+    @GetMapping("/publicacion/{id}")
+    public MostrarPublicacionDTO getPublicacion(@PathVariable Integer id) {
+        Publicacion publicacion = publicacionRepositorio.findById(id)
+                .orElseThrow(() -> new RuntimeException("Publicacion no encontrada"));
+        return PublicacionServicio.getPublicacionDTO(publicacion);
+    }
+
 }
 
 

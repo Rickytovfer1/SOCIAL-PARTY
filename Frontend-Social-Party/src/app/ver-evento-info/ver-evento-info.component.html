@@ -8,14 +8,14 @@
                     <ion-card id="card_info">
                         <ion-grid>
                             <ion-row>
-                                <ion-col size="4" class="ion-align-items-center">
-                                    <ion-img id="foto_perfil" src="assets/iconoPerfil.png"/>
+                                <ion-col size="7" class="ion-align-items-center">
+                                    <img class="foto_evento" [ngSrc]="getImageUrl(evento)" fill/>
                                 </ion-col>
-                                <ion-col size="8">
+                                <ion-col size="5">
                                     <ion-grid>
                                         <ion-row>
                                             <ion-col class="ion-align-items-center">
-                                                <ion-text id="nombre">Rosso By Antique</ion-text>
+                                                <ion-text id="nombre">{{ empresa.nombre }}</ion-text>
                                             </ion-col>
                                         </ion-row>
                                     </ion-grid>
@@ -24,20 +24,34 @@
                         </ion-grid>
                     </ion-card>
                     <ion-card id="card_bio">
-                        <ion-title>Dj Totote la lía</ion-title>
+                        <ion-title>{{ evento.titulo }}</ion-title>
                         <div>
-                            <ion-text id="textDescripcion">
-                                En la noche de hoy, está comn nosotros DJ Totote. Y esta poniendo mucha diversidad de música.
-
-                                <hr>¡Corre, te esperamos ...?
+                            <ion-text>
+                                {{ evento.descripcion }}
                             </ion-text>
+                            <hr>
+                            <ion-text>
+                                Precio: {{ evento.precio }}€
+                            </ion-text>
+                            <hr>
+                            <ion-text>
+                                Día: {{ evento.fecha }}
+                            </ion-text>
+                            <hr>
+                            <ion-text>
+                                Apertura: {{ evento.horaApertura }}h / Cierre: {{evento.horaFinalizacion}}h
+                            </ion-text>
+
                         </div>
+                        <ion-button (click)="comprarEntrada(evento.id)">Comprar entrada</ion-button>
                     </ion-card>
                 </ion-card>
             </ion-col>
         </ion-row>
     </ion-grid>
-
 </ion-content>
 
-<app-nav-inferior></app-nav-inferior>
+<ion-footer>
+    <app-nav-inferior></app-nav-inferior>
+</ion-footer>
+

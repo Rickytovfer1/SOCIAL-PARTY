@@ -1,6 +1,7 @@
 package org.example.backendsocialparty.servicios;
 
 import lombok.AllArgsConstructor;
+import org.example.backendsocialparty.DTOs.*;
 import org.example.backendsocialparty.modelos.Cliente;
 import org.example.backendsocialparty.modelos.Empresa;
 import org.example.backendsocialparty.modelos.Entrada;
@@ -14,7 +15,10 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @AllArgsConstructor
@@ -73,5 +77,44 @@ public class EntradaServicio {
     public void eliminarEntrada(Integer id) {
         List<Entrada> entradas = entradaRepositorio.findByCliente_Id(id);
         entradaRepositorio.deleteAll(entradas);
+    }
+
+    public List<EntradaDTO> listarEntradas(Integer idCliente) {
+        List<Entrada> entradas = entradaRepositorio.findByCliente_Id(idCliente);
+        List<EntradaDTO> entradaDTOS = new ArrayList<>();
+        for (Entrada entrada : entradas) {
+            entradaDTOS.add(getEntradaDTO(entrada));
+        }
+        return entradaDTOS;
+    }
+
+    private static EntradaDTO getEntradaDTO(Entrada a) {
+        EntradaDTO dtonuevo = new EntradaDTO();
+        dtonuevo.setId(a.getId());
+        dtonuevo.setFecha(a.getFecha());
+
+        ClienteDTO dto = new ClienteDTO();
+        dto.setId(a.getCliente().getId());
+        dtonuevo.setCliente(dto);
+
+
+        dtonuevo.setEvento(getEventoEntradaDTO(a.getEvento()));
+        return dtonuevo;
+    }
+
+    private static EventoEntradaDTO getEventoEntradaDTO(Evento evento) {
+        EventoEntradaDTO dto = new EventoEntradaDTO();
+        dto.setId(evento.getId());
+        dto.setTitulo(evento.getTitulo());
+        dto.setEmpresa(getEmpresaEntradaDTO(evento.getEmpresa()));
+        return dto;
+    }
+
+    private static EmpresaEntradaDTO getEmpresaEntradaDTO(Empresa empresa) {
+        EmpresaEntradaDTO dto = new EmpresaEntradaDTO();
+        dto.setId(empresa.getId());
+        dto.setNombre(empresa.getNombre());
+        dto.setFotoPerfil(empresa.getFotoPerfil());
+        return dto;
     }
 }

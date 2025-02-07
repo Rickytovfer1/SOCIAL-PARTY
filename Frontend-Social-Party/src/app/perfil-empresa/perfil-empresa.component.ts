@@ -10,7 +10,10 @@ import { UsuarioService } from "../servicios/usuario.service";
 import { jwtDecode } from "jwt-decode";
 import { TokenDataDTO } from "../modelos/TokenDataDTO";
 import { FormsModule } from "@angular/forms";
-import { CommonModule } from "@angular/common";
+import {CommonModule, NgOptimizedImage} from "@angular/common";
+import {MostrarPublicacionDTO} from "../servicios/publicacion.service";
+import {EmpresaDTO} from "../modelos/EmpresaDTO";
+import {environment} from "../../environments/environment";
 
 @Component({
     selector: 'app-perfil-empresa',
@@ -22,15 +25,18 @@ import { CommonModule } from "@angular/common";
         FormsModule,
         CommonModule,
         NavSuperiorEmpresaComponent,
-        NavInferiorEmpresaComponent
+        NavInferiorEmpresaComponent,
+        NgOptimizedImage
     ]
 })
 export class PerfilEmpresaComponent implements OnInit {
+    baseUrl: string = environment.apiUrl;
 
     usuario: Usuario = {} as Usuario;
     perfilEmpresa: PerfilEmpresa = {} as PerfilEmpresa;
     correo?: string;
     editar: boolean = false;
+    foto: File | null = null;
 
     constructor(
         private perfilService: PerfilServicio,
@@ -40,28 +46,17 @@ export class PerfilEmpresaComponent implements OnInit {
 
     ngOnInit() {
         const token = sessionStorage.getItem('authToken');
-        console.log('Auth Token:', token);
-
         if (token) {
             try {
                 const decodedToken = jwtDecode(token) as { tokenDataDTO: TokenDataDTO };
-                console.log('Decoded Token:', decodedToken);
-
                 const tokenDataDTO = decodedToken?.tokenDataDTO;
-
                 if (tokenDataDTO && tokenDataDTO.correo) {
                     this.correo = tokenDataDTO.correo;
-                    console.log('Correo obtenido del token:', this.correo);
-
                     this.cargarUsuario(this.correo);
-                } else {
-                    console.error('El token no contiene un correo válido en tokenDataDTO');
                 }
             } catch (e) {
                 console.error('Error al decodificar el token:', e);
             }
-        } else {
-            console.warn('No se encontró el token de autenticación en sessionStorage');
         }
     }
 
@@ -69,12 +64,8 @@ export class PerfilEmpresaComponent implements OnInit {
         this.usuarioService.getUsuarioEmpresa(correo).subscribe({
             next: (usuario: Usuario) => {
                 this.usuario = usuario;
-                console.log('Usuario cargado:', this.usuario);
-
                 if (usuario && usuario.id) {
                     this.cargarPerfil(usuario.id);
-                } else {
-                    console.error('El usuario no tiene un ID válido.');
                 }
             },
             error: (e) => {
@@ -87,12 +78,19 @@ export class PerfilEmpresaComponent implements OnInit {
         this.perfilService.getPerfilEmpresa(idUsuario).subscribe({
             next: (perfilEmpresa: PerfilEmpresa) => {
                 this.perfilEmpresa = perfilEmpresa;
-                console.log('Perfil de la empresa cargado:', this.perfilEmpresa);
             },
             error: (e) => {
                 console.error("Error al cargar el perfil:", e);
             }
         });
+    }
+
+    seleccionarFoto(event: any): void {
+        if (event.target.files && event.target.files.length > 0) {
+            this.foto = event.target.files[0];
+            // @ts-ignore
+            console.log('Foto seleccionada:', this.foto.name);
+        }
     }
 
     editarBoton(): void {
@@ -105,16 +103,43 @@ export class PerfilEmpresaComponent implements OnInit {
     }
 
     guardarCambios(): void {
-        console.log('Guardando cambios...', this.perfilEmpresa);
-
-        this.perfilService.updatePerfilEmpresa(this.perfilEmpresa).subscribe({
+        const formData = new FormData();
+        const empresaData = {
+            id: this.perfilEmpresa.id,
+            nombre: this.perfilEmpresa.nombre,
+            direccion: this.perfilEmpresa.direccion,
+            cp: this.perfilEmpresa.cp,
+            telefono: this.perfilEmpresa.telefono,
+            correo: this.usuario.correo,
+            nif: this.perfilEmpresa.nif,
+            edadMinima: this.perfilEmpresa.edadMinima || "",
+            valoracionMinima: this.perfilEmpresa.valoracionMinima || ""
+        };
+        formData.append("empresa", new Blob([JSON.stringify(empresaData)], { type: "application/json" }));
+        if (this.foto) {
+            formData.append("fotoPerfil", this.foto);
+        }
+        this.perfilService.updatePerfilEmpresa(formData).subscribe({
             next: (updatedPerfil: PerfilEmpresa) => {
-                console.log('Perfil empresa actualizado:', updatedPerfil);
                 this.perfilEmpresa = updatedPerfil;
+                this.foto = null;
             },
             error: (err) => {
-                console.error('Error al actualizar la empresa:', err);
+                console.error("Error al actualizar la empresa:", err);
             }
         });
     }
+
+    getImageUrl(empresaDTO: PerfilEmpresa): string {
+        if (!empresaDTO.fotoPerfil) {
+            return 'assets/iconoPerfil.png';
+        }
+        if (empresaDTO.fotoPerfil.startsWith('http')) {
+            return empresaDTO.fotoPerfil;
+        } else {
+            return `${this.baseUrl}${empresaDTO.fotoPerfil}`;
+        }
+    }
+
+
 }

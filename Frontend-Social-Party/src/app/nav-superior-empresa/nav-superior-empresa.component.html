@@ -50,7 +50,9 @@
 
             <ion-img class="icono" slot="start" style="width: 55px" src="assets/img.png" alt="Social Party Logo"/>
             <ion-menu-button slot="start"></ion-menu-button>
-            <ion-img slot="end" style="width: 40px;" src="assets/iconoSettings.png" alt="Ajustes Party Logo" />
+            <ion-text id="num_estrellas" slot="end" class="star-points">100</ion-text>
+            <ion-img slot="end" style="width: 40px;" src="assets/estrella.png" alt="Estrella Party Logo" />
+            <ion-img (click)="cerrarSesion()" slot="end" style="width: 40px;" src="assets/logout.png" alt="Ajustes Party Logo" />
 
         </ion-toolbar>
     </ion-header>

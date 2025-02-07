@@ -6,20 +6,22 @@ import org.example.backendsocialparty.DTOs.EmpresaDTO;
 import org.example.backendsocialparty.DTOs.RestarPuntoDTO;
 import org.example.backendsocialparty.servicios.ClienteServicio;
 import org.example.backendsocialparty.servicios.EmpresaServicio;
-import org.springframework.web.bind.annotation.*;
 import org.example.backendsocialparty.servicios.UsuarioServicio;
-import java.util.List;
 import org.example.backendsocialparty.modelos.Usuario;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
+
 @RestController
-@RequestMapping()
+@RequestMapping
 @AllArgsConstructor
 public class EmpresaControlador {
 
-    private ClienteServicio clienteServicio;
-
-    private EmpresaServicio empresaServicio;
-
-    private UsuarioServicio usuarioServicio;
+    private final ClienteServicio clienteServicio;
+    private final EmpresaServicio empresaServicio;
+    private final UsuarioServicio usuarioServicio;
 
     @GetMapping("/empresa/buscar/{id}")
     public ClienteDTO buscarClienteId(@PathVariable Integer id) {
@@ -31,15 +33,22 @@ public class EmpresaControlador {
         return empresaServicio.listarEmpresas();
     }
 
+    @GetMapping("/cliente/ver/{idEmpresa}")
+    public EmpresaDTO buscarEmpresa(@PathVariable Integer idEmpresa){
+        return empresaServicio.verEmpresa(idEmpresa);
+    }
+
     @GetMapping("/empresa/perfil/{idUsuario}")
     public EmpresaDTO verPerfil(@PathVariable Integer idUsuario){
         return empresaServicio.verPerfilEmpresa(idUsuario);
     }
 
+
     @GetMapping("/empresa/ver/perfil/{correo}")
     public Usuario verUsuario(@PathVariable String correo){
         return (Usuario) usuarioServicio.loadUserByUsername(correo);
     }
+
     @PostMapping("/empresa/restar/puntos")
     public void restarPuntos(@RequestBody RestarPuntoDTO dto){
         empresaServicio.restarPuntosCliente(dto);
@@ -54,8 +63,15 @@ public class EmpresaControlador {
     public void eliminarCliente(@PathVariable Integer idCliente){
         clienteServicio.eliminarCliente(idCliente);
     }
-    @PutMapping("/empresa/actualizar")
-    public EmpresaDTO actualizarEmpresa(@RequestBody EmpresaDTO empresaDTO) {
+
+    @PutMapping(value = "/empresa/actualizar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public EmpresaDTO actualizarEmpresa(
+            @RequestPart("empresa") EmpresaDTO empresaDTO,
+            @RequestPart(value = "fotoPerfil", required = false) MultipartFile fotoPerfil) {
+        if(fotoPerfil != null && !fotoPerfil.isEmpty()){
+            String urlFoto = empresaServicio.guardarFoto(fotoPerfil);
+            empresaDTO.setFotoPerfil(urlFoto);
+        }
         return empresaServicio.actualizarEmpresa(empresaDTO);
     }
 }
