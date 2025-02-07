@@ -24,4 +24,9 @@ export class EntradaService {
         const options = this.comunService.autorizarPeticion();
         return this.http.get<Entrada[]>(`${this.apiUrl}/cliente/ver/entradas/${idCliente}`, options);
     }
+
+    canjear(codigoEntrada: number): Observable<Entrada> {
+        const options = this.comunService.autorizarPeticion();
+        return this.http.post<Entrada>(`${this.apiUrl}/empresa/canjear/entrada/${codigoEntrada}`,{}, options);
+    }
 }
