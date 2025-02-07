@@ -14,7 +14,7 @@ export interface MostrarPublicacionDTO {
     foto: string;
     direccion: string;
     idUsuario: number;
-    perfilEmpresaId?: number;
+    perfilId?: number;
 }
 
 @Injectable({
