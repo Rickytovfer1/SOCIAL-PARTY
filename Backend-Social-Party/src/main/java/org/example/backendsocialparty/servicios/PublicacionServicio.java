@@ -173,4 +173,10 @@ public class PublicacionServicio {
                 .map(PublicacionServicio::getPublicacionDTO)
                 .collect(Collectors.toList());
     }
+    public MostrarPublicacionDTO obtenerPublicacionPorId(Integer id) {
+        Publicacion publicacion = publicacionRepositorio.findById(id)
+                .orElseThrow(() -> new RuntimeException("Publicacion no encontrada"));
+        return getPublicacionDTO(publicacion);
+    }
+
 }

@@ -5,11 +5,16 @@
             <ion-img id="agregar" (click)="abrirForm()" src="assets/iconoMas.png"></ion-img>
         </ion-row>
         <ion-row>
-            <ion-searchbar placeholder="Buscar publicaciones" animated="true" [(ngModel)]="buscar" (ionInput)="onSearchChange($event)"></ion-searchbar>
+            <ion-searchbar
+                placeholder="Buscar publicaciones"
+                animated="true"
+                [(ngModel)]="buscar"
+                (ionInput)="onSearchChange($event)">
+            </ion-searchbar>
         </ion-row>
         <ion-row>
             <ion-col size-lg="4" size-xl="4" size-md="6" size-sm="10" size-xs="12">
-                <ion-card (click)="verPublicacion()" *ngFor="let publicacion of publicacionesFiltradas">
+                <ion-card (click)="verPublicacion(publicacion)" *ngFor="let publicacion of publicacionesFiltradas">
                     <ion-grid>
                         <ion-row>
                             <ion-col size="5">
@@ -18,10 +23,10 @@
                             <ion-col size="7">
                                 <ion-grid class="textos">
                                     <ion-row>
-                                        <ion-text class="nombre">{{publicacion.titulo}}</ion-text>
+                                        <ion-text class="nombre">{{ publicacion.titulo }}</ion-text>
                                     </ion-row>
                                     <ion-row>
-                                        <ion-text class="direccion">{{publicacion.texto}}</ion-text>
+                                        <ion-text class="direccion">{{ publicacion.texto }}</ion-text>
                                     </ion-row>
                                 </ion-grid>
                             </ion-col>

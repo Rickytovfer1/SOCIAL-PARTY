@@ -14,6 +14,7 @@ export interface MostrarPublicacionDTO {
     foto: string;
     direccion: string;
     idUsuario: number;
+    perfilEmpresaId?: number;
 }
 
 @Injectable({
@@ -79,4 +80,9 @@ export class PublicacionService {
                 })
             );
     }
+    getPublicacion(id: number): Observable<MostrarPublicacionDTO> {
+        const options = this.comunService.autorizarPeticion();
+        return this.http.get<MostrarPublicacionDTO>(`${environment.apiUrl}/publicacion/${id}`, options);
+    }
+
 }

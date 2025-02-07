@@ -43,3 +43,9 @@ ion-searchbar {
     width: 90%;
     margin: 20px auto;
 }
+#card_bio {
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}

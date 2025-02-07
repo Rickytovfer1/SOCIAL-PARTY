@@ -75,7 +75,7 @@ export const routes: Routes = [
         loadComponent: () => import('./ver-perfil-empresa/ver-perfil-empresa.component').then((m) => m.VerPerfilEmpresaComponent)
     },
     {
-        path: 'ver-noticia',
+        path: 'ver-noticia/:id',
         loadComponent: () => import('./ver-noticia/ver-noticia.component').then((m) => m.VerNoticiaComponent)
     },
     {
