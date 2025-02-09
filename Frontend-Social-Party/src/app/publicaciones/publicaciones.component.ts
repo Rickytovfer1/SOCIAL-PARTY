@@ -3,7 +3,7 @@ import { IonicModule } from "@ionic/angular";
 import { NavSuperiorComponent } from "../nav-superior/nav-superior.component";
 import { NavInferiorComponent } from "../nav-inferior/nav-inferior.component";
 import { Router } from "@angular/router";
-import { PublicacionService, MostrarPublicacionDTO } from '../servicios/publicacion.service';
+import { PublicacionService} from '../servicios/publicacion.service';
 import { UsuarioService } from '../servicios/usuario.service';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { environment } from '../../environments/environment';
@@ -13,6 +13,7 @@ import {TokenDataDTO} from "../modelos/TokenDataDTO";
 import {Usuario} from "../modelos/Usuario";
 import {Perfil} from "../modelos/Perfil";
 import {PerfilServicio} from "../servicios/perfil.service";
+import {MostrarPublicacion} from "../modelos/MostrarPublicacion";
 
 
 @Component({
@@ -30,8 +31,10 @@ import {PerfilServicio} from "../servicios/perfil.service";
     ]
 })
 export class PublicacionesComponent implements OnInit {
-    publicaciones: MostrarPublicacionDTO[] = [];
-    publicacionesFiltradas: MostrarPublicacionDTO[] = [];
+    publicaciones: MostrarPublicacion[] = [];
+    publicacionesFiltradas: MostrarPublicacion[] = [];
+    filtroSeleccionado: string = 'todas';
+
     buscar: string = '';
     baseUrl: string = environment.apiUrl;
     correo?: string;
@@ -49,6 +52,8 @@ export class PublicacionesComponent implements OnInit {
     ) {}
 
     ngOnInit() {
+        this.rolesPublicaciones = {}
+        this.perfilesPublicaciones = []
         const token = sessionStorage.getItem('authToken');
         if (token) {
             try {
@@ -83,9 +88,7 @@ export class PublicacionesComponent implements OnInit {
         this.publicacionService.listarPublicaciones().subscribe({
             next: (data) => {
                 this.publicaciones = data;
-                console.log(data)
-                this.cargarPerfilesPublicaciones()
-                this.cargarRolesUsuarios()
+                this.filtrarPublicaciones(this.filtroSeleccionado);
             },
             error: (e) => {
                 console.error("Error al cargar las publicaciones:", e);
@@ -108,20 +111,10 @@ export class PublicacionesComponent implements OnInit {
         this.router.navigate(["/crear-publicacion"]);
     }
 
-    onSearchChange(event: any) {
-        const val = event.target.value.toLowerCase();
-        if (val) {
-            this.publicacionesFiltradas = this.publicaciones.filter(publicacion =>
-                (publicacion.titulo?.toLowerCase().includes(val)) ||
-                publicacion.texto.toLowerCase().includes(val) ||
-                (publicacion.direccion?.toLowerCase().includes(val))
-            );
-        } else {
-            this.publicacionesFiltradas = this.publicaciones;
+    getImageUrl(publicacion: MostrarPublicacion): string {
+        if (!publicacion.foto) {
+            return ""
         }
-    }
-
-    getImageUrl(publicacion: MostrarPublicacionDTO): string {
         if (publicacion.foto.startsWith('http')) {
             return publicacion.foto;
         } else {
@@ -129,53 +122,124 @@ export class PublicacionesComponent implements OnInit {
         }
     }
 
-    verPublicacion(publicacion: MostrarPublicacionDTO) {
-        this.router.navigate(['/ver-noticia', publicacion.id], { state: { publicacion } });
+    calcularFecha(publicacion: MostrarPublicacion): string {
+        if (!publicacion.fecha) {
+            return "";
+        }
+
+        const fechaActual = new Date();
+        const fechaPublicacion = new Date(publicacion.fecha);
+        const milisegundos = fechaActual.getTime() - fechaPublicacion.getTime();
+
+        const minutos = 1000 * 60;
+        const horas   = minutos * 60;
+        const dias    = horas * 24;
+        const meses  = dias * 30;
+        const anios   = dias * 365;
+
+        if (milisegundos >= anios) {
+            const years = Math.floor(milisegundos / anios);
+            return `Hace ${years} ${years === 1 ? "año" : "años"}`;
+        } else if (milisegundos >= meses) {
+            const months = Math.floor(milisegundos / meses);
+            return `Hace ${months} ${months === 1 ? "mes" : "meses"}`;
+        } else if (milisegundos >= dias) {
+            const days = Math.floor(milisegundos / dias);
+            return `Hace ${days} ${days === 1 ? "día" : "días"}`;
+        } else if (milisegundos >= horas) {
+            const hours = Math.floor(milisegundos / horas);
+            return `Hace ${hours} ${hours === 1 ? "hora" : "horas"}`;
+        } else if (milisegundos >= minutos) {
+            const minutes = Math.floor(milisegundos / minutos);
+            return `Hace ${minutes} ${minutes === 1 ? "minuto" : "minutos"}`;
+        } else {
+            return "Hace un momento";
+        }
     }
 
-    cargarRolesUsuarios() {
-        for (const publicacion of this.publicaciones) {
-            this.usuarioService.getUsuarioPublicacion(publicacion.idUsuario).subscribe({
-                next: (data) => {
-                    this.rolesPublicaciones[publicacion.idUsuario] = data;
-                },
-                error: (e) => {
-                    console.error("Error al cargar el rol de usuario:", e);
+    obtenerFecha(publicacion: MostrarPublicacion): string {
+        if (!publicacion.fecha) {
+            return "";
+        }
+
+        let fecha = new Date(publicacion.fecha)
+
+        const formateador = new Intl.DateTimeFormat('es-ES', { month: 'long' });
+        const mesEsp = formateador.format(fecha);
+
+        return fecha.getDate() + " de " + mesEsp + " de " + fecha.getFullYear()
+    }
+
+    filtrarPublicaciones(tipo: string) {
+        this.filtroSeleccionado = tipo;
+
+        if (tipo === 'todas') {
+            this.publicacionesFiltradas = this.publicaciones
+        } else if (tipo === 'tuyas') {
+            for (const publicacion of this.publicaciones) {
+                if (publicacion.idUsuario === this.perfil.id) {
+                    this.publicacionesFiltradas.push(publicacion)
                 }
-            });
-        }
-    }
-
-    cargarPerfilesPublicaciones() {
-        for (const publicacion of this.publicaciones) {
-            this.perfilService.getPerfil(publicacion.idUsuario).subscribe({
-                next: (data) => {
-                    this.perfilesPublicaciones.push(data)
-                },
-                error: (e) => {
-                    console.error("Error al cargar los nombres: "+ publicacion.texto);
-                }
-            })
-        }
-    }
-
-    cargarRolPublicacion(publicacion: MostrarPublicacionDTO): boolean {
-        let rolUsuario = this.rolesPublicaciones[publicacion.id];
-        if (rolUsuario === 'EMPRESA') {
-            return true;
-        }
-        return false
-    }
-
-    cargarNombreUsuario(publicacion: MostrarPublicacionDTO): string {
-        let nombre = ""
-        for (const perfil of this.perfilesPublicaciones) {
-            if (publicacion.idUsuario === perfil.id) {
-                nombre = perfil.nombre + " " + perfil.apellidos
             }
         }
-        return nombre
     }
+
+    buscarPublicaciones() {
+        const consulta = this.buscar.trim().toLowerCase();
+        if (consulta === '') {
+            this.filtrarPublicaciones(this.filtroSeleccionado);
+        } else {
+            this.publicacionesFiltradas = this.publicaciones.filter(publicacion =>
+                publicacion.nombre?.toLowerCase().includes(consulta)
+            );
+        }
+    }
+
+    // cargarRolesUsuarios() {
+    //     for (const publicacion of this.publicaciones) {
+    //         this.usuarioService.getUsuarioPublicacion(publicacion.idUsuario).subscribe({
+    //             next: (data) => {
+    //                 this.rolesPublicaciones[publicacion.idUsuario] = data;
+    //             },
+    //             error: (e) => {
+    //                 console.error("Error al cargar el rol de usuario:", e);
+    //             }
+    //         });
+    //     }
+    // }
+    //
+    // cargarPerfilesPublicaciones() {
+    //     for (const publicacion of this.publicaciones) {
+    //         if (this.rolesPublicaciones[publicacion.id] === 'CLIENTE') {
+    //             this.perfilService.getPerfil(publicacion.idUsuario).subscribe({
+    //                 next: (data) => {
+    //                     this.perfilesPublicaciones.push(data)
+    //                 },
+    //                 error: (e) => {
+    //                     console.error("Error al cargar los nombres: "+ publicacion.texto);
+    //                 }
+    //             })
+    //         }
+    //     }
+    // }
+    //
+    // cargarRolPublicacion(publicacion: MostrarPublicacion): boolean {
+    //     let rolUsuario = this.rolesPublicaciones[publicacion.id];
+    //     if (rolUsuario === 'EMPRESA') {
+    //         return true;
+    //     }
+    //     return false
+    // }
+    //
+    // cargarNombreUsuario(publicacion: MostrarPublicacion): string {
+    //     let nombre = ""
+    //     for (const perfil of this.perfilesPublicaciones) {
+    //         if (publicacion.idUsuario === perfil.id) {
+    //             nombre = perfil.nombre + " " + perfil.apellidos
+    //         }
+    //     }
+    //     return nombre
+    // }
 
     ionViewWillEnter() {
         this.ngOnInit();

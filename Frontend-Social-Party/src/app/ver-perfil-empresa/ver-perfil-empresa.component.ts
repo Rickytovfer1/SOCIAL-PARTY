@@ -7,7 +7,7 @@ import {jwtDecode } from "jwt-decode";
 import { DecodedToken } from "../modelos/DecodedToken";
 import { TokenDataDTO } from "../modelos/TokenDataDTO";
 import { FormsModule } from "@angular/forms";
-import { EmpresaDTO } from "../modelos/EmpresaDTO";
+import { Empresa } from "../modelos/Empresa";
 
 @Component({
     selector: 'app-ver-perfil-empresa',

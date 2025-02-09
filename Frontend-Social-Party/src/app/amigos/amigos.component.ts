@@ -6,7 +6,7 @@ import { NavInferiorComponent } from "../nav-inferior/nav-inferior.component";
 import { UsuarioService } from "../servicios/usuario.service";
 import { AmigoService } from "../servicios/AmigoService";
 import { Usuario } from "../modelos/Usuario";
-import { ClienteDTO } from "../modelos/ClienteDTO";
+import { Cliente } from "../modelos/Cliente";
 import { jwtDecode } from "jwt-decode";
 import { DecodedToken } from "../modelos/DecodedToken";
 import { TokenDataDTO } from "../modelos/TokenDataDTO";
@@ -27,7 +27,7 @@ import { Router } from "@angular/router";
 export class AmigosComponent implements OnInit {
 
     usuario: Usuario = {} as Usuario;
-    amigos: ClienteDTO[] = [];
+    amigos: Cliente[] = [];
     correo?: string;
 
     constructor(
@@ -83,7 +83,7 @@ export class AmigosComponent implements OnInit {
 
     cargarAmigos(idUsuario: number): void {
         this.amigoService.getAmigos(idUsuario).subscribe({
-            next: (amigos: ClienteDTO[]) => {
+            next: (amigos: Cliente[]) => {
                 this.amigos = amigos;
                 console.log('Amigos cargados:', this.amigos);
             },

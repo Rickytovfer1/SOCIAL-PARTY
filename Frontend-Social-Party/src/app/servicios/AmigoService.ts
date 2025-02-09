@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { ComunService } from './comun.service';
-import { ClienteDTO } from '../modelos/ClienteDTO';
+import { Cliente } from '../modelos/Cliente';
 
 @Injectable({
     providedIn: 'root'
@@ -14,8 +14,8 @@ export class AmigoService {
 
     constructor(private http: HttpClient, private comunService: ComunService) { }
 
-    getAmigos(idUsuario: number): Observable<ClienteDTO[]> {
+    getAmigos(idUsuario: number): Observable<Cliente[]> {
         const options = this.comunService.autorizarPeticion();
-        return this.http.get<ClienteDTO[]>(`${this.apiUrl}/cliente/amigos/${idUsuario}`, options);
+        return this.http.get<Cliente[]>(`${this.apiUrl}/cliente/amigos/${idUsuario}`, options);
     }
 }

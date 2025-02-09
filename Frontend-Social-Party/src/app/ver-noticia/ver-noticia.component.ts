@@ -4,10 +4,11 @@ import { IonicModule } from '@ionic/angular';
 import { NavSuperiorComponent } from '../nav-superior/nav-superior.component';
 import { NavInferiorComponent } from '../nav-inferior/nav-inferior.component';
 import { NgIf } from '@angular/common';
-import { PublicacionService, MostrarPublicacionDTO } from '../servicios/publicacion.service';
+import { PublicacionService} from '../servicios/publicacion.service';
 import { PerfilServicio } from '../servicios/perfil.service';
 import { TipoUsuarioDTO } from '../modelos/TipoUsuarioDTO';
 import { environment } from '../../environments/environment';
+import {MostrarPublicacion} from "../modelos/MostrarPublicacion";
 
 @Component({
     selector: 'app-ver-noticia',
@@ -22,7 +23,7 @@ import { environment } from '../../environments/environment';
     ]
 })
 export class VerNoticiaComponent implements OnInit {
-    publicacion?: MostrarPublicacionDTO;
+    publicacion?: MostrarPublicacion;
     perfilEmpresa?: TipoUsuarioDTO;
     baseUrl: string = environment.apiUrl;
     publicationId!: number;
@@ -43,7 +44,7 @@ export class VerNoticiaComponent implements OnInit {
 
     loadPublication(id: number): void {
         this.publicacionService.getPublicacion(id).subscribe({
-            next: (data: MostrarPublicacionDTO) => {
+            next: (data: MostrarPublicacion) => {
                 this.publicacion = data;
                 if (this.publicacion.idUsuario) {
                     this.perfilServicio.getPerfilEmpresaUsuario(this.publicacion.idUsuario).subscribe({
@@ -59,12 +60,12 @@ export class VerNoticiaComponent implements OnInit {
     }
 
 
-    getImageUrl(): string {
-        if (this.publicacion && this.publicacion.foto) {
-            return this.publicacion.foto.startsWith('http')
-                ? this.publicacion.foto
-                : `${this.baseUrl}${this.publicacion.foto}`;
-        }
-        return 'assets/default-image.png';
-    }
+    // getImageUrl(): string {
+    //     if (this.publicacion && this.publicacion.foto) {
+    //         return this.publicacion.foto.startsWith('http')
+    //             ? this.publicacion.foto
+    //             : `${this.baseUrl}${this.publicacion.foto}`;
+    //     }
+    //     return 'assets/default-image.png';
+    // }
 }

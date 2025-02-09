@@ -34,5 +34,4 @@ public class Grupo {
             inverseJoinColumns ={@JoinColumn(name = "idCliente", nullable = false)})
     private Set<Cliente> usuarios = new HashSet<>(0);
 
-
 }

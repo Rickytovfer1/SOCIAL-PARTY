@@ -12,6 +12,13 @@ import { Usuario } from "../modelos/Usuario";
 import {jwtDecode }from "jwt-decode";
 import {NavSuperiorEmpresaComponent} from "../nav-superior-empresa/nav-superior-empresa.component";
 import {NavInferiorEmpresaComponent} from "../nav-inferior-empresa/nav-inferior-empresa.component";
+import {Cliente} from "../modelos/Cliente";
+import {CrearPublicacionEmpresa} from "../modelos/CrearPublicacionEmpresa";
+import {Evento} from "../modelos/Evento";
+import {Empresa} from "../modelos/Empresa";
+import {ClienteService} from "../servicios/cliente.service";
+import {EventoService} from "../servicios/evento.service";
+import {EmpresaService} from "../servicios/empresa.service";
 
 @Component({
     selector: 'app-crear-publicacion-empresa',
@@ -23,41 +30,41 @@ import {NavInferiorEmpresaComponent} from "../nav-inferior-empresa/nav-inferior-
         CommonModule,
         FormsModule,
         NavSuperiorEmpresaComponent,
-        NavInferiorEmpresaComponent
+        NavInferiorEmpresaComponent,
+        NavInferiorComponent,
+        NavSuperiorComponent
     ]
 })
 export class CrearPublicacionEmpresaComponent implements OnInit {
-    texto: string = '';
-    titulo: string = '';
-    direccion: string = '';
-    foto: File | null = null;
-    idUsuario?: number;
+    empresa: Empresa = {} as Empresa;
+
+    publicacion: CrearPublicacionEmpresa = {
+        nombre: "",
+        texto: "",
+        foto: undefined,
+        lugar: "",
+        idUsuario: 0
+    }
 
     constructor(
         private router: Router,
         private publicacionService: PublicacionService,
-        private alertController: AlertController,
-        private usuarioService: UsuarioService
+        private usuarioService: UsuarioService,
+        private empresaService: EmpresaService
     ) { }
 
     ngOnInit() {
         const token = sessionStorage.getItem('authToken');
-
         if (token) {
             try {
                 const decodedToken = jwtDecode<{ tokenDataDTO: TokenDataDTO }>(token);
-                const correo = decodedToken.tokenDataDTO.correo;
-
-                if (correo) {
-                    this.cargarUsuario(correo);
-                } else {
-                    this.presentAlert('Error', 'Correo no encontrado en el token.');
+                const tokenDataDTO = decodedToken?.tokenDataDTO;
+                if (tokenDataDTO && tokenDataDTO.correo) {
+                    this.cargarUsuario(tokenDataDTO.correo)
                 }
             } catch (e) {
-                this.presentAlert('Error', 'Token inválido.');
+                console.error('Error al decodificar el token:', e);
             }
-        } else {
-            this.presentAlert('Error', 'No se encontró el token de autenticación.');
         }
     }
 
@@ -65,63 +72,66 @@ export class CrearPublicacionEmpresaComponent implements OnInit {
         this.usuarioService.getUsuarioEmpresa(correo).subscribe({
             next: (usuario: Usuario) => {
                 if (usuario.id !== undefined) {
-                    this.idUsuario = usuario.id;
+                    this.publicacion.idUsuario = usuario.id;
+                    this.cargarEmpresa(usuario.id)
                 } else {
-                    this.presentAlert('Error', 'El usuario no tiene un ID válido.');
+                    console.log('Error', 'El usuario no tiene un ID válido.');
                 }
             },
             error: () => {
-                this.presentAlert('Error', 'No se pudo cargar el usuario.');
+                console.log('Error', 'No se pudo cargar el usuario.');
             }
         });
+    }
+
+    cargarEmpresa(idUsuario: number) {
+        this.empresaService.getPerfilEmpresa(idUsuario).subscribe({
+            next: (empresa: Empresa)=> {
+                this.empresa = empresa
+            },
+            error: (e) => {
+                console.error("Error al cargar la empresa:", e);
+            }
+        })
     }
 
     seleccionarFoto(event: any) {
         if (event.target.files && event.target.files.length > 0) {
-            this.foto = event.target.files[0];
+            this.publicacion.foto = event.target.files[0];
         }
     }
 
     publicar() {
-        if (!this.foto) {
-            this.presentAlert('Error', 'Por favor, selecciona una foto.');
-            return;
+
+        this.publicacion.nombre = this.empresa.nombre
+        this.publicacion.lugar = this.empresa.nombre
+
+        if (!this.publicacion.texto) {
+            console.log("Falta texto")
+            return
+        }
+        if (!this.publicacion.idUsuario) {
+            console.log("Falta id usuario")
+            return
+        }
+        if (!this.publicacion.foto) {
+            console.log("Falta foto")
+            return
         }
 
-        if (this.idUsuario === undefined) {
-            this.presentAlert('Error', 'Usuario no autenticado.');
-            return;
+        if (!this.publicacion.lugar) {
+            console.log("Falta el lugar")
+            return
         }
 
-        if (!this.texto || !this.titulo || !this.direccion) {
-            this.presentAlert('Error', 'Por favor, completa todos los campos.');
-            return;
-        }
-
-        const dto = {
-            texto: this.texto,
-            titulo: this.titulo,
-            direccion: this.direccion,
-            idUsuario: this.idUsuario
-        };
-
-        this.publicacionService.crearPublicacionEmpresa(dto, this.foto).subscribe({
+        this.publicacionService.crearPublicacionEmpresa(this.publicacion).subscribe({
             next: () => {
-                this.presentAlert('Éxito', 'Publicación creada exitosamente.');
-                this.router.navigate(['/publicaciones-empresa']);
+                console.log('Éxito', 'Publicación creada exitosamente.');
+                this.router.navigate(['/asistentes-evento-empresa']);
             },
-            error: () => {
-                this.presentAlert('Error', 'Error al crear la publicación.');
+            error: e => {
+                console.log('Error', 'Error al crear publicación.');
             }
-        });
-    }
-
-    async presentAlert(header: string, message: string) {
-        const alert = await this.alertController.create({
-            header,
-            message,
-            buttons: ['OK']
-        });
-        await alert.present();
+        })
     }
 }

@@ -10,5 +10,6 @@ export interface Cliente {
     amigos: number[];
     entradas: number[];
     grupos: number[];
+    evento: number;
     idUsuario: number;
 }

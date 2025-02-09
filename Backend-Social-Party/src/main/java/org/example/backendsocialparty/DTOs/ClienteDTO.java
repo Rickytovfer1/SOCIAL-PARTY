@@ -23,6 +23,7 @@ public class ClienteDTO {
     private Set<Integer> amigos;
     private Set<Integer> entradas;
     private Set<Integer> grupos;
+    private Integer evento; //Nuevo atributo
     private Integer idUsuario;
     private String correo;
 }

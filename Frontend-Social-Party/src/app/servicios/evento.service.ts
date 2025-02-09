@@ -5,7 +5,7 @@ import {PerfilEmpresa} from "../modelos/PerfilEmpresa";
 import {ComunService} from "./comun.service";
 import {Evento} from "../modelos/Evento";
 import {environment} from "../../environments/environment";
-import {EmpresaDTO} from "../modelos/EmpresaDTO";
+import {Empresa} from "../modelos/Empresa";
 
 @Injectable({
     providedIn: 'root'
@@ -31,9 +31,9 @@ export class EventoService {
         return this.http.get<Evento>(`${this.apiUrl}/cliente/evento/ver/${idEvento}`, options);
     }
 
-    verEmpresa(idEmpresa: number | undefined): Observable<EmpresaDTO> {
+    verEmpresa(idEmpresa: number | undefined): Observable<Empresa> {
         const options = this.comunService.autorizarPeticion();
-        return this.http.get<EmpresaDTO>(`${this.apiUrl}/cliente/ver/${idEmpresa}`, options);
+        return this.http.get<Empresa>(`${this.apiUrl}/cliente/ver/${idEmpresa}`, options);
     }
 
 }

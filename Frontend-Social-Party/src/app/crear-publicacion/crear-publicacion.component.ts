@@ -10,6 +10,14 @@ import { FormsModule } from '@angular/forms';
 import { TokenDataDTO } from "../modelos/TokenDataDTO";
 import { Usuario } from "../modelos/Usuario";
 import { jwtDecode } from "jwt-decode";
+import {CrearPublicacionCliente} from "../modelos/CrearPublicacionCliente";
+import {Cliente} from "../modelos/Cliente";
+import {ClienteService} from "../servicios/cliente.service";
+import {EventoService} from "../servicios/evento.service";
+import {EmpresaService} from "../servicios/empresa.service";
+import {Evento} from "../modelos/Evento";
+import {Empresa} from "../modelos/Empresa";
+import {list} from "ionicons/icons";
 @Component({
     selector: 'app-crear-publicacion',
     templateUrl: './crear-publicacion.component.html',
@@ -24,37 +32,43 @@ import { jwtDecode } from "jwt-decode";
     ]
 })
 export class CrearPublicacionComponent implements OnInit {
-    texto: string = '';
-    titulo: string = '';
-    direccion: string = '';
-    foto: File | null = null;
-    idUsuario?: number;
+
+    cliente: Cliente = {} as Cliente;
+
+    publicacion: CrearPublicacionCliente = {
+        nombre: "",
+        apellidos: "",
+        texto: "",
+        foto: undefined,
+        lugar: "",
+        idUsuario: 0
+    }
+
+    lista_eventos: Evento[] = [];
+    lista_empresas: Empresa[] = [];
 
     constructor(
         private router: Router,
         private publicacionService: PublicacionService,
-        private alertController: AlertController,
-        private usuarioService: UsuarioService
+        private usuarioService: UsuarioService,
+        private clienteService: ClienteService,
+        private eventoService: EventoService,
+        private empresaService: EmpresaService
     ) { }
 
     ngOnInit() {
         const token = sessionStorage.getItem('authToken');
-
         if (token) {
             try {
                 const decodedToken = jwtDecode<{ tokenDataDTO: TokenDataDTO }>(token);
-                const correo = decodedToken.tokenDataDTO.correo;
-
-                if (correo) {
-                    this.cargarUsuario(correo);
-                } else {
-                    this.presentAlert('Error', 'Correo no encontrado en el token.');
+                const tokenDataDTO = decodedToken?.tokenDataDTO;
+                if (tokenDataDTO && tokenDataDTO.correo) {
+                    this.cargarUsuario(tokenDataDTO.correo)
+                    this.cargarEmpresasEventos()
                 }
             } catch (e) {
-                this.presentAlert('Error', 'Token inválido.');
+                console.error('Error al decodificar el token:', e);
             }
-        } else {
-            this.presentAlert('Error', 'No se encontró el token de autenticación.');
         }
     }
 
@@ -62,55 +76,99 @@ export class CrearPublicacionComponent implements OnInit {
         this.usuarioService.getUsuario(correo).subscribe({
             next: (usuario: Usuario) => {
                 if (usuario.id !== undefined) {
-                    this.idUsuario = usuario.id;
+                    this.publicacion.idUsuario = usuario.id;
+                    this.cargarCliente(usuario.id)
                 } else {
-                    this.presentAlert('Error', 'El usuario no tiene un ID válido.');
+                    console.log('Error', 'El usuario no tiene un ID válido.');
                 }
             },
             error: () => {
-                this.presentAlert('Error', 'No se pudo cargar el usuario.');
+                console.log('Error', 'No se pudo cargar el usuario.');
             }
         });
     }
 
+    cargarCliente(idUsuario: number | undefined): void {
+        this.clienteService.getCliente(idUsuario).subscribe({
+            next: (cliente: Cliente) => {
+                this.cliente = cliente;
+            },
+            error: (e) => {
+                console.error("Error al cargar el perfil:", e);
+            }
+        });
+    }
+
+    cargarEmpresasEventos() {
+        this.lista_empresas = []
+        this.lista_eventos = []
+        this.empresaService.listarEmpresas().subscribe({
+            next: (data)=> {
+                this.lista_empresas = data
+                for (const empresa of this.lista_empresas) {
+                    this.eventoService.getEventos(empresa.id).subscribe({
+                        next: (data)=> {
+                            for (const evento of data) {
+                                this.lista_eventos.push(evento);
+                            }
+                        },
+                        error: e => console.log("Error al cargar los eventos.")
+                    })
+                }
+            },
+            error: e => console.log("Error al cargar las empresas y sus eventos.")
+        })
+    }
+
     seleccionarFoto(event: any) {
         if (event.target.files && event.target.files.length > 0) {
-            this.foto = event.target.files[0];
+            this.publicacion.foto = event.target.files[0];
         }
     }
 
     publicar() {
-        if (!this.foto) {
-            this.presentAlert('Error', 'Por favor, selecciona una foto.');
-            return;
+
+        this.publicacion.nombre = this.cliente.nombre
+        this.publicacion.apellidos = this.cliente.apellidos
+
+        if (!this.publicacion.texto) {
+            console.log("Falta texto")
+            return
+        }
+        if (!this.publicacion.idUsuario) {
+            console.log("Falta id usuario")
+            return
+        }
+        if (!this.publicacion.foto) {
+            console.log("Falta foto")
+            return
         }
 
-        if (this.idUsuario === undefined) {
-            this.presentAlert('Error', 'Usuario no autenticado.');
-            return;
+        for (const evento of this.lista_eventos) {
+            if (evento.id === this.cliente.evento) {
+                for (const empresa of this.lista_empresas) {
+                    if (empresa.id === evento.idEmpresa) {
+                        this.publicacion.lugar = empresa.nombre
+                        break
+                    }
+                }
+                break
+            }
         }
 
-        const dto = {
-            texto: this.texto,
-            titulo: this.titulo,
-            direccion: this.direccion,
-            idUsuario: this.idUsuario
-        };
+        if (!this.publicacion.lugar) {
+            console.log("Falta el lugar")
+            return
+        }
 
-        this.publicacionService.crearPublicacionCliente(dto, this.foto).subscribe(() => {
-            this.presentAlert('Éxito', 'Publicación creada exitosamente.');
-            this.router.navigate(['/publicaciones']);
-        }, () => {
-            this.presentAlert('Error', 'Error al crear publicación.');
-        });
-    }
-
-    async presentAlert(header: string, message: string) {
-        const alert = await this.alertController.create({
-            header,
-            message,
-            buttons: ['OK']
-        });
-        await alert.present();
+        this.publicacionService.crearPublicacionCliente(this.publicacion).subscribe({
+            next: () => {
+                console.log('Éxito', 'Publicación creada exitosamente.');
+                this.router.navigate(['/publicaciones']);
+            },
+            error: e => {
+                console.log('Error', 'Error al crear publicación.');
+            }
+        })
     }
 }

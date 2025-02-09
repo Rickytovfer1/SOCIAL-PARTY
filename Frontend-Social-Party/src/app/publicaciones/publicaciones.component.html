@@ -2,44 +2,60 @@
 <ion-content>
     <ion-grid>
         <ion-row>
-            <ion-img id="agregar" (click)="abrirForm()" src="assets/iconoMas.png"></ion-img>
-        </ion-row>
-        <ion-row>
-            <ion-searchbar
-                placeholder="Buscar publicaciones"
-                animated="true"
-                [(ngModel)]="buscar"
-                (ionInput)="onSearchChange($event)">
-            </ion-searchbar>
+            <div style="display: flex; margin: 0 auto" class="ion-align-items-center">
+                <ion-img id="agregar" (click)="abrirForm()" src="assets/iconoMas.png"></ion-img>
+                <ion-searchbar
+                    placeholder="Buscar publicaciones"
+                    animated="true"
+                    [(ngModel)]="buscar"
+                    (ionInput)="buscarPublicaciones()">
+                </ion-searchbar>
+                <ion-img id="filtro" src="assets/iconoFiltro.png"></ion-img>
+                <ion-popover trigger="filtro" triggerAction="click" [dismissOnSelect]="true">
+                    <ng-template>
+                        <ion-list>
+                            <ion-item button (click)="filtrarPublicaciones('todas')">Todas</ion-item>
+                            <ion-item button (click)="filtrarPublicaciones('tuyas')">Tus publicaciones</ion-item>
+                            <ion-item button (click)="filtrarPublicaciones('amigos')">Publicaciones de amigos</ion-item>
+                            <ion-item button (click)="filtrarPublicaciones('empresas')">Publicaciones de empresas</ion-item>
+                        </ion-list>
+                    </ng-template>
+                </ion-popover>
+            </div>
         </ion-row>
         <ion-row>
             <ion-col size-lg="4" size-xl="4" size-md="6" size-sm="10" size-xs="12">
-                <ion-card (click)="verPublicacion(publicacion)" *ngFor="let publicacion of this.publicaciones">
+                <ion-card *ngFor="let publicacion of this.publicacionesFiltradas">
+                    <ion-img [src]="getImageUrl(publicacion)" alt="Foto publicacion"/>
                     <ion-grid>
-                        <ion-row>
-                            <ion-col size="5">
-                                <img [ngSrc]="getImageUrl(publicacion)" class="publicacion" alt="Foto Publicacion" fill>
+                        <ion-row class="fila_superior">
+                            <ion-col class="ion-align-items-center" size="3">
+                                <ion-img class="icono" src="assets/icons8-corazones-48.png"></ion-img>
+                                <ion-text>7</ion-text>
                             </ion-col>
-                            <ion-col size="7">
-                                <ion-grid class="textos" *ngIf="!cargarRolPublicacion(publicacion)">
-                                    <ion-row>
-                                        <ion-text class="nombre">{{ publicacion.texto }}</ion-text>
-                                    </ion-row>
-                                    <ion-row>
-                                        <ion-text class="direccion">{{ cargarNombreUsuario(publicacion) }}</ion-text>
-                                    </ion-row>
-                                </ion-grid>
-                                <ion-grid class="textos" *ngIf="cargarRolPublicacion(publicacion)">
-                                    <ion-row>
-                                        <ion-text class="nombre">{{ publicacion.titulo }}</ion-text>
-                                    </ion-row>
-                                    <ion-row>
-                                        <ion-text class="direccion">{{ publicacion.texto }}</ion-text>
-                                    </ion-row>
-                                    <ion-row>
-                                        <ion-text class="direccion">{{ publicacion.direccion }}</ion-text>
-                                    </ion-row>
-                                </ion-grid>
+                            <ion-col class="ion-align-items-center" size="3">
+                                <ion-img class="icono" src="assets/icons8-burbuja-de-diálogo-50.png"></ion-img>
+                                <ion-text>2</ion-text>
+                            </ion-col>
+                            <ion-col size="2"></ion-col>
+                            <ion-col class="ion-align-items-center" size="4">
+                                <ion-img class="icono" src="assets/ubicacion.png"></ion-img>
+                                <ion-text>{{ publicacion.lugar }}</ion-text>
+                            </ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col>
+                                <ion-text class="descripcion"><strong>{{publicacion.nombre}} {{publicacion.apellidos}}</strong>: {{publicacion.texto}}</ion-text>
+                            </ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col>
+                                <div style="float: left; display: inline-block;">
+                                    <ion-text>{{calcularFecha(publicacion)}}</ion-text>
+                                </div>
+                                <div style="float: right; display: inline-block;">
+                                    <ion-text style="float: right; display: inline-block;">{{obtenerFecha(publicacion)}}</ion-text>
+                                </div>
                             </ion-col>
                         </ion-row>
                     </ion-grid>

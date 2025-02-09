@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ClientePublicacionDTO {
+    private String nombre;
+    private String apellidos;
     private String texto;
+    private String lugar;
     private Integer idUsuario;
 }

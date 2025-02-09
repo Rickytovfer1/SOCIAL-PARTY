@@ -9,7 +9,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {FormsModule} from "@angular/forms";
 import {EventoService} from "../servicios/evento.service";
 import {Evento} from "../modelos/Evento";
-import {EmpresaDTO} from "../modelos/EmpresaDTO";
+import {Empresa} from "../modelos/Empresa";
 import {jwtDecode} from "jwt-decode";
 import {TokenDataDTO} from "../modelos/TokenDataDTO";
 import {Perfil} from "../modelos/Perfil";
@@ -33,7 +33,7 @@ import {NavSuperiorComponent} from "../nav-superior/nav-superior.component";
 })
 export class ConfirmacionPagoComponent implements OnInit {
     evento: Evento = {} as Evento;
-    empresa: EmpresaDTO = {} as EmpresaDTO;
+    empresa: Empresa = {} as Empresa;
     id!: number;
     idEmpresa!: number;
     usuario: Usuario = {} as Usuario;
@@ -98,7 +98,7 @@ export class ConfirmacionPagoComponent implements OnInit {
 
     verEmpresa(idEmpresa: number | undefined): void {
         this.eventoService.verEmpresa(idEmpresa).subscribe({
-            next: (empresa: EmpresaDTO) => {
+            next: (empresa: Empresa) => {
                 this.empresa = empresa;
             },
             error: (e) => {

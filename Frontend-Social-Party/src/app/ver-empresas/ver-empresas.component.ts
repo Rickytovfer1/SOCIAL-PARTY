@@ -8,9 +8,8 @@ import { NavInferiorComponent } from "../nav-inferior/nav-inferior.component";
 import { EmpresaService } from '../servicios/empresa.service';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import {EmpresaDTO} from "../modelos/EmpresaDTO";
+import {Empresa} from "../modelos/Empresa";
 import {environment} from "../../environments/environment";
-import {MostrarPublicacionDTO} from "../servicios/publicacion.service";
 
 @Component({
     selector: 'app-ver-empresas',
@@ -28,15 +27,15 @@ import {MostrarPublicacionDTO} from "../servicios/publicacion.service";
     ]
 })
 export class VerEmpresasComponent implements OnInit {
-    empresas: EmpresaDTO[] = [];
-    empresasFiltradas: EmpresaDTO[] = [];
+    empresas: Empresa[] = [];
+    empresasFiltradas: Empresa[] = [];
     buscar: string = '';
     baseUrl: string = environment.apiUrl;
 
     constructor(private router: Router, private empresaService: EmpresaService) { }
 
     ngOnInit() {
-        this.empresaService.listarEmpresas().subscribe((data: EmpresaDTO[]) => {
+        this.empresaService.listarEmpresas().subscribe((data: Empresa[]) => {
             this.empresas = data;
             this.empresasFiltradas = data;
         });
@@ -67,7 +66,7 @@ export class VerEmpresasComponent implements OnInit {
         this.router.navigate(['/ver-entradas']);
     }
 
-    getImageUrl(empresaDTO: EmpresaDTO): string {
+    getImageUrl(empresaDTO: Empresa): string {
         if (empresaDTO.fotoPerfil.startsWith('http')) {
             return empresaDTO.fotoPerfil;
         } else {
