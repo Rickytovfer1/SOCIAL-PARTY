@@ -53,6 +53,8 @@ export class LoginComponent  implements OnInit {
                         this.router.navigate(['/amigos']);
                     }else if (rol === "EMPRESA") {
                         this.router.navigate(['/asistentes-evento-empresa']);
+                    }else {
+                        this.router.navigate(['/principal-admin']);
                     }
                 } catch (e) {
                     console.error('Error al decodificar el token:', e);

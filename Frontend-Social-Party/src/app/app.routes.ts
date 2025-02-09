@@ -110,4 +110,12 @@ export const routes: Routes = [
         path: 'ver-entradas',
         loadComponent: () => import('./ver-entradas/ver-entradas.component').then((m) => m.VerEntradasComponent)
     },
+    {
+        path: 'principal-admin',
+        loadComponent: () => import('./principal-admin/principal-admin.component').then((m) => m.PrincipalAdminComponent)
+    },
+    {
+        path: 'ver-info-admin/:id',
+        loadComponent: () => import('./ver-info-admin/ver-info-admin.component').then((m) => m.VerInfoAdminComponent)
+    },
 ];

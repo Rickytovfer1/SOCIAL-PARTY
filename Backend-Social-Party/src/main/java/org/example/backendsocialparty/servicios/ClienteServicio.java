@@ -1,6 +1,7 @@
 package org.example.backendsocialparty.servicios;
 
 import org.example.backendsocialparty.DTOs.ClienteDTO;
+import org.example.backendsocialparty.DTOs.EventoDTO;
 import org.example.backendsocialparty.modelos.*;
 import org.example.backendsocialparty.repositorios.ClienteRepositorio;
 import org.example.backendsocialparty.repositorios.UsuarioRepositorio;
@@ -58,6 +59,14 @@ public class ClienteServicio {
         return getClienteDTO(cliente);
     }
 
+    public List<ClienteDTO> listarClientes(){
+        List<Cliente> clientes = clienteRepositorio.findAll();
+        List<ClienteDTO> clienteDTOS = new ArrayList<>();
+        for (Cliente cliente : clientes) {
+            clienteDTOS.add(getClienteDTO(cliente));
+        }
+        return clienteDTOS;
+    }
     public static ClienteDTO getClienteDTO(Cliente c) {
         ClienteDTO dtonuevo = new ClienteDTO();
         dtonuevo.setId(c.getId());
