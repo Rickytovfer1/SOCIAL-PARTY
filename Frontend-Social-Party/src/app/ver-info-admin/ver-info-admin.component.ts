@@ -25,16 +25,12 @@ import {Evento} from "../modelos/Evento";
 })
 export class VerInfoAdminComponent implements OnInit {
     baseUrl: string = environment.apiUrl;
-    idCliente: number;
     cliente: ClienteDTO = {} as ClienteDTO;
     constructor(private activateRoute: ActivatedRoute) {
 
     }
 
     ngOnInit() {
-        this.activateRoute.params.subscribe(params => {
-            this.idCliente = Number(params['id']);
-        });
     }
 
     getImageUrlCliente(clienteDTO: ClienteDTO): string {
