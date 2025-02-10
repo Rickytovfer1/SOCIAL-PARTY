@@ -7,8 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SolicitudDTO {
+public class AmistadDTO {
     private Integer id;
-    private Integer idUsuario1;
-    private Integer idUsuario2;
+    private Integer idUsuario;
+    private Integer idAmigo;
+
 }
