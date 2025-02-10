@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import { IonicModule } from "@ionic/angular";
 import { NavSuperiorComponent } from "../nav-superior/nav-superior.component";
 import { NavInferiorComponent } from "../nav-inferior/nav-inferior.component";
@@ -16,6 +16,8 @@ import {PerfilServicio} from "../servicios/perfil.service";
 import {MostrarPublicacion} from "../modelos/MostrarPublicacion";
 import {Cliente} from "../modelos/Cliente";
 import {AmigoService} from "../servicios/amigo.service";
+import {Favorito} from "../modelos/Favorito";
+import {FavoritoService} from "../servicios/favorito.service";
 
 
 @Component({
@@ -28,7 +30,6 @@ import {AmigoService} from "../servicios/amigo.service";
         NavSuperiorComponent,
         NavInferiorComponent,
         CommonModule,
-        NgOptimizedImage,
         FormsModule
     ]
 })
@@ -55,12 +56,16 @@ export class PublicacionesComponent implements OnInit {
 
     textoFiltro = ""
 
+    likes: Favorito[] = []
+    contadorPublicaciones: {[key: number]: number} = {};
+
     constructor(
         private router: Router,
         private publicacionService: PublicacionService,
         private usuarioService: UsuarioService,
         private perfilService: PerfilServicio,
-        private amigoService: AmigoService
+        private amigoService: AmigoService,
+        private favoritoService: FavoritoService
     ) {}
 
     ngOnInit() {
@@ -108,6 +113,10 @@ export class PublicacionesComponent implements OnInit {
                 this.cargarRolesUsuarios()
                 if (this.usuario.id)
                 this.cargarAmigos(this.usuario.id)
+                for (const publicacion of data) {
+                    if(publicacion.id)
+                    this.cargarLikesPublicacion(publicacion.id);
+                }
             },
             error: (e) => {
                 console.error("Error al cargar las publicaciones:", e);
@@ -116,10 +125,11 @@ export class PublicacionesComponent implements OnInit {
 
     }
 
-    cargarPerfil(idUsuario: number | undefined): void {
+    cargarPerfil(idUsuario: number): void {
         this.perfilService.getPerfil(idUsuario).subscribe({
             next: (perfil: Perfil) => {
                 this.perfil = perfil;
+                this.cargarLikesCliente(perfil.id)
             },
             error: (e) => {
                 console.error("Error al cargar el perfil:", e);
@@ -194,7 +204,7 @@ export class PublicacionesComponent implements OnInit {
         this.filtroSeleccionado = tipo;
 
         if (tipo === 'todas') {
-            this.publicacionesFiltradas = this.publicaciones
+            this.publicacionesFiltradas = this.publicaciones.reverse()
             this.textoFiltro = ""
 
         } else if (tipo === 'tuyas') {
@@ -205,7 +215,7 @@ export class PublicacionesComponent implements OnInit {
                     this.publicacionesPropias.push(publicacion)
                 }
             }
-            this.publicacionesFiltradas = this.publicacionesPropias
+            this.publicacionesFiltradas = this.publicacionesPropias.reverse()
             this.textoFiltro = "Filtrando por tus publicaciones"
 
         } else if (tipo === 'empresas') {
@@ -215,7 +225,7 @@ export class PublicacionesComponent implements OnInit {
                     this.publicacionesEmpresas.push(publicacion)
                 }
             }
-            this.publicacionesFiltradas = this.publicacionesEmpresas
+            this.publicacionesFiltradas = this.publicacionesEmpresas.reverse()
             this.textoFiltro = "Filtrando por empresas"
 
         } else if (tipo === 'amigos') {
@@ -227,7 +237,7 @@ export class PublicacionesComponent implements OnInit {
                     }
                 }
             }
-            this.publicacionesFiltradas = this.publicacionesAmigos
+            this.publicacionesFiltradas = this.publicacionesAmigos.reverse()
             this.textoFiltro = "Filtrando por amigos"
 
         }
@@ -241,18 +251,22 @@ export class PublicacionesComponent implements OnInit {
             this.publicacionesFiltradas = this.publicaciones.filter(publicacion =>
                 publicacion.nombre?.toLowerCase().includes(consulta)
             );
+            this.publicacionesFiltradas = this.publicacionesFiltradas.reverse()
         } else if (this.filtroSeleccionado === 'tuyas') {
             this.publicacionesFiltradas = this.publicacionesPropias.filter(publicacion =>
                 publicacion.nombre?.toLowerCase().includes(consulta)
             );
+            this.publicacionesFiltradas = this.publicacionesFiltradas.reverse()
         } else if (this.filtroSeleccionado === 'amigos') {
             this.publicacionesFiltradas = this.publicacionesAmigos.filter(publicacion =>
                 publicacion.nombre?.toLowerCase().includes(consulta)
             );
+            this.publicacionesFiltradas = this.publicacionesFiltradas.reverse()
         } else if (this.filtroSeleccionado === 'empresas') {
             this.publicacionesFiltradas = this.publicacionesEmpresas.filter(publicacion =>
                 publicacion.nombre?.toLowerCase().includes(consulta)
             );
+            this.publicacionesFiltradas = this.publicacionesFiltradas.reverse()
         }
     }
 
@@ -293,6 +307,75 @@ export class PublicacionesComponent implements OnInit {
                 console.error("Error al cargar los amigos:", e);
             }
         });
+    }
+
+    cargarLikesCliente(idCliente: number) {
+        this.favoritoService.listarLikes(idCliente).subscribe({
+            next: (data) => {this.likes = data},
+            error: (e) => {console.error("Error al cargar los likes:", e);}
+        })
+    }
+
+    cargarLikesPublicacion(idPublicacion: number) {
+        this.favoritoService.listarLikesPublicacion(idPublicacion).subscribe({
+            next: (data) => {
+                let contador = 0
+                for (const favorito of data) {
+                    contador++
+                }
+                this.contadorPublicaciones[idPublicacion] = contador;
+            },
+            error: (e) => {console.error("Error al cargar los likes:", e);}
+        })
+    }
+
+    imagenCambioLike(publicacion: MostrarPublicacion): string {
+        let encontrado = false;
+        for (const like of this.likes) {
+            if (like.id_publicacion === publicacion.id) {
+                encontrado = true;
+                break
+            }
+        }
+        if (encontrado) {
+            return "assets/icons8-me-gusta-48.png"
+        } else {
+            return "assets/icons8-corazones-48.png"
+        }
+    }
+
+    cambioLike(publicacion: MostrarPublicacion) {
+        let favorito: Favorito = {
+            id_publicacion: publicacion.id,
+            id_cliente: this.perfil.id
+        }
+        let encontrado = false;
+        for (const like of this.likes) {
+            if (like.id_publicacion === publicacion.id) {
+                encontrado = true;
+                break
+            }
+        }
+        if (encontrado) {
+            console.log("Quitando...")
+            this.favoritoService.quitarLike(favorito).subscribe({
+                next: () => {console.log("Enviado")},
+                error: (e) => {console.error("Error", e);}
+            })
+        } else {
+            console.log("Posteando...")
+            this.favoritoService.darLike(favorito).subscribe({
+                next: () => {console.log("Enviado")},
+                error: (e) => {console.error("Error", e);}
+            })
+        }
+    }
+
+    devolverIndice(publicacion: MostrarPublicacion): number {
+        if (publicacion.id) {
+            return this.contadorPublicaciones[publicacion.id];
+        }
+        return 0
     }
 
     ionViewWillEnter() {

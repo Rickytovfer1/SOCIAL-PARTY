@@ -30,9 +30,7 @@ import {EmpresaService} from "../servicios/empresa.service";
         CommonModule,
         FormsModule,
         NavSuperiorEmpresaComponent,
-        NavInferiorEmpresaComponent,
-        NavInferiorComponent,
-        NavSuperiorComponent
+        NavInferiorEmpresaComponent
     ]
 })
 export class CrearPublicacionEmpresaComponent implements OnInit {

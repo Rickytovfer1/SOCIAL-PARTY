@@ -33,8 +33,8 @@
                     <ion-grid>
                         <ion-row class="fila_superior">
                             <ion-col class="ion-align-items-center" size="3">
-                                <ion-img class="icono" src="assets/icons8-corazones-48.png"></ion-img>
-                                <ion-text>7</ion-text>
+                                <ion-img class="icono" (click)="cambioLike(publicacion)" [src]="imagenCambioLike(publicacion)"></ion-img>
+                                <ion-text>{{devolverIndice(publicacion)}}</ion-text>
                             </ion-col>
                             <ion-col class="ion-align-items-center" size="3">
                                 <ion-img class="icono" src="assets/icons8-burbuja-de-diálogo-50.png"></ion-img>
