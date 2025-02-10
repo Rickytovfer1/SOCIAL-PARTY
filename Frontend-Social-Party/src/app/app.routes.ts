@@ -118,4 +118,8 @@ export const routes: Routes = [
         path: 'ver-info-admin/:id',
         loadComponent: () => import('./ver-info-admin/ver-info-admin.component').then((m) => m.VerInfoAdminComponent)
     },
+    {
+        path: 'editar-cliente-admin/:id',
+        loadComponent: () => import('./editar-cliente-admin/editar-cliente-admin.component').then((m) => m.EditarClienteAdminComponent)
+    },
 ];

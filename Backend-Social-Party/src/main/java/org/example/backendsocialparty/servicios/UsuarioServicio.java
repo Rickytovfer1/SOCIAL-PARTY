@@ -1,10 +1,7 @@
 package org.example.backendsocialparty.servicios;
 
 import lombok.AllArgsConstructor;
-import org.example.backendsocialparty.DTOs.LoginDTO;
-import org.example.backendsocialparty.DTOs.RegistrarClienteDTO;
-import org.example.backendsocialparty.DTOs.RegistrarEmpresaDTO;
-import org.example.backendsocialparty.DTOs.RespuestaDTO;
+import org.example.backendsocialparty.DTOs.*;
 import org.example.backendsocialparty.enumerados.Rol;
 import org.example.backendsocialparty.modelos.Cliente;
 import org.example.backendsocialparty.modelos.Empresa;
@@ -151,6 +148,16 @@ public class UsuarioServicio implements UserDetailsService {
             throw new UsernameNotFoundException("Usuario no encontrado");
         }
 
+    }
+
+    public UsuarioDTO buscarUsuarioPorCliente(Integer idCliente){
+        Cliente cliente = clienteRepositorio.findById(idCliente).orElseThrow(()-> new RuntimeException("No existe un cliente con este ID."));
+        Usuario usuario = usuarioRepositorio.findById(cliente.getUsuario().getId()).orElse(null);
+
+        UsuarioDTO usuarioDTO = new UsuarioDTO();
+        usuarioDTO.setCorreo(usuario.getCorreo());
+
+        return usuarioDTO;
     }
 
 }
