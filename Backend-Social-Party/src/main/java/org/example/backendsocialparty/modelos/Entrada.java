@@ -3,9 +3,7 @@ package org.example.backendsocialparty.modelos;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 @Entity
 @Table(name = "entrada")
@@ -41,5 +39,6 @@ public class Entrada {
     @ToString.Exclude
     private Evento evento;
 
-
+    @Embedded
+    private QRCode qrCode;
 }

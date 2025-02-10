@@ -1,17 +1,9 @@
 package org.example.backendsocialparty.servicios;
 
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.EncodeHintType;
 import com.google.zxing.WriterException;
-import com.google.zxing.client.j2se.MatrixToImageWriter;
-import com.google.zxing.common.BitMatrix;
-import com.google.zxing.qrcode.QRCodeWriter;
 import lombok.AllArgsConstructor;
 import org.example.backendsocialparty.DTOs.*;
-import org.example.backendsocialparty.modelos.Cliente;
-import org.example.backendsocialparty.modelos.Empresa;
-import org.example.backendsocialparty.modelos.Entrada;
-import org.example.backendsocialparty.modelos.Evento;
+import org.example.backendsocialparty.modelos.*;
 import org.example.backendsocialparty.repositorios.ClienteRepositorio;
 import org.example.backendsocialparty.repositorios.EmpresaRepositorio;
 import org.example.backendsocialparty.repositorios.EntradaRepositorio;
@@ -21,10 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
@@ -38,6 +29,7 @@ public class EntradaServicio {
     private EventoRepositorio eventoRepositorio;
     private ClienteRepositorio clienteRepositorio;
     private EmpresaRepositorio empresaRepositorio;
+    private QRCodeGenerator qrCodeGenerator;
 
     @Transactional
     public void canjearEntrada(Integer codigoEntrada) {
@@ -90,6 +82,23 @@ public class EntradaServicio {
         entrada.setEvento(evento);
 
 
+        // Generate QR code
+        try {
+            String uniqueText = UUID.randomUUID().toString();
+            String filePath = String.format("./MyQRCode_%s.png", uniqueText);
+            qrCodeGenerator.generateQRCodeImage(uniqueText, 350, 350, filePath);
+
+            // Save QR code to database
+            QRCode qrCode = new QRCode();
+            qrCode.setName(filePath);
+            qrCode.setData(Files.readAllBytes(Paths.get(filePath)));
+
+            entrada.setQrCode(qrCode);
+        } catch (WriterException | IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error generating QR code.");
+        }
+
         entradaRepositorio.save(entrada);
     }
 
@@ -116,7 +125,6 @@ public class EntradaServicio {
         dto.setId(a.getCliente().getId());
         dtonuevo.setCliente(dto);
 
-
         dtonuevo.setEvento(getEventoEntradaDTO(a.getEvento()));
         return dtonuevo;
     }
@@ -136,27 +144,4 @@ public class EntradaServicio {
         dto.setFotoPerfil(empresa.getFotoPerfil());
         return dto;
     }
-
-    public byte[] generateQRBytes(String data, int width, int height) {
-        QRCodeWriter qrCodeWriter = new QRCodeWriter();
-        Map<EncodeHintType, Object> hints = new HashMap<>();
-        hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
-
-        try {
-            BitMatrix bitMatrix = qrCodeWriter.encode(data, BarcodeFormat.QR_CODE, width, height, hints);
-            BufferedImage qrImage = MatrixToImageWriter.toBufferedImage(bitMatrix);
-
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(qrImage, "png", baos);
-            byte[] qrBytes = baos.toByteArray();
-
-            System.out.println("QR generado, tamaño: " + qrBytes.length + " bytes");
-
-            return qrBytes;
-        } catch (WriterException | IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Error al generar el código QR", e);
-        }
-    }
-
 }

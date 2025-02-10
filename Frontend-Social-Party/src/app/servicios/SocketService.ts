@@ -1,4 +1,4 @@
-import { Client, Message } from '@stomp/stompjs';
+import { Client, Message, Frame } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 import { Subject, Observable } from 'rxjs';
 import { Injectable } from "@angular/core";
@@ -24,7 +24,7 @@ export class SocketService {
                 return new SockJS("http://localhost:8080/ws?access_token=" + token);
             },
             reconnectDelay: 5000,
-            onConnect: frame => {
+            onConnect: (frame: Frame) => {
                 console.log('Socket connected!', frame);
                 this.connected = true;
                 while (this.pendingSubscriptions.length > 0) {
@@ -34,7 +34,7 @@ export class SocketService {
                     }
                 }
             },
-            onStompError: frame => {
+            onStompError: (frame: Frame) => {
                 console.error('Broker reported error: ' + frame.headers['message']);
                 console.error('Additional details: ' + frame.body);
             },

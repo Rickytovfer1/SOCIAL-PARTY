@@ -3,9 +3,7 @@ package org.example.backendsocialparty.DTOs;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.example.backendsocialparty.modelos.Cliente;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -14,6 +12,8 @@ import java.time.LocalDateTime;
 public class EntradaDTO {
     private Integer id;
     private LocalDateTime fecha;
+    private Integer codigoEntrada;
     private ClienteDTO cliente;
     private EventoEntradaDTO evento;
+    private QRCodeDTO qrCode;
 }
