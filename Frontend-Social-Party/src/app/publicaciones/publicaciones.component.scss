@@ -5,7 +5,7 @@ ion-content {
 ion-card {
     margin: 25px auto;
     --background: #306DA9;
-    border-radius: 20px;
+    border-radius: 10px;
 }
 
 #agregar {
@@ -40,4 +40,11 @@ ion-col {
 
 .fila_superior ion-col {
     display: flex;
+}
+
+#texto_filtro {
+    color: black;
+    margin: 0 auto;
+    font-size: 13px;
+    font-weight: bold;
 }

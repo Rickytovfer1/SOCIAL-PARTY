@@ -37,6 +37,10 @@ export class AmigosComponent implements OnInit {
     ) {}
 
     ngOnInit() {
+        this.inicio()
+    }
+
+    inicio() {
         const token = sessionStorage.getItem('authToken');
         console.log('Auth Token:', token);
 
@@ -101,5 +105,7 @@ export class AmigosComponent implements OnInit {
         this.router.navigate(['/ver-solicitudes']);
     }
 
-
+    ionViewWillEnter() {
+        this.inicio()
+    }
 }

@@ -57,6 +57,10 @@ export class CrearPublicacionComponent implements OnInit {
     ) { }
 
     ngOnInit() {
+        this.inicio()
+    }
+
+    inicio() {
         const token = sessionStorage.getItem('authToken');
         if (token) {
             try {
@@ -157,6 +161,8 @@ export class CrearPublicacionComponent implements OnInit {
         }
 
         if (!this.publicacion.lugar) {
+            const toast = document.getElementById("toastSinEvento") as any;
+            toast.present();
             console.log("Falta el lugar")
             return
         }
@@ -170,5 +176,9 @@ export class CrearPublicacionComponent implements OnInit {
                 console.log('Error', 'Error al crear publicación.');
             }
         })
+    }
+
+    ionViewWillEnter() {
+        this.inicio()
     }
 }

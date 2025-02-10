@@ -74,6 +74,7 @@ export class CrearPublicacionEmpresaComponent implements OnInit {
                 if (usuario.id !== undefined) {
                     this.publicacion.idUsuario = usuario.id;
                     this.cargarEmpresa(usuario.id)
+                    console.log(usuario.id)
                 } else {
                     console.log('Error', 'El usuario no tiene un ID válido.');
                 }
