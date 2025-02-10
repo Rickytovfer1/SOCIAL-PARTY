@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import org.example.backendsocialparty.DTOs.ClientePublicacionDTO;
 import org.example.backendsocialparty.DTOs.MostrarPublicacionDTO;
 import org.example.backendsocialparty.DTOs.PublicacionDTO;
+import org.example.backendsocialparty.DTOs.UsuarioDTO;
+import org.example.backendsocialparty.enumerados.Rol;
 import org.example.backendsocialparty.modelos.Publicacion;
 import org.example.backendsocialparty.modelos.Usuario;
 import org.example.backendsocialparty.repositorios.PublicacionRepositorio;
@@ -43,6 +45,10 @@ public class PublicacionControlador {
     @GetMapping("/empresa/publicaciones-empresa/{idUsuario}")
     public List<MostrarPublicacionDTO> mostrarPublicacionesEmpresa(@PathVariable Integer idUsuario) {
         return publicacionServicio.mostrarPublicacionesPorEmpresa(idUsuario);
+    }
+    @GetMapping("/cliente/publicacion/{idUsuario}")
+    public Rol comprobarRol(@PathVariable Integer idUsuario) {
+        return publicacionServicio.comprobarRol(idUsuario);
     }
     @GetMapping("/feed/{idUsuario}")
     public List<MostrarPublicacionDTO> mostrarFeed(@PathVariable Integer idUsuario) {

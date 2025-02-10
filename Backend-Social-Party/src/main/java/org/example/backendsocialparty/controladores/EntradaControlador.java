@@ -14,9 +14,9 @@ public class EntradaControlador {
 
     private EntradaServicio entradaServicio;
 
-    @PostMapping("/empresa/canjear/entrada/{idEntrada}")
-    public void canjearEntrada(@PathVariable Integer idEntrada) throws Exception {
-        entradaServicio.canjearEntrada(idEntrada);
+    @PostMapping("/empresa/canjear/entrada/{codigoEntrada}")
+    public void canjearEntrada(@PathVariable Integer codigoEntrada) throws Exception {
+        entradaServicio.canjearEntrada(codigoEntrada);
     }
 
     @PostMapping("/cliente/comprar/entrada/{idEvento}/{idEmpresa}/{idCliente}")

@@ -1,5 +1,11 @@
 package org.example.backendsocialparty.servicios;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 import lombok.AllArgsConstructor;
 import org.example.backendsocialparty.DTOs.*;
 import org.example.backendsocialparty.modelos.Cliente;
@@ -10,15 +16,19 @@ import org.example.backendsocialparty.repositorios.ClienteRepositorio;
 import org.example.backendsocialparty.repositorios.EmpresaRepositorio;
 import org.example.backendsocialparty.repositorios.EntradaRepositorio;
 import org.example.backendsocialparty.repositorios.EventoRepositorio;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -29,24 +39,28 @@ public class EntradaServicio {
     private ClienteRepositorio clienteRepositorio;
     private EmpresaRepositorio empresaRepositorio;
 
-    public void canjearEntrada(Integer idEntrada) {
+    @Transactional
+    public void canjearEntrada(Integer codigoEntrada) {
 
-        Entrada entrada = entradaRepositorio.findById(idEntrada)
-                .orElseThrow(() -> new RuntimeException("No existe una entrada con este ID."));
+        Entrada entrada = entradaRepositorio.findByCodigoEntrada(codigoEntrada);
 
+        if (entrada == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Entrada no encontrada");
+        }
         Cliente cliente = clienteRepositorio.findById(entrada.getCliente().getId())
                 .orElseThrow(() -> new RuntimeException("No existe un cliente con este ID."));
 
         Evento evento = eventoRepositorio.findById(entrada.getEvento().getId())
                 .orElseThrow(() -> new RuntimeException("No existe un evento con este ID."));
 
-        if (!evento.getAsistentes().contains(cliente) || !cliente.getEvento().equals(evento)) {
-
+        if (!evento.getAsistentes().contains(cliente)) {
             evento.getAsistentes().add(cliente);
             cliente.setEvento(evento);
 
             clienteRepositorio.save(cliente);
-            entradaRepositorio.save(entrada);
+
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El cliente ya ha canjeado esta entrada.");
         }
     }
 
@@ -68,8 +82,13 @@ public class EntradaServicio {
 
         Entrada entrada = new Entrada();
         entrada.setFecha(LocalDateTime.now());
+
+        Random random = new Random();
+        int codigoEntrada = 10000 + random.nextInt(90000);
+        entrada.setCodigoEntrada(codigoEntrada);
         entrada.setCliente(cliente);
         entrada.setEvento(evento);
+
 
         entradaRepositorio.save(entrada);
     }
@@ -117,4 +136,27 @@ public class EntradaServicio {
         dto.setFotoPerfil(empresa.getFotoPerfil());
         return dto;
     }
+
+    public byte[] generateQRBytes(String data, int width, int height) {
+        QRCodeWriter qrCodeWriter = new QRCodeWriter();
+        Map<EncodeHintType, Object> hints = new HashMap<>();
+        hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
+
+        try {
+            BitMatrix bitMatrix = qrCodeWriter.encode(data, BarcodeFormat.QR_CODE, width, height, hints);
+            BufferedImage qrImage = MatrixToImageWriter.toBufferedImage(bitMatrix);
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(qrImage, "png", baos);
+            byte[] qrBytes = baos.toByteArray();
+
+            System.out.println("QR generado, tamaño: " + qrBytes.length + " bytes");
+
+            return qrBytes;
+        } catch (WriterException | IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error al generar el código QR", e);
+        }
+    }
+
 }

@@ -1,10 +1,7 @@
 package org.example.backendsocialparty.servicios;
 
 import lombok.RequiredArgsConstructor;
-import org.example.backendsocialparty.DTOs.ClienteDTO;
-import org.example.backendsocialparty.DTOs.ClientePublicacionDTO;
-import org.example.backendsocialparty.DTOs.MostrarPublicacionDTO;
-import org.example.backendsocialparty.DTOs.PublicacionDTO;
+import org.example.backendsocialparty.DTOs.*;
 import org.example.backendsocialparty.enumerados.Rol;
 import org.example.backendsocialparty.modelos.Empresa;
 import org.example.backendsocialparty.modelos.Publicacion;
@@ -144,6 +141,11 @@ public class PublicacionServicio {
             publicacionDTO.add(getPublicacionDTO(publicacion));
         }
         return publicacionDTO;
+    }
+
+    public Rol comprobarRol(Integer idUsuario) {
+        Usuario usuario = usuarioRepositorio.findById(idUsuario).get();
+        return usuario.getRol();
     }
 
     public List<MostrarPublicacionDTO> mostrarPublicacionesFeed(Integer idUsuario) {
