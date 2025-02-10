@@ -91,35 +91,35 @@ export class VerInfoAdminComponent implements OnInit {
         await alert.present();
     }
 
-    async abrirModalEstrellas() {
-        const alert = await this.alertController.create({
-            header: 'Modificar Estrellas',
-            inputs: [
-                {
-                    name: 'estrellas',
-                    type: 'range',
-                    min: 0,
-                    max: 5,
-                    value: this.cliente.valoracion,
-                    step: 0.5
-                }
-            ],
-            buttons: [
-                {
-                    text: 'Cancelar',
-                    role: 'cancel'
-                },
-                {
-                    text: 'Guardar',
-                    handler: (data) => {
-                        this.guardarValoracion(data.estrellas);
-                    }
-                }
-            ]
-        });
-
-        await alert.present();
-    }
+    // async abrirModalEstrellas() {
+    //     const alert = await this.alertController.create({
+    //         header: 'Modificar Estrellas',
+    //         inputs: [
+    //             {
+    //                 name: 'estrellas',
+    //                 type: 'range',
+    //                 min: 0,
+    //                 max: 5,
+    //                 value: this.cliente.valoracion,
+    //                 step: 0.5
+    //             }
+    //         ],
+    //         buttons: [
+    //             {
+    //                 text: 'Cancelar',
+    //                 role: 'cancel'
+    //             },
+    //             {
+    //                 text: 'Guardar',
+    //                 handler: (data) => {
+    //                     this.guardarValoracion(data.estrellas);
+    //                 }
+    //             }
+    //         ]
+    //     });
+    //
+    //     await alert.present();
+    // }
 
     eliminarCliente(idCliente: number): void {
         this.adminService.eliminarCliente(idCliente).subscribe({
