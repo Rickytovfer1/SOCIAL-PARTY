@@ -11,4 +11,6 @@ export interface ClienteDTO {
     entradas: number[];
     grupos: number[];
     idUsuario: number;
+    fotoPerfil: string;
+
 }

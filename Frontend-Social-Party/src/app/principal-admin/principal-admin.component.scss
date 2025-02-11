@@ -1,0 +1,54 @@
+ion-segment {
+    --background: #5AB7D5;
+}
+.tarjeta_amigo {
+    --background: #306DA9;
+    border-radius: 40px;
+    vertical-align: center;
+    margin: 20px;
+}
+
+
+ion-content {
+    --background: #D3E5E5;
+}
+
+#nombre {
+    color: #ffffff;
+    font-size: 20px;
+    margin: 0 auto;
+}
+ion-card {
+    margin: 25px auto;
+    --background: #306DA9;
+    border-radius: 40px;
+}
+
+.img_empresa {
+    width: 90%;
+    height: 90%;
+    margin: 0 auto;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+ion-col {
+    margin: 0 auto;
+    text-align: center;
+}
+
+ion-text {
+    margin: 10px auto;
+    color: #ffffff
+}
+
+.direccion {
+    font-size: 15px;
+}
+
+.nombre {
+    font-size: 30px;
+}
+.imagenCliente{
+    width: 10%;
+}

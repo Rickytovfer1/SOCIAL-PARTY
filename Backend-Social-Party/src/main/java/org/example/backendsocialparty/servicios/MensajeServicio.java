@@ -93,4 +93,9 @@ public class MensajeServicio {
         webSocketMensajeService.enviarMensajeEliminado(mensajeEliminado);
         return mensajeEliminado;
     }
+
+    public void eliminarMensajes (Integer id) {
+        List<Mensaje> mensajes = mensajeRepositorio.findByReceptor_IdOrEmisor_Id(id, id);
+        mensajeRepositorio.deleteAll(mensajes);
+    }
 }

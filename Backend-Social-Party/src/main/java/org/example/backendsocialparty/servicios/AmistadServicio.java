@@ -83,4 +83,10 @@ public class AmistadServicio {
         List<Amistad> amistades = amistadRepositorio.findAmistadByUsuario_IdAndAmigo_Id(id, id);
         amistadRepositorio.deleteAll(amistades);
     }
+    public void eliminarAmistadCliente(Integer id) {
+
+        Cliente cliente = clienteRepositorio.findById(id).orElseThrow(()-> new RuntimeException("Cliente no encontrado"));
+        List<Amistad> amistades = amistadRepositorio.findAmistadByUsuario_IdOrAmigo_Id(id, id);
+        amistadRepositorio.deleteAll(amistades);
+    }
 }

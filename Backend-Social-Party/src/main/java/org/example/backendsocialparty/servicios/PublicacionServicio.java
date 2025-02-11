@@ -1,11 +1,9 @@
 package org.example.backendsocialparty.servicios;
 
 import lombok.RequiredArgsConstructor;
-import org.example.backendsocialparty.DTOs.ClienteDTO;
-import org.example.backendsocialparty.DTOs.ClientePublicacionDTO;
-import org.example.backendsocialparty.DTOs.MostrarPublicacionDTO;
-import org.example.backendsocialparty.DTOs.PublicacionDTO;
+import org.example.backendsocialparty.DTOs.*;
 import org.example.backendsocialparty.enumerados.Rol;
+import org.example.backendsocialparty.modelos.Cliente;
 import org.example.backendsocialparty.modelos.Empresa;
 import org.example.backendsocialparty.modelos.Publicacion;
 import org.example.backendsocialparty.modelos.Usuario;
@@ -126,12 +124,26 @@ public class PublicacionServicio {
         return publicacionDTO;
     }
 
-    public void eliminarPublicacion(Integer id) {
-        List<Publicacion> publicaciones = publicacionRepositorio.findPublicacionesByUsuario_Id(id);
+    public void eliminarPublicacionCliente(Integer id) {
+        Cliente cliente = clienteRepositorio.findById(id).orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
+
+
+        List<Publicacion> publicaciones = publicacionRepositorio.findPublicacionesByUsuario_Id(cliente.getUsuario().getId());
         if (!publicaciones.isEmpty()) {
             publicacionRepositorio.deleteAll(publicaciones);
         }
     }
+
+    public void eliminarPublicacionEmpresa(Integer id) {
+        Empresa empresa = empresaRepositorio.findById(id).orElseThrow(() -> new RuntimeException("Empresa no encontrado"));
+
+
+        List<Publicacion> publicaciones = publicacionRepositorio.findPublicacionesByUsuario_Id(empresa.getUsuario().getId());
+        if (!publicaciones.isEmpty()) {
+            publicacionRepositorio.deleteAll(publicaciones);
+        }
+    }
+
 
     public List<MostrarPublicacionDTO> mostrarPublicacionesPorEmpresa(Integer idEmpresa) {
         Empresa empresa = empresaRepositorio.findByUsuario_Id(idEmpresa);
@@ -144,6 +156,11 @@ public class PublicacionServicio {
             publicacionDTO.add(getPublicacionDTO(publicacion));
         }
         return publicacionDTO;
+    }
+
+    public Rol comprobarRol(Integer idUsuario) {
+        Usuario usuario = usuarioRepositorio.findById(idUsuario).get();
+        return usuario.getRol();
     }
 
     public List<MostrarPublicacionDTO> mostrarPublicacionesFeed(Integer idUsuario) {

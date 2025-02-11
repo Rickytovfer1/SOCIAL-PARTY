@@ -6,12 +6,13 @@ import { Router } from "@angular/router";
 import { PublicacionService, MostrarPublicacionDTO } from '../servicios/publicacion.service';
 import { UsuarioService } from '../servicios/usuario.service';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { FormsModule } from "@angular/forms";
 import {jwtDecode } from 'jwt-decode';
 import {TokenDataDTO} from "../modelos/TokenDataDTO";
-
+import {Usuario} from "../modelos/Usuario";
+import {Perfil} from "../modelos/Perfil";
+import {PerfilServicio} from "../servicios/perfil.service";
 
 
 @Component({
@@ -24,7 +25,6 @@ import {TokenDataDTO} from "../modelos/TokenDataDTO";
         NavSuperiorComponent,
         NavInferiorComponent,
         CommonModule,
-        HttpClientModule,
         NgOptimizedImage,
         FormsModule
     ]
@@ -34,12 +34,18 @@ export class PublicacionesComponent implements OnInit {
     publicacionesFiltradas: MostrarPublicacionDTO[] = [];
     buscar: string = '';
     baseUrl: string = environment.apiUrl;
-    currentUserId: number | undefined = 0;
+    correo?: string;
+    usuario: Usuario = {} as Usuario;
+    perfil: Perfil = {} as Perfil;
+
+    rolesPublicaciones: {[key: number]: string} = {};
+    perfilesPublicaciones: Perfil[] = [];
 
     constructor(
         private router: Router,
         private publicacionService: PublicacionService,
-        private usuarioService: UsuarioService
+        private usuarioService: UsuarioService,
+        private perfilService: PerfilServicio
     ) {}
 
     ngOnInit() {
@@ -49,33 +55,53 @@ export class PublicacionesComponent implements OnInit {
                 const decodedToken = jwtDecode<{ tokenDataDTO: TokenDataDTO }>(token);
                 const tokenDataDTO = decodedToken?.tokenDataDTO;
                 if (tokenDataDTO && tokenDataDTO.correo) {
-                    const correo = tokenDataDTO.correo;
-                    this.usuarioService.getUsuario(correo).subscribe({
-                        next: usuario => {
-                            this.currentUserId = usuario.id;
-                            this.publicacionService.listarFeed(this.currentUserId).subscribe({
-                                next: (data: MostrarPublicacionDTO[]) => {
-                                    this.publicaciones = data;
-                                    this.publicacionesFiltradas = data;
-                                },
-                                error: err => {
-                                    console.error('Error fetching publicaciones:', err);
-                                }
-                            });
-                        },
-                        error: err => {
-                            console.error("Error al cargar el usuario:", err);
-                        }
-                    });
-                } else {
-                    console.error('El token no contiene un correo válido en tokenDataDTO');
+                    this.correo = tokenDataDTO.correo;
+                    this.cargarUsuario(this.correo);
+                    this.cargarPublicaciones();
                 }
             } catch (e) {
                 console.error('Error al decodificar el token:', e);
             }
-        } else {
-            console.warn('No se encontró el token de autenticación en sessionStorage');
         }
+    }
+
+    cargarUsuario(correo: string | undefined): void {
+        this.usuarioService.getUsuario(correo).subscribe({
+            next: (usuario: Usuario) => {
+                this.usuario = usuario;
+                if (usuario && usuario.id) {
+                    this.cargarPerfil(usuario.id);
+                }
+            },
+            error: (e) => {
+                console.error("Error al cargar el usuario:", e);
+            }
+        });
+    }
+
+    cargarPublicaciones() {
+        this.publicacionService.listarPublicaciones().subscribe({
+            next: (data) => {
+                this.publicaciones = data;
+                console.log(data)
+                this.cargarPerfilesPublicaciones()
+                this.cargarRolesUsuarios()
+            },
+            error: (e) => {
+                console.error("Error al cargar las publicaciones:", e);
+            }
+        })
+    }
+
+    cargarPerfil(idUsuario: number | undefined): void {
+        this.perfilService.getPerfil(idUsuario).subscribe({
+            next: (perfil: Perfil) => {
+                this.perfil = perfil;
+            },
+            error: (e) => {
+                console.error("Error al cargar el perfil:", e);
+            }
+        });
     }
 
     abrirForm() {
@@ -107,7 +133,49 @@ export class PublicacionesComponent implements OnInit {
         this.router.navigate(['/ver-noticia', publicacion.id], { state: { publicacion } });
     }
 
+    cargarRolesUsuarios() {
+        for (const publicacion of this.publicaciones) {
+            this.usuarioService.getUsuarioPublicacion(publicacion.idUsuario).subscribe({
+                next: (data) => {
+                    this.rolesPublicaciones[publicacion.idUsuario] = data;
+                },
+                error: (e) => {
+                    console.error("Error al cargar el rol de usuario:", e);
+                }
+            });
+        }
+    }
 
+    cargarPerfilesPublicaciones() {
+        for (const publicacion of this.publicaciones) {
+            this.perfilService.getPerfil(publicacion.idUsuario).subscribe({
+                next: (data) => {
+                    this.perfilesPublicaciones.push(data)
+                },
+                error: (e) => {
+                    console.error("Error al cargar los nombres: "+ publicacion.texto);
+                }
+            })
+        }
+    }
+
+    cargarRolPublicacion(publicacion: MostrarPublicacionDTO): boolean {
+        let rolUsuario = this.rolesPublicaciones[publicacion.id];
+        if (rolUsuario === 'EMPRESA') {
+            return true;
+        }
+        return false
+    }
+
+    cargarNombreUsuario(publicacion: MostrarPublicacionDTO): string {
+        let nombre = ""
+        for (const perfil of this.perfilesPublicaciones) {
+            if (publicacion.idUsuario === perfil.id) {
+                nombre = perfil.nombre + " " + perfil.apellidos
+            }
+        }
+        return nombre
+    }
 
     ionViewWillEnter() {
         this.ngOnInit();
