@@ -3,13 +3,8 @@ package org.example.backendsocialparty.servicios;
 import lombok.RequiredArgsConstructor;
 import org.example.backendsocialparty.DTOs.*;
 import org.example.backendsocialparty.enumerados.Rol;
-import org.example.backendsocialparty.modelos.Empresa;
-import org.example.backendsocialparty.modelos.Publicacion;
-import org.example.backendsocialparty.modelos.Usuario;
-import org.example.backendsocialparty.repositorios.ClienteRepositorio;
-import org.example.backendsocialparty.repositorios.EmpresaRepositorio;
-import org.example.backendsocialparty.repositorios.PublicacionRepositorio;
-import org.example.backendsocialparty.repositorios.UsuarioRepositorio;
+import org.example.backendsocialparty.modelos.*;
+import org.example.backendsocialparty.repositorios.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -32,6 +27,7 @@ public class PublicacionServicio {
     private final ClienteRepositorio clienteRepositorio;
     private final EmpresaRepositorio empresaRepositorio;
     private final @Lazy AmistadServicio amistadServicio;
+    private final ComentarioRepositorio comentarioRepositorio;
 
     @Value("${upload.dir}")
     private String uploadDir;
@@ -183,6 +179,18 @@ public class PublicacionServicio {
         Publicacion publicacion = publicacionRepositorio.findById(id)
                 .orElseThrow(() -> new RuntimeException("Publicacion no encontrada"));
         return getPublicacionDTO(publicacion);
+    }
+
+    public List<ComentarioDTO> listarComentarios(int idPublicacion) {
+        Publicacion publicacion = publicacionRepositorio.findById(idPublicacion)
+                .orElseThrow(() -> new RuntimeException("ID de publicacion inexistente"));
+
+        List<Comentario> listaComentarios = comentarioRepositorio.findByPublicacion(publicacion);
+        List<ComentarioDTO> listaComentariosDTO = new ArrayList<>();
+        for (Comentario comentario : listaComentarios) {
+            listaComentariosDTO.add(ComentarioService.getComentarioDTO(comentario));
+        }
+        return listaComentariosDTO;
     }
 
 }

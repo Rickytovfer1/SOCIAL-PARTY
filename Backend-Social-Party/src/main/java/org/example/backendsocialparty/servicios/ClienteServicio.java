@@ -1,8 +1,10 @@
 package org.example.backendsocialparty.servicios;
 
 import org.example.backendsocialparty.DTOs.ClienteDTO;
+import org.example.backendsocialparty.DTOs.ComentarioDTO;
 import org.example.backendsocialparty.modelos.*;
 import org.example.backendsocialparty.repositorios.ClienteRepositorio;
+import org.example.backendsocialparty.repositorios.ComentarioRepositorio;
 import org.example.backendsocialparty.repositorios.UsuarioRepositorio;
 import org.example.backendsocialparty.servicios.*;
 import org.springframework.context.annotation.Lazy;
@@ -25,7 +27,9 @@ public class ClienteServicio {
     private final AmistadServicio amistadServicio;
     private final EntradaServicio entradaServicio;
     private final UsuarioRepositorio usuarioRepositorio;
+    private final ComentarioRepositorio comentarioRepositorio;
     private final EventoServicio eventoServicio;
+    private final ComentarioService comentarioService;
     @Value("${upload.dir}")
     private String uploadDir;
     public ClienteServicio(
@@ -36,7 +40,8 @@ public class ClienteServicio {
             @Lazy AmistadServicio amistadServicio,
             @Lazy EventoServicio eventoServicio,
             EntradaServicio entradaServicio,
-            UsuarioRepositorio usuarioRepositorio) {
+            UsuarioRepositorio usuarioRepositorio,
+            ComentarioRepositorio comentarioRepositorio, ComentarioService comentarioService) {
         this.clienteRepositorio = clienteRepositorio;
         this.publicacionServicio = publicacionServicio;
         this.mensajeServicio = mensajeServicio;
@@ -45,6 +50,8 @@ public class ClienteServicio {
         this.eventoServicio = eventoServicio;
         this.entradaServicio = entradaServicio;
         this.usuarioRepositorio = usuarioRepositorio;
+        this.comentarioRepositorio = comentarioRepositorio;
+        this.comentarioService = comentarioService;
     }
 
     public ClienteDTO buscarClienteId(Integer id) {
@@ -170,5 +177,17 @@ public class ClienteServicio {
         }
         int lastIndex = filename.lastIndexOf(".");
         return (lastIndex == -1) ? "" : filename.substring(lastIndex + 1);
+    }
+
+    public List<ComentarioDTO> listarComentarios(int idCliente) {
+        Cliente cliente = clienteRepositorio.findById(idCliente)
+                .orElseThrow(() -> new RuntimeException("ID de cliente inexistente"));
+
+        List<Comentario> listaComentarios = comentarioRepositorio.findByCliente(cliente);
+        List<ComentarioDTO> listaComentariosDTO = new ArrayList<>();
+        for (Comentario comentario : listaComentarios) {
+            listaComentariosDTO.add(ComentarioService.getComentarioDTO(comentario));
+        }
+        return listaComentariosDTO;
     }
 }

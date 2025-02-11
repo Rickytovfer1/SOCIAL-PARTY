@@ -106,4 +106,8 @@ export const routes: Routes = [
         path: 'ver-entradas',
         loadComponent: () => import('./ver-entradas/ver-entradas.component').then((m) => m.VerEntradasComponent)
     },
+    {
+        path: 'comentarios/:id',
+        loadComponent: () => import('./comentarios/comentarios.component').then((m) => m.ComentariosComponent)
+    },
 ];

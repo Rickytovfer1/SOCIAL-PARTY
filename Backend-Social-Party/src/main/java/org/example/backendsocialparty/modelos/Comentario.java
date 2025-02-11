@@ -31,4 +31,10 @@ public class Comentario {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Cliente cliente;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_publicacion")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private Publicacion publicacion;
 }

@@ -51,7 +51,6 @@ export class PublicacionesComponent implements OnInit {
     perfil: Perfil = {} as Perfil;
 
     rolesPublicaciones: {[key: number]: string} = {};
-    perfilesPublicaciones: Perfil[] = [];
     amigos: Cliente[] = []
 
     textoFiltro = ""
@@ -74,7 +73,6 @@ export class PublicacionesComponent implements OnInit {
 
     inicio() {
         this.rolesPublicaciones = {}
-        this.perfilesPublicaciones = []
         const token = sessionStorage.getItem('authToken');
         if (token) {
             try {
@@ -376,6 +374,10 @@ export class PublicacionesComponent implements OnInit {
             return this.contadorPublicaciones[publicacion.id];
         }
         return 0
+    }
+
+    verComentarios(idPublicacion: number | undefined) {
+        this.router.navigate(['/comentarios', idPublicacion]);
     }
 
     ionViewWillEnter() {

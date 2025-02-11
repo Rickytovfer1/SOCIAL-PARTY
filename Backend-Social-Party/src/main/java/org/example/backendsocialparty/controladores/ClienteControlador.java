@@ -2,12 +2,15 @@ package org.example.backendsocialparty.controladores;
 
 import lombok.AllArgsConstructor;
 import org.example.backendsocialparty.DTOs.ClienteDTO;
+import org.example.backendsocialparty.DTOs.ComentarioDTO;
 import org.example.backendsocialparty.modelos.Usuario;
 import org.example.backendsocialparty.servicios.ClienteServicio;
 import org.example.backendsocialparty.servicios.UsuarioServicio;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/cliente")
@@ -46,5 +49,10 @@ public class ClienteControlador {
             clienteDTO.setFotoPerfil(urlFoto);
         }
         return clienteServicio.actualizarCliente(clienteDTO);
+    }
+
+    @GetMapping("/ver/comentarios/cliente/{idCliente}")
+    public List<ComentarioDTO> verComentariosCliente(@PathVariable int idCliente){
+        return clienteServicio.listarComentarios(idCliente);
     }
 }

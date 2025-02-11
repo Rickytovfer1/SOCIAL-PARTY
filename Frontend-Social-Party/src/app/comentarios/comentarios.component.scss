@@ -1,0 +1,89 @@
+ion-content {
+    --background: #5ab7d5;
+}
+
+.comentario {
+    background-color: #ffffff;
+    border-top: 2px solid black;
+    color: black;
+}
+
+ion-grid {
+    padding: 0;
+}
+
+ion-row {
+    margin: 0;
+}
+
+ion-col {
+    padding: 0;
+}
+
+ion-text {
+    margin: 0 auto;
+}
+
+.col_nombre {
+    text-align: center;
+    display: flex;
+    font-size: 18px;
+}
+
+hr {
+    height: 2px !important;
+    background: black !important;
+    display: block !important;
+    margin: 0 !important;
+}
+
+ion-img {
+    margin: 0 auto;
+    width: 90%;
+}
+
+.texto_comentario {
+    font-size: 16px;
+}
+
+.fecha_comentario {
+    margin-bottom: 10px;
+    font-size: 12px;
+}
+
+.nombre_comentario {
+    margin-top: 10px;
+    font-size: 12px;
+    float: left;
+}
+
+.fila_texto {
+    display: inline-block;
+    white-space: wrap;
+    width: 93%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 15px
+}
+
+ion-input {
+    --border-radius: 60px;
+    --background: #FFFFFF;
+    --padding-start: 10px;
+    width: 85%;
+    margin: 0 auto;
+}
+
+#enviar_mensaje {
+    display: flex;
+    margin-left: 5px;
+    margin-right: 5px;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+#img_enviar {
+    width: 8%;
+    margin: 0 5px 0 auto;
+    padding: 0;
+}

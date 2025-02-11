@@ -7,6 +7,7 @@ import { ComunService } from "./comun.service";
 import {CrearPublicacionCliente} from "../modelos/CrearPublicacionCliente";
 import {MostrarPublicacion} from "../modelos/MostrarPublicacion";
 import {CrearPublicacionEmpresa} from "../modelos/CrearPublicacionEmpresa";
+import {Comentario} from "../modelos/Comentario";
 
 @Injectable({
     providedIn: 'root'
@@ -80,6 +81,11 @@ export class PublicacionService {
             `${this.baseUrl}/empresa/publicaciones-empresa/${idUsuario}`,
             options
         );
+    }
+
+    listarComentariosPublicacion(idPublicacion: number): Observable<Comentario[]> {
+        const options = this.comunService.autorizarPeticion();
+        return this.http.get<Comentario[]>(`${environment.apiUrl}/ver/comentarios/publicacion/${idPublicacion}`, options);
     }
 
 }
