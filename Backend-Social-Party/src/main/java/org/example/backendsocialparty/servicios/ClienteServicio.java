@@ -6,6 +6,7 @@ import org.example.backendsocialparty.DTOs.EventoDTO;
 import org.example.backendsocialparty.DTOs.RestarPuntoDTO;
 import org.example.backendsocialparty.modelos.*;
 import org.example.backendsocialparty.repositorios.ClienteRepositorio;
+import org.example.backendsocialparty.repositorios.EmpresaRepositorio;
 import org.example.backendsocialparty.repositorios.UsuarioRepositorio;
 import org.example.backendsocialparty.servicios.*;
 import org.springframework.context.annotation.Lazy;
@@ -29,6 +30,7 @@ public class ClienteServicio {
     private final EntradaServicio entradaServicio;
     private final UsuarioRepositorio usuarioRepositorio;
     private final EventoServicio eventoServicio;
+    private final EmpresaRepositorio empresaRepositorio;
     @Value("${upload.dir}")
     private String uploadDir;
     public ClienteServicio(
@@ -39,7 +41,7 @@ public class ClienteServicio {
             @Lazy AmistadServicio amistadServicio,
             @Lazy EventoServicio eventoServicio,
             EntradaServicio entradaServicio,
-            UsuarioRepositorio usuarioRepositorio) {
+            UsuarioRepositorio usuarioRepositorio, EmpresaRepositorio empresaRepositorio) {
         this.clienteRepositorio = clienteRepositorio;
         this.publicacionServicio = publicacionServicio;
         this.mensajeServicio = mensajeServicio;
@@ -48,6 +50,7 @@ public class ClienteServicio {
         this.eventoServicio = eventoServicio;
         this.entradaServicio = entradaServicio;
         this.usuarioRepositorio = usuarioRepositorio;
+        this.empresaRepositorio = empresaRepositorio;
     }
 
     public ClienteDTO buscarClienteId(Integer id) {
@@ -186,4 +189,34 @@ public class ClienteServicio {
 
 
     }
+
+    public void banearCliente(Integer id){
+        Cliente cliente = clienteRepositorio.findById(id).orElseThrow(() -> new RuntimeException("No existe un cliente con este ID."));
+        List<Empresa> empresas = empresaRepositorio.findAll();
+        Set<Cliente> baneados = new HashSet<>();
+        baneados.add(cliente);
+
+        for (Empresa empresa : empresas) {
+            empresa.setBaneados(baneados);
+            empresaRepositorio.save(empresa);
+        }
+
+    }
+
+    public void eliminarBaneado(Integer id) {
+        Cliente cliente = clienteRepositorio.findById(id)
+                .orElseThrow(() -> new RuntimeException("No existe un cliente con este ID."));
+
+        List<Empresa> empresas = empresaRepositorio.findAll();
+
+        for (Empresa empresa : empresas) {
+            Set<Cliente> baneados = empresa.getBaneados();
+            if (baneados != null) {
+                baneados.remove(cliente);
+                empresa.setBaneados(baneados);
+                empresaRepositorio.save(empresa);
+            }
+        }
+    }
+
 }

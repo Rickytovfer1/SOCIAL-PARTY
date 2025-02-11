@@ -122,4 +122,8 @@ export const routes: Routes = [
         path: 'editar-cliente-admin/:id',
         loadComponent: () => import('./editar-cliente-admin/editar-cliente-admin.component').then((m) => m.EditarClienteAdminComponent)
     },
+    {
+        path: 'banear-usuario/:id',
+        loadComponent: () => import('./banear-usuario/banear-usuario.component').then((m) => m.BanearUsuarioComponent)
+    },
 ];

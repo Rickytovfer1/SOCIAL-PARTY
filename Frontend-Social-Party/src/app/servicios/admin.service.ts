@@ -61,4 +61,14 @@ export class AdminService {
         const options = this.comunService.autorizarPeticionFormData();
         return this.http.put<void>(`${this.apiUrl}/admin/editar/estrellas`, editarEstrellaDTO, options);
     }
+
+    banearCliente(idCliente: number): Observable<void> {
+        const options = this.comunService.autorizarPeticionFormData();
+        return this.http.post<void>(`${this.apiUrl}/admin/banear/cliente/${idCliente}`,{}, options);
+    }
+
+    eliminarBaneo(idCliente: number): Observable<void> {
+        const options = this.comunService.autorizarPeticionFormData();
+        return this.http.put<void>(`${this.apiUrl}/admin/eliminar/baneo/cliente/${idCliente}`,{}, options);
+    }
 }

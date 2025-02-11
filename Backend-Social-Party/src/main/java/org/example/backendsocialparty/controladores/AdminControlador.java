@@ -64,4 +64,14 @@ public class AdminControlador {
     public void editarEstrella(@RequestBody EditarEstrellaDTO dto) {
         clienteServicio.modificarEstrella(dto);
     }
+
+    @PostMapping("/banear/cliente/{idCliente}")
+    public void banearCliente(@PathVariable Integer idCliente) {
+        clienteServicio.banearCliente(idCliente);
+    }
+
+    @PutMapping("/eliminar/baneo/cliente/{idCliente}")
+    public void desbanearCliente(@PathVariable Integer idCliente) {
+        clienteServicio.eliminarBaneado(idCliente);
+    }
 }

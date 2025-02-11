@@ -91,35 +91,51 @@ export class VerInfoAdminComponent implements OnInit {
         await alert.present();
     }
 
-    // async abrirModalEstrellas() {
-    //     const alert = await this.alertController.create({
-    //         header: 'Modificar Estrellas',
-    //         inputs: [
-    //             {
-    //                 name: 'estrellas',
-    //                 type: 'range',
-    //                 min: 0,
-    //                 max: 5,
-    //                 value: this.cliente.valoracion,
-    //                 step: 0.5
-    //             }
-    //         ],
-    //         buttons: [
-    //             {
-    //                 text: 'Cancelar',
-    //                 role: 'cancel'
-    //             },
-    //             {
-    //                 text: 'Guardar',
-    //                 handler: (data) => {
-    //                     this.guardarValoracion(data.estrellas);
-    //                 }
-    //             }
-    //         ]
-    //     });
-    //
-    //     await alert.present();
-    // }
+    banearCliente(idCliente: number): void {
+        this.adminService.banearCliente(idCliente).subscribe({
+            next: () => {
+                console.log("Baneado exitosamente");
+            },
+            error: (e) => {
+                console.error("Error al banear al usuario:", e);
+            }
+        });
+    }
+
+    async abrirModalEstrellas() {
+        const alert = await this.alertController.create({
+            header: 'Modificar Estrellas',
+            inputs: [
+                {
+                    name: 'estrellas',
+                    type: 'text',
+                    min: 0,
+                    max: 5,
+                    value: this.cliente.valoracion,
+                }
+            ],
+            buttons: [
+                {
+                    text: 'Cancelar',
+                    role: 'cancel'
+                },
+                {
+                    text: 'Guardar',
+                    handler: (data) => {
+                        if (data.estrellas > 0 && data.estrellas < 100 ){
+                            this.guardarValoracion(data.estrellas);
+                        }
+                        else {
+                            const toast = document.getElementById("toastNumero") as any;
+                            toast.present();
+                        }
+                    }
+                }
+            ]
+        });
+
+        await alert.present();
+    }
 
     eliminarCliente(idCliente: number): void {
         this.adminService.eliminarCliente(idCliente).subscribe({
@@ -144,18 +160,34 @@ export class VerInfoAdminComponent implements OnInit {
             valoracion: nuevaValoracion
         };
 
-        this.editarCliente(editarEstrellaDTO);
+        this.editarEstrellas(editarEstrellaDTO);
     }
 
-    editarCliente(editarEstrellaDTO: EditarEstrellaDTO): void {
+    editarEstrellas(editarEstrellaDTO: EditarEstrellaDTO): void {
         this.adminService.editarEstrellas(editarEstrellaDTO).subscribe({
             next: () => {
-                this.router.navigate(['/principal-admin'])
                 console.log("Cliente eliminado exitosamente");
+                location.reload()
             },
             error: (e) => {
                 console.error("Error al eliminar el usuario:", e);
             }
         });
+    }
+
+    eliminarBaneo(idCliente: number): void {
+        this.adminService.eliminarBaneo(idCliente).subscribe({
+            next: () => {
+                console.log("Baneo eliminado exitosamente");
+                location.reload()
+            },
+            error: (e) => {
+                console.error("Error al desbanear el usuario:", e);
+            }
+        });
+    }
+
+    irABaneo(idCliente: number){
+        this.router.navigate(['/banear-usuario', idCliente])
     }
 }
