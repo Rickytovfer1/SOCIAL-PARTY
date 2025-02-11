@@ -15,7 +15,7 @@ export class EntradaService {
     constructor(private http: HttpClient, private comunService: ComunService) {
     }
 
-    comprarEntrada(idEvento: number, idEmpresa: number, idCliente: number): Observable<Entrada> {
+    comprarEntrada(idEvento: number, idEmpresa: number, idCliente: number | undefined): Observable<Entrada> {
         const options = this.comunService.autorizarPeticion();
         return this.http.post<Entrada>(`${this.apiUrl}/cliente/comprar/entrada/${idEvento}/${idEmpresa}/${idCliente}`,{}, options);
     }

@@ -78,6 +78,13 @@ public class UsuarioServicio implements UserDetailsService {
         return usuarioGuardado;
 
     }
+    public Integer obtenerIdClientePorUsuario(Integer idUsuario) {
+        Cliente cliente = clienteRepositorio.findByUsuario_Id(idUsuario);
+        if (cliente == null) {
+            throw new RuntimeException("No existe un cliente asociado a este usuario.");
+        }
+        return cliente.getId();
+    }
 
     public Usuario registrarEmpresa(RegistrarEmpresaDTO dto){
 

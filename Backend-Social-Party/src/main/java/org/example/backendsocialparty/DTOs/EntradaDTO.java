@@ -16,4 +16,6 @@ public class EntradaDTO {
     private LocalDateTime fecha;
     private ClienteDTO cliente;
     private EventoEntradaDTO evento;
+    private String qrCodeBase64;
+    private Integer codigoEntrada;
 }
