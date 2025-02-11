@@ -10,11 +10,8 @@
                 </ion-card-header>
 
                 <ion-card-content>
-                    <ion-card-content>
-                        <ion-label>Verificar QR:</ion-label>
-                        <video #videoElement autoplay playsinline style="width: 100%; border-radius: 10px;"></video>
-                    </ion-card-content>
-
+                    <ion-label>Verificar QR:</ion-label>
+                    <zxing-scanner #scanner (scanSuccess)="handleQrCodeResult($event)"></zxing-scanner>
                 </ion-card-content>
 
                 <ion-button (click)="canjearEntrada()">Canjear</ion-button>
@@ -46,4 +43,3 @@
     position="top"
     color="warning"
 ></ion-toast>
-

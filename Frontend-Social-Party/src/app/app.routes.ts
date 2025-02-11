@@ -118,4 +118,8 @@ export const routes: Routes = [
         path: 'ver-info-admin/:id',
         loadComponent: () => import('./ver-info-admin/ver-info-admin.component').then((m) => m.VerInfoAdminComponent)
     },
+    {
+        path: 'banear-usuario',
+        loadComponent: () => import('./banear-usuario/banear-usuario.component').then((m) => m.BanearUsuarioComponent)
+    },
 ];

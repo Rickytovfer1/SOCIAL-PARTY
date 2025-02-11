@@ -2,10 +2,9 @@ import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { NavSuperiorEmpresaComponent } from '../nav-superior-empresa/nav-superior-empresa.component';
 import { NavInferiorEmpresaComponent } from '../nav-inferior-empresa/nav-inferior-empresa.component';
-import { NavInferiorComponent } from '../nav-inferior/nav-inferior.component';
-import { NavSuperiorComponent } from '../nav-superior/nav-superior.component';
-import {EntradaService} from "../servicios/entrada.service";
-import {FormsModule} from "@angular/forms";
+import { EntradaService } from "../servicios/entrada.service";
+import { FormsModule } from "@angular/forms";
+import {ZXingScannerComponent, ZXingScannerModule} from '@zxing/ngx-scanner';
 
 @Component({
     selector: 'app-canjear-entrada-empresa',
@@ -17,14 +16,16 @@ import {FormsModule} from "@angular/forms";
         NavSuperiorEmpresaComponent,
         NavInferiorEmpresaComponent,
         FormsModule,
+        ZXingScannerModule
     ]
 })
 export class CanjearEntradaEmpresaComponent implements AfterViewInit {
     @ViewChild('videoElement') videoElement!: ElementRef;
+    @ViewChild('scanner') scanner!: ZXingScannerComponent;
 
-    codigoEntrada: string="";
-    constructor(private entradaService: EntradaService,
-                ) {}
+    codigoEntrada: string = "";
+
+    constructor(private entradaService: EntradaService) {}
 
     ngAfterViewInit() {
         this.startCamera();
@@ -39,6 +40,11 @@ export class CanjearEntradaEmpresaComponent implements AfterViewInit {
         } catch (error) {
             console.error('Error accessing camera:', error);
         }
+    }
+
+    handleQrCodeResult(result: string) {
+        this.codigoEntrada = result;
+        this.canjearEntrada();
     }
 
     canjearEntrada(): void {
@@ -67,5 +73,4 @@ export class CanjearEntradaEmpresaComponent implements AfterViewInit {
             }
         });
     }
-
 }
