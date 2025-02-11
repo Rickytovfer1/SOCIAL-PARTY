@@ -57,6 +57,7 @@ export class PublicacionesComponent implements OnInit {
 
     likes: Favorito[] = []
     contadorPublicaciones: {[key: number]: number} = {};
+    contadorComentarios: {[key: number]: number} = {};
 
     constructor(
         private router: Router,
@@ -112,8 +113,10 @@ export class PublicacionesComponent implements OnInit {
                 if (this.usuario.id)
                 this.cargarAmigos(this.usuario.id)
                 for (const publicacion of data) {
-                    if(publicacion.id)
-                    this.cargarLikesPublicacion(publicacion.id);
+                    if(publicacion.id) {
+                        this.cargarLikesPublicacion(publicacion.id);
+                        this.cargarComentariosPublicacion(publicacion.id);
+                    }
                 }
             },
             error: (e) => {
@@ -372,6 +375,25 @@ export class PublicacionesComponent implements OnInit {
     devolverIndice(publicacion: MostrarPublicacion): number {
         if (publicacion.id) {
             return this.contadorPublicaciones[publicacion.id];
+        }
+        return 0
+    }
+
+    cargarComentariosPublicacion(idPublicacion: number) {
+        this.publicacionService.listarComentariosPublicacion(idPublicacion).subscribe({
+            next: data => {
+                let contador = 0
+                for (const comentario of data) {
+                    contador++
+                }
+                this.contadorComentarios[idPublicacion] = contador
+            }
+        })
+    }
+
+    devolverIndiceComentario(publicacion: MostrarPublicacion): number {
+        if (publicacion.id) {
+            return this.contadorComentarios[publicacion.id];
         }
         return 0
     }

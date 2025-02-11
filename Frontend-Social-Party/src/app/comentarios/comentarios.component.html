@@ -6,15 +6,16 @@
         <ion-row>
             <ion-col>
                 <ion-grid>
-                    <ion-row class="comentario" *ngFor="let comentario of this.comentarios">
-                        <ion-col size="2" class="ion-align-items-center" style="display: flex">
+                    <ion-row class="comentario" *ngFor="let comentario of comentarios">
+                        <ion-col size="3" class="ion-align-items-center" style="display: flex">
                             <ion-img src="assets/iconoPerfil.png"></ion-img>
                         </ion-col>
-                        <ion-col size="10">
+                        <ion-col size="1"></ion-col>
+                        <ion-col size="8">
                             <ion-grid>
                                 <ion-row>
                                     <div class="nombre_comentario">
-                                        <ion-text>{{ devolverIndice(comentario) }} dice:</ion-text>
+                                        <ion-text>{{ comentario.nombre }} dice:</ion-text>
                                     </div>
                                 </ion-row>
                                 <ion-row class="ion-align-items-center fila_texto">
@@ -22,7 +23,7 @@
                                 </ion-row>
                                 <ion-row>
                                     <div class="fecha_comentario">
-                                        <ion-text>{{ comentario.fecha }}</ion-text>
+                                        <ion-text>{{ calcularFecha(comentario) }}</ion-text>
                                     </div>
                                 </ion-row>
                             </ion-grid>
@@ -39,11 +40,11 @@
 <div style="background-color: #5ab7d5">
     <div id="enviar_mensaje">
         <ion-input
-            [(ngModel)]="this.nuevoComentario"
-            placeholder="Envía un mensaje..."
-            (keydown.enter)="enviarMensaje(this.nuevoComentario)">
+            [(ngModel)]="nuevoComentario"
+            placeholder="Comenta..."
+            (keydown.enter)="enviarMensaje()">
         </ion-input>
-        <ion-img id="img_enviar" (click)="enviarMensaje(this.nuevoComentario)" src="assets/iconoEnviar.png"></ion-img>
+        <ion-img id="img_enviar" (click)="enviarMensaje()" src="assets/iconoEnviar.png"></ion-img>
     </div>
 </div>
 

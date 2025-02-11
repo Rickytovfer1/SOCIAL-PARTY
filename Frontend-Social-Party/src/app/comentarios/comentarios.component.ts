@@ -16,6 +16,7 @@ import {NgForOf} from "@angular/common";
 import {ComentarioEnvio} from "../modelos/ComentarioEnvio";
 import {FormsModule} from "@angular/forms";
 import {MostrarPublicacion} from "../modelos/MostrarPublicacion";
+import {ClienteService} from "../servicios/cliente.service";
 
 @Component({
     selector: 'app-comentarios',
@@ -45,7 +46,8 @@ export class ComentariosComponent  implements OnInit {
                 private perfilService: PerfilServicio,
                 private activateRoute: ActivatedRoute,
                 private comentarioService: ComentarioService,
-                private publicacionService: PublicacionService) { }
+                private publicacionService: PublicacionService,
+                private clienteService: ClienteService) { }
 
     ngOnInit() {
         this.inicio()
@@ -64,7 +66,6 @@ export class ComentariosComponent  implements OnInit {
                 if (tokenDataDTO && tokenDataDTO.correo) {
                     this.correo = tokenDataDTO.correo;
                     this.cargarUsuario(this.correo);
-                    this.cargarComentarios(this.idPublicacion)
 
                 }
             } catch (e) {
@@ -77,12 +78,13 @@ export class ComentariosComponent  implements OnInit {
         this.usuarioService.getUsuario(correo).subscribe({
             next: (usuario: Usuario) => {
                 this.usuario = usuario;
-                if (usuario && usuario.id) {
-                    this.cargarPerfil(usuario.id);
-                }
             },
             error: (e) => {
                 console.error("Error al cargar el usuario:", e);
+            },
+            complete: () => {
+                if (this.usuario.id)
+                this.cargarPerfil(this.usuario.id)
             }
         });
     }
@@ -94,7 +96,8 @@ export class ComentariosComponent  implements OnInit {
             },
             error: (e) => {
                 console.error("Error al cargar el perfil:", e);
-            }
+            },
+            complete: () => this.cargarComentarios(this.idPublicacion)
         });
     }
 
@@ -102,33 +105,16 @@ export class ComentariosComponent  implements OnInit {
         this.publicacionService.listarComentariosPublicacion(idPublicacion).subscribe({
             next: (data) => {
                 this.comentarios = data;
-                for (const comentario of this.comentarios) {
-                    this.perfilService.getPerfil(comentario.id_cliente).subscribe({
-                        next: (data) => {
-                            console.log(data)
-                            this.perfilesComentarios.push(data);
-                            if (data.nombre) {
-                                this.nombresComentarios[data.id] = data.nombre;
-                            }
-                        }
-                    })
-                }
             },
-            error: e => {console.error("Error al cargar los comentarios:", e);}
+            error: e => {console.error("Error al cargar los comentarios:", e);
+            }
         })
     }
 
-    cargarPerfiles() {
+    enviarMensaje() {
 
-    }
-
-    cargarNombresComentarios() {
-
-    }
-
-    enviarMensaje(texto_mensaje: string) {
         const mensaje: ComentarioEnvio = {
-            texto: texto_mensaje,
+            texto: this.nuevoComentario,
             id_cliente: this.perfil.id,
             id_publicacion: this.idPublicacion
         }
@@ -137,13 +123,43 @@ export class ComentariosComponent  implements OnInit {
             next: () => {console.log("Comentario enviado: ", mensaje);},
             error: (e) => {console.error("Error al enviar el mensaje:", mensaje);}
         })
+
+        this.nuevoComentario = ""
     }
 
-    devolverIndice(comentario: Comentario): string {
-        if (comentario.id_cliente) {
-            return this.nombresComentarios[comentario.id_cliente];
+    calcularFecha(comentario: Comentario): string {
+        if (!comentario.fecha) {
+            return "";
         }
-        return ""
+
+        const fechaActual = new Date();
+        const fechaComentario = new Date(comentario.fecha);
+        const milisegundos = fechaActual.getTime() - fechaComentario.getTime();
+
+        const minutos = 1000 * 60;
+        const horas   = minutos * 60;
+        const dias    = horas * 24;
+        const meses  = dias * 30;
+        const anios   = dias * 365;
+
+        if (milisegundos >= anios) {
+            const years = Math.floor(milisegundos / anios);
+            return `Hace ${years} ${years === 1 ? "año" : "años"}`;
+        } else if (milisegundos >= meses) {
+            const months = Math.floor(milisegundos / meses);
+            return `Hace ${months} ${months === 1 ? "mes" : "meses"}`;
+        } else if (milisegundos >= dias) {
+            const days = Math.floor(milisegundos / dias);
+            return `Hace ${days} ${days === 1 ? "día" : "días"}`;
+        } else if (milisegundos >= horas) {
+            const hours = Math.floor(milisegundos / horas);
+            return `Hace ${hours} ${hours === 1 ? "hora" : "horas"}`;
+        } else if (milisegundos >= minutos) {
+            const minutes = Math.floor(milisegundos / minutos);
+            return `Hace ${minutes} ${minutes === 1 ? "minuto" : "minutos"}`;
+        } else {
+            return "Hace un momento";
+        }
     }
 
 }
