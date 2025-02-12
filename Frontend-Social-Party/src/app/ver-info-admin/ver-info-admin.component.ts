@@ -4,9 +4,9 @@ import {NavInferiorComponent} from "../nav-inferior/nav-inferior.component";
 import {NavSuperiorComponent} from "../nav-superior/nav-superior.component";
 import {NavSuperiorAdminComponent} from "../nav-superior-admin/nav-superior-admin.component";
 import {NavInferiorAdminComponent} from "../nav-inferior-admin/nav-inferior-admin.component";
-import {ClienteDTO} from "../modelos/ClienteDTO";
+import {Cliente} from "../modelos/Cliente";
 import {environment} from "../../environments/environment";
-import {EmpresaDTO} from "../modelos/EmpresaDTO";
+import {Empresa} from "../modelos/Empresa";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Evento} from "../modelos/Evento";
 import {Usuario} from "../modelos/Usuario";
@@ -31,7 +31,7 @@ import {EditarEstrellaDTO} from "../modelos/EditarEstrellaDTO";
 })
 export class VerInfoAdminComponent implements OnInit {
     baseUrl: string = environment.apiUrl;
-    cliente: ClienteDTO = {} as ClienteDTO;
+    cliente: Cliente = {} as Cliente;
     idCliente!: number;
     constructor(private activateRoute: ActivatedRoute,
                 private adminService: AdminService,
@@ -47,7 +47,7 @@ export class VerInfoAdminComponent implements OnInit {
         this.cargarCliente(this.idCliente)
     }
 
-    getImageUrlCliente(clienteDTO: ClienteDTO): string {
+    getImageUrlCliente(clienteDTO: Cliente): string {
         if (!clienteDTO.fotoPerfil || clienteDTO.fotoPerfil.trim() === '') {
             return 'assets/iconoPerfil.png';
         } else if (clienteDTO.fotoPerfil.startsWith('http')) {
@@ -59,7 +59,7 @@ export class VerInfoAdminComponent implements OnInit {
 
     cargarCliente(idCliente: number): void {
         this.adminService.getCliente(idCliente).subscribe({
-            next: (cliente: ClienteDTO) => {
+            next: (cliente: Cliente) => {
                 this.cliente = cliente;
             },
             error: (e) => {

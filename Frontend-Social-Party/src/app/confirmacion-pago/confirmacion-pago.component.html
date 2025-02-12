@@ -1,52 +1,85 @@
 <app-nav-superior></app-nav-superior>
 
 <ion-content class="fondo">
-    <form>
-        <ion-card class="cardOuter">
-            <ion-card class="cardInner">
-                <br>
-                <ion-title>DATOS DE LA OPERACIÓN</ion-title>
-                <hr>
-                <ion-card-content>
-                    <div>
-                        <ion-label>Importe:</ion-label>
-                        <ion-label>{{evento.precio}}€</ion-label>
-                    </div>
-                    <div>
-                        <ion-label>Comercio:</ion-label>
-                        <ion-label>{{empresa.nombre}}</ion-label>
-                    </div>
-                    <div>
-                        <ion-label>Fecha:</ion-label>
-                        <ion-label>28-09-2025</ion-label>
-                    </div>
-                </ion-card-content>
-            </ion-card>
-        </ion-card>
+    <ion-grid>
+        <ion-row>
+            <ion-col id="col_principal" size-lg="4" size-xl="4" size-md="8" size-sm="10" size-xs="12">
+                <ion-card class="cardOuter">
+                    <ion-card>
+                        <div class="cont_titulo">
+                            <ion-label>DATOS DE LA OPERACIÓN</ion-label>
+                        </div>
+                        <hr>
+                        <ion-card-content>
+                            <ion-grid>
+                                <ion-row>
+                                    <ion-col>
+                                        <ion-grid>
+                                            <ion-row>
+                                                <ion-label>Importe: </ion-label>
+                                            </ion-row>
+                                            <ion-row>
+                                                <ion-label>Comercio: </ion-label>
+                                            </ion-row>
+                                            <ion-row>
+                                                <ion-label>Fecha: </ion-label>
+                                            </ion-row>
+                                        </ion-grid>
+                                    </ion-col>
+                                    <ion-col>
+                                        <ion-grid>
+                                            <ion-row>
+                                                <ion-label>{{evento.precio}}€</ion-label>
+                                            </ion-row>
+                                            <ion-row>
+                                                <ion-label>{{empresa.nombre}}</ion-label>
+                                            </ion-row>
+                                            <ion-row>
+                                                <ion-label>28-09-2025</ion-label>
+                                            </ion-row>
+                                        </ion-grid>
+                                    </ion-col>
+                                </ion-row>
+                            </ion-grid>
+                        </ion-card-content>
+                    </ion-card>
+                </ion-card>
 
-        <ion-card class="cardOuter">
-            <ion-card class="cardInner">
-                <br>
-                <ion-title>PAGO CON TARJETA</ion-title>
-                <hr>
-                <ion-card-content>
-                    <div>
-                        <ion-input placeholder="Número de tarjeta"></ion-input>
-                    </div>
-                    <div>
-                        <ion-label>Fecha de caducidad:</ion-label>
-                        <ion-input type="date"></ion-input>
-                    </div>
-                    <div>
-                        <ion-input maxlength="3" placeholder="CVV"></ion-input>
-                    </div>
-                </ion-card-content>
+                <ion-card class="cardOuter">
+                    <ion-card>
+                        <div class="cont_titulo">
+                            <ion-label>PAGO CON TARJETA</ion-label>
+                        </div>
+                        <hr>
+                        <ion-card-content>
+                            <div>
+                                <ion-label>Número de la tarjeta: </ion-label>
+                                <ion-input placeholder="Número de tarjeta" required>{{ num_tarjeta }}</ion-input>
+                            </div>
+                            <div>
+                                <ion-label>Fecha de caducidad: </ion-label>
+                                <ion-input type="date" required>{{ fech_tarjeta }}</ion-input>
+                            </div>
+                            <div>
+                                <ion-label>CCV: </ion-label>
+                                <ion-input maxlength="3" placeholder="CVV" required>{{ ccv_tarjeta }}</ion-input>
+                            </div>
+                        </ion-card-content>
 
-                <ion-button (click)="comprarEntrada()">Confirmar pago</ion-button>
-            </ion-card>
-        </ion-card>
-    </form>
-
+                        <ion-button (click)="comprarEntrada()">Confirmar pago</ion-button>
+                    </ion-card>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
 </ion-content>
 
 <app-nav-inferior></app-nav-inferior>
+
+<ion-toast
+    id="toastCampos"
+    message="Por favor, complete todos los campos obligatorios."
+    duration="3000"
+    position="top"
+    color="danger"
+></ion-toast>

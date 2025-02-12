@@ -43,6 +43,10 @@ export class ConfirmacionPagoComponent implements OnInit {
     qrCodeBase64: string = "";
     entrada: Entrada = {} as Entrada
 
+    num_tarjeta = ""
+    fech_tarjeta = ""
+    ccv_tarjeta = ""
+
     constructor(private entradaService: EntradaService,
                 private activateRoute: ActivatedRoute,
                 private router: Router,
@@ -73,6 +77,11 @@ export class ConfirmacionPagoComponent implements OnInit {
     }
 
     comprarEntrada(): void {
+        if (!this.num_tarjeta || !this.fech_tarjeta || !this.ccv_tarjeta) {
+            const toast = document.getElementById("toastCampos") as any;
+            toast.present();
+            return
+        }
         this.entradaService.comprarEntrada(this.id, this.empresa.id, this.usuario.id).subscribe({
             next: (entradaComprada: any) => {
                 console.log('Entrada comprada:', entradaComprada);
