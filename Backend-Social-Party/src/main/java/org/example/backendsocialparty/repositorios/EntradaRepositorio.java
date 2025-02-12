@@ -10,4 +10,5 @@ import java.util.List;
 public interface EntradaRepositorio extends JpaRepository<Entrada, Integer> {
     List<Entrada> findByCliente_Id(Integer id);
     Entrada findByCodigoEntrada(Integer codigoEntrada);
+    List<Entrada> findByEvento_Id(Integer id);
 }

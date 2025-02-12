@@ -129,12 +129,21 @@ public class EventoServicio {
         if (cliente.getEvento() != null) {
             Evento evento = cliente.getEvento();
             evento.getAsistentes().remove(cliente);
+            cliente.setEvento(null);
             eventoRepositorio.save(evento);
+            clienteRepositorio.save(cliente);
         }
     }
 
     public void eliminarEvento(Integer id) {
         List<Evento> eventos = eventoRepositorio.findByEmpresa_Id(id);
+
+        for (Evento evento : eventos) {
+            if (evento.getAsistentes() != null) {
+                evento.getAsistentes().clear();
+                eventoRepositorio.save(evento);
+            }
+        }
         eventoRepositorio.deleteAll(eventos);
     }
 }

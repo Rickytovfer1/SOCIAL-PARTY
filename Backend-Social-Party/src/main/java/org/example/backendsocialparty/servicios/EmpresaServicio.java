@@ -64,6 +64,7 @@ public class EmpresaServicio {
         Empresa empresa = empresaRepositorio.findById(id)
                 .orElseThrow(() -> new RuntimeException("No existe una empresa con este ID."));
 
+        entradaServicio.eliminarEntradaEmpresa(id);
         eventoServicio.eliminarEvento(id);
         publicacionServicio.eliminarPublicacionEmpresa(id);
         empresaRepositorio.delete(empresa);

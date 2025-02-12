@@ -80,7 +80,7 @@ public class AdminControlador {
         return empresaServicio.verEmpresa(idEmpresa);
     }
 
-    @DeleteMapping("/eliminar/cliente/{idEmpresa}")
+    @DeleteMapping("/eliminar/empresa/{idEmpresa}")
     public void eliminarEmpresa(@PathVariable Integer idEmpresa){
         empresaServicio.eliminarEmpresa(idEmpresa);
     }

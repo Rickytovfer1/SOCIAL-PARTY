@@ -56,13 +56,13 @@ export class EditarEmpresaAdminComponent implements OnInit {
         this.cargarUsuario(this.idEmpresa)
     }
 
-    getImageUrl(empresaDTO: EmpresaDTO): string {
-        if (!empresaDTO.fotoPerfil || empresaDTO.fotoPerfil.trim() === '') {
+    getImageUrl(perfilEmpresa: PerfilEmpresa): string {
+        if (!perfilEmpresa.fotoPerfil || perfilEmpresa.fotoPerfil.trim() === '') {
             return 'assets/iconoPerfil.png';
-        } else if (empresaDTO.fotoPerfil.startsWith('http')) {
-            return empresaDTO.fotoPerfil;
+        } else if (perfilEmpresa.fotoPerfil.startsWith('http')) {
+            return perfilEmpresa.fotoPerfil;
         } else {
-            return `${this.baseUrl}${empresaDTO.fotoPerfil}`;
+            return `${this.baseUrl}${perfilEmpresa.fotoPerfil}`;
         }
     }
 

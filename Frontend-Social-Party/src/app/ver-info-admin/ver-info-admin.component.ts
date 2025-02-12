@@ -146,7 +146,7 @@ export class VerInfoAdminComponent implements OnInit {
                 {
                     text: 'Guardar',
                     handler: (data) => {
-                        if (data.estrellas > 0 && data.estrellas < 100 ){
+                        if (data.estrellas >= 0 && data.estrellas <= 100 ){
                             this.guardarValoracion(data.estrellas);
                         }
                         else {
@@ -190,7 +190,6 @@ export class VerInfoAdminComponent implements OnInit {
     editarEstrellas(editarEstrellaDTO: EditarEstrellaDTO): void {
         this.adminService.editarEstrellas(editarEstrellaDTO).subscribe({
             next: () => {
-                console.log("Cliente eliminado exitosamente");
                 location.reload()
             },
             error: (e) => {
