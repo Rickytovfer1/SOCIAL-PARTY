@@ -4,10 +4,7 @@ import lombok.AllArgsConstructor;
 import org.example.backendsocialparty.DTOs.ClienteDTO;
 import org.example.backendsocialparty.modelos.Amistad;
 import org.example.backendsocialparty.servicios.AmistadServicio;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,5 +25,9 @@ public class AmistadControlador {
         return amistadServicio.aceptarSolicitud(idUsuario, idUsuario2);
     }
 
+    @PostMapping("/amigo/eliminar/{idUsuario}/{idAmigo}")
+    public void eliminarAmigo(@PathVariable Integer idUsuario, @PathVariable Integer idAmigo) {
+        amistadServicio.eliminarAmigo(idUsuario, idAmigo);
+    }
 
 }

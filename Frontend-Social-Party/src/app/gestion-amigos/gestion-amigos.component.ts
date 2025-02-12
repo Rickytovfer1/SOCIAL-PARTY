@@ -1,30 +1,29 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { IonicModule } from "@ionic/angular";
-import { NavSuperiorComponent } from "../nav-superior/nav-superior.component";
-import { NavInferiorComponent } from "../nav-inferior/nav-inferior.component";
-import { UsuarioService } from "../servicios/usuario.service";
-import { AmigoService } from "../servicios/amigo.service";
-import { Usuario } from "../modelos/Usuario";
-import { Cliente } from "../modelos/Cliente";
-import { jwtDecode } from "jwt-decode";
-import { DecodedToken } from "../modelos/DecodedToken";
-import { TokenDataDTO } from "../modelos/TokenDataDTO";
-import { Router } from "@angular/router";
+import {IonicModule} from "@ionic/angular";
+import {NavInferiorComponent} from "../nav-inferior/nav-inferior.component";
+import {NavSuperiorComponent} from "../nav-superior/nav-superior.component";
+import {Usuario} from "../modelos/Usuario";
+import {Cliente} from "../modelos/Cliente";
+import {UsuarioService} from "../servicios/usuario.service";
+import {AmigoService} from "../servicios/amigo.service";
+import {Router} from "@angular/router";
+import {jwtDecode} from "jwt-decode";
+import {TokenDataDTO} from "../modelos/TokenDataDTO";
+import {NgForOf} from "@angular/common";
 
 @Component({
-    selector: 'app-amigos',
-    templateUrl: './amigos.component.html',
-    styleUrls: ['./amigos.component.scss'],
+    selector: 'app-gestion-amigos',
+    templateUrl: './gestion-amigos.component.html',
+    styleUrls: ['./gestion-amigos.component.scss'],
     standalone: true,
     imports: [
-        CommonModule,
         IonicModule,
+        NavInferiorComponent,
         NavSuperiorComponent,
-        NavInferiorComponent
+        NgForOf
     ]
 })
-export class AmigosComponent implements OnInit {
+export class GestionAmigosComponent  implements OnInit {
 
     usuario: Usuario = {} as Usuario;
     amigos: Cliente[] = [];
@@ -97,19 +96,12 @@ export class AmigosComponent implements OnInit {
         });
     }
 
-    abrirChat(idUsuario: number) {
-        this.router.navigate(['/chat', idUsuario]);
+    eliminarAmigo(idAmigo: number) {
+        if (this.usuario.id)
+        this.amigoService.eliminarAmigo(this.usuario.id, idAmigo).subscribe({
+            next: () => {console.log("Amigo eliminado")},
+            error: () => {console.error("Error al eliminar amigo")}
+        })
     }
 
-    verSolicitudes() {
-        this.router.navigate(['/ver-solicitudes']);
-    }
-
-    verAmigos() {
-        this.router.navigate(['/gestion-amigos']);
-    }
-
-    ionViewWillEnter() {
-        this.inicio()
-    }
 }

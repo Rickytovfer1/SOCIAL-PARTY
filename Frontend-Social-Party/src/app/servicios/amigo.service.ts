@@ -18,4 +18,10 @@ export class AmigoService {
         const options = this.comunService.autorizarPeticion();
         return this.http.get<Cliente[]>(`${this.apiUrl}/cliente/amigos/${idUsuario}`, options);
     }
+
+    eliminarAmigo(idUsuario: number, idAmigo: number): Observable<any> {
+        const options = this.comunService.autorizarPeticion();
+        return this.http.post(`${this.apiUrl}/cliente/amigo/eliminar/${idUsuario}/${idAmigo}`, {}, options);
+    }
+
 }

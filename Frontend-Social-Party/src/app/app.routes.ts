@@ -110,4 +110,8 @@ export const routes: Routes = [
         path: 'comentarios/:id',
         loadComponent: () => import('./comentarios/comentarios.component').then((m) => m.ComentariosComponent)
     },
+    {
+        path: 'gestion-amigos',
+        loadComponent: () => import('./gestion-amigos/gestion-amigos.component').then((m) => m.GestionAmigosComponent)
+    },
 ];
