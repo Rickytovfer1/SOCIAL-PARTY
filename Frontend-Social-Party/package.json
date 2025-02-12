@@ -33,6 +33,7 @@
     "@zxing/browser": "^0.1.5",
     "ionicons": "^7.0.0",
     "jspdf": "^2.5.2",
+    "jsqr": "^1.4.0",
     "jwt-decode": "^4.0.0",
     "rxjs": "~7.8.0",
     "sockjs-client": "^1.6.1",

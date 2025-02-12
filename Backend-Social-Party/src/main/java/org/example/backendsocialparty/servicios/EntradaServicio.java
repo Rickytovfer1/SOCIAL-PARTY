@@ -40,28 +40,30 @@ public class EntradaServicio {
     private static final Logger logger = LoggerFactory.getLogger(EntradaServicio.class);
     @Transactional
     public void canjearEntrada(Integer codigoEntrada) {
-
         Entrada entrada = entradaRepositorio.findByCodigoEntrada(codigoEntrada);
-
         if (entrada == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Entrada no encontrada");
         }
+
         Cliente cliente = clienteRepositorio.findById(entrada.getCliente().getId())
                 .orElseThrow(() -> new RuntimeException("No existe un cliente con este ID."));
 
         Evento evento = eventoRepositorio.findById(entrada.getEvento().getId())
                 .orElseThrow(() -> new RuntimeException("No existe un evento con este ID."));
 
-        if (!evento.getAsistentes().contains(cliente)) {
-            evento.getAsistentes().add(cliente);
-            cliente.setEvento(evento);
-
-            clienteRepositorio.save(cliente);
-
-        } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El cliente ya ha canjeado esta entrada.");
+        if (cliente.getEvento() != null) {
+            if (cliente.getEvento().getId().equals(evento.getId())) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El cliente ya ha canjeado esta entrada.");
+            } else {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El cliente está actualmente en otro evento.");
+            }
         }
+
+        evento.getAsistentes().add(cliente);
+        cliente.setEvento(evento);
+        clienteRepositorio.save(cliente);
     }
+
 
     public EntradaDTO comprarEntrada(Integer idEvento, Integer idEmpresa, Integer idUsuario) {
         Integer idCliente = usuarioServicio.obtenerIdClientePorUsuario(idUsuario);
