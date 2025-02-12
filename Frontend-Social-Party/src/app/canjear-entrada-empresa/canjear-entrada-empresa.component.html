@@ -6,7 +6,7 @@
             <ion-card class="card-inner">
                 <ion-card-header>
                     <ion-label>Código de entrada: </ion-label>
-                    <ion-textarea placeholder="Escribe tu texto"></ion-textarea>
+                    <ion-input [(ngModel)]="codigoEntrada" placeholder="Escribe tu texto"></ion-input>
                 </ion-card-header>
 
                 <ion-card-content>
@@ -17,10 +17,34 @@
 
                 </ion-card-content>
 
-                <ion-button>Canjear</ion-button>
+                <ion-button (click)="redeemEntrada()">Canjear</ion-button>
             </ion-card>
         </ion-card>
     </ion-card>
 </ion-content>
 
 <app-nav-inferior-empresa></app-nav-inferior-empresa>
+
+<ion-toast
+    id="toastBlanco"
+    message="Por favor, inserte un código de entrada."
+    duration="3000"
+    position="top"
+    color="danger"
+></ion-toast>
+<ion-toast
+    id="toastCanjeada"
+    message="Esta entrada ya ha sido canjeada"
+    duration="3000"
+    position="top"
+    color="warning"
+></ion-toast>
+<ion-toast
+    id="toastNoExiste"
+    message="Esta entrada no existe"
+    duration="3000"
+    position="top"
+    color="warning"
+></ion-toast>
+
+

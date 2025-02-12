@@ -7,6 +7,8 @@ import org.example.backendsocialparty.modelos.Solicitud;
 import org.example.backendsocialparty.servicios.SolicitudServicio;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/cliente")
 @AllArgsConstructor
@@ -24,5 +26,9 @@ public class SolicitudControlador {
         solicitudServicio.eliminarSolicitud(dto);
     }
 
+    @GetMapping("/solicitudes")
+    public List<SolicitudDTO> obtenerSolicitudes(@RequestParam Integer idUsuario) {
+        return solicitudServicio.obtenerSolicitudes(idUsuario);
+    }
 
 }

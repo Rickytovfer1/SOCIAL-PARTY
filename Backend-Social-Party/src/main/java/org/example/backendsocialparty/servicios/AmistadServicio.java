@@ -1,10 +1,13 @@
 package org.example.backendsocialparty.servicios;
 
+import jakarta.transaction.Transactional;
+import org.example.backendsocialparty.DTOs.AmistadDTO;
 import org.example.backendsocialparty.DTOs.ClienteDTO;
 import org.example.backendsocialparty.modelos.Amistad;
 import org.example.backendsocialparty.modelos.Cliente;
 import org.example.backendsocialparty.repositorios.AmistadRepositorio;
 import org.example.backendsocialparty.repositorios.ClienteRepositorio;
+import org.example.backendsocialparty.repositorios.SolicitudRepositorio;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,10 +21,11 @@ public class AmistadServicio {
 
     private final AmistadRepositorio amistadRepositorio;
     private final ClienteRepositorio clienteRepositorio;
-
-    public AmistadServicio(AmistadRepositorio amistadRepositorio, ClienteRepositorio clienteRepositorio) {
+    private final SolicitudRepositorio solicitudRepositorio;
+    public AmistadServicio(AmistadRepositorio amistadRepositorio, ClienteRepositorio clienteRepositorio, SolicitudRepositorio solicitudRepositorio) {
         this.amistadRepositorio = amistadRepositorio;
         this.clienteRepositorio = clienteRepositorio;
+        this.solicitudRepositorio = solicitudRepositorio;
     }
 
     public List<ClienteDTO> getAmistad(Integer idUsuario) {
@@ -48,20 +52,41 @@ public class AmistadServicio {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
+    public AmistadDTO aceptarSolicitud(Integer idUsuario, Integer idUsuario2) {
+        Cliente usuario = clienteRepositorio.findByUsuarioId(idUsuario)
+                .orElseThrow(() -> new RuntimeException("No existe cliente para el Usuario ID " + idUsuario));
+        Cliente amigo = clienteRepositorio.findByUsuarioId(idUsuario2)
+                .orElseThrow(() -> new RuntimeException("No existe cliente para el Usuario ID " + idUsuario2));
 
-    public Amistad aceptarSolicitud(Integer idUsuario, Integer idUsuario2) {
-        Cliente usuario = clienteRepositorio.getReferenceById(idUsuario);
-        Cliente amigo = clienteRepositorio.getReferenceById(idUsuario2);
+        if (amistadRepositorio.existsByUsuario_IdAndAmigo_Id(usuario.getId(), amigo.getId()) ||
+                amistadRepositorio.existsByUsuario_IdAndAmigo_Id(amigo.getId(), usuario.getId())) {
+            throw new RuntimeException("Ya son amigos");
+        }
 
         Amistad amistad = new Amistad();
         amistad.setUsuario(usuario);
         amistad.setAmigo(amigo);
-
-        return amistadRepositorio.save(amistad);
+        Amistad amistadGuardada = amistadRepositorio.save(amistad);
+        solicitudRepositorio.deleteByUsuario1_IdAndUsuario2_Id(usuario.getId(), amigo.getId());
+        AmistadDTO dto = new AmistadDTO();
+        dto.setId(amistadGuardada.getId());
+        dto.setIdUsuario(amistadGuardada.getUsuario().getUsuario().getId());
+        dto.setIdAmigo(amistadGuardada.getAmigo().getUsuario().getId());
+        return dto;
     }
+
+
+
 
     public void eliminarAmistad(Integer id) {
         List<Amistad> amistades = amistadRepositorio.findAllByUsuario_IdOrAmigo_Id(id, id);
+        amistadRepositorio.deleteAll(amistades);
+    }
+    public void eliminarAmistadCliente(Integer id) {
+
+        Cliente cliente = clienteRepositorio.findById(id).orElseThrow(()-> new RuntimeException("Cliente no encontrado"));
+        List<Amistad> amistades = amistadRepositorio.findAmistadByUsuario_IdOrAmigo_Id(id, id);
         amistadRepositorio.deleteAll(amistades);
     }
 

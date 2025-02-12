@@ -25,6 +25,10 @@ public class Entrada {
     @Column(name = "fecha", nullable = false)
     private LocalDateTime fecha;
 
+    @Column(name = "codigoEntrada")
+    private Integer codigoEntrada;
+
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cliente")
     @EqualsAndHashCode.Exclude

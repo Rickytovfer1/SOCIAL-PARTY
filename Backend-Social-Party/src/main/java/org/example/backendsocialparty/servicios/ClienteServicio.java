@@ -2,6 +2,9 @@ package org.example.backendsocialparty.servicios;
 
 import org.example.backendsocialparty.DTOs.ClienteDTO;
 import org.example.backendsocialparty.DTOs.ComentarioDTO;
+import org.example.backendsocialparty.DTOs.EditarEstrellaDTO;
+import org.example.backendsocialparty.DTOs.EventoDTO;
+import org.example.backendsocialparty.DTOs.RestarPuntoDTO;
 import org.example.backendsocialparty.modelos.*;
 import org.example.backendsocialparty.repositorios.ClienteRepositorio;
 import org.example.backendsocialparty.repositorios.ComentarioRepositorio;
@@ -65,6 +68,14 @@ public class ClienteServicio {
         return getClienteDTO(cliente);
     }
 
+    public List<ClienteDTO> listarClientes(){
+        List<Cliente> clientes = clienteRepositorio.findAll();
+        List<ClienteDTO> clienteDTOS = new ArrayList<>();
+        for (Cliente cliente : clientes) {
+            clienteDTOS.add(getClienteDTO(cliente));
+        }
+        return clienteDTOS;
+    }
     public static ClienteDTO getClienteDTO(Cliente c) {
         ClienteDTO dtonuevo = new ClienteDTO();
         dtonuevo.setId(c.getId());
@@ -118,10 +129,10 @@ public class ClienteServicio {
 
         entradaServicio.eliminarEntrada(id);
         eventoServicio.eliminarPersonaEvento(id);
-        amistadServicio.eliminarAmistad(id);
+        amistadServicio.eliminarAmistadCliente(id);
         solicitudServicio.eliminarSolicitudCli(id);
-        publicacionServicio.eliminarPublicacion(id);
-        mensajeServicio.eliminarMensaje(id);
+        publicacionServicio.eliminarPublicacionCliente(id);
+        mensajeServicio.eliminarMensajes(id);
         clienteRepositorio.delete(cliente);
     }
 
@@ -189,5 +200,13 @@ public class ClienteServicio {
             listaComentariosDTO.add(ComentarioService.getComentarioDTO(comentario));
         }
         return listaComentariosDTO;
+    }
+
+    public void modificarEstrella(EditarEstrellaDTO dto){
+            Cliente cliente = clienteRepositorio.findById(dto.getIdCliente()).orElseThrow(() -> new RuntimeException("No existe un cliente con este ID."));
+            cliente.setValoracion(dto.getValoracion());
+            clienteRepositorio.save(cliente);
+
+
     }
 }

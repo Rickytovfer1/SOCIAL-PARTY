@@ -47,6 +47,10 @@ export const routes: Routes = [
         loadComponent: () => import('./publicaciones/publicaciones.component').then((m) => m.PublicacionesComponent)
     },
     {
+        path: 'publicaciones-empresa',
+        loadComponent: () => import('./publicaciones-empresa/publicaciones-empresa.component').then((m) => m.PublicacionesEmpresaComponent)
+    },
+    {
         path: 'asistentes-evento',
         loadComponent: () => import('./asistentes-evento/asistentes-evento.component').then((m) => m.AsistentesEventoComponent)
     },
@@ -113,5 +117,17 @@ export const routes: Routes = [
     {
         path: 'gestion-amigos',
         loadComponent: () => import('./gestion-amigos/gestion-amigos.component').then((m) => m.GestionAmigosComponent)
+    },
+    {
+        path: 'principal-admin',
+        loadComponent: () => import('./principal-admin/principal-admin.component').then((m) => m.PrincipalAdminComponent)
+    },
+    {
+        path: 'ver-info-admin/:id',
+        loadComponent: () => import('./ver-info-admin/ver-info-admin.component').then((m) => m.VerInfoAdminComponent)
+    },
+    {
+        path: 'editar-cliente-admin/:id',
+        loadComponent: () => import('./editar-cliente-admin/editar-cliente-admin.component').then((m) => m.EditarClienteAdminComponent)
     },
 ];
