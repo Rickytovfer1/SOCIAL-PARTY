@@ -104,7 +104,7 @@ export class ComentariosComponent  implements OnInit {
     cargarComentarios(idPublicacion: number) {
         this.publicacionService.listarComentariosPublicacion(idPublicacion).subscribe({
             next: (data) => {
-                this.comentarios = data;
+                this.comentarios = data.reverse();
             },
             error: e => {console.error("Error al cargar los comentarios:", e);
             }
