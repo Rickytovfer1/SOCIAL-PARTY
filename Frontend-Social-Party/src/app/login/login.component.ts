@@ -1,44 +1,48 @@
 import { Component, OnInit } from '@angular/core';
-import {IonicModule} from "@ionic/angular";
-import {FormsModule} from "@angular/forms";
-import {Router} from "@angular/router";
-import {Login} from "../modelos/Login";
-import {LoginService} from "../servicios/login.service";
-import {HttpClient, HttpHandler} from "@angular/common/http";
-import {jwtDecode} from "jwt-decode";
-import {TokenDataDTO} from "../modelos/TokenDataDTO";
+import { IonicModule, ToastController } from '@ionic/angular';
+import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { Login } from '../modelos/Login';
+import { LoginService } from '../servicios/login.service';
+import { jwtDecode} from 'jwt-decode';
+import { TokenDataDTO } from '../modelos/TokenDataDTO';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
-  standalone: true,
-  imports: [
-    IonicModule,
-    FormsModule,
-
-  ]
+    selector: 'app-login',
+    templateUrl: './login.component.html',
+    styleUrls: ['./login.component.scss'],
+    standalone: true,
+    imports: [IonicModule, FormsModule]
 })
-export class LoginComponent  implements OnInit {
+export class LoginComponent implements OnInit {
 
-  login: Login = {
-    correo: "",
-    contrasena: ""
-  };
+    login: Login = {
+        correo: "",
+        contrasena: ""
+    };
 
-  constructor(private router: Router, private loginService: LoginService) { }
+    constructor(
+        private router: Router,
+        private loginService: LoginService,
+        private toastController: ToastController
+    ) { }
 
-  ngOnInit() {}
+    ngOnInit() {}
 
-    doLogin(): void {
+    async doLogin(): Promise<void> {
         if (!this.login.correo || !this.login.contrasena) {
-            const toast = document.getElementById("toastCampos") as any;
-            toast.present();
+            const toast = await this.toastController.create({
+                message: "Por favor, complete todos los campos obligatorios.",
+                duration: 3000,
+                color: 'danger',
+                position: 'top'
+            });
+            await toast.present();
             return;
         }
 
         this.loginService.loguear(this.login).subscribe({
-            next: (respuesta) => {
+            next: async (respuesta) => {
                 const token = respuesta.token;
                 sessionStorage.setItem("authToken", token);
                 this.loginService.setAuthState(true);
@@ -46,36 +50,41 @@ export class LoginComponent  implements OnInit {
                 try {
                     const decodedToken = jwtDecode(token) as { tokenDataDTO: TokenDataDTO };
                     console.log('Decoded Token:', decodedToken);
-
                     const rol = decodedToken?.tokenDataDTO.rol;
 
-                    if (rol == "CLIENTE") {
+                    if (rol === "CLIENTE") {
                         this.router.navigate(['/amigos']);
-                    }else if (rol === "EMPRESA") {
+                    } else if (rol === "EMPRESA") {
                         this.router.navigate(['/asistentes-evento-empresa']);
-                    }else {
+                    } else {
                         this.router.navigate(['/principal-admin']);
                     }
                 } catch (e) {
                     console.error('Error al decodificar el token:', e);
                 }
             },
-            error: (e) => {
+            error: async (e) => {
                 console.error(e);
-                const toast = document.getElementById("toastContrasenaIncorrecta") as any;
-                toast.present();
-
+                let mensaje = "Error al iniciar sesión.";
+                if (e.status === 401 && e.error && e.error.mensaje) {
+                    mensaje = e.error.mensaje;
+                }
+                const toast = await this.toastController.create({
+                    message: mensaje,
+                    duration: 3000,
+                    color: 'warning',
+                    position: 'top'
+                });
+                await toast.present();
             }
         });
     }
 
-
     goLogin() {
-    this.doLogin()
-  }
+        this.doLogin();
+    }
 
-  irRegistro() {
-    this.router.navigate(['/registrar-cliente'])
-  }
-
+    irRegistro() {
+        this.router.navigate(['/registrar-cliente']);
+    }
 }

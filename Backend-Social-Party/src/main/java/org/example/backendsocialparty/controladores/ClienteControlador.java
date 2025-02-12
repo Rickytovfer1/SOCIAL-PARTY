@@ -3,9 +3,13 @@ package org.example.backendsocialparty.controladores;
 import lombok.AllArgsConstructor;
 import org.example.backendsocialparty.DTOs.ClienteDTO;
 import org.example.backendsocialparty.modelos.Usuario;
+import org.example.backendsocialparty.security.UsuarioAdapter;
 import org.example.backendsocialparty.servicios.ClienteServicio;
 import org.example.backendsocialparty.servicios.UsuarioServicio;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,9 +32,18 @@ public class ClienteControlador {
         clienteServicio.eliminarCliente(idCliente);
     }
 
-    @GetMapping("/ver/usuario/{correo}")
-    public Usuario verUsuario(@PathVariable String correo){
-        return (Usuario) usuarioServicio.loadUserByUsername(correo);
+    @GetMapping("/verUsuario")
+    public ResponseEntity<?> verUsuario() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Usuario usuario;
+        if (principal instanceof org.example.backendsocialparty.security.UsuarioAdapter) {
+            usuario = ((org.example.backendsocialparty.security.UsuarioAdapter) principal).getUsuario();
+        } else if (principal instanceof Usuario) {
+            usuario = (Usuario) principal;
+        } else {
+            return ResponseEntity.badRequest().body("No se pudo obtener el usuario autenticado.");
+        }
+        return ResponseEntity.ok(usuario);
     }
 
     @GetMapping("/ver/perfil/{idUsuario}")
@@ -47,4 +60,14 @@ public class ClienteControlador {
         }
         return clienteServicio.actualizarCliente(clienteDTO);
     }
+    @GetMapping("/ver/usuario/{correo}")
+    public Usuario verUsuario(@PathVariable String correo){
+        UserDetails userDetails = usuarioServicio.loadUserByUsername(correo);
+        if (userDetails instanceof UsuarioAdapter) {
+            return ((UsuarioAdapter) userDetails).getUsuario();
+        }
+        throw new RuntimeException("El usuario autenticado no es del tipo esperado.");
+    }
+
+
 }

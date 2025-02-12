@@ -6,10 +6,13 @@ import org.example.backendsocialparty.enumerados.Rol;
 import org.example.backendsocialparty.modelos.Cliente;
 import org.example.backendsocialparty.modelos.Empresa;
 import org.example.backendsocialparty.modelos.Usuario;
+import org.example.backendsocialparty.modelos.VerificationToken;
 import org.example.backendsocialparty.repositorios.ClienteRepositorio;
 import org.example.backendsocialparty.repositorios.EmpresaRepositorio;
 import org.example.backendsocialparty.repositorios.UsuarioRepositorio;
+import org.example.backendsocialparty.repositorios.VerificationTokenRepository;
 import org.example.backendsocialparty.security.JWTService;
+import org.example.backendsocialparty.security.UsuarioAdapter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -20,10 +23,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -32,8 +37,10 @@ public class UsuarioServicio implements UserDetailsService {
     private UsuarioRepositorio usuarioRepositorio;
     private ClienteRepositorio clienteRepositorio;
     private EmpresaRepositorio empresaRepositorio;
+    private VerificationTokenRepository verificationTokenRepository;
     private final PasswordEncoder passwordEncoder;
     private JWTService jwtService;
+    private EmailService emailService;
 
     public Usuario registrarCliente(RegistrarClienteDTO dto){
 
@@ -74,7 +81,12 @@ public class UsuarioServicio implements UserDetailsService {
         cliente.setUsuario(usuarioGuardado);
 
         clienteRepositorio.save(cliente);
+        String token = UUID.randomUUID().toString();
+        LocalDateTime expiryDate = LocalDateTime.now().plusHours(24);
+        VerificationToken verificationToken = new VerificationToken(token, usuarioGuardado, expiryDate);
+        verificationTokenRepository.save(verificationToken);
 
+        emailService.sendVerificationEmail(usuarioGuardado.getCorreo(), token);
         return usuarioGuardado;
 
     }
@@ -118,44 +130,54 @@ public class UsuarioServicio implements UserDetailsService {
 
         Usuario usuarioGuardado = usuarioRepositorio.save(nuevoUsuario);
         empresa.setUsuario(usuarioGuardado);
-
         empresaRepositorio.save(empresa);
 
+        String token = UUID.randomUUID().toString();
+        LocalDateTime expiryDate = LocalDateTime.now().plusHours(24);
+        VerificationToken verificationToken = new VerificationToken(token, usuarioGuardado, expiryDate);
+        verificationTokenRepository.save(verificationToken);
+
+        emailService.sendVerificationEmail(usuarioGuardado.getCorreo(), token);
         return usuarioGuardado;
+
 
     }
 
     @Override
     public UserDetails loadUserByUsername(String correo) throws UsernameNotFoundException {
-        return usuarioRepositorio.findTopByCorreo(correo).orElse(null);
+        Usuario usuario = usuarioRepositorio.findTopByCorreo(correo)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+        return new UsuarioAdapter(usuario);
     }
 
-    public ResponseEntity<RespuestaDTO> login(LoginDTO dto){
 
-        // Buscar usuario por nombre de usuario
-        Optional<Usuario> usuarioOpcional = usuarioRepositorio.findUsuarioByCorreo(dto.getCorreo());
-
-        if (usuarioOpcional.isPresent()) {
-            Usuario usuario = usuarioOpcional.get();
-
-            // Verificar la contraseña
-            if (passwordEncoder.matches(dto.getContrasena(), usuario.getContrasena())) {
-
-                // Contraseña válida, devolver token de acceso
-                String token = jwtService.generateToken(usuario);
-                return ResponseEntity
-                        .ok(RespuestaDTO
-                                .builder()
-                                .estado(HttpStatus.OK.value())
-                                .token(token).build());
-            } else {
-                throw new BadCredentialsException("Contraseña incorrecta");
-            }
-        } else {
+    public ResponseEntity<RespuestaDTO> login(LoginDTO dto) {
+        UserDetails userDetails = loadUserByUsername(dto.getCorreo());
+        if (userDetails == null) {
             throw new UsernameNotFoundException("Usuario no encontrado");
         }
 
+        if (!userDetails.isEnabled()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(RespuestaDTO.builder()
+                            .estado(HttpStatus.UNAUTHORIZED.value())
+                            .mensaje("Cuenta no verificada. Por favor, verifica tu correo electrónico.")
+                            .build());
+        }
+
+        if (passwordEncoder.matches(dto.getContrasena(), userDetails.getPassword())) {
+            Usuario usuario = ((UsuarioAdapter) userDetails).getUsuario();
+            String token = jwtService.generateToken(usuario);
+            return ResponseEntity.ok(RespuestaDTO.builder()
+                    .estado(HttpStatus.OK.value())
+                    .token(token)
+                    .build());
+        } else {
+            throw new BadCredentialsException("Contraseña incorrecta");
+        }
     }
+
+
 
     public UsuarioDTO buscarUsuarioPorCliente(Integer idCliente){
         Cliente cliente = clienteRepositorio.findById(idCliente).orElseThrow(()-> new RuntimeException("No existe un cliente con este ID."));
