@@ -15,16 +15,16 @@
                                     <ion-grid>
                                         <ion-row>
                                             <ion-col class="ion-align-items-center">
-                                                <ion-text id="nombre">Lucía</ion-text>
+                                                <ion-text id="nombre">{{ this.perfilActual.nombre }}</ion-text>
                                             </ion-col>
                                             <ion-col class="ion-justify-content-between ion-align-items-center">
-                                                <ion-text id="texto_estrellas">87</ion-text>
+                                                <ion-text id="texto_estrellas">{{ this.perfilActual.valoracion }}</ion-text>
                                                 <ion-img id="estrella" src="assets/estrella.png"/>
                                             </ion-col>
                                         </ion-row>
-                                        <ion-row>
+                                        <ion-row *ngIf="!esAmigo(this.perfilActual)">
                                             <ion-col>
-                                                <ion-button>+  Solicitar amistad</ion-button>
+                                                <ion-button (click)="enviarSolicitud()">+  Solicitar amistad</ion-button>
                                             </ion-col>
                                         </ion-row>
                                     </ion-grid>
@@ -34,13 +34,7 @@
                     </ion-card>
                     <ion-card id="card_bio">
                         <div>
-                            <ion-text>
-                                Instagram: luucia_06
-                                Bereal: luucia_06
-                                Tiktok: luucia_06
-
-                                Hola soy Lucía, soy de Cáceres y soy la más guarrilla del lugar ;) me han quitado 13 puntos por puta guarra...
-                            </ion-text>
+                            <ion-text>{{ this.perfilActual.biografia }}</ion-text>
                         </div>
                     </ion-card>
                 </ion-card>

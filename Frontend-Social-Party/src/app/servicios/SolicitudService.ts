@@ -23,10 +23,14 @@ export class SolicitudService {
         return this.http.post(`${this.apiUrl}/cliente/amigos/aceptar/${idUsuario}/${idUsuario2}`, {}, options);
     }
 
-
     eliminarSolicitud(idSolicitud: number): Observable<any> {
         const options = this.comunService.autorizarPeticion();
         const dto = { idSolicitud: idSolicitud };
         return this.http.delete(`${this.apiUrl}/cliente/solicitud/eliminar`, { ...options, body: dto });
+    }
+
+    enviarSolicitud(solicitud: SolicitudDTO): Observable<any> {
+        const options = this.comunService.autorizarPeticion();
+        return this.http.post(`${this.apiUrl}/cliente/solicitud`, solicitud, options);
     }
 }

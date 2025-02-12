@@ -43,9 +43,9 @@ export class ConfirmacionPagoComponent implements OnInit {
     qrCodeBase64: string = "";
     entrada: Entrada = {} as Entrada
 
-    num_tarjeta = ""
-    fech_tarjeta = ""
-    ccv_tarjeta = ""
+    num_tarjeta: string = "";
+    fech_tarjeta: string  = "";
+    ccv_tarjeta: string  = "";
 
     constructor(private entradaService: EntradaService,
                 private activateRoute: ActivatedRoute,
@@ -77,6 +77,9 @@ export class ConfirmacionPagoComponent implements OnInit {
     }
 
     comprarEntrada(): void {
+        console.log('Número de tarjeta:', this.num_tarjeta);
+        console.log('Fecha de caducidad:', this.fech_tarjeta);
+        console.log('CCV:', this.ccv_tarjeta);
         if (!this.num_tarjeta || !this.fech_tarjeta || !this.ccv_tarjeta) {
             const toast = document.getElementById("toastCampos") as any;
             toast.present();

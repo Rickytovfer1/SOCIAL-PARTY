@@ -39,7 +39,7 @@ export const routes: Routes = [
         loadComponent: () => import('./ver-empresas/ver-empresas.component').then((m) => m.VerEmpresasComponent)
     },
     {
-        path: 'perfil-asistente',
+        path: 'perfil-asistente/:id',
         loadComponent: () => import('./perfil-asistente/perfil-asistente.component').then((m) => m.PerfilAsistenteComponent)
     },
     {

@@ -54,15 +54,15 @@
                         <ion-card-content>
                             <div>
                                 <ion-label>Número de la tarjeta: </ion-label>
-                                <ion-input placeholder="Número de tarjeta" required>{{ num_tarjeta }}</ion-input>
+                                <ion-input [(ngModel)]="num_tarjeta" name="num_tarjeta" placeholder="Número de tarjeta" required></ion-input>
                             </div>
                             <div>
                                 <ion-label>Fecha de caducidad: </ion-label>
-                                <ion-input type="date" required>{{ fech_tarjeta }}</ion-input>
+                                <ion-input [(ngModel)]="fech_tarjeta" name="fech_tarjeta" type="date" required></ion-input>
                             </div>
                             <div>
                                 <ion-label>CCV: </ion-label>
-                                <ion-input maxlength="3" placeholder="CVV" required>{{ ccv_tarjeta }}</ion-input>
+                                <ion-input [(ngModel)]="ccv_tarjeta" name="ccv_tarjeta" maxlength="3" placeholder="CVV" required></ion-input>
                             </div>
                         </ion-card-content>
 
