@@ -23,6 +23,9 @@ public class Comentario {
     @Column(name = "texto", nullable = false)
     private String texto;
 
+    @Column(name = "nombre", nullable = false)
+    private String nombre;
+
     @Column(name = "fecha", nullable = false)
     private LocalDateTime fecha;
 

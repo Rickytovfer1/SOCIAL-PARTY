@@ -11,7 +11,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class ComentarioDTO {
     private String texto;
-    private int idCliente;
-    private int idPublicacion;
+    private String nombre;
+    private int id_cliente;
+    private int id_publicacion;
     private LocalDateTime fecha;
 }

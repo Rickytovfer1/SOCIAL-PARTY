@@ -35,6 +35,7 @@ public class ComentarioService {
 
         comentario.setCliente(cliente);
         comentario.setTexto(comentarioDTO.getTexto());
+        comentario.setNombre(cliente.getNombre());
         comentario.setPublicacion(publicacion);
         comentario.setFecha(LocalDateTime.now());
         comentarioRepositorio.save(comentario);
@@ -42,10 +43,13 @@ public class ComentarioService {
 
     public static ComentarioDTO getComentarioDTO(Comentario comentario) {
 
+        Cliente cliente = comentario.getCliente();
+
         ComentarioDTO dtonuevo = new ComentarioDTO();
         dtonuevo.setTexto(comentario.getTexto());
-        dtonuevo.setIdPublicacion(comentario.getPublicacion().getId());
-        dtonuevo.setIdCliente(comentario.getCliente().getId());
+        dtonuevo.setNombre(cliente.getNombre());
+        dtonuevo.setId_publicacion(comentario.getPublicacion().getId());
+        dtonuevo.setId_cliente(comentario.getCliente().getId());
         dtonuevo.setFecha(comentario.getFecha());
         return dtonuevo;
     }
