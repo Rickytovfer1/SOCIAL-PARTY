@@ -68,7 +68,9 @@ export class VerEmpresasComponent implements OnInit {
     }
 
     getImageUrl(empresaDTO: EmpresaDTO): string {
-        if (empresaDTO.fotoPerfil.startsWith('http')) {
+        if (!empresaDTO.fotoPerfil || empresaDTO.fotoPerfil.trim() === '') {
+            return 'assets/iconoPerfil.png';
+        }else if (empresaDTO.fotoPerfil.startsWith('http')) {
             return empresaDTO.fotoPerfil;
         } else {
             return `${this.baseUrl}${empresaDTO.fotoPerfil}`;

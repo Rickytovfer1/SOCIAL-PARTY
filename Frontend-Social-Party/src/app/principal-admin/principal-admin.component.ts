@@ -92,6 +92,6 @@ export class PrincipalAdminComponent implements OnInit {
     }
 
     verInfoEmpresa(idEmpresa: number) {
-        this.router.navigate(["/ver-info-empresa-admin", idEmpresa])
+        this.router.navigate(["/ver-empresa-admin", idEmpresa])
     }
 }

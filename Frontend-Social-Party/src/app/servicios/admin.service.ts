@@ -10,6 +10,7 @@ import {Perfil} from "../modelos/Perfil";
 import {ActualizarCliente} from "../modelos/ActualizarCliente";
 import {Usuario} from "../modelos/Usuario";
 import {EditarEstrellaDTO} from "../modelos/EditarEstrellaDTO";
+import {PerfilEmpresa} from "../modelos/PerfilEmpresa";
 
 @Injectable({
     providedIn: 'root'
@@ -70,5 +71,35 @@ export class AdminService {
     eliminarBaneo(idCliente: number): Observable<void> {
         const options = this.comunService.autorizarPeticionFormData();
         return this.http.put<void>(`${this.apiUrl}/admin/eliminar/baneo/cliente/${idCliente}`,{}, options);
+    }
+
+    getEmpresaDTO(idEmpresa: number): Observable<EmpresaDTO> {
+        const options = this.comunService.autorizarPeticion();
+        return this.http.get<EmpresaDTO>(`${this.apiUrl}/admin/ver/empresa/${idEmpresa}`, options);
+    }
+
+    getEmpresa(idEmpresa: number): Observable<PerfilEmpresa> {
+        const options = this.comunService.autorizarPeticion();
+        return this.http.get<PerfilEmpresa>(`${this.apiUrl}/admin/ver/empresa/${idEmpresa}`, options);
+    }
+
+    eliminarEmpresa(idEmpresa: number): Observable<void> {
+        const options = this.comunService.autorizarPeticion();
+        return this.http.delete<void>(`${this.apiUrl}/admin/eliminar/empresa/${idEmpresa}`, options);
+    }
+
+    getUsuarioEmpresa(idEmpresa: number): Observable<Usuario> {
+        const options = this.comunService.autorizarPeticion();
+        return this.http.get<Usuario>(`${this.apiUrl}/admin/ver/usuario/empresa/${idEmpresa}`, options);
+    }
+
+
+    actualizarPerfilEmpresa(perfilEmpresa: FormData): Observable<PerfilEmpresa> {
+        const options = this.comunService.autorizarPeticionFormData();
+        return this.http.put<PerfilEmpresa>(
+            `${this.apiUrl}/admin/actualizar/empresa`,
+            perfilEmpresa,
+            options
+        );
     }
 }

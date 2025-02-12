@@ -91,6 +91,30 @@ export class VerInfoAdminComponent implements OnInit {
         await alert.present();
     }
 
+    async confirmarBanearCliente() {
+        const alert = await this.alertController.create({
+            header: 'Confirmar banear cliente',
+            message: '¿Estás seguro de que deseas banear esta cuenta?',
+            buttons: [
+                {
+                    text: 'Cancelar',
+                    role: 'cancel',
+                    handler: () => {
+                        console.log('Eliminación cancelada');
+                    }
+                },
+                {
+                    text: 'Confirmar',
+                    handler: () => {
+                        this.banearCliente(this.idCliente);
+                    }
+                }
+            ]
+        });
+
+        await alert.present();
+    }
+
     banearCliente(idCliente: number): void {
         this.adminService.banearCliente(idCliente).subscribe({
             next: () => {
@@ -175,6 +199,30 @@ export class VerInfoAdminComponent implements OnInit {
         });
     }
 
+    async confirmarEliminarBaneoCliente() {
+        const alert = await this.alertController.create({
+            header: 'Eliminar baneo cliente',
+            message: '¿Estás seguro de que deseas desbanear esta cuenta?',
+            buttons: [
+                {
+                    text: 'Cancelar',
+                    role: 'cancel',
+                    handler: () => {
+                        console.log('Eliminación cancelada');
+                    }
+                },
+                {
+                    text: 'Confirmar',
+                    handler: () => {
+                        this.eliminarBaneo(this.idCliente);
+                    }
+                }
+            ]
+        });
+
+        await alert.present();
+    }
+
     eliminarBaneo(idCliente: number): void {
         this.adminService.eliminarBaneo(idCliente).subscribe({
             next: () => {
@@ -187,7 +235,4 @@ export class VerInfoAdminComponent implements OnInit {
         });
     }
 
-    irABaneo(idCliente: number){
-        this.router.navigate(['/banear-usuario', idCliente])
-    }
 }
