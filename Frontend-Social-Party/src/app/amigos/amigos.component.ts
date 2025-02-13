@@ -115,4 +115,8 @@ export class AmigosComponent implements OnInit {
     verAmigos() {
         this.router.navigate(['/gestion-amigos']);
     }
+
+    ionViewWillEnter() {
+        this.inicio()
+    }
 }

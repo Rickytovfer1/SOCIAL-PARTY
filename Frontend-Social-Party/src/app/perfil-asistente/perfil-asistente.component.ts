@@ -121,10 +121,10 @@ export class PerfilAsistenteComponent  implements OnInit {
     }
 
     cargarSolicitudes() {
-        this.solicitudService.getSolicitudes(this.perfil.idUsuario).subscribe({
+        this.solicitudService.getSolicitudes(this.perfilActual.idUsuario).subscribe({
             next: (data: SolicitudDTO[]) => {
                 this.solicitudes = data;
-                this.comprobarSolicitud()
+                this.comprobarSolicitud();
             },
             error: (err) => {
                 console.error('Error al cargar solicitudes', err);
@@ -134,12 +134,13 @@ export class PerfilAsistenteComponent  implements OnInit {
 
     comprobarSolicitud() {
         for (const solicitud of this.solicitudes) {
-            if (solicitud.idUsuario1 === this.perfil.id && solicitud.idUsuario2 === this.perfilActual.id) {
+            if (solicitud.idUsuario1 === this.perfil.idUsuario && solicitud.idUsuario2 === this.perfilActual.idUsuario) {
                 this.botonDesactivado = true;
                 break;
             }
         }
     }
+
 
     esAmigo(cliente: Cliente): boolean {
         let encontrado = false;

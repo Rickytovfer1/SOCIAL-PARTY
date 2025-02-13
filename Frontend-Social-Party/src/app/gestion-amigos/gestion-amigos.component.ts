@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {IonicModule} from "@ionic/angular";
+import {AlertController, IonicModule} from "@ionic/angular";
 import {NavInferiorComponent} from "../nav-inferior/nav-inferior.component";
 import {NavSuperiorComponent} from "../nav-superior/nav-superior.component";
 import {Usuario} from "../modelos/Usuario";
@@ -33,6 +33,7 @@ export class GestionAmigosComponent  implements OnInit {
         private usuarioService: UsuarioService,
         private amigoService: AmigoService,
         private router: Router,
+        private alertController: AlertController
     ) {}
 
     ngOnInit() {
@@ -96,16 +97,49 @@ export class GestionAmigosComponent  implements OnInit {
         });
     }
 
+    async confirmarEliminarAmigo(idAmigo: number) {
+        const alert = await this.alertController.create({
+            header: 'Confirmar eliminación',
+            message: '¿Estás seguro de que quieres dejar de ser amigo de este usuario?',
+            buttons: [
+                {
+                    text: 'Cancelar',
+                    role: 'cancel',
+                    handler: () => {
+                        console.log('Eliminación cancelada');
+                    }
+                },
+                {
+                    text: 'Eliminar',
+                    handler: () => {
+                        this.eliminarAmigo(idAmigo);
+                    }
+                }
+            ]
+        });
+
+        await alert.present();
+    }
+
     eliminarAmigo(idAmigo: number) {
         if (this.usuario.id)
         this.amigoService.eliminarAmigo(this.usuario.id, idAmigo).subscribe({
-            next: () => {console.log("Amigo eliminado")},
+            next: () => {
+                console.log("Amigo eliminado")
+                const toast = document.getElementById("toastEliminarAmigo") as any;
+                toast.present();
+                this.ngOnInit()
+            },
             error: () => {console.error("Error al eliminar amigo")}
         })
     }
 
     verPerfil(cliente: Cliente) {
         this.router.navigate(["/perfil-asistente", cliente.idUsuario])
+    }
+
+    ionViewWillEnter() {
+        this.inicio()
     }
 
 }

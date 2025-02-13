@@ -120,8 +120,6 @@ export class VerSolicitudesComponent implements OnInit {
         }
     }
 
-
-
     cargarSolicitudes() {
         this.solicitudService.getSolicitudes(this.perfil.idUsuario).subscribe({
             next: (data: SolicitudDTO[]) => {
@@ -151,6 +149,9 @@ export class VerSolicitudesComponent implements OnInit {
                 this.solicitudService.aceptarSolicitud(solicitud.idUsuario1, solicitud.idUsuario2).subscribe({
                     next: () => {
                         this.solicitudes = this.solicitudes.filter(s => s.id !== solicitud.id);
+                        const toast = document.getElementById("toastSolocitudAceptada") as any;
+                        toast.present();
+                        this.refreshData()
                     },
                     error: (err) => {
                         console.error('Error al aceptar solicitud', err);
@@ -167,6 +168,9 @@ export class VerSolicitudesComponent implements OnInit {
                 this.solicitudService.eliminarSolicitud(solicitud.id).subscribe({
                     next: () => {
                         this.solicitudes = this.solicitudes.filter(s => s.id !== solicitud.id);
+                        const toast = document.getElementById("toastSolocitudRechazada") as any;
+                        toast.present();
+                        this.refreshData()
                     },
                     error: (err) => {
                         console.error('Error al aceptar solicitud', err);
@@ -191,8 +195,19 @@ export class VerSolicitudesComponent implements OnInit {
     verPerfil(cliente: Cliente) {
         this.router.navigate(["/perfil-asistente", cliente.idUsuario])
     }
+
     trackBySolicitud(index: number, solicitud: SolicitudDTO): number {
         return solicitud.id;
+    }
+
+    refreshData() {
+        this.solicitudes = [];
+        this.clientesSolicitudes = [];
+        this.cargarSolicitudes();
+    }
+
+    ionViewWillEnter() {
+        this.refreshData()
     }
 
 }
