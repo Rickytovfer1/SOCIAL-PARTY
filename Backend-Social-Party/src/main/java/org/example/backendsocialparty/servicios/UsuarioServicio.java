@@ -199,4 +199,11 @@ public class UsuarioServicio implements UserDetailsService {
         return usuarioDTO;
     }
 
+    public void eliminarUsuarioVerificacion(Integer id){
+        Usuario usuario = usuarioRepositorio.findById(id).orElseThrow(()-> new RuntimeException("No existe un usuario con este ID."));
+        VerificationToken verificationToken = verificationTokenRepository.findByUsuario_Id(usuario.getId());
+
+        verificationTokenRepository.delete(verificationToken);
+
+    }
 }

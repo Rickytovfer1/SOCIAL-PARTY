@@ -170,6 +170,32 @@ public class EntradaServicio {
 //        }
 //    }
 
+    public void eliminarEntradaEmpresa(Integer id) {
+        Empresa empresa = empresaRepositorio.findById(id)
+                .orElseThrow(() -> new RuntimeException("No existe una empresa con este ID."));
+
+        Set<Evento> eventos = empresa.getEventos();
+
+        for (Evento evento : eventos) {
+            // Obtener y eliminar las entradas asociadas al evento
+            List<Entrada> entradas = entradaRepositorio.findByEvento_Id(evento.getId());
+            if (!entradas.isEmpty()) {
+                entradaRepositorio.deleteAll(entradas);
+            }
+
+            // Obtener y actualizar los clientes asociados al evento
+            List<Cliente> clientes = clienteRepositorio.findClientesByEventosContains(evento);
+            for (Cliente cliente : clientes) {
+                cliente.getEventos().remove(evento); // Remover el evento de la lista del cliente
+                clienteRepositorio.save(cliente); // Guardar el cliente actualizado
+            }
+        }
+
+        // Finalmente, eliminar los eventos asociados a la empresa
+        eventoRepositorio.deleteAll(eventos);
+    }
+
+
 
 
     public List<EntradaDTO> listarEntradas(Integer idCliente) {
