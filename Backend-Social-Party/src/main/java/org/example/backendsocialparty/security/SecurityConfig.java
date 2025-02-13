@@ -29,6 +29,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(req -> req
                         .requestMatchers("/uploads/**").permitAll()
                         .requestMatchers("/autorizacion/**").permitAll()
+                        .requestMatchers("/verify/**").permitAll()
                         .requestMatchers("/ws/**").permitAll()
                         .requestMatchers("/cliente/**").hasAuthority("CLIENTE")
                         .requestMatchers("/empresa/**").hasAuthority("EMPRESA")

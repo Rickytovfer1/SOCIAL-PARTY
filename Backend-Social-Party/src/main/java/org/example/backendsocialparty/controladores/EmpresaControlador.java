@@ -4,11 +4,13 @@ import lombok.AllArgsConstructor;
 import org.example.backendsocialparty.DTOs.ClienteDTO;
 import org.example.backendsocialparty.DTOs.EmpresaDTO;
 import org.example.backendsocialparty.DTOs.RestarPuntoDTO;
+import org.example.backendsocialparty.security.UsuarioAdapter;
 import org.example.backendsocialparty.servicios.ClienteServicio;
 import org.example.backendsocialparty.servicios.EmpresaServicio;
 import org.example.backendsocialparty.servicios.UsuarioServicio;
 import org.example.backendsocialparty.modelos.Usuario;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -46,8 +48,13 @@ public class EmpresaControlador {
 
     @GetMapping("/empresa/ver/perfil/{correo}")
     public Usuario verUsuario(@PathVariable String correo){
-        return (Usuario) usuarioServicio.loadUserByUsername(correo);
+        UserDetails userDetails = usuarioServicio.loadUserByUsername(correo);
+        if (userDetails instanceof UsuarioAdapter) {
+            return ((UsuarioAdapter) userDetails).getUsuario();
+        }
+        throw new RuntimeException("El usuario autenticado no es del tipo esperado.");
     }
+
 
     @PostMapping("/empresa/restar/puntos")
     public void restarPuntos(@RequestBody RestarPuntoDTO dto){

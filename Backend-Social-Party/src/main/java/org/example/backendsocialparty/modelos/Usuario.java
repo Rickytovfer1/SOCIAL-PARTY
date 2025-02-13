@@ -34,6 +34,8 @@ public class Usuario implements UserDetails {
     @Column(name = "rol", nullable = false)
     @Enumerated(EnumType.ORDINAL)
     private Rol rol;
+    @Column(name = "enabled")
+    private boolean enabled = false;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -42,12 +44,12 @@ public class Usuario implements UserDetails {
 
     @Override
     public String getPassword() {
-        return "";
+        return this.contrasena;
     }
 
     @Override
     public String getUsername() {
-        return "";
+        return this.correo;
     }
 
     @Override
@@ -67,6 +69,6 @@ public class Usuario implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return UserDetails.super.isEnabled();
+        return this.enabled;
     }
 }

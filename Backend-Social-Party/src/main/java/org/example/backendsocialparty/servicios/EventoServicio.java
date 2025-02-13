@@ -1,5 +1,6 @@
 package org.example.backendsocialparty.servicios;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.example.backendsocialparty.DTOs.ClienteDTO;
 import org.example.backendsocialparty.DTOs.EventoDTO;
@@ -10,12 +11,14 @@ import org.example.backendsocialparty.repositorios.ClienteRepositorio;
 import org.example.backendsocialparty.repositorios.EmpresaRepositorio;
 import org.example.backendsocialparty.repositorios.EventoRepositorio;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.*;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.*;
 import static org.example.backendsocialparty.servicios.ClienteServicio.getClienteDTO;
 
@@ -154,4 +157,23 @@ public class EventoServicio {
         empresa.getBaneados().clear();
         empresaRepositorio.save(empresa);
     }
+    @Scheduled(fixedRate = 60000)
+    @Transactional
+    public void finalizarEventos() {
+        LocalDate hoy = LocalDate.now();
+        LocalTime ahora = LocalTime.now();
+
+        List<Evento> eventosFinalizados = eventoRepositorio.findByFechaAndHoraFinalizacionBefore(hoy, ahora);
+        for (Evento evento : eventosFinalizados) {
+            for (Cliente cliente : new HashSet<>(evento.getAsistentes())) {
+                cliente.setValoracion(cliente.getValoracion() + 5);
+                evento.removerAsistente(cliente);
+                clienteRepositorio.save(cliente);
+            }
+            evento.getAsistentes().clear();
+            eventoRepositorio.save(evento);
+        }
+    }
+
+
 }

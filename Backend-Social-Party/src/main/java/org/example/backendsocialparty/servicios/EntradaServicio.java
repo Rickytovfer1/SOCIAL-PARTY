@@ -1,4 +1,7 @@
 package org.example.backendsocialparty.servicios;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.PersistenceContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.google.zxing.BarcodeFormat;
@@ -14,6 +17,7 @@ import org.example.backendsocialparty.modelos.Empresa;
 import org.example.backendsocialparty.modelos.Entrada;
 import org.example.backendsocialparty.modelos.Evento;
 import org.example.backendsocialparty.repositorios.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,8 +42,14 @@ public class EntradaServicio {
     private EmpresaRepositorio empresaRepositorio;
     private UsuarioServicio usuarioServicio;
     private static final Logger logger = LoggerFactory.getLogger(EntradaServicio.class);
+    @Autowired
+    private EntityManagerFactory entityManagerFactory;
+    @PersistenceContext
+    private EntityManager entityManager;
     @Transactional
     public void canjearEntrada(Integer codigoEntrada) {
+        entityManagerFactory.getCache().evictAll();
+        entityManager.clear();
         Entrada entrada = entradaRepositorio.findByCodigoEntrada(codigoEntrada);
         if (entrada == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Entrada no encontrada");
