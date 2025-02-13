@@ -7,22 +7,27 @@ import org.example.backendsocialparty.DTOs.EventoDTO;
 import org.example.backendsocialparty.DTOs.RestarPuntoDTO;
 import org.example.backendsocialparty.modelos.*;
 import org.example.backendsocialparty.repositorios.ClienteRepositorio;
+import org.example.backendsocialparty.repositorios.EmpresaRepositorio;
 import org.example.backendsocialparty.repositorios.ComentarioRepositorio;
 import org.example.backendsocialparty.repositorios.UsuarioRepositorio;
 import org.example.backendsocialparty.servicios.*;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Value;
+
 import java.util.*;
 import java.time.LocalDate;
 import java.nio.file.*;
 import java.io.*;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
 
 @Service
 public class ClienteServicio {
+    private final EmpresaServicio empresaServicio;
+    private ClienteServicio clienteServicio;
     private final ClienteRepositorio clienteRepositorio;
     private final PublicacionServicio publicacionServicio;
     private final MensajeServicio mensajeServicio;
@@ -33,8 +38,12 @@ public class ClienteServicio {
     private final ComentarioRepositorio comentarioRepositorio;
     private final EventoServicio eventoServicio;
     private final ComentarioService comentarioService;
+    private final EmpresaRepositorio empresaRepositorio;
+    private final FavoritoServicio favoritoServicio;
     @Value("${upload.dir}")
     private String uploadDir;
+
+
     public ClienteServicio(
             ClienteRepositorio clienteRepositorio,
             PublicacionServicio publicacionServicio,
@@ -44,7 +53,9 @@ public class ClienteServicio {
             @Lazy EventoServicio eventoServicio,
             EntradaServicio entradaServicio,
             UsuarioRepositorio usuarioRepositorio,
-            ComentarioRepositorio comentarioRepositorio, ComentarioService comentarioService) {
+            ComentarioRepositorio comentarioRepositorio, ComentarioService comentarioService,
+            EmpresaRepositorio empresaRepositorio,
+            FavoritoServicio favoritoServicio, EmpresaServicio empresaServicio) {
         this.clienteRepositorio = clienteRepositorio;
         this.publicacionServicio = publicacionServicio;
         this.mensajeServicio = mensajeServicio;
@@ -55,7 +66,11 @@ public class ClienteServicio {
         this.usuarioRepositorio = usuarioRepositorio;
         this.comentarioRepositorio = comentarioRepositorio;
         this.comentarioService = comentarioService;
+        this.empresaRepositorio = empresaRepositorio;
+        this.favoritoServicio = favoritoServicio;
+        this.empresaServicio = empresaServicio;
     }
+
 
     public ClienteDTO buscarClienteId(Integer id) {
         Cliente cliente = clienteRepositorio.findById(id)
@@ -68,7 +83,7 @@ public class ClienteServicio {
         return getClienteDTO(cliente);
     }
 
-    public List<ClienteDTO> listarClientes(){
+    public List<ClienteDTO> listarClientes() {
         List<Cliente> clientes = clienteRepositorio.findAll();
         List<ClienteDTO> clienteDTOS = new ArrayList<>();
         for (Cliente cliente : clientes) {
@@ -76,6 +91,7 @@ public class ClienteServicio {
         }
         return clienteDTOS;
     }
+
     public static ClienteDTO getClienteDTO(Cliente c) {
         ClienteDTO dtonuevo = new ClienteDTO();
         dtonuevo.setId(c.getId());
@@ -124,9 +140,12 @@ public class ClienteServicio {
     }
 
     public void eliminarCliente(Integer id) {
+
         Cliente cliente = clienteRepositorio.findById(id)
                 .orElseThrow(() -> new RuntimeException("No existe un cliente con este ID."));
-
+        empresaServicio.eliminarBaneadoCliente(id);
+        comentarioService.eliminarComentario(id);
+        favoritoServicio.eliminarLike(id);
         entradaServicio.eliminarEntrada(id);
         eventoServicio.eliminarPersonaEvento(id);
         amistadServicio.eliminarAmistadCliente(id);
@@ -182,6 +201,7 @@ public class ClienteServicio {
             throw new RuntimeException("Error al guardar la imagen", e);
         }
     }
+
     private String getFileExtension(String filename) {
         if (filename == null) {
             return "";
@@ -202,11 +222,41 @@ public class ClienteServicio {
         return listaComentariosDTO;
     }
 
-    public void modificarEstrella(EditarEstrellaDTO dto){
-            Cliente cliente = clienteRepositorio.findById(dto.getIdCliente()).orElseThrow(() -> new RuntimeException("No existe un cliente con este ID."));
-            cliente.setValoracion(dto.getValoracion());
-            clienteRepositorio.save(cliente);
+    public void modificarEstrella(EditarEstrellaDTO dto) {
+        Cliente cliente = clienteRepositorio.findById(dto.getIdCliente()).orElseThrow(() -> new RuntimeException("No existe un cliente con este ID."));
+        cliente.setValoracion(dto.getValoracion());
+        clienteRepositorio.save(cliente);
 
 
     }
+
+    public void banearCliente(Integer id) {
+        Cliente cliente = clienteRepositorio.findById(id).orElseThrow(() -> new RuntimeException("No existe un cliente con este ID."));
+        List<Empresa> empresas = empresaRepositorio.findAll();
+        Set<Cliente> baneados = new HashSet<>();
+        baneados.add(cliente);
+
+        for (Empresa empresa : empresas) {
+            empresa.setBaneados(baneados);
+            empresaRepositorio.save(empresa);
+        }
+
+    }
+
+    public void eliminarBaneado(Integer id) {
+        Cliente cliente = clienteRepositorio.findById(id)
+                .orElseThrow(() -> new RuntimeException("No existe un cliente con este ID."));
+
+        List<Empresa> empresas = empresaRepositorio.findAll();
+
+        for (Empresa empresa : empresas) {
+            Set<Cliente> baneados = empresa.getBaneados();
+            if (baneados != null) {
+                baneados.remove(cliente);
+                empresa.setBaneados(baneados);
+                empresaRepositorio.save(empresa);
+            }
+        }
+    }
+
 }

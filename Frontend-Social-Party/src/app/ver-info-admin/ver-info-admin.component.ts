@@ -91,35 +91,75 @@ export class VerInfoAdminComponent implements OnInit {
         await alert.present();
     }
 
-    // async abrirModalEstrellas() {
-    //     const alert = await this.alertController.create({
-    //         header: 'Modificar Estrellas',
-    //         inputs: [
-    //             {
-    //                 name: 'estrellas',
-    //                 type: 'range',
-    //                 min: 0,
-    //                 max: 5,
-    //                 value: this.cliente.valoracion,
-    //                 step: 0.5
-    //             }
-    //         ],
-    //         buttons: [
-    //             {
-    //                 text: 'Cancelar',
-    //                 role: 'cancel'
-    //             },
-    //             {
-    //                 text: 'Guardar',
-    //                 handler: (data) => {
-    //                     this.guardarValoracion(data.estrellas);
-    //                 }
-    //             }
-    //         ]
-    //     });
-    //
-    //     await alert.present();
-    // }
+    async confirmarBanearCliente() {
+        const alert = await this.alertController.create({
+            header: 'Confirmar banear cliente',
+            message: '¿Estás seguro de que deseas banear esta cuenta?',
+            buttons: [
+                {
+                    text: 'Cancelar',
+                    role: 'cancel',
+                    handler: () => {
+                        console.log('Eliminación cancelada');
+                    }
+                },
+                {
+                    text: 'Confirmar',
+                    handler: () => {
+                        this.banearCliente(this.idCliente);
+                    }
+                }
+            ]
+        });
+
+        await alert.present();
+    }
+
+    banearCliente(idCliente: number): void {
+        this.adminService.banearCliente(idCliente).subscribe({
+            next: () => {
+                console.log("Baneado exitosamente");
+            },
+            error: (e) => {
+                console.error("Error al banear al usuario:", e);
+            }
+        });
+    }
+
+    async abrirModalEstrellas() {
+        const alert = await this.alertController.create({
+            header: 'Modificar Estrellas',
+            inputs: [
+                {
+                    name: 'estrellas',
+                    type: 'text',
+                    min: 0,
+                    max: 5,
+                    value: this.cliente.valoracion,
+                }
+            ],
+            buttons: [
+                {
+                    text: 'Cancelar',
+                    role: 'cancel'
+                },
+                {
+                    text: 'Guardar',
+                    handler: (data) => {
+                        if (data.estrellas >= 0 && data.estrellas <= 100 ){
+                            this.guardarValoracion(data.estrellas);
+                        }
+                        else {
+                            const toast = document.getElementById("toastNumero") as any;
+                            toast.present();
+                        }
+                    }
+                }
+            ]
+        });
+
+        await alert.present();
+    }
 
     eliminarCliente(idCliente: number): void {
         this.adminService.eliminarCliente(idCliente).subscribe({
@@ -144,18 +184,54 @@ export class VerInfoAdminComponent implements OnInit {
             valoracion: nuevaValoracion
         };
 
-        this.editarCliente(editarEstrellaDTO);
+        this.editarEstrellas(editarEstrellaDTO);
     }
 
-    editarCliente(editarEstrellaDTO: EditarEstrellaDTO): void {
+    editarEstrellas(editarEstrellaDTO: EditarEstrellaDTO): void {
         this.adminService.editarEstrellas(editarEstrellaDTO).subscribe({
             next: () => {
-                this.router.navigate(['/principal-admin'])
-                console.log("Cliente eliminado exitosamente");
+                location.reload()
             },
             error: (e) => {
                 console.error("Error al eliminar el usuario:", e);
             }
         });
     }
+
+    async confirmarEliminarBaneoCliente() {
+        const alert = await this.alertController.create({
+            header: 'Eliminar baneo cliente',
+            message: '¿Estás seguro de que deseas desbanear esta cuenta?',
+            buttons: [
+                {
+                    text: 'Cancelar',
+                    role: 'cancel',
+                    handler: () => {
+                        console.log('Eliminación cancelada');
+                    }
+                },
+                {
+                    text: 'Confirmar',
+                    handler: () => {
+                        this.eliminarBaneo(this.idCliente);
+                    }
+                }
+            ]
+        });
+
+        await alert.present();
+    }
+
+    eliminarBaneo(idCliente: number): void {
+        this.adminService.eliminarBaneo(idCliente).subscribe({
+            next: () => {
+                console.log("Baneo eliminado exitosamente");
+                location.reload()
+            },
+            error: (e) => {
+                console.error("Error al desbanear el usuario:", e);
+            }
+        });
+    }
+
 }

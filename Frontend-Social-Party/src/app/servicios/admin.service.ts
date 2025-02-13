@@ -10,6 +10,7 @@ import {Usuario} from "../modelos/Usuario";
 import {EditarEstrellaDTO} from "../modelos/EditarEstrellaDTO";
 import {Cliente} from "../modelos/Cliente";
 import {Empresa} from "../modelos/Empresa";
+import {PerfilEmpresa} from "../modelos/PerfilEmpresa";
 
 @Injectable({
     providedIn: 'root'
@@ -60,5 +61,45 @@ export class AdminService {
     editarEstrellas(editarEstrellaDTO: EditarEstrellaDTO): Observable<void> {
         const options = this.comunService.autorizarPeticionFormData();
         return this.http.put<void>(`${this.apiUrl}/admin/editar/estrellas`, editarEstrellaDTO, options);
+    }
+
+    banearCliente(idCliente: number): Observable<void> {
+        const options = this.comunService.autorizarPeticionFormData();
+        return this.http.post<void>(`${this.apiUrl}/admin/banear/cliente/${idCliente}`,{}, options);
+    }
+
+    eliminarBaneo(idCliente: number): Observable<void> {
+        const options = this.comunService.autorizarPeticionFormData();
+        return this.http.put<void>(`${this.apiUrl}/admin/eliminar/baneo/cliente/${idCliente}`,{}, options);
+    }
+
+    getEmpresaDTO(idEmpresa: number): Observable<Empresa> {
+        const options = this.comunService.autorizarPeticion();
+        return this.http.get<Empresa>(`${this.apiUrl}/admin/ver/empresa/${idEmpresa}`, options);
+    }
+
+    getEmpresa(idEmpresa: number): Observable<PerfilEmpresa> {
+        const options = this.comunService.autorizarPeticion();
+        return this.http.get<PerfilEmpresa>(`${this.apiUrl}/admin/ver/empresa/${idEmpresa}`, options);
+    }
+
+    eliminarEmpresa(idEmpresa: number): Observable<void> {
+        const options = this.comunService.autorizarPeticion();
+        return this.http.delete<void>(`${this.apiUrl}/admin/eliminar/empresa/${idEmpresa}`, options);
+    }
+
+    getUsuarioEmpresa(idEmpresa: number): Observable<Usuario> {
+        const options = this.comunService.autorizarPeticion();
+        return this.http.get<Usuario>(`${this.apiUrl}/admin/ver/usuario/empresa/${idEmpresa}`, options);
+    }
+
+
+    actualizarPerfilEmpresa(perfilEmpresa: FormData): Observable<PerfilEmpresa> {
+        const options = this.comunService.autorizarPeticionFormData();
+        return this.http.put<PerfilEmpresa>(
+            `${this.apiUrl}/admin/actualizar/empresa`,
+            perfilEmpresa,
+            options
+        );
     }
 }

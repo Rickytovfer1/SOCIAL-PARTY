@@ -64,4 +64,40 @@ public class AdminControlador {
     public void editarEstrella(@RequestBody EditarEstrellaDTO dto) {
         clienteServicio.modificarEstrella(dto);
     }
+
+    @PostMapping("/banear/cliente/{idCliente}")
+    public void banearCliente(@PathVariable Integer idCliente) {
+        clienteServicio.banearCliente(idCliente);
+    }
+
+    @PutMapping("/eliminar/baneo/cliente/{idCliente}")
+    public void desbanearCliente(@PathVariable Integer idCliente) {
+        clienteServicio.eliminarBaneado(idCliente);
+    }
+
+    @GetMapping("/ver/empresa/{idEmpresa}")
+    public EmpresaDTO buscarEmpresa(@PathVariable Integer idEmpresa){
+        return empresaServicio.verEmpresa(idEmpresa);
+    }
+
+    @DeleteMapping("/eliminar/empresa/{idEmpresa}")
+    public void eliminarEmpresa(@PathVariable Integer idEmpresa){
+        empresaServicio.eliminarEmpresa(idEmpresa);
+    }
+
+    @GetMapping("/ver/usuario/empresa/{idEmpresa}")
+    public UsuarioDTO verUsuarioEmpresa(@PathVariable Integer idEmpresa){
+        return usuarioServicio.buscarUsuarioPorEmpresa(idEmpresa);
+    }
+
+    @PutMapping(value = "/actualizar/empresa", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public EmpresaDTO actualizarEmpresa(
+            @RequestPart("empresa") EmpresaDTO empresaDTO,
+            @RequestPart(value = "fotoPerfil", required = false) MultipartFile fotoPerfil) {
+        if(fotoPerfil != null && !fotoPerfil.isEmpty()){
+            String urlFoto = empresaServicio.guardarFoto(fotoPerfil);
+            empresaDTO.setFotoPerfil(urlFoto);
+        }
+        return empresaServicio.actualizarEmpresa(empresaDTO);
+    }
 }

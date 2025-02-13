@@ -144,7 +144,6 @@ public class PublicacionServicio {
     public void eliminarPublicacionEmpresa(Integer id) {
         Empresa empresa = empresaRepositorio.findById(id).orElseThrow(() -> new RuntimeException("Empresa no encontrado"));
 
-
         List<Publicacion> publicaciones = publicacionRepositorio.findPublicacionesByUsuario_Id(empresa.getUsuario().getId());
         if (!publicaciones.isEmpty()) {
             publicacionRepositorio.deleteAll(publicaciones);

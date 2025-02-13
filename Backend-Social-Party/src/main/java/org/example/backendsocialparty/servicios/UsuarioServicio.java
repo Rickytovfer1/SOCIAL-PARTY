@@ -167,4 +167,14 @@ public class UsuarioServicio implements UserDetailsService {
         return usuarioDTO;
     }
 
+    public UsuarioDTO buscarUsuarioPorEmpresa(Integer idEmpresa){
+        Empresa empresa = empresaRepositorio.findById(idEmpresa).orElseThrow(()-> new RuntimeException("No existe un cliente con este ID."));
+        Usuario usuario = usuarioRepositorio.findById(empresa.getUsuario().getId()).orElse(null);
+
+        UsuarioDTO usuarioDTO = new UsuarioDTO();
+        usuarioDTO.setCorreo(usuario.getCorreo());
+
+        return usuarioDTO;
+    }
+
 }

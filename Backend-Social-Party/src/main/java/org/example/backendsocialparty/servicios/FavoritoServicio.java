@@ -2,6 +2,7 @@ package org.example.backendsocialparty.servicios;
 
 import org.example.backendsocialparty.DTOs.FavoritoDTO;
 import org.example.backendsocialparty.modelos.Cliente;
+import org.example.backendsocialparty.modelos.Entrada;
 import org.example.backendsocialparty.modelos.Favorito;
 import org.example.backendsocialparty.modelos.Publicacion;
 import org.example.backendsocialparty.repositorios.ClienteRepositorio;
@@ -76,5 +77,10 @@ public class FavoritoServicio {
         dtonuevo.setId_cliente(f.getCliente().getId());
         dtonuevo.setId_publicacion(f.getPublicacion().getId());
         return dtonuevo;
+    }
+
+    public void eliminarLike(Integer id){
+        List<Favorito> likes = favoritoRepositorio.findByCliente_Id(id);
+        favoritoRepositorio.deleteAll(likes);
     }
 }

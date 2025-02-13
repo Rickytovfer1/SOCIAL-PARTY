@@ -15,10 +15,10 @@
                                     <ion-grid>
                                         <ion-row>
                                             <ion-col class="ion-align-items-center">
-                                                <ion-text id="nombre">{{cliente.nombre}}</ion-text>
+                                                <ion-text id="nombre">{{ cliente.nombre }}</ion-text>
                                             </ion-col>
                                             <ion-col class="ion-justify-content-between ion-align-items-center">
-                                                <ion-text id="texto_estrellas">{{cliente.valoracion}}</ion-text>
+                                                <ion-text id="texto_estrellas">{{ cliente.valoracion }}</ion-text>
                                                 <ion-img id="estrella" src="assets/estrella.png"/>
                                             </ion-col>
                                         </ion-row>
@@ -30,7 +30,7 @@
                     <ion-card id="card_bio">
                         <ion-grid>
 
-                            <ion-row>
+                            <ion-row (click)="abrirModalEstrellas()">
                                 <ion-col size="2">
                                     <ion-img src="assets/modificarEstrella.png"></ion-img>
                                 </ion-col>
@@ -38,12 +38,20 @@
                                     <ion-text class="contenido">Modificar estrellas</ion-text>
                                 </ion-col>
                             </ion-row>
-                            <ion-row style="margin-top: 20px">
+                            <ion-row (click)="confirmarBanearCliente()" style="margin-top: 20px">
                                 <ion-col size="2">
                                     <ion-img src="assets/banear.png"></ion-img>
                                 </ion-col>
                                 <ion-col size="10" style="display: flex" class="ion-align-items-center">
                                     <ion-text class="contenido">Banear cuenta</ion-text>
+                                </ion-col>
+                            </ion-row>
+                            <ion-row (click)="confirmarEliminarBaneoCliente()" style="margin-top: 20px">
+                                <ion-col size="2">
+                                    <ion-img src="assets/eliminarBaneado.png"></ion-img>
+                                </ion-col>
+                                <ion-col size="10" style="display: flex" class="ion-align-items-center">
+                                    <ion-text class="contenido">Eliminar baneo</ion-text>
                                 </ion-col>
                             </ion-row>
                             <ion-row (click)="irModificar(cliente.id)" style="margin-top: 20px">
@@ -72,3 +80,10 @@
 </ion-content>
 
 <app-nav-inferior-admin></app-nav-inferior-admin>
+<ion-toast
+    id="toastNumero"
+    message="Por favor, inserte un número entre 0 y 100."
+    duration="3000"
+    position="top"
+    color="danger"
+></ion-toast>

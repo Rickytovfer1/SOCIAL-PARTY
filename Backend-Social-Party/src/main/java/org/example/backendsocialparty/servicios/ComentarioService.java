@@ -11,6 +11,7 @@ import org.example.backendsocialparty.repositorios.PublicacionRepositorio;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class ComentarioService {
@@ -54,5 +55,9 @@ public class ComentarioService {
         return dtonuevo;
     }
 
+    public void eliminarComentario(Integer id){
+        List<Comentario> comentarios = comentarioRepositorio.findByCliente_Id(id);
+        comentarioRepositorio.deleteAll(comentarios);
+    }
 
 }
