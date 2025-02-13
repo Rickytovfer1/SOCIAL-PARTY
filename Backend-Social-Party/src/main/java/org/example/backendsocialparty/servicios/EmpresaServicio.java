@@ -65,7 +65,7 @@ public class EmpresaServicio {
                 .orElseThrow(() -> new RuntimeException("No existe una empresa con este ID."));
 
         eventoServicio.eliminarBaneadoEmpresa(id);
-        entradaServicio.eliminarEntradaEmpresa(id);
+//        entradaServicio.eliminarEntradaEmpresa(id);
         eventoServicio.eliminarEvento(id);
         publicacionServicio.eliminarPublicacionEmpresa(id);
         empresaRepositorio.delete(empresa);

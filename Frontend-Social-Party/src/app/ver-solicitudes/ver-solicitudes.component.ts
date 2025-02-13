@@ -93,6 +93,13 @@ export class VerSolicitudesComponent implements OnInit {
             next: (perfil: Cliente) => {
                 this.perfil = perfil;
                 this.cargarSolicitudes()
+                this.socketService.subscribeToSolicitudes(this.perfil.idUsuario);
+                this.socketService.listenEvent().subscribe((data: any) => {
+                    this.zone.run(() => {
+                        console.log('Received solicitud event:', data);
+                        this.handleSolicitudEvent(data);
+                    });
+                });
             },
             error: (e) => {
                 console.error("Error al cargar el perfil:", e);
@@ -107,23 +114,7 @@ export class VerSolicitudesComponent implements OnInit {
         if (!action || !solicitud) return;
 
         if (action === 'create') {
-            this.perfilServicio.getPerfil(solicitud.idUsuario1).subscribe({
-                next: (perfil) => {
-                    if (perfil.fotoPerfil && perfil.fotoPerfil.startsWith('http')) {
-                        solicitud.imagenPerfil = perfil.fotoPerfil;
-                    } else {
-                        solicitud.imagenPerfil = `${this.baseUrl}${perfil.fotoPerfil}`;
-                    }
-                    solicitud.nombreUsuario = perfil.nombre + ' ' + perfil.apellidos;
-                    this.solicitudes = [...this.solicitudes, solicitud];
-                },
-                error: (err) => {
-                    console.error('Error al cargar el perfil del usuario', err);
-                    solicitud.imagenPerfil = 'assets/iconoPerfil.png';
-                    solicitud.nombreUsuario = 'Nombre usuario';
-                    this.solicitudes = [...this.solicitudes, solicitud];
-                }
-            });
+
         } else if (action === 'accept' || action === 'delete') {
             this.solicitudes = this.solicitudes.filter(s => s.id !== solicitud.id);
         }

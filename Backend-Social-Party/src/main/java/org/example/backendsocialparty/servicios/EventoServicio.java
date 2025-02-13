@@ -132,13 +132,10 @@ public class EventoServicio {
         if (cliente.getEventos() != null && !cliente.getEventos().isEmpty()) {
             Evento evento = cliente.getEventos().iterator().next();
             evento.getAsistentes().remove(cliente);
-            cliente.setEvento(null);
             cliente.getEventos().remove(evento);
             eventoRepositorio.save(evento);
-            clienteRepositorio.save(cliente);
         }
     }
-
 
     public void eliminarEvento(Integer id) {
         List<Evento> eventos = eventoRepositorio.findByEmpresa_Id(id);

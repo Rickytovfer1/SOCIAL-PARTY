@@ -151,24 +151,24 @@ public class EntradaServicio {
         entradaRepositorio.deleteAll(entradas);
     }
 
-    public void eliminarEntradaEmpresa(Integer id) {
-        Empresa empresa = empresaRepositorio.findById(id)
-                .orElseThrow(() -> new RuntimeException("No existe una empresa con este ID."));
-
-        for (Evento evento : empresa.getEventos()) {
-            List<Cliente> clientes = clienteRepositorio.findByEvento_Id(evento.getId());
-
-            for (Cliente cliente : clientes) {
-                cliente.setEvento(null);
-                clienteRepositorio.save(cliente);
-            }
-
-            List<Entrada> entradas = entradaRepositorio.findByEvento_Id(evento.getId());
-            if (!entradas.isEmpty()) {
-                entradaRepositorio.deleteAll(entradas);
-            }
-        }
-    }
+//    public void eliminarEntradaEmpresa(Integer id) {
+//        Empresa empresa = empresaRepositorio.findById(id)
+//                .orElseThrow(() -> new RuntimeException("No existe una empresa con este ID."));
+//
+//        for (Evento evento : empresa.getEventos()) {
+//            List<Cliente> clientes = clienteRepositorio.findByEvento_Id(evento.getId());
+//
+//            for (Cliente cliente : clientes) {
+//                cliente.setEvento(null);
+//                clienteRepositorio.save(cliente);
+//            }
+//
+//            List<Entrada> entradas = entradaRepositorio.findByEvento_Id(evento.getId());
+//            if (!entradas.isEmpty()) {
+//                entradaRepositorio.deleteAll(entradas);
+//            }
+//        }
+//    }
 
 
 
