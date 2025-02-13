@@ -129,14 +129,16 @@ public class EventoServicio {
     public void eliminarPersonaEvento(Integer id) {
         Cliente cliente = clienteRepositorio.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cliente no encontrado."));
-        if (cliente.getEvento() != null) {
-            Evento evento = cliente.getEvento();
+        if (cliente.getEventos() != null && !cliente.getEventos().isEmpty()) {
+            Evento evento = cliente.getEventos().iterator().next();
             evento.getAsistentes().remove(cliente);
             cliente.setEvento(null);
+            cliente.getEventos().remove(evento);
             eventoRepositorio.save(evento);
             clienteRepositorio.save(cliente);
         }
     }
+
 
     public void eliminarEvento(Integer id) {
         List<Evento> eventos = eventoRepositorio.findByEmpresa_Id(id);

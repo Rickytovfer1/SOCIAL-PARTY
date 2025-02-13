@@ -1,14 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from "@ionic/angular";
 import { NavSuperiorComponent } from "../nav-superior/nav-superior.component";
 import { NavInferiorComponent } from "../nav-inferior/nav-inferior.component";
 import { UsuarioService } from "../servicios/usuario.service";
 import { AmigoService } from "../servicios/amigo.service";
+import { SolicitudService } from "../servicios/SolicitudService";
+import { SocketService } from "../servicios/SocketService";
 import { Usuario } from "../modelos/Usuario";
 import { Cliente } from "../modelos/Cliente";
 import { jwtDecode } from "jwt-decode";
-import { DecodedToken } from "../modelos/DecodedToken";
 import { TokenDataDTO } from "../modelos/TokenDataDTO";
 import { Router } from "@angular/router";
 
@@ -25,45 +26,36 @@ import { Router } from "@angular/router";
     ]
 })
 export class AmigosComponent implements OnInit {
-
     usuario: Usuario = {} as Usuario;
     amigos: Cliente[] = [];
     correo?: string;
+    pendingSolicitudes: number = 0;
+    socketSubscription: any;
 
     constructor(
         private usuarioService: UsuarioService,
         private amigoService: AmigoService,
+        private solicitudService: SolicitudService,
+        private socketService: SocketService,
         private router: Router,
+        private zone: NgZone
     ) {}
 
     ngOnInit() {
-        this.inicio()
+        this.inicio();
     }
 
     inicio() {
         const token = sessionStorage.getItem('authToken');
-        console.log('Auth Token:', token);
-
         if (token) {
             try {
                 const decodedToken = jwtDecode(token) as { tokenDataDTO: TokenDataDTO };
-                console.log('Decoded Token:', decodedToken);
-
                 const tokenDataDTO = decodedToken?.tokenDataDTO;
-
                 if (tokenDataDTO && tokenDataDTO.correo) {
                     this.correo = tokenDataDTO.correo;
-                    console.log('Correo obtenido del token:', this.correo);
-
-                    this.cargarUsuario(this.correo!);
-                } else {
-                    console.error('El token no contiene un correo válido en tokenDataDTO');
+                    this.cargarUsuario(this.correo);
                 }
-            } catch (e) {
-                console.error('Error al decodificar el token:', e);
-            }
-        } else {
-            console.warn('No se encontró el token de autenticación en sessionStorage');
+            } catch (e) {}
         }
     }
 
@@ -71,17 +63,26 @@ export class AmigosComponent implements OnInit {
         this.usuarioService.getUsuario(correo).subscribe({
             next: (usuario: Usuario) => {
                 this.usuario = usuario;
-                console.log('Usuario cargado:', this.usuario);
-
                 if (usuario && usuario.id) {
                     this.cargarAmigos(usuario.id);
-                } else {
-                    console.error('El usuario no tiene un ID válido.');
+                    this.cargarSolicitudesPendientes(usuario.id);
+                    this.socketService.subscribeToSolicitudes(usuario.id);
+                    if (!this.socketSubscription) {
+                        this.socketSubscription = this.socketService.listenEvent().subscribe((data: any) => {
+                            this.zone.run(() => {
+                                if (data && data.action) {
+                                    if (data.action === 'create') {
+                                        this.pendingSolicitudes++;
+                                    } else if (data.action === 'accept' || data.action === 'delete') {
+                                        this.pendingSolicitudes = Math.max(0, this.pendingSolicitudes - 1);
+                                    }
+                                }
+                            });
+                        });
+                    }
                 }
             },
-            error: (e) => {
-                console.error("Error al cargar el usuario:", e);
-            }
+            error: (e) => {}
         });
     }
 
@@ -89,11 +90,17 @@ export class AmigosComponent implements OnInit {
         this.amigoService.getAmigos(idUsuario).subscribe({
             next: (amigos: Cliente[]) => {
                 this.amigos = amigos;
-                console.log('Amigos cargados:', this.amigos);
             },
-            error: (e) => {
-                console.error("Error al cargar los amigos:", e);
-            }
+            error: (e) => {}
+        });
+    }
+
+    cargarSolicitudesPendientes(idUsuario: number): void {
+        this.solicitudService.getSolicitudes(idUsuario).subscribe({
+            next: (solicitudes) => {
+                this.pendingSolicitudes = solicitudes.length;
+            },
+            error: (e) => {}
         });
     }
 
@@ -107,9 +114,5 @@ export class AmigosComponent implements OnInit {
 
     verAmigos() {
         this.router.navigate(['/gestion-amigos']);
-    }
-
-    ionViewWillEnter() {
-        this.inicio()
     }
 }

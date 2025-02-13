@@ -15,6 +15,7 @@ export class SocketService {
     private client: Client;
     private messageSubject: Subject<any> = new Subject();
     private pendingSubscriptions: SubscriptionRequest[] = [];
+    private pendingSolicitudes: number[] = [];
     private connected: boolean = false;
 
     constructor() {
@@ -33,6 +34,15 @@ export class SocketService {
                         this.doSubscribe(req.emisorId, req.receptorId);
                     }
                 }
+                while (this.pendingSolicitudes.length > 0) {
+                    const userId = this.pendingSolicitudes.shift();
+                    if (userId !== undefined) {
+                        const topic = `/topic/solicitudes/${userId}`;
+                        this.client.subscribe(topic, (message: Message) => {
+                            this.messageSubject.next(JSON.parse(message.body));
+                        });
+                    }
+                }
             },
             onStompError: frame => {
                 console.error('Broker reported error: ' + frame.headers['message']);
@@ -45,6 +55,20 @@ export class SocketService {
         });
         this.client.activate();
     }
+
+    subscribeToSolicitudes(userId: number) {
+        const topic = `/topic/solicitudes/${userId}`;
+        if (!this.connected) {
+            this.pendingSolicitudes.push(userId);
+        } else {
+            this.client.subscribe(topic, (message: Message) => {
+                console.log("Received message on topic " + topic, message);
+                const parsed = JSON.parse(message.body);
+                this.messageSubject.next(parsed);
+            });
+        }
+    }
+
 
     subscribeToConversation(emisorId: number, receptorId: number) {
         if (!this.connected) {

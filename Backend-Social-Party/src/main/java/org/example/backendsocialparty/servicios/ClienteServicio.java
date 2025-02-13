@@ -128,9 +128,11 @@ public class ClienteServicio {
             dtonuevo.setAmigos(gruposDTO);
         }
 
-        if (c.getEvento() != null) {
-            dtonuevo.setEvento(c.getEvento().getId());
+        if (c.getEventos() != null && !c.getEventos().isEmpty()) {
+            Evento evento = c.getEventos().iterator().next();
+            dtonuevo.setEvento(evento.getId());
         }
+
 
         if (c.getUsuario() != null) {
             dtonuevo.setIdUsuario(c.getUsuario().getId());

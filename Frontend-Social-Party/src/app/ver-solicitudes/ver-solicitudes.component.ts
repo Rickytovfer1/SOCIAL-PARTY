@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, NgZone, OnInit} from '@angular/core';
 import {AlertController, IonicModule} from '@ionic/angular';
 import { SolicitudDTO } from '../modelos/solicitud.dto';
 import { UsuarioService } from '../servicios/usuario.service';
@@ -9,7 +9,8 @@ import { Perfil } from '../modelos/Perfil';
 import {NavSuperiorComponent} from "../nav-superior/nav-superior.component";
 import {NavInferiorComponent} from "../nav-inferior/nav-inferior.component";
 import {NgForOf} from "@angular/common";
-import {environment} from "../../environments/environment";
+import {environment} from "../../environments/environment"; // Se asume que Perfil tiene una propiedad "nombre"
+import { SocketService } from '../servicios/SocketService';
 import {TokenDataDTO} from "../modelos/TokenDataDTO";
 import {Usuario} from "../modelos/Usuario";
 import {Cliente} from "../modelos/Cliente";
@@ -43,6 +44,10 @@ export class VerSolicitudesComponent implements OnInit {
     constructor(
         private router: Router,
         private usuarioService: UsuarioService,
+        private perfilServicio: PerfilServicio,
+        private alertController: AlertController,
+        private socketService: SocketService,
+        private zone: NgZone,
         private clienteService: ClienteService,
         private amigoService: AmigoService,
         private eventoService: EventoService,
@@ -94,6 +99,37 @@ export class VerSolicitudesComponent implements OnInit {
             }
         });
     }
+
+    handleSolicitudEvent(data: any) {
+        const action = data.action;
+        const solicitud: SolicitudDTO = data.solicitud;
+
+        if (!action || !solicitud) return;
+
+        if (action === 'create') {
+            this.perfilServicio.getPerfil(solicitud.idUsuario1).subscribe({
+                next: (perfil) => {
+                    if (perfil.fotoPerfil && perfil.fotoPerfil.startsWith('http')) {
+                        solicitud.imagenPerfil = perfil.fotoPerfil;
+                    } else {
+                        solicitud.imagenPerfil = `${this.baseUrl}${perfil.fotoPerfil}`;
+                    }
+                    solicitud.nombreUsuario = perfil.nombre + ' ' + perfil.apellidos;
+                    this.solicitudes = [...this.solicitudes, solicitud];
+                },
+                error: (err) => {
+                    console.error('Error al cargar el perfil del usuario', err);
+                    solicitud.imagenPerfil = 'assets/iconoPerfil.png';
+                    solicitud.nombreUsuario = 'Nombre usuario';
+                    this.solicitudes = [...this.solicitudes, solicitud];
+                }
+            });
+        } else if (action === 'accept' || action === 'delete') {
+            this.solicitudes = this.solicitudes.filter(s => s.id !== solicitud.id);
+        }
+    }
+
+
 
     cargarSolicitudes() {
         this.solicitudService.getSolicitudes(this.perfil.idUsuario).subscribe({
@@ -164,4 +200,8 @@ export class VerSolicitudesComponent implements OnInit {
     verPerfil(cliente: Cliente) {
         this.router.navigate(["/perfil-asistente", cliente.idUsuario])
     }
+    trackBySolicitud(index: number, solicitud: SolicitudDTO): number {
+        return solicitud.id;
+    }
+
 }
