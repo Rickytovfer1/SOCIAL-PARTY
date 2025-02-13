@@ -146,4 +146,12 @@ public class EventoServicio {
         }
         eventoRepositorio.deleteAll(eventos);
     }
+
+    public void eliminarBaneadoEmpresa(Integer id) {
+        Empresa empresa = empresaRepositorio.findById(id)
+                .orElseThrow(() -> new RuntimeException("No existe una empresa con este ID."));
+
+        empresa.getBaneados().clear();
+        empresaRepositorio.save(empresa);
+    }
 }
