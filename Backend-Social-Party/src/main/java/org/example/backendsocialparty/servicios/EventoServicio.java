@@ -174,5 +174,24 @@ public class EventoServicio {
         }
     }
 
+    public EventoDTO obtenerEventoDeHoy(Integer idEmpresa) {
+        Empresa empresa = empresaRepositorio.findById(idEmpresa)
+                .orElseThrow(() -> new RuntimeException("No existe una empresa con este ID."));
+
+        LocalDate hoy = LocalDate.now();
+        LocalTime ahora = LocalTime.now();
+
+        for (Evento evento : empresa.getEventos()) {
+            if (evento.getFecha().isEqual(hoy) &&
+                    !ahora.isBefore(evento.getHoraApertura()) &&
+                    !ahora.isAfter(evento.getHoraFinalizacion())) {
+                return getEventoDTO(evento);
+            }
+        }
+
+        return null;
+    }
+
+
 
 }

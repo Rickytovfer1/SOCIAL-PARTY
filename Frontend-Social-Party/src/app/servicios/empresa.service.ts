@@ -5,6 +5,7 @@ import { catchError } from 'rxjs/operators';
 import { environment } from "../../environments/environment";
 import { ComunService } from "./comun.service";
 import { Empresa } from "../modelos/Empresa";
+import {Evento} from "../modelos/Evento";
 
 @Injectable({
     providedIn: 'root'
@@ -46,6 +47,11 @@ export class EmpresaService {
                     return throwError(() => new Error('Error al actualizar la empresa'));
                 })
             );
+    }
+
+    getEventoHoy(idEmpresa: number): Observable<Evento> {
+        const options = this.comunService.autorizarPeticion();
+        return this.http.get<Evento>(`${this.apiUrl}/empresa/ver/evento/hoy/${idEmpresa}`, options);
     }
 
 }

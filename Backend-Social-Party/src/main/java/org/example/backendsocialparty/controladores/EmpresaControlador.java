@@ -3,10 +3,12 @@ package org.example.backendsocialparty.controladores;
 import lombok.AllArgsConstructor;
 import org.example.backendsocialparty.DTOs.ClienteDTO;
 import org.example.backendsocialparty.DTOs.EmpresaDTO;
+import org.example.backendsocialparty.DTOs.EventoDTO;
 import org.example.backendsocialparty.DTOs.RestarPuntoDTO;
 import org.example.backendsocialparty.security.UsuarioAdapter;
 import org.example.backendsocialparty.servicios.ClienteServicio;
 import org.example.backendsocialparty.servicios.EmpresaServicio;
+import org.example.backendsocialparty.servicios.EventoServicio;
 import org.example.backendsocialparty.servicios.UsuarioServicio;
 import org.example.backendsocialparty.modelos.Usuario;
 import org.springframework.http.MediaType;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping
@@ -24,6 +27,7 @@ public class EmpresaControlador {
     private final ClienteServicio clienteServicio;
     private final EmpresaServicio empresaServicio;
     private final UsuarioServicio usuarioServicio;
+    private final EventoServicio eventoServicio;
 
     @GetMapping("/empresa/buscar/{id}")
     public ClienteDTO buscarClienteId(@PathVariable Integer id) {
@@ -81,4 +85,11 @@ public class EmpresaControlador {
         }
         return empresaServicio.actualizarEmpresa(empresaDTO);
     }
+
+
+    @GetMapping("/empresa/ver/evento/hoy/{idEmpresa}")
+    public EventoDTO verEventoHoy(@PathVariable Integer idEmpresa){
+        return eventoServicio.obtenerEventoDeHoy(idEmpresa);
+    }
+
 }
