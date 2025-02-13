@@ -69,8 +69,10 @@ public class Cliente {
     @ToString.Exclude
     private Usuario usuario;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "asistentes",
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    private Evento evento;
+    private Set<Evento> eventos = new HashSet<>();
+
 }

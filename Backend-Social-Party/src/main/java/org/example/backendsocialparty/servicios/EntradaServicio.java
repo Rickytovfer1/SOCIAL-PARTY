@@ -61,8 +61,9 @@ public class EntradaServicio {
         Evento evento = eventoRepositorio.findById(entrada.getEvento().getId())
                 .orElseThrow(() -> new RuntimeException("No existe un evento con este ID."));
 
-        if (cliente.getEvento() != null) {
-            if (cliente.getEvento().getId().equals(evento.getId())) {
+        if (cliente.getEventos() != null && !cliente.getEventos().isEmpty()) {
+            Evento eventoActual = cliente.getEventos().iterator().next();
+            if (eventoActual.getId().equals(evento.getId())) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El cliente ya ha canjeado esta entrada.");
             } else {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El cliente está actualmente en otro evento.");
@@ -70,8 +71,13 @@ public class EntradaServicio {
         }
 
         evento.getAsistentes().add(cliente);
-        cliente.setEvento(evento);
-        clienteRepositorio.save(cliente);
+
+        cliente.getEventos().clear();
+        cliente.getEventos().add(evento);
+        eventoRepositorio.save(evento);
+
+
+
     }
 
 

@@ -53,13 +53,24 @@ public class Evento {
     @ToString.Exclude
     private Set<Entrada> entradas = new HashSet<>(0);
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinTable(
+            name = "evento_asistentes",
+            joinColumns = @JoinColumn(name = "evento_id"),
+            inverseJoinColumns = @JoinColumn(name = "asistentes_id")
+    )
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    private Set<Cliente> asistentes = new HashSet<>(0);
+    private Set<Cliente> asistentes = new HashSet<>();
+
+
 
     public void removerAsistente(Cliente cliente) {
         this.asistentes.remove(cliente);
-        cliente.setEvento(null);
+        if (cliente.getEventos() != null) {
+            cliente.getEventos().clear();
+        }
     }
+
+
 }
