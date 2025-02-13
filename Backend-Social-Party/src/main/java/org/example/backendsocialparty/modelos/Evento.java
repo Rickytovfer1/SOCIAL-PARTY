@@ -58,4 +58,8 @@ public class Evento {
     @ToString.Exclude
     private Set<Cliente> asistentes = new HashSet<>(0);
 
+    public void removerAsistente(Cliente cliente) {
+        this.asistentes.remove(cliente);
+        cliente.setEvento(null);
+    }
 }

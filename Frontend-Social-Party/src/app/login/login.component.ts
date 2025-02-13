@@ -60,7 +60,7 @@ export class LoginComponent implements OnInit {
                         this.router.navigate(['/principal-admin']);
                     }
                 } catch (e) {
-                    console.error('Error al decodificar el token:', e);
+                    console.error('Error al decodificar el token:');
                 }
             },
             error: async (e) => {
