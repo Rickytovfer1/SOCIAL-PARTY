@@ -80,7 +80,7 @@ public class AmistadServicio {
 
 
     public void eliminarAmistad(Integer id) {
-        List<Amistad> amistades = amistadRepositorio.findAmistadByUsuario_IdAndAmigo_Id(id, id);
+        List<Amistad> amistades = amistadRepositorio.findAllByUsuario_IdOrAmigo_Id(id, id);
         amistadRepositorio.deleteAll(amistades);
     }
     public void eliminarAmistadCliente(Integer id) {
@@ -88,5 +88,12 @@ public class AmistadServicio {
         Cliente cliente = clienteRepositorio.findById(id).orElseThrow(()-> new RuntimeException("Cliente no encontrado"));
         List<Amistad> amistades = amistadRepositorio.findAmistadByUsuario_IdOrAmigo_Id(id, id);
         amistadRepositorio.deleteAll(amistades);
+    }
+
+    public void eliminarAmigo(Integer idUsuario, Integer idAmigo) {
+        Amistad amistad1 = amistadRepositorio.findAmistadByUsuario_IdAndAmigo_Id(idUsuario, idAmigo);
+        Amistad amistad2 = amistadRepositorio.findAmistadByUsuario_IdAndAmigo_Id(idAmigo, idUsuario);
+        amistadRepositorio.delete(amistad1);
+        amistadRepositorio.delete(amistad2);
     }
 }

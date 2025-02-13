@@ -11,10 +11,10 @@ import java.util.Set;
 
 @Repository
 public interface AmistadRepositorio extends JpaRepository<Amistad, Integer> {
+    Amistad findAmistadByUsuario_IdAndAmigo_Id(Integer usuarioId, Integer amigoId);
     List<Amistad> findAmistadByUsuario_IdOrAmigo_Id(Integer usuarioId, Integer amigoId);
     @Query("SELECT a FROM Amistad a WHERE a.usuario.id = :userId OR a.amigo.id = :userId")
     List<Amistad> findAllByUserId(@Param("userId") Integer userId);
     List<Amistad> findAllByUsuario_IdOrAmigo_Id(Integer usuarioId, Integer amigoId);
     boolean existsByUsuario_IdAndAmigo_Id(Integer id, Integer id1);
-    List<Amistad> findAmistadByUsuario_IdAndAmigo_Id(Integer id, Integer id1);
 }

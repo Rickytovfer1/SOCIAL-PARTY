@@ -7,7 +7,7 @@
             <ion-card class="card-inner">
                 <ion-card-header>
                     <ion-label>Escribe tu texto:</ion-label>
-                    <ion-textarea [(ngModel)]="texto" placeholder="Escribe tu texto"></ion-textarea>
+                    <ion-textarea [(ngModel)]="publicacion.texto" placeholder="Escribe un texto"></ion-textarea>
                 </ion-card-header>
 
                 <ion-card-content>
@@ -22,3 +22,11 @@
 </ion-content>
 
 <app-nav-inferior></app-nav-inferior>
+
+<ion-toast
+    id="toastSinEvento"
+    message="No estás en ningún evento, no puedes publicar."
+    duration="3000"
+    position="top"
+    color="warning"
+></ion-toast>

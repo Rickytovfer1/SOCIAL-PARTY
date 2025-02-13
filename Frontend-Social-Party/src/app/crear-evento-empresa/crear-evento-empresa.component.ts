@@ -22,9 +22,7 @@ import {NavSuperiorComponent} from "../nav-superior/nav-superior.component";
         FormsModule,
         CommonModule,
         NavSuperiorEmpresaComponent,
-        NavInferiorEmpresaComponent,
-        NavInferiorComponent,
-        NavSuperiorComponent
+        NavInferiorEmpresaComponent
     ]
 })
 export class CrearEventoEmpresaComponent implements OnInit {

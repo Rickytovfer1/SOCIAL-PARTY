@@ -4,11 +4,11 @@ import {NavSuperiorAdminComponent} from "../nav-superior-admin/nav-superior-admi
 import {NavInferiorAdminComponent} from "../nav-inferior-admin/nav-inferior-admin.component";
 import {IonicModule} from "@ionic/angular";
 import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
-import {EmpresaDTO} from "../modelos/EmpresaDTO";
 import {AdminService} from "../servicios/admin.service";
-import {ClienteDTO} from "../modelos/ClienteDTO";
 import {environment} from "../../environments/environment";
 import {Router} from "@angular/router";
+import {Cliente} from "../modelos/Cliente";
+import {Empresa} from "../modelos/Empresa";
 
 @Component({
     selector: 'app-principal-admin',
@@ -30,8 +30,8 @@ export class PrincipalAdminComponent implements OnInit {
     segmentoSeleccionado: string = 'clientes';
     baseUrl: string = environment.apiUrl;
 
-    empresas: EmpresaDTO[] = [];
-    clientes: ClienteDTO[] = [];
+    empresas: Empresa[] = [];
+    clientes: Cliente[] = [];
 
     constructor(private adminService: AdminService,
                 private router: Router) {
@@ -48,7 +48,7 @@ export class PrincipalAdminComponent implements OnInit {
 
     verEmpresas(): void {
         this.adminService.verEmpresas().subscribe({
-            next: (empresa: EmpresaDTO[]) => {
+            next: (empresa: Empresa[]) => {
                 this.empresas = empresa;
             },
             error: (e) => {
@@ -59,7 +59,7 @@ export class PrincipalAdminComponent implements OnInit {
 
     verClientes(): void {
         this.adminService.verClientes().subscribe({
-            next: (cliente: ClienteDTO[]) => {
+            next: (cliente: Cliente[]) => {
                 this.clientes = cliente;
             },
             error: (e) => {
@@ -67,7 +67,7 @@ export class PrincipalAdminComponent implements OnInit {
             }
         });
     }
-    getImageUrl(empresaDTO: EmpresaDTO): string {
+    getImageUrl(empresaDTO: Empresa): string {
         if (empresaDTO.fotoPerfil.startsWith('http')) {
             return empresaDTO.fotoPerfil;
         } else {
@@ -75,7 +75,7 @@ export class PrincipalAdminComponent implements OnInit {
         }
     }
 
-    getImageUrlCliente(clienteDTO: ClienteDTO): string {
+    getImageUrlCliente(clienteDTO: Cliente): string {
         if (!clienteDTO.fotoPerfil || clienteDTO.fotoPerfil.trim() === '') {
             return 'assets/iconoPerfil.png';
         } else if (clienteDTO.fotoPerfil.startsWith('http')) {

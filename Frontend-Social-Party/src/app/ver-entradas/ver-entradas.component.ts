@@ -14,7 +14,7 @@ import {Usuario} from "../modelos/Usuario";
 import {PerfilServicio} from "../servicios/perfil.service";
 import {UsuarioService} from "../servicios/usuario.service";
 import {NgForOf, NgOptimizedImage} from "@angular/common";
-import {EmpresaDTO} from "../modelos/EmpresaDTO";
+import {Empresa} from "../modelos/Empresa";
 import {FormsModule} from "@angular/forms";
 import {environment} from "../../environments/environment";
 import {EmpresaEntradaDTO} from "../modelos/EmpresaEntradaDTO";
@@ -34,8 +34,8 @@ import {EmpresaEntradaDTO} from "../modelos/EmpresaEntradaDTO";
     ]
 })
 export class VerEntradasComponent implements OnInit {
-    empresaEntrada: EmpresaEntradaDTO = {} as EmpresaDTO;
-    empresa: EmpresaDTO = {} as EmpresaDTO;
+    empresaEntrada: EmpresaEntradaDTO = {} as Empresa;
+    empresa: Empresa = {} as Empresa;
     evento: Evento = {} as Evento;
     usuario: Usuario = {} as Usuario;
     perfil: Perfil = {} as Perfil;
@@ -123,7 +123,7 @@ export class VerEntradasComponent implements OnInit {
 
     verEmpresa(idEmpresa: number | undefined): void {
         this.eventoService.verEmpresa(idEmpresa).subscribe({
-            next: (empresa: EmpresaDTO) => {
+            next: (empresa: Empresa) => {
                 this.empresa = empresa;
             },
             error: (e) => {

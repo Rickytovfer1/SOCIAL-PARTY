@@ -25,6 +25,10 @@ public class AmistadControlador {
         return amistadServicio.aceptarSolicitud(idUsuario, idUsuario2);
     }
 
+    @PostMapping("/amigo/eliminar/{idUsuario}/{idAmigo}")
+    public void eliminarAmigo(@PathVariable Integer idUsuario, @PathVariable Integer idAmigo) {
+        amistadServicio.eliminarAmigo(idUsuario, idAmigo);
+    }
 
 
 }

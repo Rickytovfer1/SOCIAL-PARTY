@@ -2,118 +2,74 @@
     --background: #D3E5E5;
 }
 
-#icono {
-    width: 50%;
-    height: 50%;
-    object-fit: cover;
-    margin: 0 auto;
+#card_borde {
+    --background: #471FCD;
+    border-radius: 25px;
 }
 
-#col_principal {
-    margin: 0 auto;
+#card_fondo {
+    --background: #FFFFFF;
+    border-radius: 25px;
 }
 
-ion-button {
-    color: #000000;
-    --border-radius: 25px;
-    margin: 0 auto;
-    --background: #5AB7D5;
+.card-form {
+    --background: #306DA9;
+    border-radius: 25px;
+    padding: 10px;
 }
 
-ion-input {
+ion-label {
+    color: #ffffff;
+}
+
+ion-input, ion-datetime {
     --padding-start: 10px;
     --background: #ffffff;
     --border-radius: 15px;
     margin-top: 15px;
     margin-bottom: 30px;
+    padding: 10px;
+    font-size: 14px;
+    color: #000000;
 }
 
-@media (min-width: 768px) {
-    #grid_secundario {
-        height: 100%;
-        margin-bottom: 0;
-    }
-}
-
-@media (max-width: 767px) {
-    #cartaouter {
-        margin: 35px;
-    }
-}
-
-.card-outer {
-    --background: #471FCD;
-    margin: 5px auto;
-    padding: 5px;
-    margin-top: 50px;
-    border-radius: 25px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.8);
-    border: 2px solid #000000;
-}
-
-.card-middle {
+ion-datetime {
+    --border-radius: 15px;
     --background: #ffffff;
-    margin: 5px 15px;
-    padding: 5px;
-    border-radius: 25px;
-    border: 2px solid #000000;
+    --padding-start: 10px;
+    --color: #000000;
+    border-radius: 16px;
+    box-shadow: rgba(var(--ion-color-base-rgb), 0.3) 0px 10px 15px -3px;
 }
 
-.card-inner {
-    --background: #306DA9;
-    margin: 20px 10px;
-    padding: 5px;
-    border-radius: 20px;
-    border: 2px solid #000000;
+ion-datetime::part(calendar-day) {
+    color: #000000;
 }
 
-ion-content {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+ion-datetime::part(calendar-day today) {
+    color: #000000;
 }
 
-ion-card {
-    max-width: 400px;
-    --background: #471FCD;
-    margin: 5px;
+input[type="file"]::file-selector-button {
+    font-size: 16px;
+}
+
+input[type="file"] {
+    font-size: 0;
 }
 
 ion-button {
     --background: #5AB7D5;
-    --border-radius: 25px;
-    margin: 5px auto;
+    border-radius: 40px;
+    margin: 20px auto 5px;
     padding: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
     width: 200px;
+    color: white;
 }
 
-ion-label {
-    color: #ffffff;
-    margin-bottom: 8px;
-}
-
-ion-item {
-    --padding-start: 0;
-    --inner-padding-end: 0;
-}
-
-ion-datetime {
-    --padding-start: 0;
-    --padding-end: 0;
-    min-height: 40px;
-    padding-top: 8px;
-}
-
-.small-datetime {
-    max-width: 120px;
-    margin-top: 8px;
-}
-
-ion-datetime[presentation="time"] {
-    --height: 40px;
-    margin-top: 16px;
+ion-col {
+    margin: 0 auto;
 }

@@ -2,6 +2,7 @@ package org.example.backendsocialparty.controladores;
 
 import lombok.AllArgsConstructor;
 import org.example.backendsocialparty.DTOs.ClienteDTO;
+import org.example.backendsocialparty.DTOs.ComentarioDTO;
 import org.example.backendsocialparty.modelos.Usuario;
 import org.example.backendsocialparty.security.UsuarioAdapter;
 import org.example.backendsocialparty.servicios.ClienteServicio;
@@ -12,6 +13,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/cliente")
@@ -32,18 +37,13 @@ public class ClienteControlador {
         clienteServicio.eliminarCliente(idCliente);
     }
 
-    @GetMapping("/verUsuario")
-    public ResponseEntity<?> verUsuario() {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Usuario usuario;
-        if (principal instanceof org.example.backendsocialparty.security.UsuarioAdapter) {
-            usuario = ((org.example.backendsocialparty.security.UsuarioAdapter) principal).getUsuario();
-        } else if (principal instanceof Usuario) {
-            usuario = (Usuario) principal;
-        } else {
-            return ResponseEntity.badRequest().body("No se pudo obtener el usuario autenticado.");
+    @GetMapping("/ver/usuario/{correo}")
+    public Usuario verUsuario(@PathVariable String correo){
+        UserDetails userDetails = usuarioServicio.loadUserByUsername(correo);
+        if (userDetails instanceof UsuarioAdapter) {
+            return ((UsuarioAdapter) userDetails).getUsuario();
         }
-        return ResponseEntity.ok(usuario);
+        throw new RuntimeException("El usuario autenticado no es del tipo esperado.");
     }
 
     @GetMapping("/ver/perfil/{idUsuario}")
@@ -60,14 +60,21 @@ public class ClienteControlador {
         }
         return clienteServicio.actualizarCliente(clienteDTO);
     }
-    @GetMapping("/ver/usuario/{correo}")
-    public Usuario verUsuario(@PathVariable String correo){
-        UserDetails userDetails = usuarioServicio.loadUserByUsername(correo);
-        if (userDetails instanceof UsuarioAdapter) {
-            return ((UsuarioAdapter) userDetails).getUsuario();
-        }
-        throw new RuntimeException("El usuario autenticado no es del tipo esperado.");
+    @GetMapping("/ver/comentarios/cliente/{idCliente}")
+    public List<ComentarioDTO> verComentariosCliente(@PathVariable int idCliente){
+        return clienteServicio.listarComentarios(idCliente);
     }
-
-
+    @GetMapping("/verUsuario")
+    public ResponseEntity<?> verUsuario() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Usuario usuario;
+        if (principal instanceof org.example.backendsocialparty.security.UsuarioAdapter) {
+            usuario = ((org.example.backendsocialparty.security.UsuarioAdapter) principal).getUsuario();
+        } else if (principal instanceof Usuario) {
+            usuario = (Usuario) principal;
+        } else {
+            return ResponseEntity.badRequest().body("No se pudo obtener el usuario autenticado.");
+        }
+        return ResponseEntity.ok(usuario);
+    }
 }

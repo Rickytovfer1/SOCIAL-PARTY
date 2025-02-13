@@ -4,9 +4,9 @@ import { IonicModule } from "@ionic/angular";
 import { NavSuperiorComponent } from "../nav-superior/nav-superior.component";
 import { NavInferiorComponent } from "../nav-inferior/nav-inferior.component";
 import { UsuarioService } from "../servicios/usuario.service";
-import { AmigoService } from "../servicios/AmigoService";
+import { AmigoService } from "../servicios/amigo.service";
 import { Usuario } from "../modelos/Usuario";
-import { ClienteDTO } from "../modelos/ClienteDTO";
+import { Cliente } from "../modelos/Cliente";
 import { jwtDecode } from "jwt-decode";
 import { DecodedToken } from "../modelos/DecodedToken";
 import { TokenDataDTO } from "../modelos/TokenDataDTO";
@@ -27,7 +27,7 @@ import { Router } from "@angular/router";
 export class AmigosComponent implements OnInit {
 
     usuario: Usuario = {} as Usuario;
-    amigos: ClienteDTO[] = [];
+    amigos: Cliente[] = [];
     correo?: string;
 
     constructor(
@@ -37,6 +37,10 @@ export class AmigosComponent implements OnInit {
     ) {}
 
     ngOnInit() {
+        this.inicio()
+    }
+
+    inicio() {
         const token = sessionStorage.getItem('authToken');
         console.log('Auth Token:', token);
 
@@ -83,7 +87,7 @@ export class AmigosComponent implements OnInit {
 
     cargarAmigos(idUsuario: number): void {
         this.amigoService.getAmigos(idUsuario).subscribe({
-            next: (amigos: ClienteDTO[]) => {
+            next: (amigos: Cliente[]) => {
                 this.amigos = amigos;
                 console.log('Amigos cargados:', this.amigos);
             },
@@ -101,5 +105,11 @@ export class AmigosComponent implements OnInit {
         this.router.navigate(['/ver-solicitudes']);
     }
 
+    verAmigos() {
+        this.router.navigate(['/gestion-amigos']);
+    }
 
+    ionViewWillEnter() {
+        this.inicio()
+    }
 }
