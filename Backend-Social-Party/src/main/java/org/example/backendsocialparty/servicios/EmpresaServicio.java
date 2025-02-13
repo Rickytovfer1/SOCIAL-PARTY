@@ -153,4 +153,20 @@ public class EmpresaServicio {
         int lastIndex = filename.lastIndexOf(".");
         return (lastIndex == -1) ? "" : filename.substring(lastIndex + 1);
     }
+
+    public void eliminarBaneadoCliente(Integer id) {
+        Cliente cliente = clienteRepositorio.findById(id)
+                .orElseThrow(() -> new RuntimeException("No existe un cliente con este ID."));
+
+        List<Empresa> empresas = empresaRepositorio.findAll();
+
+        for (Empresa empresa : empresas) {
+            Set<Cliente> baneados = empresa.getBaneados();
+            if (baneados != null) {
+                baneados.remove(cliente);
+                empresa.setBaneados(baneados);
+                empresaRepositorio.save(empresa);
+            }
+        }
+    }
 }

@@ -5,7 +5,6 @@ import {NavSuperiorEmpresaComponent} from "../nav-superior-empresa/nav-superior-
 import {NgOptimizedImage} from "@angular/common";
 import {NavSuperiorAdminComponent} from "../nav-superior-admin/nav-superior-admin.component";
 import {NavInferiorAdminComponent} from "../nav-inferior-admin/nav-inferior-admin.component";
-import {EmpresaDTO} from "../modelos/EmpresaDTO";
 import {environment} from "../../environments/environment";
 import {AdminService} from "../servicios/admin.service";
 import {ActivatedRoute} from "@angular/router";
@@ -15,6 +14,7 @@ import {PerfilServicio} from "../servicios/perfil.service";
 import {Usuario} from "../modelos/Usuario";
 import {PerfilEmpresa} from "../modelos/PerfilEmpresa";
 import {FormsModule} from "@angular/forms";
+import {Empresa} from "../modelos/Empresa";
 
 @Component({
     selector: 'app-editar-empresa-admin',
@@ -38,7 +38,7 @@ export class EditarEmpresaAdminComponent implements OnInit {
     foto: File | null = null;
     editar: boolean = false;
 
-    empresa: EmpresaDTO = {} as EmpresaDTO;
+    empresa: Empresa = {} as Empresa;
     idEmpresa!: number;
 
     constructor(private adminService: AdminService,

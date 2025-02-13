@@ -4,8 +4,8 @@ import {NavSuperiorAdminComponent} from "../nav-superior-admin/nav-superior-admi
 import {NavInferiorAdminComponent} from "../nav-inferior-admin/nav-inferior-admin.component";
 import {AdminService} from "../servicios/admin.service";
 import {environment} from "../../environments/environment";
-import {ClienteDTO} from "../modelos/ClienteDTO";
 import {ActivatedRoute, Router} from "@angular/router";
+import {Cliente} from "../modelos/Cliente";
 
 @Component({
     selector: 'app-banear-usuario',
@@ -21,7 +21,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 export class BanearUsuarioComponent implements OnInit {
 
     baseUrl: string = environment.apiUrl;
-    cliente: ClienteDTO = {} as ClienteDTO;
+    cliente: Cliente = {} as Cliente;
     idCliente!: number;
     constructor(private activateRoute: ActivatedRoute,
                 private adminService: AdminService,
@@ -39,7 +39,7 @@ export class BanearUsuarioComponent implements OnInit {
 
     cargarCliente(idCliente: number): void {
         this.adminService.getCliente(idCliente).subscribe({
-            next: (cliente: ClienteDTO) => {
+            next: (cliente: Cliente) => {
                 this.cliente = cliente;
             },
             error: (e) => {

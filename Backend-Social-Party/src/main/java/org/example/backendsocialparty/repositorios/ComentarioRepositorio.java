@@ -11,4 +11,5 @@ public interface ComentarioRepositorio extends JpaRepository<Comentario, Integer
 
     List<Comentario> findByCliente(Cliente cliente);
     List<Comentario> findByPublicacion(Publicacion publicacion);
+    List<Comentario> findByCliente_Id(Integer idCliente);
 }

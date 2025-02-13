@@ -12,4 +12,6 @@ public interface FavoritoRepositorio extends JpaRepository<Favorito, Integer> {
     List<Favorito> findByPublicacion(Publicacion publicacion);
     List<Favorito> findByCliente(Cliente cliente);
     Favorito findByClienteAndPublicacion(Cliente cliente, Publicacion publicacion);
+    List<Favorito> findByCliente_Id(Integer idCliente);
+
 }

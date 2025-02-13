@@ -3,11 +3,10 @@ import {NavSuperiorAdminComponent} from "../nav-superior-admin/nav-superior-admi
 import {AlertController, IonicModule} from "@ionic/angular";
 import {NavInferiorAdminComponent} from "../nav-inferior-admin/nav-inferior-admin.component";
 import {NgOptimizedImage} from "@angular/common";
-import {ClienteDTO} from "../modelos/ClienteDTO";
-import {EmpresaDTO} from "../modelos/EmpresaDTO";
 import {environment} from "../../environments/environment";
 import {ActivatedRoute, Router} from "@angular/router";
 import {AdminService} from "../servicios/admin.service";
+import {Empresa} from "../modelos/Empresa";
 
 @Component({
     selector: 'app-ver-empresa-admin',
@@ -23,7 +22,7 @@ import {AdminService} from "../servicios/admin.service";
 })
 export class VerEmpresaAdminComponent implements OnInit {
     baseUrl: string = environment.apiUrl;
-    empresa: EmpresaDTO = {} as EmpresaDTO;
+    empresa: Empresa = {} as Empresa;
     idEmpresa!: number;
 
     constructor(private activateRoute: ActivatedRoute,
@@ -39,7 +38,7 @@ export class VerEmpresaAdminComponent implements OnInit {
         this.cargarEmpresa(this.idEmpresa)
     }
 
-    getImageUrlEmpresa(empresaDTO: EmpresaDTO): string {
+    getImageUrlEmpresa(empresaDTO: Empresa): string {
         if (!empresaDTO.fotoPerfil || empresaDTO.fotoPerfil.trim() === '') {
             return 'assets/iconoPerfil.png';
         } else if (empresaDTO.fotoPerfil.startsWith('http')) {
@@ -51,7 +50,7 @@ export class VerEmpresaAdminComponent implements OnInit {
 
     cargarEmpresa(idEmpresa: number): void {
         this.adminService.getEmpresaDTO(idEmpresa).subscribe({
-            next: (empresa: EmpresaDTO) => {
+            next: (empresa: Empresa) => {
                 this.empresa = empresa;
             },
             error: (e) => {
