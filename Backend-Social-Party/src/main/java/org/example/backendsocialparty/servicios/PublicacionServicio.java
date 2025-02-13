@@ -3,6 +3,8 @@ package org.example.backendsocialparty.servicios;
 import lombok.RequiredArgsConstructor;
 import org.example.backendsocialparty.DTOs.*;
 import org.example.backendsocialparty.enumerados.Rol;
+import org.example.backendsocialparty.modelos.*;
+import org.example.backendsocialparty.repositorios.*;
 import org.example.backendsocialparty.modelos.Cliente;
 import org.example.backendsocialparty.modelos.Empresa;
 import org.example.backendsocialparty.modelos.Publicacion;
@@ -19,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.nio.file.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -32,6 +35,7 @@ public class PublicacionServicio {
     private final ClienteRepositorio clienteRepositorio;
     private final EmpresaRepositorio empresaRepositorio;
     private final @Lazy AmistadServicio amistadServicio;
+    private final ComentarioRepositorio comentarioRepositorio;
 
     @Value("${upload.dir}")
     private String uploadDir;
@@ -42,14 +46,13 @@ public class PublicacionServicio {
         }
 
         Publicacion publicacion = new Publicacion();
+        publicacion.setNombre(dto.getNombre());
         publicacion.setTexto(dto.getTexto());
-        publicacion.setTitulo(dto.getTitulo());
-        publicacion.setHora(LocalTime.now());
-        publicacion.setFecha(LocalDate.now());
+        publicacion.setFecha(LocalDateTime.now());
 
         String fotoUrl = guardarImagen(foto);
         publicacion.setFoto(fotoUrl);
-        publicacion.setDireccion(dto.getDireccion());
+        publicacion.setLugar(dto.getLugar());
 
         Usuario usuario = usuarioRepositorio.findById(dto.getIdUsuario())
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
@@ -64,9 +67,11 @@ public class PublicacionServicio {
         }
 
         Publicacion publicacion = new Publicacion();
+        publicacion.setNombre(dto.getNombre());
+        publicacion.setApellidos(dto.getApellidos());
         publicacion.setTexto(dto.getTexto());
-        publicacion.setHora(LocalTime.now());
-        publicacion.setFecha(LocalDate.now());
+        publicacion.setFecha(LocalDateTime.now());
+        publicacion.setLugar(dto.getLugar());
 
         String fotoUrl = guardarImagen(foto);
         publicacion.setFoto(fotoUrl);
@@ -114,12 +119,14 @@ public class PublicacionServicio {
     public static MostrarPublicacionDTO getPublicacionDTO(Publicacion p) {
         MostrarPublicacionDTO publicacionDTO = new MostrarPublicacionDTO();
         publicacionDTO.setId(p.getId());
+        publicacionDTO.setNombre(p.getNombre());
+        if (p.getApellidos() != null) {
+            publicacionDTO.setApellidos(p.getApellidos());
+        }
         publicacionDTO.setTexto(p.getTexto());
-        publicacionDTO.setHora(p.getHora());
         publicacionDTO.setFecha(p.getFecha());
         publicacionDTO.setFoto(p.getFoto());
-        publicacionDTO.setTitulo(p.getTitulo());
-        publicacionDTO.setDireccion(p.getDireccion());
+        publicacionDTO.setLugar(p.getLugar());
         publicacionDTO.setIdUsuario(p.getUsuario().getId());
         return publicacionDTO;
     }
@@ -182,7 +189,7 @@ public class PublicacionServicio {
         List<Publicacion> publicacionesOrdenadas = new ArrayList<>(publicacionesCombinadas);
         publicacionesOrdenadas.sort((p1, p2) -> {
             int cmp = p2.getFecha().compareTo(p1.getFecha());
-            return (cmp == 0) ? p2.getHora().compareTo(p1.getHora()) : cmp;
+            return (cmp == 0) ? p2.getFecha().compareTo(p1.getFecha()) : cmp;
         });
 
         return publicacionesOrdenadas.stream()
@@ -193,6 +200,18 @@ public class PublicacionServicio {
         Publicacion publicacion = publicacionRepositorio.findById(id)
                 .orElseThrow(() -> new RuntimeException("Publicacion no encontrada"));
         return getPublicacionDTO(publicacion);
+    }
+
+    public List<ComentarioDTO> listarComentarios(int idPublicacion) {
+        Publicacion publicacion = publicacionRepositorio.findById(idPublicacion)
+                .orElseThrow(() -> new RuntimeException("ID de publicacion inexistente"));
+
+        List<Comentario> listaComentarios = comentarioRepositorio.findByPublicacion(publicacion);
+        List<ComentarioDTO> listaComentariosDTO = new ArrayList<>();
+        for (Comentario comentario : listaComentarios) {
+            listaComentariosDTO.add(ComentarioService.getComentarioDTO(comentario));
+        }
+        return listaComentariosDTO;
     }
 
 }

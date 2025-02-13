@@ -6,9 +6,8 @@ import {NavSuperiorComponent} from "../nav-superior/nav-superior.component";
 import {IonicModule} from "@ionic/angular";
 import {NavInferiorComponent} from "../nav-inferior/nav-inferior.component";
 import {NgForOf, NgOptimizedImage} from "@angular/common";
-import {MostrarPublicacionDTO} from "../servicios/publicacion.service";
 import {environment} from "../../environments/environment";
-import {EmpresaDTO} from "../modelos/EmpresaDTO";
+import {Empresa} from "../modelos/Empresa";
 
 @Component({
     selector: 'app-ver-eventos',
@@ -24,10 +23,9 @@ import {EmpresaDTO} from "../modelos/EmpresaDTO";
     ]
 })
 export class VerEventosComponent implements OnInit {
-    empresa: EmpresaDTO = {} as EmpresaDTO;
+    empresa: Empresa = {} as Empresa;
     eventos: Evento[] = [];
     idEmpresa!: number;
-    publicaciones: MostrarPublicacionDTO[] = [];
     baseUrl: string = environment.apiUrl;
 
     constructor(
@@ -82,7 +80,7 @@ export class VerEventosComponent implements OnInit {
     }
     verEmpresa(idEmpresa: number | undefined): void {
         this.eventoService.verEmpresa(idEmpresa).subscribe({
-            next: (empresa: EmpresaDTO) => {
+            next: (empresa: Empresa) => {
                 this.empresa = empresa;
             },
             error: (e) => {

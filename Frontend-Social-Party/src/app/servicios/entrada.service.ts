@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {ComunService} from "./comun.service";
 import {environment} from "../../environments/environment";
 import {Observable} from "rxjs";
@@ -15,7 +15,7 @@ export class EntradaService {
     constructor(private http: HttpClient, private comunService: ComunService) {
     }
 
-    comprarEntrada(idEvento: number, idEmpresa: number, idCliente: number): Observable<Entrada> {
+    comprarEntrada(idEvento: number, idEmpresa: number, idCliente: number | undefined): Observable<Entrada> {
         const options = this.comunService.autorizarPeticion();
         return this.http.post<Entrada>(`${this.apiUrl}/cliente/comprar/entrada/${idEvento}/${idEmpresa}/${idCliente}`,{}, options);
     }
@@ -25,8 +25,12 @@ export class EntradaService {
         return this.http.get<Entrada[]>(`${this.apiUrl}/cliente/ver/entradas/${idCliente}`, options);
     }
 
-    canjear(codigoEntrada: number): Observable<Entrada> {
-        const options = this.comunService.autorizarPeticion();
-        return this.http.post<Entrada>(`${this.apiUrl}/empresa/canjear/entrada/${codigoEntrada}`,{}, options);
+    canjear(codigoEntrada: number, headersObj: any): Observable<any> {
+        const headers = new HttpHeaders(headersObj);
+        return this.http.post(
+            `${this.apiUrl}/empresa/canjear/entrada/${codigoEntrada}`,
+            null,
+            { headers }
+        );
     }
 }

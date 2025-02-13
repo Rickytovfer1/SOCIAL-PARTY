@@ -4,18 +4,10 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from "../../environments/environment";
 import { ComunService } from "./comun.service";
-
-export interface MostrarPublicacionDTO {
-    id: number;
-    texto: string;
-    titulo: string;
-    hora: string;
-    fecha: string;
-    foto: string;
-    direccion: string;
-    idUsuario: number;
-    perfilId?: number;
-}
+import {CrearPublicacionCliente} from "../modelos/CrearPublicacionCliente";
+import {MostrarPublicacion} from "../modelos/MostrarPublicacion";
+import {CrearPublicacionEmpresa} from "../modelos/CrearPublicacionEmpresa";
+import {Comentario} from "../modelos/Comentario";
 
 @Injectable({
     providedIn: 'root'
@@ -25,9 +17,9 @@ export class PublicacionService {
 
     constructor(private http: HttpClient, private comunService: ComunService) { }
 
-    listarPublicaciones(): Observable<MostrarPublicacionDTO[]> {
+    listarPublicaciones(): Observable<MostrarPublicacion[]> {
         const options = this.comunService.autorizarPeticion();
-        return this.http.get<MostrarPublicacionDTO[]>(`${this.baseUrl}/cliente/ver/publicaciones`, options)
+        return this.http.get<MostrarPublicacion[]>(`${this.baseUrl}/cliente/ver/publicaciones`, options)
             .pipe(
                 catchError(error => {
                     console.error('Error fetching publicaciones:', error);
@@ -36,25 +28,25 @@ export class PublicacionService {
             );
     }
 
-    crearPublicacionCliente(dto: any, foto: File): Observable<void> {
-        const formData: FormData = new FormData();
-        formData.append('texto', dto.texto);
-        formData.append('foto', foto);
-        formData.append('idUsuario', dto.idUsuario.toString());
+    crearPublicacionCliente(publicacion: CrearPublicacionCliente): Observable<CrearPublicacionCliente> {
+        const formData = new FormData();
+        formData.append('nombre', publicacion.nombre ?? '');
+        formData.append('apellidos', publicacion.apellidos ?? '');
+        formData.append('texto', publicacion.texto ?? '');
+        formData.append('lugar', publicacion.lugar ?? '');
+        formData.append('idUsuario', publicacion.idUsuario ? publicacion.idUsuario.toString() : '');
+
+        if (publicacion.foto) {
+            formData.append('foto', publicacion.foto);
+        }
 
         const options = this.comunService.autorizarPeticionFormData();
-        return this.http.post<void>(`${this.baseUrl}/cliente/crear/publicacion`, formData, options)
-            .pipe(
-                catchError(error => {
-                    console.error('Error creating publicacion:', error);
-                    return throwError(() => new Error('Error creating publicacion'));
-                })
-            );
+        return this.http.post<CrearPublicacionCliente>(`${this.baseUrl}/cliente/crear/publicacion`, formData, options);
     }
 
-    listarFeed(idUsuario: number | undefined): Observable<MostrarPublicacionDTO[]> {
+    listarFeed(idUsuario: number | undefined): Observable<MostrarPublicacion[]> {
         const options = this.comunService.autorizarPeticion();
-        return this.http.get<MostrarPublicacionDTO[]>(`${this.baseUrl}/feed/${idUsuario}`, options)
+        return this.http.get<MostrarPublicacion[]>(`${this.baseUrl}/feed/${idUsuario}`, options)
             .pipe(
                 catchError(error => {
                     console.error('Error fetching feed:', error);
@@ -63,26 +55,37 @@ export class PublicacionService {
             );
     }
 
-    crearPublicacionEmpresa(dto: any, foto: File): Observable<void> {
-        const formData: FormData = new FormData();
-        formData.append('texto', dto.texto);
-        formData.append('titulo', dto.titulo);
-        formData.append('direccion', dto.direccion);
-        formData.append('foto', foto);
-        formData.append('idUsuario', dto.idUsuario.toString());
+    crearPublicacionEmpresa(publicacion: CrearPublicacionEmpresa): Observable<CrearPublicacionEmpresa> {
+        const formData = new FormData();
+        formData.append('nombre', publicacion.nombre ?? '');
+        formData.append('texto', publicacion.texto ?? '');
+        formData.append('lugar', publicacion.lugar ?? '');
+        formData.append('idUsuario', publicacion.idUsuario ? publicacion.idUsuario.toString() : '');
+
+        if (publicacion.foto) {
+            formData.append('foto', publicacion.foto);
+        }
 
         const options = this.comunService.autorizarPeticionFormData();
-        return this.http.post<void>(`${this.baseUrl}/empresa/crear/publicacion`, formData, options)
-            .pipe(
-                catchError(error => {
-                    console.error('Error creating publicacion:', error);
-                    return throwError(() => new Error('Error creating publicacion'));
-                })
-            );
+        return this.http.post<CrearPublicacionEmpresa>(`${this.baseUrl}/empresa/crear/publicacion`, formData, options);
     }
-    getPublicacion(id: number): Observable<MostrarPublicacionDTO> {
+
+    getPublicacion(id: number): Observable<MostrarPublicacion> {
         const options = this.comunService.autorizarPeticion();
-        return this.http.get<MostrarPublicacionDTO>(`${environment.apiUrl}/publicacion/${id}`, options);
+        return this.http.get<MostrarPublicacion>(`${environment.apiUrl}/publicacion/${id}`, options);
+    }
+
+    listarPublicacionesEmpresa(idUsuario: number): Observable<MostrarPublicacion[]> {
+        const options = this.comunService.autorizarPeticion();
+        return this.http.get<MostrarPublicacion[]>(
+            `${this.baseUrl}/empresa/publicaciones-empresa/${idUsuario}`,
+            options
+        );
+    }
+
+    listarComentariosPublicacion(idPublicacion: number): Observable<Comentario[]> {
+        const options = this.comunService.autorizarPeticion();
+        return this.http.get<Comentario[]>(`${environment.apiUrl}/ver/comentarios/publicacion/${idPublicacion}`, options);
     }
 
 }

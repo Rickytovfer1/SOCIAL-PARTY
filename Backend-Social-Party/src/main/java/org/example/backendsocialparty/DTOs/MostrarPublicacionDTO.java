@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Data
@@ -12,11 +13,11 @@ import java.time.LocalTime;
 @NoArgsConstructor
 public class MostrarPublicacionDTO {
     private Integer id;
+    private String nombre;
+    private String apellidos;
     private String texto;
-    private String titulo;
-    private LocalTime hora;
-    private LocalDate fecha;
+    private LocalDateTime fecha;
     private String foto;
-    private String direccion;
+    private String lugar;
     private Integer idUsuario;
 }

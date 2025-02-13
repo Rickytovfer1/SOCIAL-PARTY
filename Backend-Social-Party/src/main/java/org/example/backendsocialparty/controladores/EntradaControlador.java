@@ -19,10 +19,13 @@ public class EntradaControlador {
         entradaServicio.canjearEntrada(codigoEntrada);
     }
 
-    @PostMapping("/cliente/comprar/entrada/{idEvento}/{idEmpresa}/{idCliente}")
-    public void comprarEntrada(@PathVariable Integer idEvento, @PathVariable Integer idEmpresa,
-                               @PathVariable Integer idCliente) {
-        entradaServicio.comprarEntrada(idEvento, idEmpresa, idCliente);
+    @PostMapping("/cliente/comprar/entrada/{idEvento}/{idEmpresa}/{idUsuario}")
+    public EntradaDTO comprarEntrada(
+            @PathVariable Integer idEvento,
+            @PathVariable Integer idEmpresa,
+            @PathVariable Integer idUsuario
+    ) {
+        return entradaServicio.comprarEntrada(idEvento, idEmpresa, idUsuario);
     }
 
     @GetMapping("/cliente/ver/entradas/{idCliente}")

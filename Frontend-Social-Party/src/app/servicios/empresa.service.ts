@@ -4,7 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from "../../environments/environment";
 import { ComunService } from "./comun.service";
-import { EmpresaDTO } from "../modelos/EmpresaDTO";
+import { Empresa } from "../modelos/Empresa";
 
 @Injectable({
     providedIn: 'root'
@@ -15,9 +15,9 @@ export class EmpresaService {
 
     constructor(private http: HttpClient, private comunService: ComunService) { }
 
-    listarEmpresas(): Observable<EmpresaDTO[]> {
+    listarEmpresas(): Observable<Empresa[]> {
         const options = this.comunService.autorizarPeticion();
-        return this.http.get<EmpresaDTO[]>(`${this.baseUrl}/cliente/ver/empresas`, options)
+        return this.http.get<Empresa[]>(`${this.baseUrl}/cliente/ver/empresas`, options)
             .pipe(
                 catchError(error => {
                     console.error('Error fetching empresas:', error);
@@ -26,20 +26,20 @@ export class EmpresaService {
             );
     }
 
-    getPerfilEmpresa(idUsuario: number): Observable<EmpresaDTO> {
+    getPerfilEmpresa(idUsuario: number): Observable<Empresa> {
         const options = this.comunService.autorizarPeticion();
-        return this.http.get<EmpresaDTO>(`${this.apiUrl}/empresa/perfil/${idUsuario}`, options);
+        return this.http.get<Empresa>(`${this.apiUrl}/empresa/perfil/${idUsuario}`, options);
     }
 
-    getPerfilEmpresaPorCorreo(correo: string): Observable<EmpresaDTO> {
+    getPerfilEmpresaPorCorreo(correo: string): Observable<Empresa> {
         const options = this.comunService.autorizarPeticion();
-        return this.http.get<EmpresaDTO>(`${this.apiUrl}/empresa/ver/perfil/${correo}`, options);
+        return this.http.get<Empresa>(`${this.apiUrl}/empresa/ver/perfil/${correo}`, options);
     }
 
-    actualizarPerfilEmpresa(empresaDTO: EmpresaDTO): Observable<EmpresaDTO> {
+    actualizarPerfilEmpresa(empresaDTO: Empresa): Observable<Empresa> {
         const options = this.comunService.autorizarPeticion();
         console.log('Sending PUT request to actualizarPerfilEmpresa with:', empresaDTO);
-        return this.http.put<EmpresaDTO>(`${this.apiUrl}/empresa/actualizar`, empresaDTO, options)
+        return this.http.put<Empresa>(`${this.apiUrl}/empresa/actualizar`, empresaDTO, options)
             .pipe(
                 catchError(error => {
                     console.error('Error al actualizar la empresa:', error);

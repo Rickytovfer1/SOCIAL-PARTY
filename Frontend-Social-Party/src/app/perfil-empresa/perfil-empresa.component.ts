@@ -11,8 +11,6 @@ import { jwtDecode } from "jwt-decode";
 import { TokenDataDTO } from "../modelos/TokenDataDTO";
 import { FormsModule } from "@angular/forms";
 import {CommonModule, NgOptimizedImage} from "@angular/common";
-import {MostrarPublicacionDTO} from "../servicios/publicacion.service";
-import {EmpresaDTO} from "../modelos/EmpresaDTO";
 import {environment} from "../../environments/environment";
 
 @Component({

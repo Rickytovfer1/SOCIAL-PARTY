@@ -9,7 +9,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {FormsModule} from "@angular/forms";
 import {EventoService} from "../servicios/evento.service";
 import {Evento} from "../modelos/Evento";
-import {EmpresaDTO} from "../modelos/EmpresaDTO";
+import {Empresa} from "../modelos/Empresa";
 import {jwtDecode} from "jwt-decode";
 import {TokenDataDTO} from "../modelos/TokenDataDTO";
 import {Perfil} from "../modelos/Perfil";
@@ -18,6 +18,7 @@ import {PerfilServicio} from "../servicios/perfil.service";
 import {UsuarioService} from "../servicios/usuario.service";
 import {NavInferiorComponent} from "../nav-inferior/nav-inferior.component";
 import {NavSuperiorComponent} from "../nav-superior/nav-superior.component";
+import jsPDF from "jspdf";
 
 @Component({
     selector: 'app-confirmacion-pago',
@@ -33,14 +34,18 @@ import {NavSuperiorComponent} from "../nav-superior/nav-superior.component";
 })
 export class ConfirmacionPagoComponent implements OnInit {
     evento: Evento = {} as Evento;
-    empresa: EmpresaDTO = {} as EmpresaDTO;
+    empresa: Empresa = {} as Empresa;
     id!: number;
     idEmpresa!: number;
     usuario: Usuario = {} as Usuario;
     perfil: Perfil = {} as Perfil;
     correo?: string;
-
+    qrCodeBase64: string = "";
     entrada: Entrada = {} as Entrada
+
+    num_tarjeta: string = "";
+    fech_tarjeta: string  = "";
+    ccv_tarjeta: string  = "";
 
     constructor(private entradaService: EntradaService,
                 private activateRoute: ActivatedRoute,
@@ -72,17 +77,76 @@ export class ConfirmacionPagoComponent implements OnInit {
     }
 
     comprarEntrada(): void {
-        this.entradaService.comprarEntrada(this.id, this.empresa.id, this.perfil.id).subscribe({
-            next: (entradaComprada) => {
-                //this.router.navigate([`/app-grupos/${id}`])
-                console.log('Entrada comprada:');
+        console.log('Número de tarjeta:', this.num_tarjeta);
+        console.log('Fecha de caducidad:', this.fech_tarjeta);
+        console.log('CCV:', this.ccv_tarjeta);
+        if (!this.num_tarjeta || !this.fech_tarjeta || !this.ccv_tarjeta) {
+            const toast = document.getElementById("toastCampos") as any;
+            toast.present();
+            return
+        }
+        this.entradaService.comprarEntrada(this.id, this.empresa.id, this.usuario.id).subscribe({
+            next: (entradaComprada: any) => {
+                console.log('Entrada comprada:', entradaComprada);
+                this.qrCodeBase64 = entradaComprada.qrCodeBase64;
+                this.entrada.codigoEntrada = entradaComprada.codigoEntrada;
+                this.generatePDF();
             },
             error: (error) => {
                 console.error('Error al comprar la entrada:', error);
             }
-        })
-
+        });
     }
+
+
+    generatePDF(): void {
+        const doc = new jsPDF();
+        const pageWidth = doc.internal.pageSize.getWidth();
+        const pageHeight = doc.internal.pageSize.getHeight();
+        doc.setFillColor(211, 229, 229);
+        doc.rect(0, 0, pageWidth, pageHeight, 'F');
+        const margin = 10;
+        const ticketWidth = pageWidth - margin * 2;
+        const ticketHeight = pageHeight - margin * 2;
+        doc.setLineWidth(1);
+        doc.setDrawColor(0, 0, 0);
+        doc.roundedRect(margin, margin, ticketWidth, ticketHeight, 5, 5, 'S');
+        const headerHeight = 30;
+        doc.setFillColor(0, 102, 204);
+        doc.rect(margin, margin, ticketWidth, headerHeight, 'F');
+        doc.setTextColor(255, 255, 255);
+        doc.setFontSize(18);
+        doc.text("Entrada Confirmada", margin + 5, margin + 20);
+        doc.setTextColor(0, 0, 0);
+        doc.setFontSize(12);
+        const startY = margin + headerHeight + 10;
+        const leftX = margin + 10;
+        const rightX = margin + ticketWidth - 60;
+        doc.text("Fecha de compra: " + new Date().toLocaleDateString(), leftX, startY);
+        doc.text("Fecha del evento: " + this.evento.fecha, leftX, startY + 10);
+        doc.text("Hora de Apertura: " + this.evento.horaApertura, leftX, startY + 20);
+        doc.text("Hora de Finalización: " + this.evento.horaFinalizacion, leftX, startY + 30);
+        doc.text("Precio: " + this.evento.precio + "€", leftX, startY + 40);
+        doc.text("Discoteca: " + this.empresa.nombre, leftX, startY + 50);
+        doc.text("Dirección: " + this.empresa.direccion, leftX, startY + 60);
+        doc.setFontSize(14);
+        doc.text("Código de Entrada: " + this.entrada.codigoEntrada, leftX, startY + 80);
+        const qrX = rightX;
+        const qrY = startY;
+        const qrSize = 50;
+        const imgData = "data:image/png;base64," + this.qrCodeBase64;
+        doc.addImage(imgData, 'PNG', qrX, qrY, qrSize, qrSize);
+        doc.setLineWidth(0.5);
+        doc.setDrawColor(150, 150, 150);
+        doc.setLineDashPattern([3, 3], 0);
+        doc.line(margin, margin + headerHeight + 5, margin + ticketWidth, margin + headerHeight + 5);
+        doc.setLineDashPattern([3, 3], 0);
+        doc.save("entrada.pdf");
+    }
+
+
+
+
     verEvento(idEvento: number): void {
         this.eventoService.verEvento(idEvento).subscribe({
             next: (eventos: Evento) => {
@@ -98,7 +162,7 @@ export class ConfirmacionPagoComponent implements OnInit {
 
     verEmpresa(idEmpresa: number | undefined): void {
         this.eventoService.verEmpresa(idEmpresa).subscribe({
-            next: (empresa: EmpresaDTO) => {
+            next: (empresa: Empresa) => {
                 this.empresa = empresa;
             },
             error: (e) => {

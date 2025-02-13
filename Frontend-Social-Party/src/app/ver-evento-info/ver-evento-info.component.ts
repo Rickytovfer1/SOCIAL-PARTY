@@ -5,7 +5,7 @@ import {NavSuperiorComponent} from "../nav-superior/nav-superior.component";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Evento} from "../modelos/Evento";
 import {EventoService} from "../servicios/evento.service";
-import {EmpresaDTO} from "../modelos/EmpresaDTO";
+import {Empresa} from "../modelos/Empresa";
 import {environment} from "../../environments/environment";
 import {NgOptimizedImage} from "@angular/common";
 
@@ -24,7 +24,7 @@ import {NgOptimizedImage} from "@angular/common";
 export class VerEventoInfoComponent implements OnInit {
 
     evento: Evento = {} as Evento;
-    empresa: EmpresaDTO = {} as EmpresaDTO;
+    empresa: Empresa = {} as Empresa;
     idEvento!: number;
     baseUrl: string = environment.apiUrl;
 
@@ -59,7 +59,7 @@ export class VerEventoInfoComponent implements OnInit {
 
     verEmpresa(idEmpresa: number | undefined): void {
         this.eventoService.verEmpresa(idEmpresa).subscribe({
-            next: (empresa: EmpresaDTO) => {
+            next: (empresa: Empresa) => {
                 this.empresa = empresa;
                 console.log(this.empresa)
             },

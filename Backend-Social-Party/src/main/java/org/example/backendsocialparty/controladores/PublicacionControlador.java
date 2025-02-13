@@ -1,10 +1,7 @@
 package org.example.backendsocialparty.controladores;
 
 import lombok.AllArgsConstructor;
-import org.example.backendsocialparty.DTOs.ClientePublicacionDTO;
-import org.example.backendsocialparty.DTOs.MostrarPublicacionDTO;
-import org.example.backendsocialparty.DTOs.PublicacionDTO;
-import org.example.backendsocialparty.DTOs.UsuarioDTO;
+import org.example.backendsocialparty.DTOs.*;
 import org.example.backendsocialparty.enumerados.Rol;
 import org.example.backendsocialparty.modelos.Publicacion;
 import org.example.backendsocialparty.modelos.Usuario;
@@ -59,6 +56,11 @@ public class PublicacionControlador {
         Publicacion publicacion = publicacionRepositorio.findById(id)
                 .orElseThrow(() -> new RuntimeException("Publicacion no encontrada"));
         return PublicacionServicio.getPublicacionDTO(publicacion);
+    }
+
+    @GetMapping("/ver/comentarios/publicacion/{idPublicacion}")
+    public List<ComentarioDTO> verComentariosPublicacion(@PathVariable int idPublicacion){
+        return publicacionServicio.listarComentarios(idPublicacion);
     }
 
 }

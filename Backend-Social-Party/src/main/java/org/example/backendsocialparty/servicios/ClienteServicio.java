@@ -1,12 +1,14 @@
 package org.example.backendsocialparty.servicios;
 
 import org.example.backendsocialparty.DTOs.ClienteDTO;
+import org.example.backendsocialparty.DTOs.ComentarioDTO;
 import org.example.backendsocialparty.DTOs.EditarEstrellaDTO;
 import org.example.backendsocialparty.DTOs.EventoDTO;
 import org.example.backendsocialparty.DTOs.RestarPuntoDTO;
 import org.example.backendsocialparty.modelos.*;
 import org.example.backendsocialparty.repositorios.ClienteRepositorio;
 import org.example.backendsocialparty.repositorios.EmpresaRepositorio;
+import org.example.backendsocialparty.repositorios.ComentarioRepositorio;
 import org.example.backendsocialparty.repositorios.UsuarioRepositorio;
 import org.example.backendsocialparty.servicios.*;
 import org.springframework.context.annotation.Lazy;
@@ -29,8 +31,9 @@ public class ClienteServicio {
     private final AmistadServicio amistadServicio;
     private final EntradaServicio entradaServicio;
     private final UsuarioRepositorio usuarioRepositorio;
+    private final ComentarioRepositorio comentarioRepositorio;
     private final EventoServicio eventoServicio;
-    private final EmpresaRepositorio empresaRepositorio;
+    private final ComentarioService comentarioService;
     @Value("${upload.dir}")
     private String uploadDir;
     public ClienteServicio(
@@ -41,6 +44,8 @@ public class ClienteServicio {
             @Lazy AmistadServicio amistadServicio,
             @Lazy EventoServicio eventoServicio,
             EntradaServicio entradaServicio,
+            UsuarioRepositorio usuarioRepositorio,
+            ComentarioRepositorio comentarioRepositorio, ComentarioService comentarioService) {
             UsuarioRepositorio usuarioRepositorio, EmpresaRepositorio empresaRepositorio) {
         this.clienteRepositorio = clienteRepositorio;
         this.publicacionServicio = publicacionServicio;
@@ -50,7 +55,8 @@ public class ClienteServicio {
         this.eventoServicio = eventoServicio;
         this.entradaServicio = entradaServicio;
         this.usuarioRepositorio = usuarioRepositorio;
-        this.empresaRepositorio = empresaRepositorio;
+        this.comentarioRepositorio = comentarioRepositorio;
+        this.comentarioService = comentarioService;
     }
 
     public ClienteDTO buscarClienteId(Integer id) {
@@ -106,6 +112,10 @@ public class ClienteServicio {
                 gruposDTO.add(g.getId());
             }
             dtonuevo.setAmigos(gruposDTO);
+        }
+
+        if (c.getEvento() != null) {
+            dtonuevo.setEvento(c.getEvento().getId());
         }
 
         if (c.getUsuario() != null) {
@@ -180,6 +190,18 @@ public class ClienteServicio {
         }
         int lastIndex = filename.lastIndexOf(".");
         return (lastIndex == -1) ? "" : filename.substring(lastIndex + 1);
+    }
+
+    public List<ComentarioDTO> listarComentarios(int idCliente) {
+        Cliente cliente = clienteRepositorio.findById(idCliente)
+                .orElseThrow(() -> new RuntimeException("ID de cliente inexistente"));
+
+        List<Comentario> listaComentarios = comentarioRepositorio.findByCliente(cliente);
+        List<ComentarioDTO> listaComentariosDTO = new ArrayList<>();
+        for (Comentario comentario : listaComentarios) {
+            listaComentariosDTO.add(ComentarioService.getComentarioDTO(comentario));
+        }
+        return listaComentariosDTO;
     }
 
     public void modificarEstrella(EditarEstrellaDTO dto){
