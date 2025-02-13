@@ -9,7 +9,7 @@ import {AmigoService} from "../servicios/amigo.service";
 import {Router} from "@angular/router";
 import {jwtDecode} from "jwt-decode";
 import {TokenDataDTO} from "../modelos/TokenDataDTO";
-import {NgForOf} from "@angular/common";
+import {NgForOf, NgIf} from "@angular/common";
 
 @Component({
     selector: 'app-gestion-amigos',
@@ -20,7 +20,8 @@ import {NgForOf} from "@angular/common";
         IonicModule,
         NavInferiorComponent,
         NavSuperiorComponent,
-        NgForOf
+        NgForOf,
+        NgIf
     ]
 })
 export class GestionAmigosComponent  implements OnInit {

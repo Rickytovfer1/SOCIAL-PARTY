@@ -5,6 +5,11 @@
 <ion-content>
 
     <ion-grid>
+        <ion-row *ngIf="entradas.length === 0">
+            <div style="width: 100%; text-align: center; padding: 20px; color: black">
+                <ion-text style="margin: 0 auto;">No tienes entradas compradas...</ion-text>
+            </div>
+        </ion-row>
         <ion-row *ngFor="let entrada of entradas">
             <ion-col>
                 <ion-grid>

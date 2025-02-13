@@ -8,7 +8,7 @@ import { PerfilServicio } from '../servicios/perfil.service';  // Asegúrate de 
 import { Perfil } from '../modelos/Perfil';
 import {NavSuperiorComponent} from "../nav-superior/nav-superior.component";
 import {NavInferiorComponent} from "../nav-inferior/nav-inferior.component";
-import {NgForOf} from "@angular/common";
+import {NgForOf, NgIf} from "@angular/common";
 import {environment} from "../../environments/environment"; // Se asume que Perfil tiene una propiedad "nombre"
 import { SocketService } from '../servicios/SocketService';
 import {TokenDataDTO} from "../modelos/TokenDataDTO";
@@ -29,7 +29,8 @@ import {Empresa} from "../modelos/Empresa"; // Se asume que Perfil tiene una pro
         IonicModule,
         NavSuperiorComponent,
         NavInferiorComponent,
-        NgForOf
+        NgForOf,
+        NgIf
     ]
 })
 export class VerSolicitudesComponent implements OnInit {

@@ -4,6 +4,11 @@
 
 <ion-content>
     <ion-grid>
+        <ion-row *ngIf="solicitudes.length === 0">
+            <div style="width: 100%; text-align: center; padding: 20px; color: black">
+                <ion-text style="margin: 0 auto; color: black">Buzón vacío...</ion-text>
+            </div>
+        </ion-row>
         <ion-row *ngFor="let cliente of clientesSolicitudes">
             <ion-col>
                 <ion-grid>

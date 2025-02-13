@@ -5,7 +5,7 @@ import { Evento } from "../modelos/Evento";
 import {NavSuperiorComponent} from "../nav-superior/nav-superior.component";
 import {IonicModule} from "@ionic/angular";
 import {NavInferiorComponent} from "../nav-inferior/nav-inferior.component";
-import {NgForOf, NgOptimizedImage} from "@angular/common";
+import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {environment} from "../../environments/environment";
 import {Empresa} from "../modelos/Empresa";
 
@@ -19,7 +19,8 @@ import {Empresa} from "../modelos/Empresa";
         IonicModule,
         NavInferiorComponent,
         NgForOf,
-        NgOptimizedImage
+        NgOptimizedImage,
+        NgIf
     ]
 })
 export class VerEventosComponent implements OnInit {

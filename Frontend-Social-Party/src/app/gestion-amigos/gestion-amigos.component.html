@@ -8,6 +8,11 @@
         <ion-row>
             <ion-col>
                 <ion-grid>
+                    <ion-row *ngIf="amigos.length === 0">
+                        <div style="width: 100%; text-align: center; padding: 20px; color: black">
+                            <ion-text style="margin: 0 auto;">No tienes amigos todavía...</ion-text>
+                        </div>
+                    </ion-row>
                     <ion-row *ngFor="let amigo of amigos" class="amigo">
                         <ion-col size="3">
                             <ion-img src="assets/iconoPerfil.png"></ion-img>

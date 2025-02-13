@@ -12,6 +12,9 @@
         </ion-row>
         <ion-row>
             <ion-col style="margin: 0 auto" size-lg="4" size-xl="4" size-md="6" size-sm="10" size-xs="12">
+                <div *ngIf="amigos.length === 0" style="width: 100%; text-align: center; padding: 20px; color: black">
+                    <ion-text style="margin: 0 auto;">No tienes amigos todavía...</ion-text>
+                </div>
                 <ion-card (click)="abrirChat(amigo.idUsuario)" class="tarjeta_amigo ion-text-center" *ngFor="let amigo of amigos">
                     <ion-grid>
                         <ion-row>

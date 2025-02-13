@@ -8,6 +8,9 @@
     <ion-grid>
         <ion-row>
             <ion-col size-lg="4" size-xl="4" size-md="6" size-sm="10" size-xs="12">
+                <div *ngIf="empresasFiltradas.length === 0" style="width: 100%; text-align: center; padding: 20px; color: black">
+                    <ion-text style="margin: 0 auto; color: black">Empresas no encontradas...</ion-text>
+                </div>
                 <ion-card *ngFor="let empresa of empresasFiltradas" (click)="verEventos(empresa.id)">
                     <ion-grid>
                         <ion-row>

@@ -4,9 +4,14 @@
         <img id="imagenEmpresa" [ngSrc]="getImageUrlEmpresa()" fill/>
     </ion-content>
     <div class="banda ion-justify-content-between ion-align-items-center">
-        <ion-text style="color: #ffffff; margin: 0 auto">Rosso By Antique</ion-text>
+        <ion-text style="color: #ffffff; margin: 0 auto; font-size: 25px; font-weight: bold;">{{ empresa.nombre }}</ion-text>
     </div>
     <ion-grid>
+        <ion-row *ngIf="eventos.length === 0">
+            <div style="width: 100%; text-align: center; padding: 20px; color: black">
+                <ion-text style="margin: 0 auto; color: black">Esta empresa no tiene eventos.</ion-text>
+            </div>
+        </ion-row>
         <ion-row>
             <ion-col style="margin: 0 auto" size-lg="4" size-xl="4" size-md="6" size-sm="10" size-xs="12">
                 <ion-card *ngFor="let evento of eventos">

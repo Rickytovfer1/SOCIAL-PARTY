@@ -13,7 +13,7 @@ import {Perfil} from "../modelos/Perfil";
 import {Usuario} from "../modelos/Usuario";
 import {PerfilServicio} from "../servicios/perfil.service";
 import {UsuarioService} from "../servicios/usuario.service";
-import {NgForOf, NgOptimizedImage} from "@angular/common";
+import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {Empresa} from "../modelos/Empresa";
 import {FormsModule} from "@angular/forms";
 import {environment} from "../../environments/environment";
@@ -30,7 +30,8 @@ import {EmpresaEntradaDTO} from "../modelos/EmpresaEntradaDTO";
         NavSuperiorComponent,
         NgForOf,
         FormsModule,
-        NgOptimizedImage
+        NgOptimizedImage,
+        NgIf
     ]
 })
 export class VerEntradasComponent implements OnInit {

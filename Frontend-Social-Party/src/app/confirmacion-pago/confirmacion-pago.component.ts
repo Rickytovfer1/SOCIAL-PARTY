@@ -77,9 +77,7 @@ export class ConfirmacionPagoComponent implements OnInit {
     }
 
     comprarEntrada(): void {
-        console.log('Número de tarjeta:', this.num_tarjeta);
-        console.log('Fecha de caducidad:', this.fech_tarjeta);
-        console.log('CCV:', this.ccv_tarjeta);
+
         if (!this.num_tarjeta || !this.fech_tarjeta || !this.ccv_tarjeta) {
             const toast = document.getElementById("toastCampos") as any;
             toast.present();
@@ -91,6 +89,7 @@ export class ConfirmacionPagoComponent implements OnInit {
                 this.qrCodeBase64 = entradaComprada.qrCodeBase64;
                 this.entrada.codigoEntrada = entradaComprada.codigoEntrada;
                 this.generatePDF();
+                this.router.navigate(["/ver-empresas"]);
             },
             error: (error) => {
                 console.error('Error al comprar la entrada:', error);
