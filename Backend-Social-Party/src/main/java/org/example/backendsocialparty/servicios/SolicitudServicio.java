@@ -21,6 +21,7 @@ public class SolicitudServicio {
     private SolicitudRepositorio solicitudRepositorio;
     private ClienteRepositorio clienteRepositorio;
     private final AmistadRepositorio amistadRepositorio;
+    private final WebSocketSolicitudService webSocketSolicitudService;
     public void enviarSolicitud(SolicitudDTO dto) {
         Cliente usuario1 = clienteRepositorio.findByUsuarioId(dto.getIdUsuario1())
                 .orElseThrow(() -> new RuntimeException("No existe cliente para el Usuario ID " + dto.getIdUsuario1()));
@@ -40,9 +41,19 @@ public class SolicitudServicio {
         solicitud.setUsuario2(usuario2);
         solicitud.setFecha(LocalDate.now().atStartOfDay());
         solicitudRepositorio.save(solicitud);
+        
+        SolicitudDTO solicitudDTO = new SolicitudDTO(
+                solicitud.getId(),
+                solicitud.getUsuario1().getUsuario().getId(),
+                solicitud.getUsuario2().getUsuario().getId()
+        );
+        webSocketSolicitudService.enviarSolicitudCreada(solicitudDTO);
     }
 
-    public void eliminarSolicitud(EliminarSolicitudDTO dto) {
+
+    public void eliminarSolicitud(EliminarSolicitudDTO dto)
+
+    {
         solicitudRepositorio.deleteById(dto.getIdSolicitud());
     }
 
