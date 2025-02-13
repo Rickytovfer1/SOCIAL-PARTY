@@ -24,7 +24,7 @@
                                         </ion-row>
                                         <ion-row *ngIf="!esAmigo(this.perfilActual)">
                                             <ion-col>
-                                                <ion-button (click)="enviarSolicitud()">+  Solicitar amistad</ion-button>
+                                                <ion-button [disabled]="botonDesactivado" (click)="enviarSolicitud()">+  Solicitar amistad</ion-button>
                                             </ion-col>
                                         </ion-row>
                                     </ion-grid>
@@ -34,7 +34,7 @@
                     </ion-card>
                     <ion-card id="card_bio">
                         <div>
-                            <ion-text>{{ this.perfilActual.biografia }}</ion-text>
+                            <ion-text>{{ this.perfilActual.biografia ? this.perfilActual.biografia : 'Biografía vacía' }}</ion-text>
                         </div>
                     </ion-card>
                 </ion-card>

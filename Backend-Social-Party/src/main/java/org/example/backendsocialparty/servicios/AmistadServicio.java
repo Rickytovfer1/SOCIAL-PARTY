@@ -53,7 +53,7 @@ public class AmistadServicio {
     }
 
     @Transactional
-    public AmistadDTO aceptarSolicitud(Integer idUsuario, Integer idUsuario2) {
+    public void aceptarSolicitud(Integer idUsuario, Integer idUsuario2) {
         Cliente usuario = clienteRepositorio.findByUsuarioId(idUsuario)
                 .orElseThrow(() -> new RuntimeException("No existe cliente para el Usuario ID " + idUsuario));
         Cliente amigo = clienteRepositorio.findByUsuarioId(idUsuario2)
@@ -68,12 +68,23 @@ public class AmistadServicio {
         amistad.setUsuario(usuario);
         amistad.setAmigo(amigo);
         Amistad amistadGuardada = amistadRepositorio.save(amistad);
-        solicitudRepositorio.deleteByUsuario1_IdAndUsuario2_Id(usuario.getId(), amigo.getId());
+
         AmistadDTO dto = new AmistadDTO();
         dto.setId(amistadGuardada.getId());
         dto.setIdUsuario(amistadGuardada.getUsuario().getUsuario().getId());
         dto.setIdAmigo(amistadGuardada.getAmigo().getUsuario().getId());
-        return dto;
+
+        Amistad amistad2 = new Amistad();
+        amistad2.setUsuario(amigo);
+        amistad2.setAmigo(usuario);
+        Amistad amistadGuardada2 = amistadRepositorio.save(amistad2);
+
+        AmistadDTO dto2 = new AmistadDTO();
+        dto2.setId(amistadGuardada2.getId());
+        dto2.setIdUsuario(amistadGuardada2.getAmigo().getUsuario().getId());
+        dto2.setIdAmigo(amistadGuardada2.getUsuario().getUsuario().getId());
+
+        solicitudRepositorio.deleteByUsuario1_IdAndUsuario2_Id(usuario.getId(), amigo.getId());
     }
 
 

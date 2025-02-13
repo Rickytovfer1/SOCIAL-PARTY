@@ -126,15 +126,27 @@ export class AsistentesEventoComponent  implements OnInit {
     }
 
     cargarAmigos() {
-        this.amigoService.getAmigos(this.perfil.id).subscribe({
+        this.amigoService.getAmigos(this.perfil.idUsuario).subscribe({
             next: data => {
                 this.amigos = data;
-            }
+                console.log("Amigos cargados: ", this.amigos)
+            },
+            error: (e) => {console.error("Error al cargar los amigos:", e);}
         })
     }
 
     esAmigo(cliente: Cliente): boolean {
-        return this.amigos.includes(cliente) || cliente.id === this.perfil.id;
+        let encontrado = false;
+        for (const amigo of this.amigos){
+            if (amigo.id === cliente.id) {
+                encontrado = true;
+                break;
+            }
+        }
+        if (cliente.nombre === this.perfil.nombre) {
+            encontrado = true;
+        }
+        return encontrado;
     }
 
     verPerfil(cliente: Cliente) {

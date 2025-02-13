@@ -21,14 +21,13 @@ public class AmistadControlador {
     }
 
     @PostMapping("/amigos/aceptar/{idUsuario}/{idUsuario2}")
-    public AmistadDTO aceptarSolicitud(@PathVariable Integer idUsuario, @PathVariable Integer idUsuario2) {
-        return amistadServicio.aceptarSolicitud(idUsuario, idUsuario2);
+    public void aceptarSolicitud(@PathVariable Integer idUsuario, @PathVariable Integer idUsuario2) {
+        amistadServicio.aceptarSolicitud(idUsuario, idUsuario2);
     }
 
     @PostMapping("/amigo/eliminar/{idUsuario}/{idAmigo}")
     public void eliminarAmigo(@PathVariable Integer idUsuario, @PathVariable Integer idAmigo) {
         amistadServicio.eliminarAmigo(idUsuario, idAmigo);
     }
-
 
 }

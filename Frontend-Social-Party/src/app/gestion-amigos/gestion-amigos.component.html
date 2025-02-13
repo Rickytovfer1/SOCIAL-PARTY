@@ -12,7 +12,7 @@
                         <ion-col size="3">
                             <ion-img src="assets/iconoPerfil.png"></ion-img>
                         </ion-col>
-                        <ion-col class="col_nombre ion-align-items-center" size="6">
+                        <ion-col class="col_nombre ion-align-items-center" size="6" (click)="verPerfil(amigo)">
                             <ion-text>{{ amigo.nombre }} {{ amigo.apellidos }}</ion-text>
                         </ion-col>
                         <ion-col class="col_nombre ion-align-items-center" size="3">

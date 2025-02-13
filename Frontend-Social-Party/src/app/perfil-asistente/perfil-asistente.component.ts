@@ -41,6 +41,9 @@ export class PerfilAsistenteComponent  implements OnInit {
 
     asistentes: Cliente[] = [];
     evento: Evento = {} as Evento;
+    solicitudes: SolicitudDTO[] = [];
+
+    botonDesactivado: boolean = false;
 
     constructor(private activateRoute: ActivatedRoute,
                 private usuarioService: UsuarioService,
@@ -111,18 +114,52 @@ export class PerfilAsistenteComponent  implements OnInit {
         this.amigoService.getAmigos(this.perfil.idUsuario).subscribe({
             next: data => {
                 this.amigos = data;
-            }
+                this.cargarSolicitudes()
+            },
+            error: (e) => {console.error("Error al cargar los amigos:", e);}
         })
     }
 
+    cargarSolicitudes() {
+        this.solicitudService.getSolicitudes(this.perfil.idUsuario).subscribe({
+            next: (data: SolicitudDTO[]) => {
+                this.solicitudes = data;
+                this.comprobarSolicitud()
+            },
+            error: (err) => {
+                console.error('Error al cargar solicitudes', err);
+            }
+        });
+    }
+
+    comprobarSolicitud() {
+        for (const solicitud of this.solicitudes) {
+            if (solicitud.idUsuario1 === this.perfil.id && solicitud.idUsuario2 === this.perfilActual.id) {
+                this.botonDesactivado = true;
+                break;
+            }
+        }
+    }
+
     esAmigo(cliente: Cliente): boolean {
-        return this.amigos.includes(cliente) || cliente.id === this.perfil.id;
+        let encontrado = false;
+        for (const amigo of this.amigos){
+            if (amigo.id === cliente.id) {
+                encontrado = true;
+                break;
+            }
+        }
+        if (cliente.nombre === this.perfil.nombre) {
+            encontrado = true;
+        }
+        return encontrado;
     }
 
     enviarSolicitud() {
+
+        this.botonDesactivado = true
+
         const solicitud: SolicitudDTO = {
-            imagenPerfil: this.perfil.fotoPerfil,
-            nombreUsuario: this.perfil.nombre,
             id: 0,
             idUsuario1: this.perfil.idUsuario,
             idUsuario2: this.perfilActual.idUsuario

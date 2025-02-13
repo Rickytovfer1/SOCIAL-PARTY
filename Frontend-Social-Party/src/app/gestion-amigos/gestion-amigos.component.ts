@@ -104,4 +104,8 @@ export class GestionAmigosComponent  implements OnInit {
         })
     }
 
+    verPerfil(cliente: Cliente) {
+        this.router.navigate(["/perfil-asistente", cliente.idUsuario])
+    }
+
 }

@@ -9,7 +9,15 @@ import { Perfil } from '../modelos/Perfil';
 import {NavSuperiorComponent} from "../nav-superior/nav-superior.component";
 import {NavInferiorComponent} from "../nav-inferior/nav-inferior.component";
 import {NgForOf} from "@angular/common";
-import {environment} from "../../environments/environment"; // Se asume que Perfil tiene una propiedad "nombre"
+import {environment} from "../../environments/environment";
+import {TokenDataDTO} from "../modelos/TokenDataDTO";
+import {Usuario} from "../modelos/Usuario";
+import {Cliente} from "../modelos/Cliente";
+import {Router} from "@angular/router";
+import {ClienteService} from "../servicios/cliente.service";
+import {AmigoService} from "../servicios/amigo.service";
+import {EventoService} from "../servicios/evento.service";
+import {Empresa} from "../modelos/Empresa"; // Se asume que Perfil tiene una propiedad "nombre"
 
 @Component({
     selector: 'app-ver-solicitudes',
@@ -26,113 +34,134 @@ import {environment} from "../../environments/environment"; // Se asume que Perf
 export class VerSolicitudesComponent implements OnInit {
 
     solicitudes: SolicitudDTO[] = [];
-    idUsuario!: number;
+    correo?: string;
+    usuario: Usuario = {} as Usuario;
+    perfil: Cliente = {} as Cliente;
+    clientesSolicitudes: Cliente[] = []
     baseUrl: string = environment.apiUrl;
 
     constructor(
-        private solicitudService: SolicitudService,
+        private router: Router,
         private usuarioService: UsuarioService,
-        private perfilServicio: PerfilServicio,
-        private alertController: AlertController
+        private clienteService: ClienteService,
+        private amigoService: AmigoService,
+        private eventoService: EventoService,
+        private solicitudService: SolicitudService
     ) { }
 
     ngOnInit() {
+        this.inicio()
+    }
+
+    inicio() {
         const token = sessionStorage.getItem('authToken');
         if (token) {
             try {
-                const correo = this.obtenerCorreoDelToken(token);
-                if (correo) {
-                    this.usuarioService.getUsuario(correo).subscribe({
-                        next: (usuario) => {
-                            if (usuario.id !== undefined) {
-                                this.idUsuario = usuario.id;
-                                this.cargarSolicitudes();
-                            } else {
-                                this.presentAlert('Error', 'El usuario no tiene un ID válido.');
-                            }
-                        },
-                        error: () => {
-                            this.presentAlert('Error', 'No se pudo cargar el usuario.');
-                        }
-                    });
+                const decodedToken = jwtDecode<{ tokenDataDTO: TokenDataDTO }>(token);
+                const tokenDataDTO = decodedToken?.tokenDataDTO;
+                if (tokenDataDTO && tokenDataDTO.correo) {
+                    this.correo = tokenDataDTO.correo;
+                    this.cargarUsuario(this.correo);
                 }
-            } catch (error) {
-                this.presentAlert('Error', 'Token inválido.');
+            } catch (e) {
+                console.error('Error al decodificar el token:', e);
             }
-        } else {
-            this.presentAlert('Error', 'No se encontró el token de autenticación.');
         }
     }
 
+    cargarUsuario(correo: string | undefined): void {
+        this.usuarioService.getUsuario(correo).subscribe({
+            next: (usuario: Usuario) => {
+                this.usuario = usuario;
+                if (usuario && usuario.id) {
+                    this.cargarPerfil(usuario.id);
+                }
+            },
+            error: (e) => {
+                console.error("Error al cargar el usuario:", e);
+            }
+        });
+    }
+
+    cargarPerfil(idUsuario: number): void {
+        this.clienteService.getCliente(idUsuario).subscribe({
+            next: (perfil: Cliente) => {
+                this.perfil = perfil;
+                this.cargarSolicitudes()
+            },
+            error: (e) => {
+                console.error("Error al cargar el perfil:", e);
+            }
+        });
+    }
+
     cargarSolicitudes() {
-        this.solicitudService.getSolicitudes(this.idUsuario).subscribe({
+        this.solicitudService.getSolicitudes(this.perfil.idUsuario).subscribe({
             next: (data: SolicitudDTO[]) => {
                 this.solicitudes = data;
-                this.solicitudes.forEach(solicitud => {
-                    this.perfilServicio.getPerfil(solicitud.idUsuario1).subscribe({
-                        next: (perfil) => {
-                            if (perfil.fotoPerfil && perfil.fotoPerfil.startsWith('http')) {
-                                solicitud.imagenPerfil = perfil.fotoPerfil;
-                            } else {
-                                solicitud.imagenPerfil = `${this.baseUrl}${perfil.fotoPerfil}`;
-                            }
-                            solicitud.nombreUsuario = perfil.nombre + ' ' + perfil.apellidos;
-                        },
-                        error: (err) => {
-                            console.error('Error al cargar el perfil del usuario', err);
-                            solicitud.imagenPerfil = 'assets/iconoPerfil.png';
-                            solicitud.nombreUsuario = 'Nombre usuario';
-                        }
-                    });
-
-                });
-
-
+                this.cargarClientesSolicitudes()
             },
             error: (err) => {
                 console.error('Error al cargar solicitudes', err);
-                this.presentAlert('Error', 'No se pudieron cargar las solicitudes.');
             }
         });
     }
 
-    aceptarSolicitud(solicitud: SolicitudDTO) {
-        this.solicitudService.aceptarSolicitud(solicitud.idUsuario1, solicitud.idUsuario2).subscribe({
-            next: () => {
-                this.solicitudes = this.solicitudes.filter(s => s.id !== solicitud.id);
-                this.presentAlert('Éxito', 'Solicitud aceptada.');
-            },
-            error: (err) => {
-                console.error('Error al aceptar solicitud', err);
-                this.presentAlert('Error', 'No se pudo aceptar la solicitud.');
+    cargarClientesSolicitudes() {
+        for (const solicitud of this.solicitudes) {
+            this.clienteService.getCliente(solicitud.idUsuario1).subscribe({
+                next: (data: Cliente) => {
+                    this.clientesSolicitudes.push(data);
+                },
+                error: e => {console.error('Error al cargar los clientes delas solicitudes', e)}
+            })
+        }
+    }
+
+    aceptarSolicitud(cliente: Cliente) {
+        for (const solicitud of this.solicitudes) {
+            if (solicitud.idUsuario1 === cliente.idUsuario) {
+                this.solicitudService.aceptarSolicitud(solicitud.idUsuario1, solicitud.idUsuario2).subscribe({
+                    next: () => {
+                        this.solicitudes = this.solicitudes.filter(s => s.id !== solicitud.id);
+                    },
+                    error: (err) => {
+                        console.error('Error al aceptar solicitud', err);
+                    }
+                });
+                break
             }
-        });
+        }
     }
 
-    eliminarSolicitud(solicitud: SolicitudDTO) {
-        this.solicitudService.eliminarSolicitud(solicitud.id).subscribe({
-            next: () => {
-                this.solicitudes = this.solicitudes.filter(s => s.id !== solicitud.id);
-                this.presentAlert('Éxito', 'Solicitud eliminada.');
-            },
-            error: (err) => {
-                console.error('Error al eliminar solicitud', err);
-                this.presentAlert('Error', 'No se pudo eliminar la solicitud.');
+    eliminarSolicitud(cliente: Cliente) {
+        for (const solicitud of this.solicitudes) {
+            if (solicitud.idUsuario1 === cliente.idUsuario) {
+                this.solicitudService.eliminarSolicitud(solicitud.id).subscribe({
+                    next: () => {
+                        this.solicitudes = this.solicitudes.filter(s => s.id !== solicitud.id);
+                    },
+                    error: (err) => {
+                        console.error('Error al aceptar solicitud', err);
+                    }
+                });
+                break
             }
-        });
+        }
     }
 
-    async presentAlert(header: string, message: string) {
-        const alert = await this.alertController.create({
-            header,
-            message,
-            buttons: ['OK']
-        });
-        await alert.present();
+    getImageUrl(cliente: Cliente): string {
+        if (cliente && cliente.fotoPerfil) {
+            if (cliente.fotoPerfil.startsWith('http')) {
+                return cliente.fotoPerfil;
+            } else {
+                return `${this.baseUrl}${cliente.fotoPerfil}`;
+            }
+        }
+        return 'assets/iconoPerfil.png';
     }
 
-    obtenerCorreoDelToken(token: string): string {
-        const decoded: any = jwtDecode(token);
-        return decoded.tokenDataDTO?.correo;
+    verPerfil(cliente: Cliente) {
+        this.router.navigate(["/perfil-asistente", cliente.idUsuario])
     }
 }
