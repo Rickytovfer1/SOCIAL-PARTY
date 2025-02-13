@@ -27,7 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class ClienteServicio {
     private final EmpresaServicio empresaServicio;
-    private ClienteServicio clienteServicio;
+    private final UsuarioServicio usuarioServicio;
     private final ClienteRepositorio clienteRepositorio;
     private final PublicacionServicio publicacionServicio;
     private final MensajeServicio mensajeServicio;
@@ -55,7 +55,7 @@ public class ClienteServicio {
             UsuarioRepositorio usuarioRepositorio,
             ComentarioRepositorio comentarioRepositorio, ComentarioService comentarioService,
             EmpresaRepositorio empresaRepositorio,
-            FavoritoServicio favoritoServicio, EmpresaServicio empresaServicio) {
+            FavoritoServicio favoritoServicio, EmpresaServicio empresaServicio, UsuarioServicio usuarioServicio) {
         this.clienteRepositorio = clienteRepositorio;
         this.publicacionServicio = publicacionServicio;
         this.mensajeServicio = mensajeServicio;
@@ -69,6 +69,7 @@ public class ClienteServicio {
         this.empresaRepositorio = empresaRepositorio;
         this.favoritoServicio = favoritoServicio;
         this.empresaServicio = empresaServicio;
+        this.usuarioServicio = usuarioServicio;
     }
 
 
@@ -154,6 +155,7 @@ public class ClienteServicio {
         solicitudServicio.eliminarSolicitudCli(id);
         publicacionServicio.eliminarPublicacionCliente(id);
         mensajeServicio.eliminarMensajes(id);
+        usuarioServicio.eliminarUsuarioVerificacion(cliente.getUsuario().getId());
         clienteRepositorio.delete(cliente);
     }
 

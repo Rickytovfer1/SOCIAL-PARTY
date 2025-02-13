@@ -25,6 +25,7 @@ public class EmpresaServicio {
     @Value("${upload.dir:/tmp}")
     private String uploadDir;
 
+    private final UsuarioServicio usuarioServicio;
     private final EmpresaRepositorio empresaRepositorio;
     private final ClienteRepositorio clienteRepositorio;
     private final PublicacionServicio publicacionServicio;
@@ -65,7 +66,8 @@ public class EmpresaServicio {
                 .orElseThrow(() -> new RuntimeException("No existe una empresa con este ID."));
 
         eventoServicio.eliminarBaneadoEmpresa(id);
-//        entradaServicio.eliminarEntradaEmpresa(id);
+        entradaServicio.eliminarEntradaEmpresa(id);
+        usuarioServicio.eliminarUsuarioVerificacion(empresa.getUsuario().getId());
         eventoServicio.eliminarEvento(id);
         publicacionServicio.eliminarPublicacionEmpresa(id);
         empresaRepositorio.delete(empresa);
