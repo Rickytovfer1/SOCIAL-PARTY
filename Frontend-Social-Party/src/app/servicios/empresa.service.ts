@@ -66,6 +66,6 @@ export class EmpresaService {
     }
     restarEstrellas(restarEstrella: RestarPuntos): Observable<void> {
         const options = this.comunService.autorizarPeticionFormData();
-        return this.http.post<void>(`${this.apiUrl}/empresa/restar/puntos`,{}, options);
+        return this.http.post<void>(`${this.apiUrl}/empresa/restar/puntos`,restarEstrella, options);
     }
 }

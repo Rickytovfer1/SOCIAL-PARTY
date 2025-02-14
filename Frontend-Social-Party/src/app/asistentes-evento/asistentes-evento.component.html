@@ -14,7 +14,7 @@
                     <ion-grid>
                         <ion-row>
                             <ion-col size="3" class="ion-justify-content-between ion-align-items-center fix-col">
-                                <ion-img src="assets/iconoPerfil.png"></ion-img>
+                                <img [ngSrc]="getImageUrlCliente(cliente)" fill>
                             </ion-col>
                             <ion-col size="7" class="ion-justify-content-between ion-align-items-center fix-col">
                                 <ion-text class="nombre">{{ cliente.nombre === this.perfil.nombre ? 'Tú' : cliente.nombre }}</ion-text>

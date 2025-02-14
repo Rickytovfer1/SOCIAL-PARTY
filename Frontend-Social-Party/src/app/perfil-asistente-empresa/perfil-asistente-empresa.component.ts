@@ -174,7 +174,9 @@ export class PerfilAsistenteEmpresaComponent implements OnInit {
 
         this.empresaService.restarEstrellas(restarPuntos).subscribe({
             next: () => {
-                console.log(`Se han restado ${puntos} estrellas por falta ${this.empresaService}`);
+                console.log(`Se han restado ${puntos} estrellas por falta ${this.opcionSeleccionada}`);
+                location.reload()
+
             },
             error: (e) => {
                 console.error("Error al restar estrellas:", e);

@@ -12,11 +12,13 @@ import {ActivatedRoute} from "@angular/router";
 import {Comentario} from "../modelos/Comentario";
 import {ComentarioService} from "../servicios/comentario.service";
 import {PublicacionService} from "../servicios/publicacion.service";
-import {NgForOf} from "@angular/common";
+import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {ComentarioEnvio} from "../modelos/ComentarioEnvio";
 import {FormsModule} from "@angular/forms";
 import {MostrarPublicacion} from "../modelos/MostrarPublicacion";
 import {ClienteService} from "../servicios/cliente.service";
+import {environment} from "../../environments/environment";
+import {Cliente} from "../modelos/Cliente";
 
 @Component({
     selector: 'app-comentarios',
@@ -28,19 +30,24 @@ import {ClienteService} from "../servicios/cliente.service";
         NavInferiorComponent,
         NavSuperiorComponent,
         NgForOf,
-        FormsModule
+        FormsModule,
+        NgOptimizedImage,
+        NgIf
     ]
 })
 export class ComentariosComponent  implements OnInit {
-
+    baseUrl: string = environment.apiUrl;
     correo: string = ""
     usuario: Usuario = {} as Usuario;
     perfil: Perfil = {} as Perfil;
+    cliente: Cliente = {} as Cliente;
     idPublicacion!: number;
+    id_Cliente!: number;
     comentarios: Comentario[] = []
     perfilesComentarios: Perfil[] = [];
     nombresComentarios: {[key: number]: string} = {};
     nuevoComentario: string = ""
+    clientes: { [key: number]: Cliente } = {};
 
     constructor(private usuarioService: UsuarioService,
                 private perfilService: PerfilServicio,
@@ -105,11 +112,35 @@ export class ComentariosComponent  implements OnInit {
         this.publicacionService.listarComentariosPublicacion(idPublicacion).subscribe({
             next: (data) => {
                 this.comentarios = data.reverse();
+                this.comentarios.forEach(comentario => {
+                    this.cargarCliente(comentario.id_cliente);
+                });
             },
-            error: e => {console.error("Error al cargar los comentarios:", e);
+            error: e => {
+                console.error("Error al cargar los comentarios:", e);
             }
-        })
+        });
     }
+
+
+
+    cargarCliente(idCliente: number | undefined) {
+        if (idCliente == null || this.clientes[idCliente]) return;
+
+        this.publicacionService.getCliente(idCliente).subscribe({
+            next: (cliente: Cliente) => {
+                if (cliente && cliente.id) {
+                    this.clientes[cliente.id] = cliente;
+                }
+            },
+            error: (e) => {
+                console.error("Error al cargar el cliente:", e);
+            }
+        });
+    }
+
+
+
 
     enviarMensaje() {
 
@@ -159,6 +190,16 @@ export class ComentariosComponent  implements OnInit {
             return `Hace ${minutes} ${minutes === 1 ? "minuto" : "minutos"}`;
         } else {
             return "Hace un momento";
+        }
+    }
+
+    getImageUrlCliente(clienteDTO: Cliente): string {
+        if (!clienteDTO.fotoPerfil || clienteDTO.fotoPerfil.trim() === '') {
+            return 'assets/iconoPerfil.png';
+        } else if (clienteDTO.fotoPerfil.startsWith('http')) {
+            return clienteDTO.fotoPerfil;
+        } else {
+            return `${this.baseUrl}${clienteDTO.fotoPerfil}`;
         }
     }
 

@@ -19,7 +19,8 @@ import {EventoService} from "../servicios/evento.service";
 import {PerfilEmpresa} from "../modelos/PerfilEmpresa";
 import {PerfilServicio} from "../servicios/perfil.service";
 import {EmpresaService} from "../servicios/empresa.service";
-import {NgForOf, NgIf} from "@angular/common";
+import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
+import {Perfil} from "../modelos/Perfil";
 
 @Component({
     selector: 'app-asistentes-evento-empresa',
@@ -33,7 +34,8 @@ import {NgForOf, NgIf} from "@angular/common";
         NavInferiorComponent,
         NavSuperiorComponent,
         NgForOf,
-        NgIf
+        NgIf,
+        NgOptimizedImage
     ]
 })
 export class AsistentesEventoEmpresaComponent implements OnInit {
@@ -131,6 +133,15 @@ export class AsistentesEventoEmpresaComponent implements OnInit {
         });
     }
 
+    getImageUrlCliente(clienteDTO: Cliente): string {
+        if (!clienteDTO.fotoPerfil || clienteDTO.fotoPerfil.trim() === '') {
+            return 'assets/iconoPerfil.png';
+        } else if (clienteDTO.fotoPerfil.startsWith('http')) {
+            return clienteDTO.fotoPerfil;
+        } else {
+            return `${this.baseUrl}${clienteDTO.fotoPerfil}`;
+        }
+    }
 
     verPerfil(idCliente: number) {
         this.router.navigate(["/perfil-asistente-empresa", idCliente])
