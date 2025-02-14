@@ -132,8 +132,8 @@ export class AsistentesEventoEmpresaComponent implements OnInit {
     }
 
 
-    verPerfil(cliente: Cliente) {
-        this.router.navigate(["/perfil-asistente", cliente.idUsuario])
+    verPerfil(idCliente: number) {
+        this.router.navigate(["/perfil-asistente-empresa", idCliente])
     }
     irCanjearEntrada(){
         this.router.navigate(['/canjear-entrada-empresa'])

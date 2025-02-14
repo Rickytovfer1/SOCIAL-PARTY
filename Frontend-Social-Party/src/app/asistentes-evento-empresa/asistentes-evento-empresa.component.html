@@ -1,10 +1,21 @@
 <app-nav-superior-empresa></app-nav-superior-empresa>
 <ion-content>
     <div class="fondo">
-        <div id="pregunta">
-            ¿Quién está por mi discoteca...?
+        <div class="pregunta" *ngIf="evento === null; else tieneEvento">
+            No hay eventos actuales
         </div>
+
+        <ng-template #tieneEvento>
+            <div class="pregunta" *ngIf="asistentes && asistentes.length > 0">
+                ¿Quién está por mi discoteca...?
+            </div>
+
+            <div class="pregunta" *ngIf="asistentes && asistentes.length === 0">
+                No hay asistentes
+            </div>
+        </ng-template>
     </div>
+
     <div class="banda"><ion-img class="derecha" src="assets/qr.png" (click)="irCanjearEntrada()"></ion-img></div>
     <ion-grid>
         <ion-row>
@@ -20,7 +31,7 @@
                                 <ion-text class="nombre">{{ cliente.nombre === this.perfil.nombre ? 'Tú' : cliente.nombre }}</ion-text>
                             </ion-col>
                             <ion-col size="2" class="ion-justify-content-between ion-align-items-center fix-col">
-                                <ion-img (click)="verPerfil(cliente)" src="assets/ajustesUsuario.png"></ion-img>
+                                <ion-img (click)="verPerfil(cliente.id)" src="assets/ajustesUsuario.png"></ion-img>
                             </ion-col>
                         </ion-row>
                     </ion-grid>

@@ -138,4 +138,8 @@ export const routes: Routes = [
         path: 'editar-empresa-admin/:id',
         loadComponent: () => import('./editar-empresa-admin/editar-empresa-admin.component').then((m) => m.EditarEmpresaAdminComponent)
     },
+    {
+        path: 'perfil-asistente-empresa/:id',
+        loadComponent: () => import('./perfil-asistente-empresa/perfil-asistente-empresa.component').then((m) => m.PerfilAsistenteEmpresaComponent)
+    },
 ];

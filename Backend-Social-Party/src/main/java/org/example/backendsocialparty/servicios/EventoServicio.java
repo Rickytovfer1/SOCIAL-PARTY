@@ -180,13 +180,35 @@ public class EventoServicio {
 
         LocalDate hoy = LocalDate.now();
         LocalTime ahora = LocalTime.now();
+        Evento eventoFinalizado = null;
 
         for (Evento evento : empresa.getEventos()) {
-            if (evento.getFecha().isEqual(hoy) &&
-                    !ahora.isBefore(evento.getHoraApertura()) &&
-                    !ahora.isAfter(evento.getHoraFinalizacion())) {
-                return getEventoDTO(evento);
+            if (evento.getFecha().isEqual(hoy)) {
+
+                if (!ahora.isBefore(evento.getHoraApertura()) && !ahora.isAfter(evento.getHoraFinalizacion())) {
+                    return getEventoDTO(evento);
+                }
+
+                else if (ahora.isAfter(evento.getHoraFinalizacion())) {
+                    eventoFinalizado = evento;
+                    break;
+                }
             }
+        }
+
+        if (eventoFinalizado != null) {
+
+            for (Cliente cliente : new HashSet<>(eventoFinalizado.getAsistentes())) {
+                cliente.getEventos().remove(eventoFinalizado);
+                clienteRepositorio.save(cliente);
+            }
+            eventoFinalizado.getAsistentes().clear();
+
+            empresa.getEventos().remove(eventoFinalizado);
+            empresaRepositorio.save(empresa);
+
+            eventoRepositorio.save(eventoFinalizado);
+            eventoRepositorio.delete(eventoFinalizado);
         }
 
         return null;

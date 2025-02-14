@@ -1,0 +1,63 @@
+#foto_perfil {
+    width: 80%;
+    height: 80%;
+    margin: 0 auto;
+    padding: 0;
+}
+
+#estrella {
+    width: 70%;
+    height: 70%;
+}
+
+#cardG {
+    --background: #ffffff;
+    border: 15px solid #471FCD;
+    border-radius: 40px;
+    margin: 20% auto 0;
+}
+
+ion-content {
+    --background: #D3E5E5;
+}
+
+ion-col {
+    display: flex;
+    margin: 0 auto;
+}
+
+#card_info {
+    --background: #306DA9;
+    border-radius: 20px;
+    border: 2px solid black;
+}
+
+#card_bio {
+    --background: #306DA9;
+    border-radius: 20px;
+    padding: 30px;
+    border: 2px solid black;
+}
+
+
+ion-text {
+    color: #ffffff;
+}
+
+#texto_estrellas {
+    color: #F0FF00;
+    font-size: 22px;
+}
+
+#nombre {
+    font-size: 22px;
+}
+.contenido {
+    color: #ffffff;
+    font-size: 20px;
+    margin: 0 auto;
+    --placeholder-color: white !important;
+}
+img{
+    border-radius: 40%;
+}

@@ -92,4 +92,9 @@ public class EmpresaControlador {
         return eventoServicio.obtenerEventoDeHoy(idEmpresa);
     }
 
+    @PostMapping("/empresa/banear/{idCliente}/{idEmpresa}")
+    public void banearDiscoteca(@PathVariable Integer idCliente, @PathVariable Integer idEmpresa){
+        empresaServicio.banearDiscoteca(idCliente, idEmpresa);
+    }
+
 }

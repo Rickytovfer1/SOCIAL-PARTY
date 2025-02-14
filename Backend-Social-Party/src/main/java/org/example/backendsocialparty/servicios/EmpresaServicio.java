@@ -172,4 +172,22 @@ public class EmpresaServicio {
             }
         }
     }
+
+    public void banearDiscoteca(Integer idCliente,  Integer idEmpresa) {
+        Cliente cliente = clienteRepositorio.findById(idCliente)
+                .orElseThrow(() -> new RuntimeException("No existe un cliente con este ID."));
+
+        Empresa empresa = empresaRepositorio.findById(idEmpresa).orElseThrow(() -> new RuntimeException("No existe una empresa con este ID."));
+
+        Set<Cliente> baneados = new HashSet<>();
+        baneados.add(cliente);
+        empresa.setBaneados(baneados);
+
+        for (Evento evento : empresa.getEventos()) {
+            evento.getAsistentes().remove(cliente);
+        }
+
+        empresaRepositorio.save(empresa);
+
+    }
 }
