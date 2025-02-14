@@ -23,8 +23,6 @@ import {Empresa} from "../modelos/Empresa";
     standalone: true,
     imports: [
         IonicModule,
-        NavInferiorEmpresaComponent,
-        NavSuperiorEmpresaComponent,
         NgOptimizedImage,
         NavSuperiorAdminComponent,
         NavInferiorAdminComponent,

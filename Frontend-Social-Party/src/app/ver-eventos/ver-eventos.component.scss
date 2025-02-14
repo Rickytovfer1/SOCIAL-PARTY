@@ -10,8 +10,10 @@
     color: #ffffff;
     white-space: wrap;
     text-align: center;
-    display: inline-block;
-    font-size: 10px;
+    font-size: 15px;
+    margin: 0 auto;
+    width: 90%;
+    border: 1px solid black;
 }
 
 @media (min-width: 768px) {
@@ -26,8 +28,10 @@
         color: #ffffff;
         white-space: wrap;
         text-align: center;
-        display: inline-block;
         font-size: 14px;
+        margin: 0 auto;
+        width: 70%;
+        border: 1px solid black;
     }
 }
 
@@ -45,8 +49,10 @@ ion-content {
 .nombre_evento {
     font-size: 20px;
     color: #ffffff;
-    margin: 0 auto;
     text-align: center;
+    font-weight: bold;
+    font-style: italic;
+    margin: 10px auto 0;
 }
 
 ion-card {
@@ -58,4 +64,11 @@ ion-card {
 .foto_evento {
     border-radius: 25px;
     overflow: hidden;
+}
+
+.descp_evento {
+    font-size: 18px;
+    color: #ffffff;
+    margin: 0 auto;
+    text-align: center;
 }

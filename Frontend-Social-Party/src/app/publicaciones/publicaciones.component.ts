@@ -276,8 +276,9 @@ export class PublicacionesComponent implements OnInit {
             if (publicacion.idUsuario) {
                 this.usuarioService.getUsuarioPublicacion(publicacion.idUsuario).subscribe({
                     next: (data) => {
-                        if (publicacion.idUsuario) {
-                            this.rolesPublicaciones[publicacion.idUsuario] = data;
+                        console.log(data)
+                        if (publicacion.id) {
+                            this.rolesPublicaciones[publicacion.id] = data;
                         }
                     },
                     error: (e) => {

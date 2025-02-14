@@ -16,7 +16,6 @@ import {Empresa} from "../modelos/Empresa";
     styleUrls: ['./principal-admin.component.scss'],
     standalone: true,
     imports: [
-        NavSuperiorEmpresaComponent,
         NavSuperiorAdminComponent,
         NavInferiorAdminComponent,
         IonicModule,
