@@ -12,6 +12,7 @@ import { Cliente } from "../modelos/Cliente";
 import { jwtDecode } from "jwt-decode";
 import { TokenDataDTO } from "../modelos/TokenDataDTO";
 import { Router } from "@angular/router";
+import {NavLateralComponent} from "../nav-lateral/nav-lateral.component";
 
 @Component({
     selector: 'app-amigos',
@@ -22,7 +23,8 @@ import { Router } from "@angular/router";
         CommonModule,
         IonicModule,
         NavSuperiorComponent,
-        NavInferiorComponent
+        NavInferiorComponent,
+        NavLateralComponent
     ]
 })
 export class AmigosComponent implements OnInit {

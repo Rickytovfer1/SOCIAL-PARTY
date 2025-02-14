@@ -71,10 +71,6 @@ export const routes: Routes = [
         loadComponent: () => import('./ver-perfil-empresa/ver-perfil-empresa.component').then((m) => m.VerPerfilEmpresaComponent)
     },
     {
-        path: 'ver-noticia/:id',
-        loadComponent: () => import('./ver-noticia/ver-noticia.component').then((m) => m.VerNoticiaComponent)
-    },
-    {
         path: 'chat',
         loadComponent: () => import('./chat/chat.component').then((m) => m.ChatComponent)
     },
@@ -137,5 +133,9 @@ export const routes: Routes = [
     {
         path: 'editar-empresa-admin/:id',
         loadComponent: () => import('./editar-empresa-admin/editar-empresa-admin.component').then((m) => m.EditarEmpresaAdminComponent)
+    },
+    {
+        path: 'componente-prueba',
+        loadComponent: () => import('./componente-prueba/componente-prueba.component').then((m) => m.ComponentePruebaComponent)
     },
 ];

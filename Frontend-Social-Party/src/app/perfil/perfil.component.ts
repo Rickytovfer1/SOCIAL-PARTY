@@ -13,6 +13,7 @@ import { ClienteService } from "../servicios/cliente.service";
 import { ActualizarCliente } from "../modelos/ActualizarCliente";
 import { FormsModule } from "@angular/forms";
 import { DatePipe, NgIf } from "@angular/common";
+import {NavLateralComponent} from "../nav-lateral/nav-lateral.component";
 
 @Component({
     selector: 'app-perfil',
@@ -23,7 +24,8 @@ import { DatePipe, NgIf } from "@angular/common";
         IonicModule,
         NavSuperiorComponent,
         NavInferiorComponent,
-        FormsModule
+        FormsModule,
+        NavLateralComponent
     ]
 })
 export class PerfilComponent implements OnInit {

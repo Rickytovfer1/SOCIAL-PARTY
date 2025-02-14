@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import {Empresa} from "../modelos/Empresa";
 import {environment} from "../../environments/environment";
+import {NavLateralComponent} from "../nav-lateral/nav-lateral.component";
 
 @Component({
     selector: 'app-ver-empresas',
@@ -23,7 +24,8 @@ import {environment} from "../../environments/environment";
         NavInferiorComponent,
         CommonModule,
         HttpClientModule,
-        NgOptimizedImage
+        NgOptimizedImage,
+        NavLateralComponent
     ]
 })
 export class VerEmpresasComponent implements OnInit {

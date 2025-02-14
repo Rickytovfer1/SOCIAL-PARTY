@@ -1,0 +1,49 @@
+<ion-content style="--background: #234276;">
+    <ion-grid style="width: 100%;">
+        <ion-row style="margin-bottom: 50px">
+            <ion-col size="auto">
+                <ion-img class="icono" src="assets/img.png"></ion-img>
+            </ion-col>
+        </ion-row>
+        <ion-row (click)="irPerfil()">
+            <ion-col size="3">
+                <ion-img src="assets/iconoPerfil.png"></ion-img>
+            </ion-col>
+            <ion-col size="9" class="despg">
+                <ion-text>Perfil</ion-text>
+            </ion-col>
+        </ion-row>
+        <ion-row (click)="irEntradas()">
+            <ion-col size="3">
+                <ion-img src="assets/tickets.png"></ion-img>
+            </ion-col>
+            <ion-col size="9" class="despg">
+                <ion-text>Entradas</ion-text>
+            </ion-col>
+        </ion-row>
+        <ion-row (click)="irAmigos()">
+            <ion-col size="3">
+                <ion-img src="assets/iconoCasa.png"></ion-img>
+            </ion-col>
+            <ion-col size="9" class="despg">
+                <ion-text>Menú</ion-text>
+            </ion-col>
+        </ion-row>
+        <ion-row (click)="irUbicacion()">
+            <ion-col size="3">
+                <ion-img src="assets/ubicacion.png"></ion-img>
+            </ion-col>
+            <ion-col size="9" class="despg">
+                <ion-text>En vivo</ion-text>
+            </ion-col>
+        </ion-row>
+        <ion-row (click)="irPublicaciones()">
+            <ion-col size="3">
+                <ion-img src="assets/internetIcono.png"></ion-img>
+            </ion-col>
+            <ion-col size="9" class="despg">
+                <ion-text>Explorar</ion-text>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>
