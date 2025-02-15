@@ -1,26 +1,27 @@
-import {Component, OnInit} from '@angular/core';
-import {IonicModule} from "@ionic/angular";
-import {NavInferiorComponent} from "../nav-inferior/nav-inferior.component";
-import {NavSuperiorComponent} from "../nav-superior/nav-superior.component";
-import {NavSuperiorEmpresaComponent} from "../nav-superior-empresa/nav-superior-empresa.component";
-import {NavInferiorEmpresaComponent} from "../nav-inferior-empresa/nav-inferior-empresa.component";
-import {Router} from "@angular/router";
-import {jwtDecode} from "jwt-decode";
-import {TokenDataDTO} from "../modelos/TokenDataDTO";
-import {environment} from "../../environments/environment";
-import {Usuario} from "../modelos/Usuario";
-import {Cliente} from "../modelos/Cliente";
-import {Evento} from "../modelos/Evento";
-import {Empresa} from "../modelos/Empresa";
-import {UsuarioService} from "../servicios/usuario.service";
-import {ClienteService} from "../servicios/cliente.service";
-import {AmigoService} from "../servicios/amigo.service";
-import {EventoService} from "../servicios/evento.service";
-import {PerfilEmpresa} from "../modelos/PerfilEmpresa";
-import {PerfilServicio} from "../servicios/perfil.service";
-import {EmpresaService} from "../servicios/empresa.service";
-import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
-import {Perfil} from "../modelos/Perfil";
+import { Component, OnInit } from '@angular/core';
+import { IonicModule } from "@ionic/angular";
+import { NavInferiorComponent } from "../nav-inferior/nav-inferior.component";
+import { NavSuperiorComponent } from "../nav-superior/nav-superior.component";
+import { NavSuperiorEmpresaComponent } from "../nav-superior-empresa/nav-superior-empresa.component";
+import { NavInferiorEmpresaComponent } from "../nav-inferior-empresa/nav-inferior-empresa.component";
+import { Router } from "@angular/router";
+import { jwtDecode } from "jwt-decode";
+import { TokenDataDTO } from "../modelos/TokenDataDTO";
+import { environment } from "../../environments/environment";
+import { Usuario } from "../modelos/Usuario";
+import { Cliente } from "../modelos/Cliente";
+import { Evento } from "../modelos/Evento";
+import { Empresa } from "../modelos/Empresa";
+import { UsuarioService } from "../servicios/usuario.service";
+import { ClienteService } from "../servicios/cliente.service";
+import { AmigoService } from "../servicios/amigo.service";
+import { EventoService } from "../servicios/evento.service";
+import { PerfilEmpresa } from "../modelos/PerfilEmpresa";
+import { PerfilServicio } from "../servicios/perfil.service";
+import { EmpresaService } from "../servicios/empresa.service";
+import { NgForOf, NgIf, NgOptimizedImage } from "@angular/common";
+import { Perfil } from "../modelos/Perfil";
+import {FormsModule} from "@angular/forms";
 
 @Component({
     selector: 'app-asistentes-evento-empresa',
@@ -35,7 +36,8 @@ import {Perfil} from "../modelos/Perfil";
         NavSuperiorComponent,
         NgForOf,
         NgIf,
-        NgOptimizedImage
+        NgOptimizedImage,
+        FormsModule
     ]
 })
 export class AsistentesEventoEmpresaComponent implements OnInit {
@@ -46,8 +48,12 @@ export class AsistentesEventoEmpresaComponent implements OnInit {
     perfil: Cliente = {} as Cliente;
     evento: Evento = {} as Evento;
     empresa: Empresa = {} as Empresa;
-    asistentes: Cliente[]  = [];
-    amigos: Cliente[]  = [];
+    asistentes: Cliente[] = [];
+    asistentesFiltrados: Cliente[] = [];
+    amigos: Cliente[] = [];
+    buscar: string = '';
+    showRangeFilter: boolean = false;
+    valoracionRange = { lower: 0, upper: 1000 };
 
     constructor(
         private router: Router,
@@ -92,7 +98,6 @@ export class AsistentesEventoEmpresaComponent implements OnInit {
             next: (empresa: Empresa) => {
                 this.empresa = empresa;
                 this.cargarEventoHoy(this.empresa.id)
-
             },
             error: (e) => {
                 console.error("Error al cargar el perfil:", e);
@@ -105,7 +110,6 @@ export class AsistentesEventoEmpresaComponent implements OnInit {
             next: (evento: Evento) => {
                 this.evento = evento;
                 this.cargarAsistentes()
-
             },
             error: (e) => {
                 console.error("Error al cargar el evento:", e);
@@ -119,10 +123,10 @@ export class AsistentesEventoEmpresaComponent implements OnInit {
             this.asistentes = [];
             return;
         }
-
         this.eventoService.verPersonasEventoEmpresa(this.evento.id).subscribe({
             next: data => {
                 this.asistentes = data && data.length > 0 ? data : [];
+                this.asistentesFiltrados = [...this.asistentes];
                 if (this.asistentes.length === 0) {
                     console.log("No hay asistentes para este evento.");
                 }
@@ -146,7 +150,42 @@ export class AsistentesEventoEmpresaComponent implements OnInit {
     verPerfil(idCliente: number) {
         this.router.navigate(["/perfil-asistente-empresa", idCliente])
     }
-    irCanjearEntrada(){
+
+    irCanjearEntrada() {
         this.router.navigate(['/canjear-entrada-empresa'])
+    }
+
+    onSearchChange(event: any) {
+        const searchTerm = (event.target.value || '').toLowerCase();
+        this.asistentesFiltrados = this.asistentes.filter(cliente =>
+            cliente.nombre.toLowerCase().includes(searchTerm)
+        );
+        this.applyValoracionRangeFilter();
+    }
+
+    sortByValoracionAsc() {
+        this.asistentesFiltrados.sort((a, b) => a.valoracion - b.valoracion);
+    }
+
+    sortByValoracionDesc() {
+        this.asistentesFiltrados.sort((a, b) => b.valoracion - a.valoracion);
+    }
+
+    toggleRangeFilter() {
+        this.showRangeFilter = !this.showRangeFilter;
+    }
+
+    filterByRange() {
+        this.asistentesFiltrados = this.asistentes.filter(cliente => {
+            const matchesSearch = cliente.nombre.toLowerCase().includes((this.buscar || '').toLowerCase());
+            const inRange = cliente.valoracion >= this.valoracionRange.lower && cliente.valoracion <= this.valoracionRange.upper;
+            return matchesSearch && inRange;
+        });
+    }
+
+    applyValoracionRangeFilter() {
+        this.asistentesFiltrados = this.asistentesFiltrados.filter(cliente =>
+            cliente.valoracion >= this.valoracionRange.lower && cliente.valoracion <= this.valoracionRange.upper
+        );
     }
 }

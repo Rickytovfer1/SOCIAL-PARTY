@@ -9,8 +9,31 @@
             <ion-content>
                 <div style="display: flex; padding: 10px" class="ion-align-items-center ion-justify-content-between">
                     <ion-img (click)="verEntradas()" id="icono_entradas" src="assets/icons8-boleto-96.png"></ion-img>
-                    <ion-searchbar placeholder="Buscar sitios" animated="true" [(ngModel)]="buscar" (ionInput)="onSearchChange($event)"></ion-searchbar>
+                    <ion-searchbar
+                        placeholder="Buscar sitios"
+                        animated="true"
+                        [(ngModel)]="buscar"
+                        (ionInput)="onSearchChange($event)">
+                    </ion-searchbar>
+                    <ion-img id="filtro" src="assets/iconoFiltro.png"></ion-img>
+                    <ion-popover trigger="filtro" triggerAction="click" [dismissOnSelect]="true">
+                        <ng-template>
+                            <ion-list>
+                                <ion-item button (click)="sortByValoracionAsc()">Menor a Mayor</ion-item>
+                                <ion-item button (click)="sortByValoracionDesc()">Mayor a Menor</ion-item>
+                                <ion-item button (click)="toggleRangeFilter()">Filtrar por Valoracion</ion-item>
+                            </ion-list>
+                        </ng-template>
+                    </ion-popover>
                 </div>
+
+                <ion-item *ngIf="showRangeFilter">
+                    <ion-range dualKnobs="true" min="0" max="100" step="1" [(ngModel)]="valoracionRange" (ionChange)="filterByRange()">
+                        <ion-label slot="start">{{ valoracionRange.lower }}</ion-label>
+                        <ion-label slot="end">{{ valoracionRange.upper }}</ion-label>
+                    </ion-range>
+                </ion-item>
+
                 <ion-grid>
                     <ion-row>
                         <ion-col size-lg="4" size-xl="4" size-md="6" size-sm="10" size-xs="12">
@@ -26,16 +49,24 @@
                                         <ion-col size="7">
                                             <ion-grid class="textos">
                                                 <ion-row>
-                                                    <ion-text class="nombre">{{empresa.nombre}}</ion-text>
+                                                    <ion-text class="nombre">{{ empresa.nombre }}</ion-text>
                                                 </ion-row>
                                                 <ion-row>
-                                                    <ion-text class="direccion">{{empresa.direccion}}</ion-text>
+                                                    <ion-text class="direccion">{{ empresa.direccion }}</ion-text>
                                                 </ion-row>
+                                                <ion-row>
+                                                    <div class="rating-container">
+                                                        <ion-text class="star-points" style="margin: 0;">{{ empresa.valoracionMinima }}</ion-text>
+                                                        <ion-img src="assets/estrella.png" alt="Estrella" style="width: 25px; margin-left: 8px;"></ion-img>
+                                                    </div>
+                                                </ion-row>
+
                                             </ion-grid>
                                         </ion-col>
                                     </ion-row>
                                 </ion-grid>
                             </ion-card>
+
                         </ion-col>
                     </ion-row>
                 </ion-grid>
