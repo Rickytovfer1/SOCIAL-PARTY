@@ -136,7 +136,8 @@ export class CrearPublicacionComponent implements OnInit {
         this.publicacion.apellidos = this.cliente.apellidos
 
         if (!this.publicacion.texto) {
-            console.log("Falta texto")
+            const toast = document.getElementById("toastCompleta") as any;
+            toast.present();
             return
         }
         if (!this.publicacion.idUsuario) {
@@ -144,7 +145,8 @@ export class CrearPublicacionComponent implements OnInit {
             return
         }
         if (!this.publicacion.foto) {
-            console.log("Falta foto")
+            const toast = document.getElementById("toastCompleta") as any;
+            toast.present();
             return
         }
 
