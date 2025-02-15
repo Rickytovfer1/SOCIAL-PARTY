@@ -12,7 +12,8 @@ import { Usuario } from "../modelos/Usuario";
 import { ClienteService } from "../servicios/cliente.service";
 import { ActualizarCliente } from "../modelos/ActualizarCliente";
 import { FormsModule } from "@angular/forms";
-import { DatePipe, NgIf } from "@angular/common";
+import {DatePipe, NgIf, NgOptimizedImage} from "@angular/common";
+import {environment} from "../../environments/environment";
 
 @Component({
     selector: 'app-perfil',
@@ -23,10 +24,12 @@ import { DatePipe, NgIf } from "@angular/common";
         IonicModule,
         NavSuperiorComponent,
         NavInferiorComponent,
-        FormsModule
+        FormsModule,
+        NgOptimizedImage
     ]
 })
 export class PerfilComponent implements OnInit {
+    baseUrl: string = environment.apiUrl;
     usuario: Usuario = {} as Usuario;
     perfil: Perfil = {} as Perfil;
     correo?: string;
@@ -158,6 +161,16 @@ export class PerfilComponent implements OnInit {
             this.actualizarCliente();
         } else {
             this.editar = true;
+        }
+    }
+
+    getImageUrlCliente(clienteDTO: Perfil): string {
+        if (!clienteDTO.fotoPerfil || clienteDTO.fotoPerfil.trim() === '') {
+            return 'assets/iconoPerfil.png';
+        } else if (clienteDTO.fotoPerfil.startsWith('http')) {
+            return clienteDTO.fotoPerfil;
+        } else {
+            return `${this.baseUrl}${clienteDTO.fotoPerfil}`;
         }
     }
 }

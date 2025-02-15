@@ -11,6 +11,9 @@ import { FormsModule } from "@angular/forms";
 import {NavSuperiorAdminComponent} from "../nav-superior-admin/nav-superior-admin.component";
 import {NavInferiorAdminComponent} from "../nav-inferior-admin/nav-inferior-admin.component";
 import {AdminService} from "../servicios/admin.service";
+import {NgOptimizedImage} from "@angular/common";
+import {Cliente} from "../modelos/Cliente";
+import {environment} from "../../environments/environment";
 
 @Component({
     selector: 'app-editar-cliente-admin',
@@ -21,7 +24,8 @@ import {AdminService} from "../servicios/admin.service";
         IonicModule,
         FormsModule,
         NavSuperiorAdminComponent,
-        NavInferiorAdminComponent
+        NavInferiorAdminComponent,
+        NgOptimizedImage
     ]
 })
 export class EditarClienteAdminComponent implements OnInit {
@@ -30,6 +34,8 @@ export class EditarClienteAdminComponent implements OnInit {
     correo?: string;
     editar: boolean = false;
     idCliente!: number;
+    baseUrl: string = environment.apiUrl;
+
     registro: ActualizarCliente = {
         id: 0,
         nombre: "",
@@ -149,6 +155,16 @@ export class EditarClienteAdminComponent implements OnInit {
             this.actualizarCliente();
         } else {
             this.editar = true;
+        }
+    }
+
+    getImageUrlCliente(clienteDTO: Perfil): string {
+        if (!clienteDTO.fotoPerfil || clienteDTO.fotoPerfil.trim() === '') {
+            return 'assets/iconoPerfil.png';
+        } else if (clienteDTO.fotoPerfil.startsWith('http')) {
+            return clienteDTO.fotoPerfil;
+        } else {
+            return `${this.baseUrl}${clienteDTO.fotoPerfil}`;
         }
     }
 }

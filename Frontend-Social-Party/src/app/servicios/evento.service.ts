@@ -41,4 +41,8 @@ export class EventoService {
         return this.http.get<Cliente[]>(`${this.apiUrl}/cliente/evento/ver/personas/${idEvento}`, options)
     }
 
+    verPersonasEventoEmpresa(idEvento: number): Observable<Cliente[]> {
+        const options = this.comunService.autorizarPeticion();
+        return this.http.get<Cliente[]>(`${this.apiUrl}/empresa/evento/ver/personas/${idEvento}`, options)
+    }
 }

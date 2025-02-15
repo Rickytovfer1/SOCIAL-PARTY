@@ -15,7 +15,7 @@
                     </ion-row>
                     <ion-row *ngFor="let amigo of amigos" class="amigo">
                         <ion-col size="3">
-                            <ion-img src="assets/iconoPerfil.png"></ion-img>
+                            <img [ngSrc]="getImageUrlCliente(amigo)" fill>
                         </ion-col>
                         <ion-col class="col_nombre ion-align-items-center" size="6" (click)="verPerfil(amigo)">
                             <ion-text>{{ amigo.nombre }} {{ amigo.apellidos }}</ion-text>

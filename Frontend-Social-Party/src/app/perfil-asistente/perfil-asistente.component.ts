@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {IonicModule} from "@ionic/angular";
 import {NavSuperiorComponent} from "../nav-superior/nav-superior.component";
-import {NgIf} from "@angular/common";
+import {NgIf, NgOptimizedImage} from "@angular/common";
 import {NavInferiorComponent} from "../nav-inferior/nav-inferior.component";
 import {environment} from "../../environments/environment";
 import {ActivatedRoute} from "@angular/router";
@@ -16,6 +16,7 @@ import {EventoService} from "../servicios/evento.service";
 import {SolicitudService} from "../servicios/SolicitudService";
 import {SolicitudDTO} from "../modelos/solicitud.dto";
 import {Evento} from "../modelos/Evento";
+import {Perfil} from "../modelos/Perfil";
 
 @Component({
     selector: 'app-perfil-asistente',
@@ -26,7 +27,8 @@ import {Evento} from "../modelos/Evento";
         IonicModule,
         NavSuperiorComponent,
         NavInferiorComponent,
-        NgIf
+        NgIf,
+        NgOptimizedImage
     ]
 })
 export class PerfilAsistenteComponent  implements OnInit {
@@ -174,6 +176,16 @@ export class PerfilAsistenteComponent  implements OnInit {
                 console.error("Error al mandar solicitud")
             }
         })
+    }
+
+    getImageUrlCliente(clienteDTO: Perfil): string {
+        if (!clienteDTO.fotoPerfil || clienteDTO.fotoPerfil.trim() === '') {
+            return 'assets/iconoPerfil.png';
+        } else if (clienteDTO.fotoPerfil.startsWith('http')) {
+            return clienteDTO.fotoPerfil;
+        } else {
+            return `${this.baseUrl}${clienteDTO.fotoPerfil}`;
+        }
     }
 
 }

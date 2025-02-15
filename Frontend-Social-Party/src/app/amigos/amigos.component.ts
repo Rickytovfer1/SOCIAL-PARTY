@@ -1,5 +1,5 @@
 import { Component, OnInit, NgZone } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {CommonModule, NgOptimizedImage} from '@angular/common';
 import { IonicModule } from "@ionic/angular";
 import { NavSuperiorComponent } from "../nav-superior/nav-superior.component";
 import { NavInferiorComponent } from "../nav-inferior/nav-inferior.component";
@@ -12,6 +12,8 @@ import { Cliente } from "../modelos/Cliente";
 import { jwtDecode } from "jwt-decode";
 import { TokenDataDTO } from "../modelos/TokenDataDTO";
 import { Router } from "@angular/router";
+import {environment} from "../../environments/environment";
+import {Perfil} from "../modelos/Perfil";
 
 @Component({
     selector: 'app-amigos',
@@ -22,10 +24,12 @@ import { Router } from "@angular/router";
         CommonModule,
         IonicModule,
         NavSuperiorComponent,
-        NavInferiorComponent
+        NavInferiorComponent,
+        NgOptimizedImage
     ]
 })
 export class AmigosComponent implements OnInit {
+    baseUrl: string = environment.apiUrl;
     usuario: Usuario = {} as Usuario;
     amigos: Cliente[] = [];
     correo?: string;
@@ -114,6 +118,16 @@ export class AmigosComponent implements OnInit {
 
     verAmigos() {
         this.router.navigate(['/gestion-amigos']);
+    }
+
+    getImageUrlCliente(clienteDTO: Cliente): string {
+        if (!clienteDTO.fotoPerfil || clienteDTO.fotoPerfil.trim() === '') {
+            return 'assets/iconoPerfil.png';
+        } else if (clienteDTO.fotoPerfil.startsWith('http')) {
+            return clienteDTO.fotoPerfil;
+        } else {
+            return `${this.baseUrl}${clienteDTO.fotoPerfil}`;
+        }
     }
 
     ionViewWillEnter() {

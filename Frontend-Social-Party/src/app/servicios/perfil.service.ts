@@ -7,6 +7,7 @@ import { environment } from "../../environments/environment";
 import { PerfilEmpresa } from "../modelos/PerfilEmpresa";
 import { ActualizarCliente } from "../modelos/ActualizarCliente";
 import { TipoUsuarioDTO } from "../modelos/TipoUsuarioDTO";
+import {Empresa} from "../modelos/Empresa";
 
 @Injectable({
     providedIn: 'root'

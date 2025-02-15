@@ -19,7 +19,7 @@
                     <ion-grid>
                         <ion-row>
                             <ion-col size="3">
-                                <ion-img src="assets/iconoPerfil.png"></ion-img>
+                                <img [ngSrc]="getImageUrlCliente(amigo)" fill>
                             </ion-col>
                             <ion-col size="9" style="display: flex" class="ion-align-items-center">
                                 <ion-text id="nombre">{{ amigo.nombre }} {{ amigo.apellidos }}</ion-text>

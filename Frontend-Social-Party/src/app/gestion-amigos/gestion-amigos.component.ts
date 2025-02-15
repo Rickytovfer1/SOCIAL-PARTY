@@ -10,6 +10,9 @@ import {Router} from "@angular/router";
 import {jwtDecode} from "jwt-decode";
 import {TokenDataDTO} from "../modelos/TokenDataDTO";
 import {NgForOf, NgIf} from "@angular/common";
+import {NgForOf, NgOptimizedImage} from "@angular/common";
+import {Perfil} from "../modelos/Perfil";
+import {environment} from "../../environments/environment";
 
 @Component({
     selector: 'app-gestion-amigos',
@@ -21,11 +24,13 @@ import {NgForOf, NgIf} from "@angular/common";
         NavInferiorComponent,
         NavSuperiorComponent,
         NgForOf,
+        NgOptimizedImage
+        NgForOf,
         NgIf
     ]
 })
 export class GestionAmigosComponent  implements OnInit {
-
+    baseUrl: string = environment.apiUrl;
     usuario: Usuario = {} as Usuario;
     amigos: Cliente[] = [];
     correo?: string;
@@ -137,6 +142,16 @@ export class GestionAmigosComponent  implements OnInit {
 
     verPerfil(cliente: Cliente) {
         this.router.navigate(["/perfil-asistente", cliente.idUsuario])
+    }
+
+    getImageUrlCliente(clienteDTO: Cliente): string {
+        if (!clienteDTO.fotoPerfil || clienteDTO.fotoPerfil.trim() === '') {
+            return 'assets/iconoPerfil.png';
+        } else if (clienteDTO.fotoPerfil.startsWith('http')) {
+            return clienteDTO.fotoPerfil;
+        } else {
+            return `${this.baseUrl}${clienteDTO.fotoPerfil}`;
+        }
     }
 
     ionViewWillEnter() {
