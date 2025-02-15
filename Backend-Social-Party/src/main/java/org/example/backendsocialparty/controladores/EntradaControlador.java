@@ -32,5 +32,13 @@ public class EntradaControlador {
     public List<EntradaDTO> verEntrada(@PathVariable Integer idCliente) {
         return entradaServicio.listarEntradas(idCliente);
     }
+    @GetMapping("/cliente/ver/entradas/activas/{idCliente}")
+    public List<EntradaDTO> verEntradasActiva(@PathVariable Integer idCliente) {
+        return entradaServicio.listarEntradasActivas(idCliente);
+    }
+    @GetMapping("/cliente/entrada/{id}")
+    public EntradaDTO getEntradaById(@PathVariable Integer id) {
+        return entradaServicio.getEntradaById(id);
+    }
 
 }
