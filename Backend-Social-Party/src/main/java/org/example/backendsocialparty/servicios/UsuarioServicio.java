@@ -152,6 +152,7 @@ public class UsuarioServicio implements UserDetailsService {
 
 
     public ResponseEntity<RespuestaDTO> login(LoginDTO dto) {
+
         UserDetails userDetails = loadUserByUsername(dto.getCorreo());
         if (userDetails == null) {
             throw new UsernameNotFoundException("Usuario no encontrado");
