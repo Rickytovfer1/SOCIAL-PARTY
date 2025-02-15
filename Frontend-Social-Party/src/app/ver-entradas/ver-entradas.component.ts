@@ -148,6 +148,16 @@ export class VerEntradasComponent implements OnInit {
                 const evento: any = fullEntrada.evento;
                 const empresa: any = evento.empresa;
 
+                const fechaCompra = new Date().toLocaleDateString('en-US');
+
+                let fechaEventoFormateada = "N/A";
+                if (evento.fecha) {
+                    const d = new Date(evento.fecha);
+                    if (!isNaN(d.getTime())) {
+                        fechaEventoFormateada = d.toLocaleDateString('en-US');
+                    }
+                }
+
                 const doc = new jsPDF();
                 const pageWidth = doc.internal.pageSize.getWidth();
                 const pageHeight = doc.internal.pageSize.getHeight();
@@ -176,16 +186,20 @@ export class VerEntradasComponent implements OnInit {
                 const leftX = margin + 10;
                 const rightX = margin + ticketWidth - 60;
 
-                doc.text("Fecha de compra: " + new Date().toLocaleDateString(), leftX, startY);
-                doc.text("Fecha del evento: " + (evento.fecha || "N/A"), leftX, startY + 10);
+                doc.text("Fecha de compra: " + fechaCompra, leftX, startY);
+                doc.text("Fecha del evento: " + fechaEventoFormateada, leftX, startY + 10);
                 doc.text("Hora de Apertura: " + (evento.horaApertura || "N/A"), leftX, startY + 20);
                 doc.text("Hora de Finalización: " + (evento.horaFinalizacion || "N/A"), leftX, startY + 30);
                 doc.text("Precio: " + (evento.precio || "N/A") + "€", leftX, startY + 40);
                 doc.text("Discoteca: " + (empresa?.nombre || "N/A"), leftX, startY + 50);
                 doc.text("Dirección: " + (empresa?.direccion || "N/A"), leftX, startY + 60);
 
+                doc.text("Cliente: " + (this.perfil.nombre || '') + " " + (this.perfil.apellidos || ''), leftX, startY + 70);
+                doc.text("Correo: " + (this.perfil.correo || this.usuario.correo || ''), leftX, startY + 80);
+                doc.text("DNI: " + (this.perfil.dni || ''), leftX, startY + 90);
+
                 doc.setFontSize(14);
-                doc.text("Código de Entrada: " + fullEntrada.codigoEntrada, leftX, startY + 80);
+                doc.text("Código de Entrada: " + fullEntrada.codigoEntrada, leftX, startY + 100);
 
                 const qrCodeBase64 = (fullEntrada as any).qrCodeBase64;
                 if (qrCodeBase64) {
@@ -207,4 +221,7 @@ export class VerEntradasComponent implements OnInit {
             }
         });
     }
+
+
+
 }

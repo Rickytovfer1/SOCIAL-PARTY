@@ -102,25 +102,31 @@ export class ConfirmacionPagoComponent implements OnInit {
         const doc = new jsPDF();
         const pageWidth = doc.internal.pageSize.getWidth();
         const pageHeight = doc.internal.pageSize.getHeight();
+
         doc.setFillColor(211, 229, 229);
         doc.rect(0, 0, pageWidth, pageHeight, 'F');
+
         const margin = 10;
         const ticketWidth = pageWidth - margin * 2;
         const ticketHeight = pageHeight - margin * 2;
+
         doc.setLineWidth(1);
         doc.setDrawColor(0, 0, 0);
         doc.roundedRect(margin, margin, ticketWidth, ticketHeight, 5, 5, 'S');
+
         const headerHeight = 30;
         doc.setFillColor(0, 102, 204);
         doc.rect(margin, margin, ticketWidth, headerHeight, 'F');
         doc.setTextColor(255, 255, 255);
         doc.setFontSize(18);
         doc.text("Entrada Confirmada", margin + 5, margin + 20);
+
         doc.setTextColor(0, 0, 0);
         doc.setFontSize(12);
         const startY = margin + headerHeight + 10;
         const leftX = margin + 10;
         const rightX = margin + ticketWidth - 60;
+
         doc.text("Fecha de compra: " + new Date().toLocaleDateString(), leftX, startY);
         doc.text("Fecha del evento: " + this.evento.fecha, leftX, startY + 10);
         doc.text("Hora de Apertura: " + this.evento.horaApertura, leftX, startY + 20);
@@ -128,23 +134,28 @@ export class ConfirmacionPagoComponent implements OnInit {
         doc.text("Precio: " + this.evento.precio + "€", leftX, startY + 40);
         doc.text("Discoteca: " + this.empresa.nombre, leftX, startY + 50);
         doc.text("Dirección: " + this.empresa.direccion, leftX, startY + 60);
+
+        doc.text("Cliente: " + (this.perfil.nombre || '') + " " + (this.perfil.apellidos || ''), leftX, startY + 70);
+        doc.text("Correo: " + (this.perfil.correo || ''), leftX, startY + 80);
+        doc.text("DNI: " + (this.perfil.dni || ''), leftX, startY + 90);
+
         doc.setFontSize(14);
-        doc.text("Código de Entrada: " + this.entrada.codigoEntrada, leftX, startY + 80);
+        doc.text("Código de Entrada: " + this.entrada.codigoEntrada, leftX, startY + 100);
+
         const qrX = rightX;
         const qrY = startY;
         const qrSize = 50;
         const imgData = "data:image/png;base64," + this.qrCodeBase64;
         doc.addImage(imgData, 'PNG', qrX, qrY, qrSize, qrSize);
+
         doc.setLineWidth(0.5);
         doc.setDrawColor(150, 150, 150);
         doc.setLineDashPattern([3, 3], 0);
         doc.line(margin, margin + headerHeight + 5, margin + ticketWidth, margin + headerHeight + 5);
         doc.setLineDashPattern([3, 3], 0);
+
         doc.save("entrada.pdf");
     }
-
-
-
 
     verEvento(idEvento: number): void {
         this.eventoService.verEvento(idEvento).subscribe({
@@ -173,14 +184,17 @@ export class ConfirmacionPagoComponent implements OnInit {
     cargarPerfil(idUsuario: number | undefined): void {
         this.perfilService.getPerfil(idUsuario).subscribe({
             next: (perfil: Perfil) => {
+                if (!perfil.correo && this.usuario.correo) {
+                    perfil.correo = this.usuario.correo;
+                }
                 this.perfil = perfil;
-
             },
             error: (e) => {
                 console.error("Error al cargar el perfil:", e);
             }
         });
     }
+
 
     cargarUsuario(correo: string | undefined): void {
         this.usuarioService.getUsuario(correo).subscribe({
