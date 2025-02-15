@@ -119,6 +119,8 @@ export class PerfilEmpresaComponent implements OnInit {
         }
         this.perfilService.updatePerfilEmpresa(formData).subscribe({
             next: (updatedPerfil: PerfilEmpresa) => {
+                const toast = document.getElementById("perfilEditado") as any;
+                toast.present();
                 this.perfilEmpresa = updatedPerfil;
                 this.foto = null;
             },

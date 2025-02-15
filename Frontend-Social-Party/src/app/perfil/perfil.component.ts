@@ -149,6 +149,8 @@ export class PerfilComponent implements OnInit {
         this.perfilService.actualizarPerfil(formData).subscribe({
             next: (respuesta) => {
                 console.log('Usuario actualizado:', respuesta);
+                const toast = document.getElementById("perfilEditadoCliente") as any;
+                toast.present();
                 this.editar = false;
                 this.cargarPerfil(this.registro.id);
                 this.foto = null;

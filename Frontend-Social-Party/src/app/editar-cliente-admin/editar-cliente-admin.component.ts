@@ -128,6 +128,8 @@ export class EditarClienteAdminComponent implements OnInit {
         this.adminService.actualizarPerfilCliente(formData).subscribe({
             next: (respuesta) => {
                 console.log('Usuario actualizado:', respuesta);
+                const toast = document.getElementById("toastClienteEditado") as any;
+                toast.present();
                 this.editar = false;
                 this.cargarPerfil(this.registro.id);
                 this.foto = null;
