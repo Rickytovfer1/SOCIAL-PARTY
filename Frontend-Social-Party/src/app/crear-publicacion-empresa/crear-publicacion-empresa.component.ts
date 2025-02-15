@@ -106,7 +106,8 @@ export class CrearPublicacionEmpresaComponent implements OnInit {
         this.publicacion.lugar = this.empresa.nombre
 
         if (!this.publicacion.texto) {
-            console.log("Falta texto")
+            const toast = document.getElementById("toastVacio") as any;
+            toast.present();
             return
         }
         if (!this.publicacion.idUsuario) {
@@ -114,7 +115,8 @@ export class CrearPublicacionEmpresaComponent implements OnInit {
             return
         }
         if (!this.publicacion.foto) {
-            console.log("Falta foto")
+            const toast = document.getElementById("toastVacio") as any;
+            toast.present();
             return
         }
 

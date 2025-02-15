@@ -1,5 +1,6 @@
 package org.example.backendsocialparty.servicios;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.example.backendsocialparty.DTOs.*;
 import org.example.backendsocialparty.enumerados.Rol;
@@ -131,12 +132,18 @@ public class PublicacionServicio {
         return publicacionDTO;
     }
 
+    @Transactional
     public void eliminarPublicacionCliente(Integer id) {
         Cliente cliente = clienteRepositorio.findById(id).orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
 
-
         List<Publicacion> publicaciones = publicacionRepositorio.findPublicacionesByUsuario_Id(cliente.getUsuario().getId());
         if (!publicaciones.isEmpty()) {
+            for (Publicacion publicacion : publicaciones) {
+                List<Comentario> comentarios = comentarioRepositorio.findByPublicacion_Id(publicacion.getId());
+                if (!comentarios.isEmpty()) {
+                    comentarioRepositorio.deleteAll(comentarios);
+                }
+            }
             publicacionRepositorio.deleteAll(publicaciones);
         }
     }
@@ -146,6 +153,12 @@ public class PublicacionServicio {
 
         List<Publicacion> publicaciones = publicacionRepositorio.findPublicacionesByUsuario_Id(empresa.getUsuario().getId());
         if (!publicaciones.isEmpty()) {
+            for (Publicacion publicacion : publicaciones) {
+                List<Comentario> comentarios = comentarioRepositorio.findByPublicacion_Id(publicacion.getId());
+                if (!comentarios.isEmpty()) {
+                    comentarioRepositorio.deleteAll(comentarios);
+                }
+            }
             publicacionRepositorio.deleteAll(publicaciones);
         }
     }

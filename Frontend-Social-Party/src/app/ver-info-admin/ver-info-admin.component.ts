@@ -116,6 +116,8 @@ export class VerInfoAdminComponent implements OnInit {
     banearCliente(idCliente: number): void {
         this.adminService.banearCliente(idCliente).subscribe({
             next: () => {
+                const toast = document.getElementById("toastBaneado") as any;
+                toast.present();
                 console.log("Baneado exitosamente");
             },
             error: (e) => {
@@ -164,6 +166,8 @@ export class VerInfoAdminComponent implements OnInit {
             next: () => {
                 this.router.navigate(['/principal-admin'])
                 console.log("Cliente eliminado exitosamente");
+                const toast = document.getElementById("toastEliminadoCliente") as any;
+                toast.present();
             },
             error: (e) => {
                 console.error("Error al eliminar el usuario:", e);
@@ -224,7 +228,8 @@ export class VerInfoAdminComponent implements OnInit {
         this.adminService.eliminarBaneo(idCliente).subscribe({
             next: () => {
                 console.log("Baneo eliminado exitosamente");
-                location.reload()
+                const toast = document.getElementById("toastBaneadoEliminado") as any;
+                toast.present();
             },
             error: (e) => {
                 console.error("Error al desbanear el usuario:", e);

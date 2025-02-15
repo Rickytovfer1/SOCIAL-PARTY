@@ -10,7 +10,7 @@ import {Router} from "@angular/router";
 import {jwtDecode} from "jwt-decode";
 import {TokenDataDTO} from "../modelos/TokenDataDTO";
 import {NgForOf, NgIf} from "@angular/common";
-import {NgForOf, NgOptimizedImage} from "@angular/common";
+import {NgOptimizedImage} from "@angular/common";
 import {Perfil} from "../modelos/Perfil";
 import {environment} from "../../environments/environment";
 
@@ -24,7 +24,7 @@ import {environment} from "../../environments/environment";
         NavInferiorComponent,
         NavSuperiorComponent,
         NgForOf,
-        NgOptimizedImage
+        NgOptimizedImage,
         NgForOf,
         NgIf
     ]

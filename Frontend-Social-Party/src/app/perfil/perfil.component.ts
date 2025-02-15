@@ -12,7 +12,6 @@ import { Usuario } from "../modelos/Usuario";
 import { ClienteService } from "../servicios/cliente.service";
 import { ActualizarCliente } from "../modelos/ActualizarCliente";
 import { FormsModule } from "@angular/forms";
-import { DatePipe, NgIf } from "@angular/common";
 import {NavLateralComponent} from "../nav-lateral/nav-lateral.component";
 import {DatePipe, NgIf, NgOptimizedImage} from "@angular/common";
 import {environment} from "../../environments/environment";

@@ -87,6 +87,8 @@ export class VerEmpresaAdminComponent implements OnInit {
         this.adminService.eliminarEmpresa(idEmpresa).subscribe({
             next: () => {
                 this.router.navigate(['/principal-admin'])
+                const toast = document.getElementById("toastEliminadoEmpresa") as any;
+                toast.present();
                 console.log("Empresa eliminada exitosamente");
             },
             error: (e) => {
