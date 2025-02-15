@@ -61,6 +61,13 @@ public class EntradaServicio {
         Evento evento = eventoRepositorio.findById(entrada.getEvento().getId())
                 .orElseThrow(() -> new RuntimeException("No existe un evento con este ID."));
 
+        Empresa empresa = empresaRepositorio.findById(evento.getEmpresa().getId())
+                .orElseThrow(() -> new RuntimeException("No se encontró la empresa asociada al evento."));
+
+        if (empresa.getBaneados().contains(cliente)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El cliente está baneado de esta discoteca.");
+        }
+
         if (cliente.getEventos() != null && !cliente.getEventos().isEmpty()) {
             Evento eventoActual = cliente.getEventos().iterator().next();
             if (eventoActual.getId().equals(evento.getId())) {
