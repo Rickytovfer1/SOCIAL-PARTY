@@ -29,6 +29,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.Period;
 import java.util.*;
 
@@ -180,17 +181,24 @@ public class EntradaServicio {
         EventoEntradaDTO dto = new EventoEntradaDTO();
         dto.setId(evento.getId());
         dto.setTitulo(evento.getTitulo());
+        dto.setFecha(evento.getFecha().toString());
+        dto.setHoraApertura(evento.getHoraApertura().toString());
+        dto.setHoraFinalizacion(evento.getHoraFinalizacion().toString());
+        dto.setPrecio(evento.getPrecio());
         dto.setEmpresa(getEmpresaEntradaDTO(evento.getEmpresa()));
         return dto;
     }
+
 
     private static EmpresaEntradaDTO getEmpresaEntradaDTO(Empresa empresa) {
         EmpresaEntradaDTO dto = new EmpresaEntradaDTO();
         dto.setId(empresa.getId());
         dto.setNombre(empresa.getNombre());
         dto.setFotoPerfil(empresa.getFotoPerfil());
+        dto.setDireccion(empresa.getDireccion());
         return dto;
     }
+
 
     public byte[] generateQRBytes(String data, int width, int height) {
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
@@ -213,5 +221,28 @@ public class EntradaServicio {
             throw new RuntimeException("Error al generar el código QR", e);
         }
     }
+    public List<EntradaDTO> listarEntradasActivas(Integer idCliente) {
+        LocalDate today = LocalDate.now();
+        LocalTime now = LocalTime.now();
+        List<Entrada> entradas = entradaRepositorio.findEntradasActivas(idCliente, today, now);
+        List<EntradaDTO> entradasActivas = new ArrayList<>();
+        for (Entrada entrada : entradas) {
+            entradasActivas.add(getEntradaDTO(entrada));
+        }
+        return entradasActivas;
+    }
+    public EntradaDTO getEntradaById(Integer id) {
+        Entrada entrada = entradaRepositorio.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Entrada no encontrada"));
+        EntradaDTO dto = getEntradaDTO(entrada);
+        byte[] qrBytes = generateQRBytes(String.valueOf(entrada.getCodigoEntrada()), 250, 250);
+        String base64QR = Base64.getEncoder().encodeToString(qrBytes);
+        dto.setQrCodeBase64(base64QR);
+
+        return dto;
+    }
+
+
+
 
 }

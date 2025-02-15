@@ -33,4 +33,15 @@ export class EntradaService {
             { headers }
         );
     }
+    verEntradasActivas(idCliente: number): Observable<Entrada[]> {
+        const options = this.comunService.autorizarPeticion();
+        return this.http.get<Entrada[]>(`${this.apiUrl}/cliente/ver/entradas/activas/${idCliente}`, options);
+    }
+
+    getEntradaById(entradaId: number | undefined): Observable<Entrada> {
+        const options = this.comunService.autorizarPeticion();
+        return this.http.get<Entrada>(`${this.apiUrl}/cliente/entrada/${entradaId}`, options);
+    }
+
+
 }

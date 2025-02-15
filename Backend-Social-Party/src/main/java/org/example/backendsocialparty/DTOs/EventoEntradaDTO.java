@@ -8,7 +8,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EventoEntradaDTO {
-    Integer id;
-    String titulo;
-    EmpresaEntradaDTO empresa;
+    private Integer id;
+    private String titulo;
+    private String fecha;
+    private String horaApertura;
+    private String horaFinalizacion;
+    private Double precio;
+    private EmpresaEntradaDTO empresa;
 }
