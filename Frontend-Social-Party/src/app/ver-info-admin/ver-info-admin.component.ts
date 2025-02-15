@@ -22,8 +22,6 @@ import {EditarEstrellaDTO} from "../modelos/EditarEstrellaDTO";
     standalone: true,
     imports: [
         IonicModule,
-        NavInferiorComponent,
-        NavSuperiorComponent,
         NavSuperiorAdminComponent,
         NavInferiorAdminComponent,
         NgOptimizedImage

@@ -14,6 +14,7 @@ import { TokenDataDTO } from "../modelos/TokenDataDTO";
 import { Router } from "@angular/router";
 import {environment} from "../../environments/environment";
 import {Perfil} from "../modelos/Perfil";
+import {NavLateralComponent} from "../nav-lateral/nav-lateral.component";
 
 @Component({
     selector: 'app-amigos',
@@ -25,7 +26,9 @@ import {Perfil} from "../modelos/Perfil";
         IonicModule,
         NavSuperiorComponent,
         NavInferiorComponent,
-        NgOptimizedImage
+        NgOptimizedImage,
+        NavInferiorComponent,
+        NavLateralComponent
     ]
 })
 export class AmigosComponent implements OnInit {

@@ -71,10 +71,6 @@ export const routes: Routes = [
         loadComponent: () => import('./ver-perfil-empresa/ver-perfil-empresa.component').then((m) => m.VerPerfilEmpresaComponent)
     },
     {
-        path: 'ver-noticia/:id',
-        loadComponent: () => import('./ver-noticia/ver-noticia.component').then((m) => m.VerNoticiaComponent)
-    },
-    {
         path: 'chat',
         loadComponent: () => import('./chat/chat.component').then((m) => m.ChatComponent)
     },
@@ -141,5 +137,9 @@ export const routes: Routes = [
     {
         path: 'perfil-asistente-empresa/:id',
         loadComponent: () => import('./perfil-asistente-empresa/perfil-asistente-empresa.component').then((m) => m.PerfilAsistenteEmpresaComponent)
+    },
+    {
+        path: 'componente-prueba',
+        loadComponent: () => import('./componente-prueba/componente-prueba.component').then((m) => m.ComponentePruebaComponent)
     },
 ];
