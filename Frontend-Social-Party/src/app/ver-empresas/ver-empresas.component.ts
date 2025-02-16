@@ -11,6 +11,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { Empresa } from "../modelos/Empresa";
 import { environment } from "../../environments/environment";
 import { NavLateralComponent } from "../nav-lateral/nav-lateral.component";
+import {AmigosComponent} from "../amigos/amigos.component";
 
 @Component({
     selector: 'app-ver-empresas',
@@ -25,7 +26,8 @@ import { NavLateralComponent } from "../nav-lateral/nav-lateral.component";
         CommonModule,
         HttpClientModule,
         NgOptimizedImage,
-        NavLateralComponent
+        NavLateralComponent,
+        AmigosComponent
     ]
 })
 export class VerEmpresasComponent implements OnInit {

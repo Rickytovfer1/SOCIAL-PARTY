@@ -18,3 +18,13 @@ ion-content {
 img{
     border-radius: 40px;
 }
+
+app-nav-superior {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    app-nav-superior {
+        display: block;
+    }
+}

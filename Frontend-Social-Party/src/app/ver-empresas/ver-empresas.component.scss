@@ -41,10 +41,19 @@ ion-text {
 }
 
 #icono_entradas {
-    width: 10%;
-    height: 10%;
+    width: 5%;
+    height: 5%;
     margin: 0 auto;
 }
+
+@media (max-width: 768px) {
+    #icono_entradas {
+        width: 10%;
+        height: 10%;
+        margin: 0 auto;
+    }
+}
+
 .star-points {
     color: #F0FF00;
     font-size: 25px;

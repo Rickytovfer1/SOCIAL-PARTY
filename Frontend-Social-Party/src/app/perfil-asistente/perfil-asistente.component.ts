@@ -18,6 +18,7 @@ import {SolicitudDTO} from "../modelos/solicitud.dto";
 import {Evento} from "../modelos/Evento";
 import {Perfil} from "../modelos/Perfil";
 import {NavLateralComponent} from "../nav-lateral/nav-lateral.component";
+import {AmigosComponent} from "../amigos/amigos.component";
 
 @Component({
     selector: 'app-perfil-asistente',
@@ -30,7 +31,8 @@ import {NavLateralComponent} from "../nav-lateral/nav-lateral.component";
         NavInferiorComponent,
         NgIf,
         NgOptimizedImage,
-        NavLateralComponent
+        NavLateralComponent,
+        AmigosComponent
     ]
 })
 export class PerfilAsistenteComponent  implements OnInit {

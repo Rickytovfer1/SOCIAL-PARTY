@@ -20,6 +20,7 @@ import {NavInferiorComponent} from "../nav-inferior/nav-inferior.component";
 import {NavSuperiorComponent} from "../nav-superior/nav-superior.component";
 import jsPDF from "jspdf";
 import {NavLateralComponent} from "../nav-lateral/nav-lateral.component";
+import {AmigosComponent} from "../amigos/amigos.component";
 
 @Component({
     selector: 'app-confirmacion-pago',
@@ -31,7 +32,8 @@ import {NavLateralComponent} from "../nav-lateral/nav-lateral.component";
         FormsModule,
         NavInferiorComponent,
         NavSuperiorComponent,
-        NavLateralComponent
+        NavLateralComponent,
+        AmigosComponent
     ]
 })
 export class ConfirmacionPagoComponent implements OnInit {

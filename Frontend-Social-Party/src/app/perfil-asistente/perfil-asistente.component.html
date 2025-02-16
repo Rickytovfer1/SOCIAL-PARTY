@@ -15,8 +15,7 @@
                                     <ion-grid>
                                         <ion-row>
                                             <ion-col size="4" class="ion-align-items-center">
-                                                <img id="foto_perfil" [ngSrc]="getImageUrlCliente(perfilActual)" fill>
-
+                                                <ion-img id="foto_perfil" [src]="getImageUrlCliente(perfilActual)"></ion-img>v
                                             </ion-col>
                                             <ion-col size="8">
                                                 <ion-grid>
@@ -48,8 +47,10 @@
                         </ion-col>
                     </ion-row>
                 </ion-grid>
-
             </ion-content>
+        </ion-col>
+        <ion-col id="menu_amigos" size="2.5" class="menu-lateral" style="border-left: 1px solid black">
+            <app-amigos></app-amigos>
         </ion-col>
     </ion-row>
 </ion-grid>

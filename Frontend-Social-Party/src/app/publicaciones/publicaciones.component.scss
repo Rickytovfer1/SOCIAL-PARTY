@@ -48,3 +48,16 @@ ion-col {
     font-size: 13px;
     font-weight: bold;
 }
+
+#contenedor_superior {
+    display: flex;
+    margin: 0 auto;
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    #contenedor_superior {
+        display: flex;
+        margin: 0 auto;
+    }
+}

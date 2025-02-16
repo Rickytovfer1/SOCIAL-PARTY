@@ -19,14 +19,14 @@
                             <ion-grid>
                                 <ion-row class="entrada">
                                     <ion-col size="4">
-                                        <img [ngSrc]="getImageUrl(entrada.evento.empresa)" fill>
+                                        <ion-img [src]="getImageUrl(entrada.evento.empresa)"></ion-img>
                                     </ion-col>
                                     <ion-col class="col_nombre ion-align-items-center" size="6">
                                         <ion-grid>
-                                            <ion-row>
+                                            <ion-row class="info">
                                                 <ion-text class="nombre_empresa">{{ entrada.evento.empresa.nombre}}</ion-text>
                                             </ion-row>
-                                            <ion-row>
+                                            <ion-row class="info">
                                                 <ion-text>{{ entrada.evento.titulo}}</ion-text>
                                             </ion-row>
                                         </ion-grid>
@@ -41,6 +41,9 @@
                     </ion-row>
                 </ion-grid>
             </ion-content>
+        </ion-col>
+        <ion-col size="2.5" class="menu-lateral" style="border-left: 1px solid black">
+            <app-amigos></app-amigos>
         </ion-col>
     </ion-row>
 </ion-grid>

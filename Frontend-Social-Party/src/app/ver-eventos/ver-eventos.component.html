@@ -8,7 +8,7 @@
         <ion-col class="contenido-principal">
             <ion-content>
                 <ion-content class="fondo">
-                    <img id="imagenEmpresa" [ngSrc]="getImageUrlEmpresa()" fill/>
+                    <ion-img id="imagenEmpresa" [src]="getImageUrlEmpresa()"/>
                 </ion-content>
                 <div class="banda ion-justify-content-between ion-align-items-center">
                     <ion-text style="color: #ffffff; margin: 0 auto; font-size: 25px; font-weight: bold;">{{ empresa.nombre }}</ion-text>
@@ -58,6 +58,9 @@
                     </ion-row>
                 </ion-grid>
             </ion-content>
+        </ion-col>
+        <ion-col size="2.5" class="menu-lateral" style="border-left: 1px solid black">
+            <app-amigos></app-amigos>
         </ion-col>
     </ion-row>
 </ion-grid>

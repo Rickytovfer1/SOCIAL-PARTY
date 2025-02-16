@@ -19,6 +19,7 @@ import {Evento} from "../modelos/Evento";
 import {Empresa} from "../modelos/Empresa";
 import {list} from "ionicons/icons";
 import {NavLateralComponent} from "../nav-lateral/nav-lateral.component";
+import {AmigosComponent} from "../amigos/amigos.component";
 @Component({
     selector: 'app-crear-publicacion',
     templateUrl: './crear-publicacion.component.html',
@@ -30,7 +31,8 @@ import {NavLateralComponent} from "../nav-lateral/nav-lateral.component";
         NavInferiorComponent,
         CommonModule,
         FormsModule,
-        NavLateralComponent
+        NavLateralComponent,
+        AmigosComponent
     ]
 })
 export class CrearPublicacionComponent implements OnInit {

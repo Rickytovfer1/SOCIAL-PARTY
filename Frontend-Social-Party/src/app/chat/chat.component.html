@@ -12,7 +12,7 @@
             </div>
 
             <ion-content id="content_principal" #ionContent>
-                <ion-grid>
+                <ion-grid id="grid_mensajes">
                     <div *ngFor="let grupo of gruposMensajes; trackBy: trackByGrupo">
                         <ion-row>
                             <ion-col>
@@ -60,6 +60,9 @@
                     <ion-img (click)="enviar()" src="assets/iconoEnviar.png"></ion-img>
                 </div>
             </div>
+        </ion-col>
+        <ion-col size="2.5" class="menu-lateral" style="border-left: 1px solid black">
+            <app-amigos></app-amigos>
         </ion-col>
     </ion-row>
 </ion-grid>

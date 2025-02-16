@@ -19,6 +19,7 @@ import {AmigoService} from "../servicios/amigo.service";
 import {Favorito} from "../modelos/Favorito";
 import {FavoritoService} from "../servicios/favorito.service";
 import {NavLateralComponent} from "../nav-lateral/nav-lateral.component";
+import {AmigosComponent} from "../amigos/amigos.component";
 
 
 @Component({
@@ -32,7 +33,8 @@ import {NavLateralComponent} from "../nav-lateral/nav-lateral.component";
         NavInferiorComponent,
         CommonModule,
         FormsModule,
-        NavLateralComponent
+        NavLateralComponent,
+        AmigosComponent
     ]
 })
 export class PublicacionesComponent implements OnInit {

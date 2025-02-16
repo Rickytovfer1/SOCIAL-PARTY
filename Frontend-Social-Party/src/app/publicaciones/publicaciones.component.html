@@ -9,7 +9,7 @@
             <ion-content>
                 <ion-grid>
                     <ion-row>
-                        <div style="display: flex; margin: 0 auto" class="ion-align-items-center">
+                        <div id="contenedor_superior" class="ion-align-items-center">
                             <ion-img id="agregar" (click)="abrirForm()" src="assets/iconoMas.png"></ion-img>
                             <ion-searchbar
                                 placeholder="Buscar publicaciones"
@@ -79,6 +79,9 @@
                     </ion-row>
                 </ion-grid>
             </ion-content>
+        </ion-col>
+        <ion-col size="2.5" class="menu-lateral" style="border-left: 1px solid black">
+            <app-amigos></app-amigos>
         </ion-col>
     </ion-row>
 </ion-grid>
