@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {IonicModule} from "@ionic/angular";
 import {Router} from "@angular/router";
 import {RegistroEmpresaService} from "../servicios/registro-empresa.service";
@@ -10,30 +10,47 @@ import {FormsModule} from "@angular/forms";
     templateUrl: './registrar-empresa.component.html',
     styleUrls: ['./registrar-empresa.component.scss'],
     standalone: true,
-  imports: [
-    IonicModule,
-    FormsModule
-  ]
+    imports: [
+        IonicModule,
+        FormsModule
+    ]
 })
-export class RegistrarEmpresaComponent  implements OnInit {
+export class RegistrarEmpresaComponent implements OnInit {
 
-  registro: RegistroEmpresa = {
-    nombre: "",
-    direccion: "",
-    codigoPostal: "",
-    nif: "",
-    telefono: "",
-    valoracionMinima: 50,
-    edadMinima: 18,
-    correo: "",
-    contrasena: ""
-  }
+    registro: RegistroEmpresa = {
+        nombre: "",
+        direccion: "",
+        codigoPostal: "",
+        nif: "",
+        telefono: "",
+        valoracionMinima: 50,
+        edadMinima: 18,
+        correo: "",
+        contrasena: ""
+    }
 
-  repContrasena = ""
+    repContrasena = ""
 
-  constructor(private registroEmpresaService: RegistroEmpresaService, private router: Router) { }
+    constructor(private registroEmpresaService: RegistroEmpresaService, private router: Router) {
+    }
 
-  ngOnInit() {}
+    ngOnInit() {
+    }
+
+    validarNIF(nif: string): boolean {
+        const nifRegistrado = /^[0-9]{8}[A-Za-z]$/;
+        return nifRegistrado.test(nif);
+    }
+
+    validarCorreo(correo: string): boolean {
+        const correoRegistrado = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+        return correoRegistrado.test(correo);
+    }
+
+    validarTelefono(telefono: string): boolean {
+        const telefonoRegistrado = /^[0-9]{9}$/;
+        return telefonoRegistrado.test(telefono);
+    }
 
     doRegister() {
         const repetirContrasena = (document.querySelector('ion-input[placeholder="Por favor, repita la contaseña"]') as HTMLInputElement)?.value;
@@ -48,6 +65,29 @@ export class RegistrarEmpresaComponent  implements OnInit {
             !this.registro.contrasena
         ) {
             const toast = document.getElementById("toastCampos") as any;
+            toast.present();
+            return;
+        }
+        if (!this.validarNIF(this.registro.nif)) {
+            const toast = document.getElementById("nif") as any;
+            toast.present();
+            return;
+        }
+
+        if (!this.validarCorreo(this.registro.correo)) {
+            const toast = document.getElementById("correo") as any;
+            toast.present();
+            return;
+        }
+
+        if (!this.validarTelefono(this.registro.telefono)) {
+            const toast = document.getElementById("telefono") as any;
+            toast.present();
+            return;
+        }
+
+        if (this.registro.contrasena.length < 6) {
+            const toast = document.getElementById("contrasena") as any;
             toast.present();
             return;
         }
@@ -68,16 +108,15 @@ export class RegistrarEmpresaComponent  implements OnInit {
     }
 
 
-
     goRegister() {
-    this.doRegister()
-  }
+        this.doRegister()
+    }
 
-  volver() {
-    this.router.navigate(['/registrar-cliente'])
-  }
+    volver() {
+        this.router.navigate(['/registrar-cliente'])
+    }
 
-  ionViewWillEnter() {
-      this.ngOnInit()
-  }
+    ionViewWillEnter() {
+        this.ngOnInit()
+    }
 }
