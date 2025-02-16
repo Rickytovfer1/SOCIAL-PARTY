@@ -105,6 +105,8 @@ export class EditarEmpresaAdminComponent implements OnInit {
         }
         this.adminService.actualizarPerfilEmpresa(formData).subscribe({
             next: (updatedPerfil: PerfilEmpresa) => {
+                const toast = document.getElementById("toastEmpresaEditado") as any;
+                toast.present();
                 this.perfilEmpresa = updatedPerfil;
                 this.foto = null;
             },
