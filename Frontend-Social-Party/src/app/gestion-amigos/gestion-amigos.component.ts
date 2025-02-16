@@ -13,6 +13,7 @@ import {NgForOf, NgIf} from "@angular/common";
 import {NgOptimizedImage} from "@angular/common";
 import {Perfil} from "../modelos/Perfil";
 import {environment} from "../../environments/environment";
+import {NavLateralComponent} from "../nav-lateral/nav-lateral.component";
 
 @Component({
     selector: 'app-gestion-amigos',
@@ -26,7 +27,8 @@ import {environment} from "../../environments/environment";
         NgForOf,
         NgOptimizedImage,
         NgForOf,
-        NgIf
+        NgIf,
+        NavLateralComponent
     ]
 })
 export class GestionAmigosComponent  implements OnInit {

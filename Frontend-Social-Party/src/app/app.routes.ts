@@ -138,8 +138,4 @@ export const routes: Routes = [
         path: 'perfil-asistente-empresa/:id',
         loadComponent: () => import('./perfil-asistente-empresa/perfil-asistente-empresa.component').then((m) => m.PerfilAsistenteEmpresaComponent)
     },
-    {
-        path: 'componente-prueba',
-        loadComponent: () => import('./componente-prueba/componente-prueba.component').then((m) => m.ComponentePruebaComponent)
-    },
 ];

@@ -1,6 +1,6 @@
 ion-content {
     --background: #D3E5E5;
-    height: 84%;
+    height: 100%;
 }
 
 ion-col {
@@ -64,4 +64,8 @@ ion-button {
         margin: 0 auto;
         width: 100%;
     }
+}
+
+ion-footer {
+    --background: #D3E5E5;
 }

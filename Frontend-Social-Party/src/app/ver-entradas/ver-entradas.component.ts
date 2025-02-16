@@ -19,6 +19,7 @@ import {FormsModule} from "@angular/forms";
 import {environment} from "../../environments/environment";
 import {EmpresaEntradaDTO} from "../modelos/EmpresaEntradaDTO";
 import jsPDF from "jspdf";
+import {NavLateralComponent} from "../nav-lateral/nav-lateral.component";
 
 @Component({
     selector: 'app-ver-entradas',
@@ -32,7 +33,8 @@ import jsPDF from "jspdf";
         NgForOf,
         FormsModule,
         NgOptimizedImage,
-        NgIf
+        NgIf,
+        NavLateralComponent
     ]
 })
 export class VerEntradasComponent implements OnInit {

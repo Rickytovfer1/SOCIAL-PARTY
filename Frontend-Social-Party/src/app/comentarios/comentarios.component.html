@@ -1,53 +1,62 @@
 <app-nav-superior></app-nav-superior>
 
-<ion-content>
+<ion-grid class="grid_menus">
+    <ion-row class="fila_menus">
+        <ion-col size="2.5" class="menu-lateral">
+            <app-nav-lateral style="width: 100%"></app-nav-lateral>
+        </ion-col>
+        <ion-col class="contenido-principal">
+            <ion-content>
 
-    <ion-grid>
-        <ion-row>
-            <ion-col>
                 <ion-grid>
-                    <ion-row class="comentario" *ngFor="let comentario of comentarios">
-                        <ion-col size="3" class="ion-align-items-center" style="display: flex">
-                            <img *ngIf="comentario.id_cliente !== undefined && clientes[comentario.id_cliente]"
-                                 [ngSrc]="getImageUrlCliente(clientes[comentario.id_cliente]!)"
-                                 fill>
-                        </ion-col>
-                        <ion-col size="1"></ion-col>
-                        <ion-col size="8">
+                    <ion-row>
+                        <ion-col>
                             <ion-grid>
-                                <ion-row>
-                                    <div class="nombre_comentario">
-                                        <ion-text>{{ comentario.nombre }} dice:</ion-text>
-                                    </div>
+                                <ion-row class="comentario" *ngFor="let comentario of comentarios">
+                                    <ion-col size="3" class="ion-align-items-center" style="display: flex">
+                                        <img *ngIf="comentario.id_cliente !== undefined && clientes[comentario.id_cliente]"
+                                             [ngSrc]="getImageUrlCliente(clientes[comentario.id_cliente]!)"
+                                             fill>
+                                    </ion-col>
+                                    <ion-col size="1"></ion-col>
+                                    <ion-col size="8">
+                                        <ion-grid>
+                                            <ion-row>
+                                                <div class="nombre_comentario">
+                                                    <ion-text>{{ comentario.nombre }} dice:</ion-text>
+                                                </div>
+                                            </ion-row>
+                                            <ion-row class="ion-align-items-center fila_texto">
+                                                <ion-text class="texto_comentario">{{ comentario.texto }}</ion-text>
+                                            </ion-row>
+                                            <ion-row>
+                                                <div class="fecha_comentario">
+                                                    <ion-text>{{ calcularFecha(comentario) }}</ion-text>
+                                                </div>
+                                            </ion-row>
+                                        </ion-grid>
+                                    </ion-col>
                                 </ion-row>
-                                <ion-row class="ion-align-items-center fila_texto">
-                                    <ion-text class="texto_comentario">{{ comentario.texto }}</ion-text>
-                                </ion-row>
-                                <ion-row>
-                                    <div class="fecha_comentario">
-                                        <ion-text>{{ calcularFecha(comentario) }}</ion-text>
-                                    </div>
-                                </ion-row>
+                                <hr>
                             </ion-grid>
                         </ion-col>
                     </ion-row>
-                    <hr>
                 </ion-grid>
-            </ion-col>
-        </ion-row>
-    </ion-grid>
 
-</ion-content>
+            </ion-content>
 
-<div style="background-color: #5ab7d5">
-    <div id="enviar_mensaje">
-        <ion-input
-            [(ngModel)]="nuevoComentario"
-            placeholder="Comenta..."
-            (keydown.enter)="enviarMensaje()">
-        </ion-input>
-        <ion-img id="img_enviar" (click)="enviarMensaje()" src="assets/iconoEnviar.png"></ion-img>
-    </div>
-</div>
+            <div style="background-color: #5ab7d5">
+                <div id="enviar_mensaje">
+                    <ion-input
+                        [(ngModel)]="nuevoComentario"
+                        placeholder="Comenta..."
+                        (keydown.enter)="enviarMensaje()">
+                    </ion-input>
+                    <ion-img id="img_enviar" (click)="enviarMensaje()" src="assets/iconoEnviar.png"></ion-img>
+                </div>
+            </div>
+        </ion-col>
+    </ion-row>
+</ion-grid>
 
 <app-nav-inferior></app-nav-inferior>

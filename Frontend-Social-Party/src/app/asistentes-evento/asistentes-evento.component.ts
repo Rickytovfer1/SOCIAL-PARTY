@@ -20,6 +20,7 @@ import { Evento } from "../modelos/Evento";
 import { Empresa } from "../modelos/Empresa";
 import { NgForOf, NgIf, NgOptimizedImage } from "@angular/common";
 import {FormsModule} from "@angular/forms";
+import {NavLateralComponent} from "../nav-lateral/nav-lateral.component";
 
 @Component({
     selector: 'app-asistentes-evento',
@@ -33,7 +34,8 @@ import {FormsModule} from "@angular/forms";
         NgForOf,
         NgIf,
         NgOptimizedImage,
-        FormsModule
+        FormsModule,
+        NavLateralComponent
     ]
 })
 export class AsistentesEventoComponent implements OnInit {

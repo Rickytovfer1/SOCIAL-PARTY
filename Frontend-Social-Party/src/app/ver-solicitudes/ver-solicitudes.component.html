@@ -1,37 +1,46 @@
 <app-nav-superior></app-nav-superior>
 
-<div id="cabecera">Bandeja de entrada</div>
+<ion-grid class="grid_menus">
+    <ion-row class="fila_menus">
+        <ion-col size="2.5" class="menu-lateral">
+            <app-nav-lateral style="width: 100%"></app-nav-lateral>
+        </ion-col>
+        <ion-col class="contenido-principal">
+            <div id="cabecera">Bandeja de entrada</div>
 
-<ion-content>
-    <ion-grid>
-        <ion-row *ngIf="solicitudes.length === 0">
-            <div style="width: 100%; text-align: center; padding: 20px; color: black">
-                <ion-text style="margin: 0 auto; color: black">Buzón vacío...</ion-text>
-            </div>
-        </ion-row>
-        <ion-row *ngFor="let cliente of clientesSolicitudes">
-            <ion-col>
+            <ion-content>
                 <ion-grid>
-                    <ion-row class="solicitud">
-                        <ion-col size="3">
-                            <ion-img [src]="getImageUrl(cliente)"></ion-img>
-                        </ion-col>
-                        <ion-col class="col_nombre ion-align-items-center" size="6" (click)="verPerfil(cliente)">
-                            <ion-text>{{ cliente.nombre }} {{ cliente.apellidos }}</ion-text>
-                        </ion-col>
-                        <ion-col class="col_nombre ion-align-items-center" size="1.5">
-                            <ion-img (click)="aceptarSolicitud(cliente)" src="assets/icons8-casilla-de-verificación-marcada-50.png"></ion-img>
-                        </ion-col>
-                        <ion-col class="col_nombre ion-align-items-center" size="1.5">
-                            <ion-img (click)="eliminarSolicitud(cliente)" src="assets/icons8-multiplicación-2-30.png"></ion-img>
+                    <ion-row *ngIf="solicitudes.length === 0">
+                        <div style="width: 100%; text-align: center; padding: 20px; color: black">
+                            <ion-text style="margin: 0 auto; color: black">Buzón vacío...</ion-text>
+                        </div>
+                    </ion-row>
+                    <ion-row *ngFor="let cliente of clientesSolicitudes">
+                        <ion-col>
+                            <ion-grid>
+                                <ion-row class="solicitud">
+                                    <ion-col size="3">
+                                        <ion-img [src]="getImageUrl(cliente)"></ion-img>
+                                    </ion-col>
+                                    <ion-col class="col_nombre ion-align-items-center" size="6" (click)="verPerfil(cliente)">
+                                        <ion-text>{{ cliente.nombre }} {{ cliente.apellidos }}</ion-text>
+                                    </ion-col>
+                                    <ion-col class="col_nombre ion-align-items-center" size="1.5">
+                                        <ion-img (click)="aceptarSolicitud(cliente)" src="assets/icons8-casilla-de-verificación-marcada-50.png"></ion-img>
+                                    </ion-col>
+                                    <ion-col class="col_nombre ion-align-items-center" size="1.5">
+                                        <ion-img (click)="eliminarSolicitud(cliente)" src="assets/icons8-multiplicación-2-30.png"></ion-img>
+                                    </ion-col>
+                                </ion-row>
+                                <hr>
+                            </ion-grid>
                         </ion-col>
                     </ion-row>
-                    <hr>
                 </ion-grid>
-            </ion-col>
-        </ion-row>
-    </ion-grid>
-</ion-content>
+            </ion-content>
+        </ion-col>
+    </ion-row>
+</ion-grid>
 
 <app-nav-inferior></app-nav-inferior>
 
@@ -50,3 +59,5 @@
     position="top"
     color="primary"
 ></ion-toast>
+
+

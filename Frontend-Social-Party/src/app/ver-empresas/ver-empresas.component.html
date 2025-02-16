@@ -15,8 +15,8 @@
                         [(ngModel)]="buscar"
                         (ionInput)="onSearchChange($event)">
                     </ion-searchbar>
-                    <ion-img id="filtro" src="assets/iconoFiltro.png"></ion-img>
-                    <ion-popover trigger="filtro" triggerAction="click" [dismissOnSelect]="true">
+                    <ion-img id="filtro1" src="assets/iconoFiltro.png"></ion-img>
+                    <ion-popover trigger="filtro1" triggerAction="click" [dismissOnSelect]="true">
                         <ng-template>
                             <ion-list>
                                 <ion-item button (click)="sortByValoracionAsc()">Menor a Mayor</ion-item>
@@ -27,7 +27,7 @@
                     </ion-popover>
                 </div>
 
-                <ion-item *ngIf="showRangeFilter">
+                <ion-item id="item_range" *ngIf="showRangeFilter">
                     <ion-range dualKnobs="true" min="0" max="100" step="1" [(ngModel)]="valoracionRange" (ionChange)="filterByRange()">
                         <ion-label slot="start">{{ valoracionRange.lower }}</ion-label>
                         <ion-label slot="end">{{ valoracionRange.upper }}</ion-label>

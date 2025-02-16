@@ -1,36 +1,45 @@
 <app-nav-superior></app-nav-superior>
 
-<ion-content>
-    <ion-grid>
-        <ion-row class="ion-justify-content-between ion-align-items-center" style="padding: 1%">
-            <div style="display: inline-flex; align-items: center;">
-                <ion-img (click)="verSolicitudes()" src="assets/iconoNoti.png" style="width: 40px; height: 40px;"></ion-img>
-                <ion-badge *ngIf="pendingSolicitudes > 0" color="danger" style="margin-left: 5px; font-size: 0.75rem; height: 20px; min-width: 20px;">
-                    {{ pendingSolicitudes }}
-                </ion-badge>
-            </div>
-            <ion-img (click)="verAmigos()" src="assets/iconoAmigos.png"></ion-img>
-        </ion-row>
-        <ion-row>
-            <ion-col style="margin: 0 auto" size-lg="4" size-xl="4" size-md="6" size-sm="10" size-xs="12">
-                <div *ngIf="amigos.length === 0" style="width: 100%; text-align: center; padding: 20px; color: black">
-                    <ion-text style="margin: 0 auto;">No tienes amigos todavía...</ion-text>
-                </div>
-                <ion-card (click)="abrirChat(amigo.idUsuario)" class="tarjeta_amigo ion-text-center" *ngFor="let amigo of amigos">
-                    <ion-grid>
-                        <ion-row>
-                            <ion-col size="3">
-                                <img [ngSrc]="getImageUrlCliente(amigo)" fill>
-                            </ion-col>
-                            <ion-col size="9" style="display: flex" class="ion-align-items-center">
-                                <ion-text id="nombre">{{ amigo.nombre }} {{ amigo.apellidos }}</ion-text>
-                            </ion-col>
-                        </ion-row>
-                    </ion-grid>
-                </ion-card>
-            </ion-col>
-        </ion-row>
-    </ion-grid>
-</ion-content>
+<ion-grid class="grid_menus">
+    <ion-row class="fila_menus">
+        <ion-col size="2.5" class="menu-lateral">
+            <app-nav-lateral style="width: 100%"></app-nav-lateral>
+        </ion-col>
+        <ion-col class="contenido-principal">
+            <ion-content>
+                <ion-grid>
+                    <ion-row class="ion-justify-content-between ion-align-items-center" style="padding: 1%">
+                        <div style="display: inline-flex; align-items: center;">
+                            <ion-img (click)="verSolicitudes()" src="assets/iconoNoti.png" style="width: 40px; height: 40px;"></ion-img>
+                            <ion-badge *ngIf="pendingSolicitudes > 0" color="danger" style="margin-left: 5px; font-size: 0.75rem; height: 20px; min-width: 20px;">
+                                {{ pendingSolicitudes }}
+                            </ion-badge>
+                        </div>
+                        <ion-img (click)="verAmigos()" src="assets/iconoAmigos.png"></ion-img>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col style="margin: 0 auto" size-lg="4" size-xl="4" size-md="6" size-sm="8" size-xs="10">
+                            <div *ngIf="amigos.length === 0" style="width: 100%; text-align: center; padding: 20px; color: black">
+                                <ion-text style="margin: 0 auto;">No tienes amigos todavía...</ion-text>
+                            </div>
+                            <ion-card (click)="abrirChat(amigo.idUsuario)" class="tarjeta_amigo ion-text-center" *ngFor="let amigo of amigos">
+                                <ion-grid>
+                                    <ion-row>
+                                        <ion-col size="3">
+                                            <img [ngSrc]="getImageUrlCliente(amigo)" fill>
+                                        </ion-col>
+                                        <ion-col size="9" style="display: flex" class="ion-align-items-center">
+                                            <ion-text id="nombre">{{ amigo.nombre }} {{ amigo.apellidos }}</ion-text>
+                                        </ion-col>
+                                    </ion-row>
+                                </ion-grid>
+                            </ion-card>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+            </ion-content>
+        </ion-col>
+    </ion-row>
+</ion-grid>
 
 <app-nav-inferior></app-nav-inferior>

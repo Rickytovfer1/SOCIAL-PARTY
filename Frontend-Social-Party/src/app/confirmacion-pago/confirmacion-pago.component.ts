@@ -19,6 +19,7 @@ import {UsuarioService} from "../servicios/usuario.service";
 import {NavInferiorComponent} from "../nav-inferior/nav-inferior.component";
 import {NavSuperiorComponent} from "../nav-superior/nav-superior.component";
 import jsPDF from "jspdf";
+import {NavLateralComponent} from "../nav-lateral/nav-lateral.component";
 
 @Component({
     selector: 'app-confirmacion-pago',
@@ -29,7 +30,8 @@ import jsPDF from "jspdf";
         IonicModule,
         FormsModule,
         NavInferiorComponent,
-        NavSuperiorComponent
+        NavSuperiorComponent,
+        NavLateralComponent
     ]
 })
 export class ConfirmacionPagoComponent implements OnInit {
