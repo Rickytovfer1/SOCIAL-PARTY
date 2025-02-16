@@ -61,9 +61,11 @@ public class EmpresaControlador {
 
 
     @PostMapping("/empresa/restar/puntos")
-    public void restarPuntos(@RequestBody RestarPuntoDTO dto){
+    public void restarPuntos(@RequestBody RestarPuntoDTO dto) {
         empresaServicio.restarPuntosCliente(dto);
     }
+
+
 
     @DeleteMapping("/empresa/eliminar/{idEmpresa}")
     public void eliminarEmpresa(@PathVariable Integer idEmpresa){

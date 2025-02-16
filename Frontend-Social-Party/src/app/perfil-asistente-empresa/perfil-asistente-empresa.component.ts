@@ -169,18 +169,20 @@ export class PerfilAsistenteEmpresaComponent implements OnInit {
 
         const restarPuntos: RestarPuntos = {
             idCliente: this.cliente.id,
-            puntos: puntos
+            puntos: puntos,
+            idEmpresa: this.perfilEmpresa.id,
+            motivo: this.opcionSeleccionada
         };
 
         this.empresaService.restarEstrellas(restarPuntos).subscribe({
             next: () => {
                 console.log(`Se han restado ${puntos} estrellas por falta ${this.opcionSeleccionada}`);
-                location.reload()
-
+                location.reload();
             },
             error: (e) => {
                 console.error("Error al restar estrellas:", e);
             }
         });
     }
+
 }

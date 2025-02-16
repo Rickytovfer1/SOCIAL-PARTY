@@ -5,9 +5,12 @@
         <ion-row class="ion-justify-content-between ion-align-items-center" style="padding: 1%">
             <div style="display: inline-flex; align-items: center;">
                 <ion-img (click)="verSolicitudes()" src="assets/iconoNoti.png" style="width: 40px; height: 40px;"></ion-img>
-                <ion-badge *ngIf="pendingSolicitudes > 0" color="danger" style="margin-left: 5px; font-size: 0.75rem; height: 20px; min-width: 20px;">
-                    {{ pendingSolicitudes }}
-                </ion-badge>
+                <div class="badge-container">
+                    <ion-badge *ngIf="pendingNotificaciones > 0">
+                        {{ pendingNotificaciones }}
+                    </ion-badge>
+                </div>
+
             </div>
             <ion-img (click)="verAmigos()" src="assets/iconoAmigos.png"></ion-img>
         </ion-row>

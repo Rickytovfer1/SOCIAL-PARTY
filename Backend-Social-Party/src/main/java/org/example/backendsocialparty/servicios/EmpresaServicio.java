@@ -3,6 +3,7 @@ package org.example.backendsocialparty.servicios;
 import lombok.RequiredArgsConstructor;
 import org.example.backendsocialparty.DTOs.ClienteDTO;
 import org.example.backendsocialparty.DTOs.EmpresaDTO;
+import org.example.backendsocialparty.DTOs.NotificacionDTO;
 import org.example.backendsocialparty.DTOs.RestarPuntoDTO;
 import org.example.backendsocialparty.modelos.Cliente;
 import org.example.backendsocialparty.modelos.Empresa;
@@ -35,7 +36,7 @@ public class EmpresaServicio {
     private final EventoServicio eventoServicio;
     private final UsuarioRepositorio usuarioRepositorio;
     private final EntradaServicio entradaServicio;
-
+    private final NotificacionService notificacionService;
     public List<EmpresaDTO> listarEmpresas() {
         List<Empresa> empresas = empresaRepositorio.findAll();
         List<EmpresaDTO> empresasDTO = new ArrayList<>();
@@ -59,7 +60,21 @@ public class EmpresaServicio {
                 .orElseThrow(() -> new RuntimeException("No existe un cliente con este ID."));
         cliente.setValoracion(cliente.getValoracion() - dto.getPuntos());
         clienteRepositorio.save(cliente);
+
+        Empresa empresa = empresaRepositorio.findById(dto.getIdEmpresa())
+                .orElseThrow(() -> new RuntimeException("No existe una empresa con este ID."));
+
+        NotificacionDTO notificacionDTO = new NotificacionDTO();
+        notificacionDTO.setIdUsuario(cliente.getUsuario().getId());
+        notificacionDTO.setTipo("restarPuntos");
+        notificacionDTO.setMensaje("La empresa " + empresa.getNombre() +
+                " te ha restado " + dto.getPuntos() + " puntos por " + dto.getMotivo() + ".");
+        notificacionDTO.setIdReferencia(empresa.getId().longValue());
+
+        notificacionService.enviarNotificacion(notificacionDTO);
     }
+
+
 
     public void eliminarEmpresa(Integer id) {
         Empresa empresa = empresaRepositorio.findById(id)

@@ -34,6 +34,7 @@ public class SecurityConfig {
                         .requestMatchers("/cliente/**").hasAuthority("CLIENTE")
                         .requestMatchers("/empresa/**").hasAuthority("EMPRESA")
                         .requestMatchers("/admin/**").hasAuthority("ADMIN")
+                        .requestMatchers("/notificaciones/**").hasAnyAuthority("CLIENTE", "EMPRESA")
                         .anyRequest().authenticated()
                 )
                 .authenticationProvider(authenticationProvider)

@@ -347,31 +347,27 @@ export class PublicacionesComponent implements OnInit {
     }
 
     cambioLike(publicacion: MostrarPublicacion) {
-        let favorito: Favorito = {
-            id_publicacion: publicacion.id,
-            id_cliente: this.perfil.id
-        }
-        let encontrado = false;
-        for (const like of this.likes) {
-            if (like.id_publicacion === publicacion.id) {
-                encontrado = true;
-                break
-            }
-        }
-        if (encontrado) {
-            console.log("Quitando...")
+        let favorito: Favorito = { id_publicacion: publicacion.id, id_cliente: this.perfil.id };
+        let index = this.likes.findIndex(like => like.id_publicacion === publicacion.id);
+        if (index !== -1) {
+            this.likes.splice(index, 1);
+            // @ts-ignore
+            this.contadorPublicaciones[publicacion.id] = (this.contadorPublicaciones[publicacion.id] || 1) - 1;
             this.favoritoService.quitarLike(favorito).subscribe({
-                next: () => {console.log("Enviado")},
-                error: (e) => {console.error("Error", e);}
-            })
+                next: () => {},
+                error: (e) => { console.error("Error", e); }
+            });
         } else {
-            console.log("Posteando...")
+            this.likes.push(favorito);
+            // @ts-ignore
+            this.contadorPublicaciones[publicacion.id] = (this.contadorPublicaciones[publicacion.id] || 0) + 1;
             this.favoritoService.darLike(favorito).subscribe({
-                next: () => {console.log("Enviado")},
-                error: (e) => {console.error("Error", e);}
-            })
+                next: () => {},
+                error: (e) => { console.error("Error", e); }
+            });
         }
     }
+
 
     devolverIndice(publicacion: MostrarPublicacion): number {
         if (publicacion.id) {
