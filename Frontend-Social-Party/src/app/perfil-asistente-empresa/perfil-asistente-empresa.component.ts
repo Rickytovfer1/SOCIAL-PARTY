@@ -16,6 +16,8 @@ import {PerfilEmpresa} from "../modelos/PerfilEmpresa";
 import {PerfilServicio} from "../servicios/perfil.service";
 import {RestarPuntos} from "../modelos/RestarPuntos";
 import {FormsModule} from "@angular/forms";
+import {NavLateralComponent} from "../nav-lateral/nav-lateral.component";
+import {AmigosComponent} from "../amigos/amigos.component";
 
 @Component({
     selector: 'app-perfil-asistente-empresa',
@@ -27,7 +29,9 @@ import {FormsModule} from "@angular/forms";
         NavInferiorEmpresaComponent,
         IonicModule,
         NgOptimizedImage,
-        FormsModule
+        FormsModule,
+        NavLateralComponent,
+        AmigosComponent
     ]
 })
 export class PerfilAsistenteEmpresaComponent implements OnInit {
