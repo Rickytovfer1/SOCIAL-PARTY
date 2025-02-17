@@ -47,6 +47,7 @@ public class EntradaServicio {
     private EntityManagerFactory entityManagerFactory;
     @PersistenceContext
     private EntityManager entityManager;
+
     @Transactional
     public void canjearEntrada(Integer codigoEntrada) {
         entityManagerFactory.getCache().evictAll();
@@ -61,6 +62,30 @@ public class EntradaServicio {
 
         Evento evento = eventoRepositorio.findById(entrada.getEvento().getId())
                 .orElseThrow(() -> new RuntimeException("No existe un evento con este ID."));
+
+        LocalDate hoy = LocalDate.now();
+        LocalDate fechaEvento = evento.getFecha();
+        LocalTime ahora = LocalTime.now();
+        LocalTime horaApertura = evento.getHoraApertura();
+        LocalTime horaFinalizacion = evento.getHoraFinalizacion();
+
+        if (!hoy.equals(fechaEvento)) {
+            if (fechaEvento.isAfter(hoy)) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                        "El evento se realizará el " + fechaEvento.toString() + " a las " + horaApertura.toString());
+            } else {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                        "El evento finalizó el " + fechaEvento.toString() + " a las " + horaFinalizacion.toString());
+            }
+        } else {
+            if (ahora.isBefore(horaApertura)) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                        "El evento no ha iniciado. Inicia a las " + horaApertura.toString());
+            } else if (ahora.isAfter(horaFinalizacion)) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                        "El evento ya finalizó. Finalizó a las " + horaFinalizacion.toString());
+            }
+        }
 
         Empresa empresa = empresaRepositorio.findById(evento.getEmpresa().getId())
                 .orElseThrow(() -> new RuntimeException("No se encontró la empresa asociada al evento."));
@@ -83,10 +108,8 @@ public class EntradaServicio {
         cliente.getEventos().clear();
         cliente.getEventos().add(evento);
         eventoRepositorio.save(evento);
-
-
-
     }
+
 
 
     public EntradaDTO comprarEntrada(Integer idEvento, Integer idEmpresa, Integer idUsuario) {
