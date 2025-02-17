@@ -50,15 +50,17 @@ public class AdminControlador {
     }
 
     @PutMapping(value = "/actualizar/cliente", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ClienteDTO actualizarCliente(
+    public ClienteDTO actualizarClienteAdmin(
             @RequestPart("cliente") ClienteDTO clienteDTO,
+            @RequestPart("usuario") UsuarioDTO usuarioDTO,
             @RequestPart(value = "fotoPerfil", required = false) MultipartFile fotoPerfil) {
         if (fotoPerfil != null && !fotoPerfil.isEmpty()){
             String urlFoto = clienteServicio.guardarFoto(fotoPerfil);
             clienteDTO.setFotoPerfil(urlFoto);
         }
-        return clienteServicio.actualizarCliente(clienteDTO);
+        return clienteServicio.actualizarCliente(clienteDTO, usuarioDTO);
     }
+
 
     @PutMapping("/editar/estrellas")
     public void editarEstrella(@RequestBody EditarEstrellaDTO dto) {

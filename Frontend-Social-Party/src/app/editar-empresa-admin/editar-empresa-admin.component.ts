@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {IonicModule} from "@ionic/angular";
+import {IonicModule, ToastController} from "@ionic/angular";
 import {NavInferiorEmpresaComponent} from "../nav-inferior-empresa/nav-inferior-empresa.component";
 import {NavSuperiorEmpresaComponent} from "../nav-superior-empresa/nav-superior-empresa.component";
 import {NgOptimizedImage} from "@angular/common";
@@ -43,7 +43,10 @@ export class EditarEmpresaAdminComponent implements OnInit {
                 private activateRoute: ActivatedRoute,
                 private usuarioService: UsuarioService,
                 private clienteService: ClienteService,
-                private perfilService: PerfilServicio) {
+                private toastController: ToastController,
+                private perfilService: PerfilServicio)
+
+    {
     }
 
     ngOnInit() {
@@ -103,18 +106,39 @@ export class EditarEmpresaAdminComponent implements OnInit {
         if (this.foto) {
             formData.append("fotoPerfil", this.foto);
         }
+
         this.adminService.actualizarPerfilEmpresa(formData).subscribe({
-            next: (updatedPerfil: PerfilEmpresa) => {
-                const toast = document.getElementById("toastEmpresaEditado") as any;
+            next: async (updatedPerfil: PerfilEmpresa) => {
+                const toast = await this.toastController.create({
+                    message: 'Empresa actualizada correctamente',
+                    duration: 3000,
+                    position: 'top',
+                    color: 'success'
+                });
                 toast.present();
                 this.perfilEmpresa = updatedPerfil;
                 this.foto = null;
+                this.editar = false;
             },
-            error: (err) => {
+            error: async (err) => {
                 console.error("Error al actualizar la empresa:", err);
+                let message = 'Error al actualizar la empresa';
+                if (typeof err.error === 'string') {
+                    message = err.error;
+                } else if (err.error && err.error.message) {
+                    message = err.error.message;
+                }
+                const toast = await this.toastController.create({
+                    message,
+                    duration: 3000,
+                    position: 'top',
+                    color: 'danger'
+                });
+                toast.present();
             }
         });
     }
+
 
     editarBoton(): void {
         if (this.editar) {

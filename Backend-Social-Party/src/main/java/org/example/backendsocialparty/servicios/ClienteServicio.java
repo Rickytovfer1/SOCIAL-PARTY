@@ -1,10 +1,6 @@
 package org.example.backendsocialparty.servicios;
 
-import org.example.backendsocialparty.DTOs.ClienteDTO;
-import org.example.backendsocialparty.DTOs.ComentarioDTO;
-import org.example.backendsocialparty.DTOs.EditarEstrellaDTO;
-import org.example.backendsocialparty.DTOs.EventoDTO;
-import org.example.backendsocialparty.DTOs.RestarPuntoDTO;
+import org.example.backendsocialparty.DTOs.*;
 import org.example.backendsocialparty.modelos.*;
 import org.example.backendsocialparty.repositorios.ClienteRepositorio;
 import org.example.backendsocialparty.repositorios.EmpresaRepositorio;
@@ -12,6 +8,7 @@ import org.example.backendsocialparty.repositorios.ComentarioRepositorio;
 import org.example.backendsocialparty.repositorios.UsuarioRepositorio;
 import org.example.backendsocialparty.servicios.*;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -22,6 +19,7 @@ import java.io.*;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 
 @Service
@@ -137,6 +135,7 @@ public class ClienteServicio {
 
         if (c.getUsuario() != null) {
             dtonuevo.setIdUsuario(c.getUsuario().getId());
+
         }
 
         return dtonuevo;
@@ -159,10 +158,22 @@ public class ClienteServicio {
         clienteRepositorio.delete(cliente);
     }
 
-    public ClienteDTO actualizarCliente(ClienteDTO clienteDTO) {
-        Cliente cliente = clienteRepositorio.findById(clienteDTO.getId())
-                .orElseThrow(() -> new RuntimeException("No existe un cliente con este ID."));
 
+    public ClienteDTO actualizarCliente(ClienteDTO clienteDTO) {
+        clienteDTO.setCorreo(null);
+        return actualizarClienteInterno(clienteDTO, null);
+    }
+
+    public ClienteDTO actualizarCliente(ClienteDTO clienteDTO, UsuarioDTO usuarioDTO) {
+        if (usuarioDTO != null && usuarioDTO.getCorreo() != null) {
+            clienteDTO.setCorreo(usuarioDTO.getCorreo());
+        }
+        return actualizarClienteInterno(clienteDTO, usuarioDTO);
+    }
+
+    private ClienteDTO actualizarClienteInterno(ClienteDTO clienteDTO, UsuarioDTO usuarioDTO) {
+        Cliente cliente = clienteRepositorio.findById(clienteDTO.getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No existe un cliente con este ID."));
         cliente.setNombre(clienteDTO.getNombre());
         cliente.setApellidos(clienteDTO.getApellidos());
         cliente.setDni(clienteDTO.getDni());
@@ -171,24 +182,29 @@ public class ClienteServicio {
         cliente.setBiografia(clienteDTO.getBiografia());
         cliente.setFotoPerfil(clienteDTO.getFotoPerfil());
 
-        Usuario usuario = cliente.getUsuario();
-        if (usuario != null) {
-            String nuevoCorreo = clienteDTO.getCorreo();
-            if (nuevoCorreo != null && !nuevoCorreo.equals(usuario.getCorreo())) {
-                Optional<Usuario> usuarioExistente = usuarioRepositorio.findTopByCorreo(nuevoCorreo);
-                if (usuarioExistente.isPresent() && !usuarioExistente.get().getId().equals(usuario.getId())) {
-                    throw new RuntimeException("El correo ya está en uso por otro usuario.");
+        if (usuarioDTO != null && clienteDTO.getCorreo() != null) {
+            Usuario usuario = cliente.getUsuario();
+            if (usuario != null) {
+                String nuevoCorreo = clienteDTO.getCorreo().trim().toLowerCase();
+                String correoActual = usuario.getCorreo() != null ? usuario.getCorreo().trim().toLowerCase() : "";
+                if (!nuevoCorreo.equals(correoActual)) {
+                    Optional<Usuario> usuarioExistente = usuarioRepositorio.findOtherByCorreoIgnoreCase(nuevoCorreo, usuario.getId());
+                    if (usuarioExistente.isPresent()) {
+                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El correo ya está en uso por otro usuario.");
+                    }
+                    usuario.setCorreo(nuevoCorreo);
+                    usuarioRepositorio.save(usuario);
                 }
-                usuario.setCorreo(nuevoCorreo);
-                usuarioRepositorio.save(usuario);
             }
-        } else {
-            throw new RuntimeException("El cliente no está asociado a ningún usuario.");
         }
-
         Cliente clienteActualizado = clienteRepositorio.save(cliente);
         return getClienteDTO(clienteActualizado);
     }
+
+
+
+
+
 
     public String guardarFoto(MultipartFile foto) {
         if (foto.isEmpty()) {

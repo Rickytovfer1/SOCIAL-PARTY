@@ -8,12 +8,15 @@ import org.example.backendsocialparty.DTOs.RestarPuntoDTO;
 import org.example.backendsocialparty.modelos.Cliente;
 import org.example.backendsocialparty.modelos.Empresa;
 import org.example.backendsocialparty.modelos.Evento;
+import org.example.backendsocialparty.modelos.Usuario;
 import org.example.backendsocialparty.repositorios.ClienteRepositorio;
 import org.example.backendsocialparty.repositorios.EmpresaRepositorio;
 import org.example.backendsocialparty.repositorios.UsuarioRepositorio;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.nio.file.*;
@@ -106,7 +109,7 @@ public class EmpresaServicio {
 
     public EmpresaDTO actualizarEmpresa(EmpresaDTO empresaDTO) {
         Empresa empresa = empresaRepositorio.findById(empresaDTO.getId())
-                .orElseThrow(() -> new RuntimeException("No existe una empresa con este ID."));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No existe una empresa con este ID."));
 
         if (empresaDTO.getNombre() != null) {
             empresa.setNombre(empresaDTO.getNombre());
@@ -118,11 +121,36 @@ public class EmpresaServicio {
             empresa.setCodigoPostal(empresaDTO.getCp());
         }
         if (empresaDTO.getNif() != null) {
+            Optional<Empresa> empresaConNif = Optional.ofNullable(empresaRepositorio.findByNif(empresaDTO.getNif()));
+            if (empresaConNif.isPresent() && !empresaConNif.get().getId().equals(empresaDTO.getId())) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El NIF ya está en uso");
+            }
             empresa.setNif(empresaDTO.getNif());
         }
         if (empresaDTO.getTelefono() != null) {
+            Optional<Empresa> empresaConTelefono = empresaRepositorio.findByTelefono(empresaDTO.getTelefono());
+            if (empresaConTelefono.isPresent() && !empresaConTelefono.get().getId().equals(empresaDTO.getId())) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El teléfono ya está en uso");
+            }
             empresa.setTelefono(empresaDTO.getTelefono());
         }
+
+        if (empresaDTO.getCorreo() != null) {
+            Usuario usuario = empresa.getUsuario();
+            if (usuario != null) {
+                if (!empresaDTO.getCorreo().equals(usuario.getCorreo())) {
+                    Optional<Usuario> usuarioExistente = usuarioRepositorio.findTopByCorreo(empresaDTO.getCorreo());
+                    if (usuarioExistente.isPresent() && !usuarioExistente.get().getId().equals(usuario.getId())) {
+                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El correo ya está en uso por otro usuario.");
+                    }
+                    usuario.setCorreo(empresaDTO.getCorreo());
+                    usuarioRepositorio.save(usuario);
+                }
+            } else {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La empresa no está asociada a ningún usuario.");
+            }
+        }
+
         if (empresaDTO.getValoracionMinima() != null) {
             empresa.setValoracionMinima(empresaDTO.getValoracionMinima());
         }
@@ -136,6 +164,10 @@ public class EmpresaServicio {
         Empresa empresaActualizada = empresaRepositorio.save(empresa);
         return convertirAEmpresaDTO(empresaActualizada);
     }
+
+
+
+
 
     private EmpresaDTO convertirAEmpresaDTO(Empresa e) {
         if (e == null) {
