@@ -10,6 +10,8 @@ import {environment} from "../../environments/environment";
 import {Empresa} from "../modelos/Empresa";
 import {NavLateralComponent} from "../nav-lateral/nav-lateral.component";
 import {AmigosComponent} from "../amigos/amigos.component";
+import {EmpresaService} from "../servicios/empresa.service";
+import {Usuario} from "../modelos/Usuario";
 
 @Component({
     selector: 'app-ver-eventos',
@@ -29,6 +31,8 @@ import {AmigosComponent} from "../amigos/amigos.component";
 })
 export class VerEventosComponent implements OnInit {
     empresa: Empresa = {} as Empresa;
+    usuario: Usuario = {} as Usuario;
+
     eventos: Evento[] = [];
     idEmpresa!: number;
     baseUrl: string = environment.apiUrl;
@@ -36,7 +40,8 @@ export class VerEventosComponent implements OnInit {
     constructor(
         private eventoService: EventoService,
         private activateRoute: ActivatedRoute,
-        private router: Router
+        private router: Router,
+        private empresaService: EmpresaService
     ) {}
 
     ngOnInit() {
@@ -45,8 +50,21 @@ export class VerEventosComponent implements OnInit {
         });
         this.verEmpresa(this.idEmpresa)
         this.cargarGrupos(this.idEmpresa)
+        this.cargarUsuario(this.idEmpresa)
     }
 
+    cargarUsuario(idEmpresa: number): void {
+        this.empresaService.getUsuarioEmpresa(idEmpresa).subscribe({
+            next: (usuario: Usuario) => {
+                this.usuario = usuario;
+            },
+            error: (e) => {
+                console.error("Error");
+            },
+            complete: () =>
+                console.info(this.usuario)
+        });
+    }
     cargarGrupos(id: number): void {
         this.eventoService.getEventos(id).subscribe({
 

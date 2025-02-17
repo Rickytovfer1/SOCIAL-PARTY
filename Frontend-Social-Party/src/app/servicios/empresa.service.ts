@@ -8,6 +8,7 @@ import { Empresa } from "../modelos/Empresa";
 import {Evento} from "../modelos/Evento";
 import {Cliente} from "../modelos/Cliente";
 import {RestarPuntos} from "../modelos/RestarPuntos";
+import {Usuario} from "../modelos/Usuario";
 
 @Injectable({
     providedIn: 'root'
@@ -67,5 +68,10 @@ export class EmpresaService {
     restarEstrellas(restarEstrella: RestarPuntos): Observable<void> {
         const options = this.comunService.autorizarPeticionFormData();
         return this.http.post<void>(`${this.apiUrl}/empresa/restar/puntos`,restarEstrella, options);
+    }
+
+    getUsuarioEmpresa(idEmpresa: number): Observable<Usuario> {
+        const options = this.comunService.autorizarPeticion();
+        return this.http.get<Usuario>(`${this.apiUrl}/cliente/ver/usuarios/${idEmpresa}`, options);
     }
 }

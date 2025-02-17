@@ -1,10 +1,7 @@
 package org.example.backendsocialparty.controladores;
 
 import lombok.AllArgsConstructor;
-import org.example.backendsocialparty.DTOs.ClienteDTO;
-import org.example.backendsocialparty.DTOs.EmpresaDTO;
-import org.example.backendsocialparty.DTOs.EventoDTO;
-import org.example.backendsocialparty.DTOs.RestarPuntoDTO;
+import org.example.backendsocialparty.DTOs.*;
 import org.example.backendsocialparty.security.UsuarioAdapter;
 import org.example.backendsocialparty.servicios.ClienteServicio;
 import org.example.backendsocialparty.servicios.EmpresaServicio;
@@ -99,4 +96,8 @@ public class EmpresaControlador {
         empresaServicio.banearDiscoteca(idCliente, idEmpresa);
     }
 
+    @GetMapping("/cliente/ver/usuarios/{idEmpresa}")
+    public UsuarioDTO verUsuarioEmpresa(@PathVariable Integer idEmpresa){
+        return usuarioServicio.buscarUsuarioPorEmpresa(idEmpresa);
+    }
 }

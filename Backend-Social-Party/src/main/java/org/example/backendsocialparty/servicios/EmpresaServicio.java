@@ -1,13 +1,11 @@
 package org.example.backendsocialparty.servicios;
 
 import lombok.RequiredArgsConstructor;
-import org.example.backendsocialparty.DTOs.ClienteDTO;
-import org.example.backendsocialparty.DTOs.EmpresaDTO;
-import org.example.backendsocialparty.DTOs.NotificacionDTO;
-import org.example.backendsocialparty.DTOs.RestarPuntoDTO;
+import org.example.backendsocialparty.DTOs.*;
 import org.example.backendsocialparty.modelos.Cliente;
 import org.example.backendsocialparty.modelos.Empresa;
 import org.example.backendsocialparty.modelos.Evento;
+import org.example.backendsocialparty.modelos.Usuario;
 import org.example.backendsocialparty.repositorios.ClienteRepositorio;
 import org.example.backendsocialparty.repositorios.EmpresaRepositorio;
 import org.example.backendsocialparty.repositorios.UsuarioRepositorio;
@@ -46,6 +44,12 @@ public class EmpresaServicio {
         return empresasDTO;
     }
 
+    public Usuario verUsuarioEmpresa(Integer idEmpresa){
+        Empresa empresa = empresaRepositorio.findById(idEmpresa)
+                .orElseThrow(() -> new RuntimeException("No existe una empresa con este ID."));
+
+        return usuarioRepositorio.findById(empresa.getUsuario().getId()).orElse(null);
+    }
     public EmpresaDTO verEmpresa(Integer idEmpresa) {
         Empresa empresa = empresaRepositorio.getReferenceById(idEmpresa);
         return convertirAEmpresaDTO(empresa);
