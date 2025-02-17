@@ -20,9 +20,10 @@
 
 ion-content {
     --background: #D3E5E5;
+    width: 100%;
 }
 
-ion-col {
+ion-content ion-col {
     display: flex;
     margin: 0 auto;
 }
@@ -58,9 +59,4 @@ ion-text {
 
 #nombre {
     font-size: 22px;
-}
-
-#menu_amigos {
-    display: block;
-    margin: 0;
 }

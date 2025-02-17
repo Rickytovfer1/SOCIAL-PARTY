@@ -14,6 +14,20 @@ ion-content {
 .solicitud {
     background-color: #5ab7d5;
     border-top: 2px solid black;
+    width: 40%;
+    margin: 0 auto;
+    border-left: 2px solid black;
+    border-right: 2px solid black;
+}
+
+@media (max-width: 768px) {
+    .solicitud {
+        background-color: #5ab7d5;
+        border-top: 2px solid black;
+        width: 100%;
+        border-left: 0;
+        border-right: 0;
+    }
 }
 
 ion-grid {
@@ -43,7 +57,18 @@ hr {
     height: 2px !important;
     background: black !important;
     display: block !important;
-    margin: 0 !important;
+    margin: 0 auto !important;
+    width: 40%;
+}
+
+@media (max-width: 768px) {
+    hr {
+        height: 2px !important;
+        background: black !important;
+        display: block !important;
+        margin: 0 !important;
+        width: 100%;
+    }
 }
 
 ion-img {

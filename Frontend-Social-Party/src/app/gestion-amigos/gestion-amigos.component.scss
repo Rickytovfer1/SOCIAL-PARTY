@@ -14,6 +14,20 @@ ion-content {
 .amigo {
     background-color: #5ab7d5;
     border-top: 2px solid black;
+    width: 40%;
+    margin: 0 auto;
+    border-left: 2px solid black;
+    border-right: 2px solid black;
+}
+
+@media (max-width: 768px) {
+    .amigo {
+        background-color: #5ab7d5;
+        border-top: 2px solid black;
+        width: 100%;
+        border-left: 0;
+        border-right: 0;
+    }
 }
 
 ion-grid {
@@ -43,14 +57,28 @@ hr {
     height: 2px !important;
     background: black !important;
     display: block !important;
-    margin: 0 !important;
+    margin: 0 auto !important;
+    width: 40%;
 }
 
-img {
-    margin: 0 auto;
-    width: 90%;
+@media (max-width: 768px) {
+    hr {
+        height: 2px !important;
+        background: black !important;
+        display: block !important;
+        margin: 0 !important;
+        width: 100%;
+    }
 }
 
 .boton_eliminar {
-    width: 55%;
+    width: 40%;
+    margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+    .boton_eliminar {
+        width: 55%;
+        margin: 0 auto;
+    }
 }

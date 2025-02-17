@@ -4,12 +4,12 @@ import { SolicitudDTO } from '../modelos/solicitud.dto';
 import { UsuarioService } from '../servicios/usuario.service';
 import{ jwtDecode  }from "jwt-decode";
 import { SolicitudService } from '../servicios/SolicitudService';
-import { PerfilServicio } from '../servicios/perfil.service';  // Asegúrate de que la ruta sea correcta
+import { PerfilServicio } from '../servicios/perfil.service';
 import { Perfil } from '../modelos/Perfil';
 import {NavSuperiorComponent} from "../nav-superior/nav-superior.component";
 import {NavInferiorComponent} from "../nav-inferior/nav-inferior.component";
 import {NgForOf, NgIf} from "@angular/common";
-import {environment} from "../../environments/environment"; // Se asume que Perfil tiene una propiedad "nombre"
+import {environment} from "../../environments/environment";
 import { SocketService } from '../servicios/SocketService';
 import {TokenDataDTO} from "../modelos/TokenDataDTO";
 import {Usuario} from "../modelos/Usuario";
@@ -19,7 +19,8 @@ import {ClienteService} from "../servicios/cliente.service";
 import {AmigoService} from "../servicios/amigo.service";
 import {EventoService} from "../servicios/evento.service";
 import {Empresa} from "../modelos/Empresa";
-import {NavLateralComponent} from "../nav-lateral/nav-lateral.component"; // Se asume que Perfil tiene una propiedad "nombre"
+import {NavLateralComponent} from "../nav-lateral/nav-lateral.component";
+import {AmigosComponent} from "../amigos/amigos.component";
 
 @Component({
     selector: 'app-ver-solicitudes',
@@ -32,7 +33,8 @@ import {NavLateralComponent} from "../nav-lateral/nav-lateral.component"; // Se 
         NavInferiorComponent,
         NgForOf,
         NgIf,
-        NavLateralComponent
+        NavLateralComponent,
+        AmigosComponent
     ]
 })
 export class VerSolicitudesComponent implements OnInit {
