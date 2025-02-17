@@ -1,5 +1,5 @@
-import {Component, OnInit, NgZone, HostListener} from '@angular/core';
-import {CommonModule, NgOptimizedImage} from '@angular/common';
+import { Component, OnInit, NgZone, HostListener } from '@angular/core';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { IonicModule } from "@ionic/angular";
 import { NavSuperiorComponent } from "../nav-superior/nav-superior.component";
 import { NavInferiorComponent } from "../nav-inferior/nav-inferior.component";
@@ -7,14 +7,14 @@ import { UsuarioService } from "../servicios/usuario.service";
 import { AmigoService } from "../servicios/amigo.service";
 import { SolicitudService } from "../servicios/SolicitudService";
 import { SocketService } from "../servicios/SocketService";
+import { NotificacionService } from "../servicios/NotificacionService";
 import { Usuario } from "../modelos/Usuario";
 import { Cliente } from "../modelos/Cliente";
 import { jwtDecode } from "jwt-decode";
 import { TokenDataDTO } from "../modelos/TokenDataDTO";
 import { Router } from "@angular/router";
-import {environment} from "../../environments/environment";
-import {Perfil} from "../modelos/Perfil";
-import {NavLateralComponent} from "../nav-lateral/nav-lateral.component";
+import { environment } from "../../environments/environment";
+import { NavLateralComponent } from "../nav-lateral/nav-lateral.component";
 
 @Component({
     selector: 'app-amigos',
@@ -27,7 +27,6 @@ import {NavLateralComponent} from "../nav-lateral/nav-lateral.component";
         NavSuperiorComponent,
         NavInferiorComponent,
         NgOptimizedImage,
-        NavInferiorComponent,
         NavLateralComponent
     ]
 })
@@ -36,7 +35,7 @@ export class AmigosComponent implements OnInit {
     usuario: Usuario = {} as Usuario;
     amigos: Cliente[] = [];
     correo?: string;
-    pendingSolicitudes: number = 0;
+    pendingNotificaciones: number = 0;  // Variable unificada para notificaciones
     socketSubscription: any;
 
     private screenWidth: number = window.innerWidth;
@@ -47,6 +46,7 @@ export class AmigosComponent implements OnInit {
         private amigoService: AmigoService,
         private solicitudService: SolicitudService,
         private socketService: SocketService,
+        private notificacionService: NotificacionService,
         private router: Router,
         private zone: NgZone
     ) {}
@@ -79,7 +79,9 @@ export class AmigosComponent implements OnInit {
                     this.correo = tokenDataDTO.correo;
                     this.cargarUsuario(this.correo);
                 }
-            } catch (e) {}
+            } catch (e) {
+                console.error('Error al decodificar el token', e);
+            }
         }
     }
 
@@ -89,24 +91,22 @@ export class AmigosComponent implements OnInit {
                 this.usuario = usuario;
                 if (usuario && usuario.id) {
                     this.cargarAmigos(usuario.id);
-                    this.cargarSolicitudesPendientes(usuario.id);
-                    this.socketService.subscribeToSolicitudes(usuario.id);
+                    this.cargarNotificaciones(usuario.id);
+                    this.socketService.subscribeToNotificaciones(usuario.id);
                     if (!this.socketSubscription) {
                         this.socketSubscription = this.socketService.listenEvent().subscribe((data: any) => {
                             this.zone.run(() => {
-                                if (data && data.action) {
-                                    if (data.action === 'create') {
-                                        this.pendingSolicitudes++;
-                                    } else if (data.action === 'accept' || data.action === 'delete') {
-                                        this.pendingSolicitudes = Math.max(0, this.pendingSolicitudes - 1);
-                                    }
+                                if (data && (data.tipo === 'comentario' || data.tipo === 'like' || data.tipo === 'notificacion')) {
+                                    this.pendingNotificaciones++;
                                 }
                             });
                         });
                     }
                 }
             },
-            error: (e) => {}
+            error: (e) => {
+                console.error('Error al cargar el usuario', e);
+            }
         });
     }
 
@@ -115,16 +115,20 @@ export class AmigosComponent implements OnInit {
             next: (amigos: Cliente[]) => {
                 this.amigos = amigos;
             },
-            error: (e) => {}
+            error: (e) => {
+                console.error('Error al cargar amigos', e);
+            }
         });
     }
 
-    cargarSolicitudesPendientes(idUsuario: number): void {
-        this.solicitudService.getSolicitudes(idUsuario).subscribe({
-            next: (solicitudes) => {
-                this.pendingSolicitudes = solicitudes.length;
+    cargarNotificaciones(idUsuario: number): void {
+        this.notificacionService.getNotificacionesNoLeidas(idUsuario).subscribe({
+            next: (notificaciones) => {
+                this.pendingNotificaciones = notificaciones.length;
             },
-            error: (e) => {}
+            error: (e) => {
+                console.error('Error al cargar notificaciones', e);
+            }
         });
     }
 
@@ -151,6 +155,6 @@ export class AmigosComponent implements OnInit {
     }
 
     ionViewWillEnter() {
-        this.inicio()
+        this.inicio();
     }
 }

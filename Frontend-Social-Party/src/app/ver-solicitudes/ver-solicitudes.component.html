@@ -36,6 +36,23 @@
                             </ion-grid>
                         </ion-col>
                     </ion-row>
+                    <ion-row *ngFor="let notif of notificaciones">
+                        <ion-col>
+                            <ion-grid>
+                                <ion-row class="notificacion" (mouseover)="markNotificationAsRead(notif)" (click)="navigateToNotification(notif)">
+                                    <ion-col size="3">
+                                        <ion-img src="assets/icons8-notification.png" style="width: 30px; height: 30px; object-fit: contain;"></ion-img>
+                                    </ion-col>
+                                    <ion-col class="col_nombre ion-align-items-center" size="6">
+                                        <ion-text>{{ notif.mensaje }}</ion-text>
+                                    </ion-col>
+                                    <ion-col size="1.5"></ion-col>
+                                    <ion-col size="1.5"></ion-col>
+                                </ion-row>
+                                <hr>
+                            </ion-grid>
+                        </ion-col>
+                    </ion-row>
                 </ion-grid>
             </ion-content>
         </ion-col>

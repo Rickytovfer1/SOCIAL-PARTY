@@ -10,4 +10,6 @@ import lombok.NoArgsConstructor;
 public class RestarPuntoDTO {
     Integer idCliente;
     Integer puntos;
+    Integer idEmpresa;
+    String motivo;
 }

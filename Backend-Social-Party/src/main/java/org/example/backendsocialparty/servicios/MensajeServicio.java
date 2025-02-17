@@ -1,13 +1,13 @@
 package org.example.backendsocialparty.servicios;
 
 import org.example.backendsocialparty.DTOs.MensajeDTO;
+import org.example.backendsocialparty.DTOs.NotificacionDTO;
 import org.example.backendsocialparty.modelos.Cliente;
 import org.example.backendsocialparty.modelos.Mensaje;
 import org.example.backendsocialparty.repositorios.ClienteRepositorio;
 import org.example.backendsocialparty.repositorios.MensajeRepositorio;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -19,11 +19,13 @@ public class MensajeServicio {
     private final MensajeRepositorio mensajeRepositorio;
     private final ClienteRepositorio clienteRepositorio;
     private final WebSocketMensajeService webSocketMensajeService;
+    private final NotificacionService notificacionService;
 
-    public MensajeServicio(MensajeRepositorio mensajeRepositorio, ClienteRepositorio clienteRepositorio, @Lazy WebSocketMensajeService webSocketMensajeService) {
+    public MensajeServicio(MensajeRepositorio mensajeRepositorio, ClienteRepositorio clienteRepositorio, @Lazy WebSocketMensajeService webSocketMensajeService, NotificacionService notificacionService) {
         this.mensajeRepositorio = mensajeRepositorio;
         this.clienteRepositorio = clienteRepositorio;
         this.webSocketMensajeService = webSocketMensajeService;
+        this.notificacionService = notificacionService;
     }
 
     public void enviarMensaje(MensajeDTO mensajeDTO) {
@@ -38,6 +40,13 @@ public class MensajeServicio {
         mensajeRepositorio.save(mensaje);
         MensajeDTO mensajeEnviado = getMensajeDTO(mensaje);
         webSocketMensajeService.enviarMensaje(mensajeEnviado);
+        NotificacionDTO notificacionDTO = new NotificacionDTO();
+        notificacionDTO.setIdUsuario(receptor.getUsuario().getId());
+        notificacionDTO.setTipo("mensaje");
+        notificacionDTO.setMensaje("Tienes un nuevo mensaje de " + emisor.getNombre());
+        notificacionDTO.setIdReferencia(Long.valueOf(emisor.getUsuario().getId()));
+        notificacionService.enviarNotificacion(notificacionDTO);
+
     }
 
     public List<MensajeDTO> mostrarConversacion(Integer idUsuarioEmisor, Integer idUsuarioReceptor) {

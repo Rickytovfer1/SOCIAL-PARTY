@@ -1,24 +1,26 @@
-import {Component, NgZone, OnInit} from '@angular/core';
-import {AlertController, IonicModule} from '@ionic/angular';
+import { Component, NgZone, OnInit } from '@angular/core';
+import { AlertController, IonicModule } from '@ionic/angular';
 import { SolicitudDTO } from '../modelos/solicitud.dto';
 import { UsuarioService } from '../servicios/usuario.service';
-import{ jwtDecode  }from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import { SolicitudService } from '../servicios/SolicitudService';
 import { PerfilServicio } from '../servicios/perfil.service';
 import { Perfil } from '../modelos/Perfil';
-import {NavSuperiorComponent} from "../nav-superior/nav-superior.component";
-import {NavInferiorComponent} from "../nav-inferior/nav-inferior.component";
-import {NgForOf, NgIf} from "@angular/common";
-import {environment} from "../../environments/environment";
+import { NavSuperiorComponent } from "../nav-superior/nav-superior.component";
+import { NavInferiorComponent } from "../nav-inferior/nav-inferior.component";
+import { NgForOf, NgIf } from "@angular/common";
+import { environment } from "../../environments/environment";
 import { SocketService } from '../servicios/SocketService';
-import {TokenDataDTO} from "../modelos/TokenDataDTO";
-import {Usuario} from "../modelos/Usuario";
-import {Cliente} from "../modelos/Cliente";
-import {Router} from "@angular/router";
-import {ClienteService} from "../servicios/cliente.service";
-import {AmigoService} from "../servicios/amigo.service";
-import {EventoService} from "../servicios/evento.service";
-import {Empresa} from "../modelos/Empresa";
+import { TokenDataDTO } from "../modelos/TokenDataDTO";
+import { Usuario } from "../modelos/Usuario";
+import { Cliente } from "../modelos/Cliente";
+import { Router } from "@angular/router";
+import { ClienteService } from "../servicios/cliente.service";
+import { AmigoService } from "../servicios/amigo.service";
+import { EventoService } from "../servicios/evento.service";
+import { Empresa } from "../modelos/Empresa";
+import { NotificacionDTO } from '../modelos/NotificacionDTO';
+import { NotificacionService } from '../servicios/NotificacionService';
 import {NavLateralComponent} from "../nav-lateral/nav-lateral.component";
 import {AmigosComponent} from "../amigos/amigos.component";
 
@@ -40,10 +42,11 @@ import {AmigosComponent} from "../amigos/amigos.component";
 export class VerSolicitudesComponent implements OnInit {
 
     solicitudes: SolicitudDTO[] = [];
+    notificaciones: NotificacionDTO[] = [];
     correo?: string;
     usuario: Usuario = {} as Usuario;
     perfil: Cliente = {} as Cliente;
-    clientesSolicitudes: Cliente[] = []
+    clientesSolicitudes: Cliente[] = [];
     baseUrl: string = environment.apiUrl;
 
     constructor(
@@ -56,11 +59,12 @@ export class VerSolicitudesComponent implements OnInit {
         private clienteService: ClienteService,
         private amigoService: AmigoService,
         private eventoService: EventoService,
-        private solicitudService: SolicitudService
+        private solicitudService: SolicitudService,
+        private notificacionService: NotificacionService
     ) { }
 
     ngOnInit() {
-        this.inicio()
+        this.inicio();
     }
 
     inicio() {
@@ -97,7 +101,8 @@ export class VerSolicitudesComponent implements OnInit {
         this.clienteService.getCliente(idUsuario).subscribe({
             next: (perfil: Cliente) => {
                 this.perfil = perfil;
-                this.cargarSolicitudes()
+                this.cargarSolicitudes();
+                this.cargarNotificaciones();
                 this.socketService.subscribeToSolicitudes(this.perfil.idUsuario);
                 this.socketService.listenEvent().subscribe((data: any) => {
                     this.zone.run(() => {
@@ -115,11 +120,8 @@ export class VerSolicitudesComponent implements OnInit {
     handleSolicitudEvent(data: any) {
         const action = data.action;
         const solicitud: SolicitudDTO = data.solicitud;
-
         if (!action || !solicitud) return;
-
         if (action === 'create') {
-
         } else if (action === 'accept' || action === 'delete') {
             this.solicitudes = this.solicitudes.filter(s => s.id !== solicitud.id);
         }
@@ -129,10 +131,21 @@ export class VerSolicitudesComponent implements OnInit {
         this.solicitudService.getSolicitudes(this.perfil.idUsuario).subscribe({
             next: (data: SolicitudDTO[]) => {
                 this.solicitudes = data;
-                this.cargarClientesSolicitudes()
+                this.cargarClientesSolicitudes();
             },
             error: (err) => {
                 console.error('Error al cargar solicitudes', err);
+            }
+        });
+    }
+
+    cargarNotificaciones() {
+        this.notificacionService.getNotificacionesNoLeidas(this.perfil.idUsuario).subscribe({
+            next: (data: NotificacionDTO[]) => {
+                this.notificaciones = data;
+            },
+            error: (err) => {
+                console.error('Error al cargar notificaciones', err);
             }
         });
     }
@@ -143,8 +156,10 @@ export class VerSolicitudesComponent implements OnInit {
                 next: (data: Cliente) => {
                     this.clientesSolicitudes.push(data);
                 },
-                error: e => {console.error('Error al cargar los clientes delas solicitudes', e)}
-            })
+                error: e => {
+                    console.error('Error al cargar los clientes de las solicitudes', e);
+                }
+            });
         }
     }
 
@@ -156,13 +171,13 @@ export class VerSolicitudesComponent implements OnInit {
                         this.solicitudes = this.solicitudes.filter(s => s.id !== solicitud.id);
                         const toast = document.getElementById("toastSolocitudAceptada") as any;
                         toast.present();
-                        this.refreshData()
+                        this.refreshData();
                     },
                     error: (err) => {
                         console.error('Error al aceptar solicitud', err);
                     }
                 });
-                break
+                break;
             }
         }
     }
@@ -175,30 +190,28 @@ export class VerSolicitudesComponent implements OnInit {
                         this.solicitudes = this.solicitudes.filter(s => s.id !== solicitud.id);
                         const toast = document.getElementById("toastSolocitudRechazada") as any;
                         toast.present();
-                        this.refreshData()
+                        this.refreshData();
                     },
                     error: (err) => {
-                        console.error('Error al aceptar solicitud', err);
+                        console.error('Error al eliminar solicitud', err);
                     }
                 });
-                break
+                break;
             }
         }
     }
 
     getImageUrl(cliente: Cliente): string {
         if (cliente && cliente.fotoPerfil) {
-            if (cliente.fotoPerfil.startsWith('http')) {
-                return cliente.fotoPerfil;
-            } else {
-                return `${this.baseUrl}${cliente.fotoPerfil}`;
-            }
+            return cliente.fotoPerfil.startsWith('http')
+                ? cliente.fotoPerfil
+                : `${this.baseUrl}${cliente.fotoPerfil}`;
         }
         return 'assets/iconoPerfil.png';
     }
 
     verPerfil(cliente: Cliente) {
-        this.router.navigate(["/perfil-asistente", cliente.idUsuario])
+        this.router.navigate(["/perfil-asistente", cliente.idUsuario]);
     }
 
     trackBySolicitud(index: number, solicitud: SolicitudDTO): number {
@@ -209,10 +222,38 @@ export class VerSolicitudesComponent implements OnInit {
         this.solicitudes = [];
         this.clientesSolicitudes = [];
         this.cargarSolicitudes();
+        this.cargarNotificaciones();
     }
 
     ionViewWillEnter() {
-        this.refreshData()
+        this.refreshData();
+    }
+
+    markNotificationAsRead(notif: NotificacionDTO): void {
+        this.notificacionService.marcarComoLeida(notif.id).subscribe({
+            next: () => {
+                this.notificaciones = this.notificaciones.filter(n => n.id !== notif.id);
+            },
+            error: (err) => {
+                console.error("Error marking notification as read:", err);
+            }
+        });
+    }
+
+    navigateToNotification(notif: NotificacionDTO): void {
+        this.notificacionService.marcarComoLeida(notif.id).subscribe({
+            next: () => {
+                this.notificaciones = this.notificaciones.filter(n => n.id !== notif.id);
+                if (notif.tipo === 'mensaje' && notif.idReferencia) {
+                    this.router.navigate(['/chat', notif.idReferencia]);
+                } else if (notif.tipo === 'comentario' && notif.idReferencia) {
+                    this.router.navigate(['/comentarios', notif.idReferencia]);
+                }
+            },
+            error: (err) => {
+                console.error("Error marking notification as read:", err);
+            }
+        });
     }
 
 }

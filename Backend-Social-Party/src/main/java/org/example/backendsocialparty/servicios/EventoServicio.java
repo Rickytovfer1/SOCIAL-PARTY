@@ -1,5 +1,5 @@
 package org.example.backendsocialparty.servicios;
-
+import java.util.stream.Collectors;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.example.backendsocialparty.DTOs.ClienteDTO;
@@ -42,12 +42,16 @@ public class EventoServicio {
     public List<EventoDTO> listarEventosEmpresa(Integer idEmpresa) {
         Empresa empresa = empresaRepositorio.findById(idEmpresa)
                 .orElseThrow(() -> new RuntimeException("No existe una empresa con este ID."));
-        Set<Evento> eventos = empresa.getEventos();
-        if (eventos.isEmpty()) {
-            eventos = new HashSet<>();
-        }
+
+        LocalDate hoy = LocalDate.now();
+        List<Evento> eventosFiltrados = empresa.getEventos().stream()
+                .filter(evento -> !evento.getFecha().isBefore(hoy))
+                .sorted(Comparator.comparing(Evento::getFecha)
+                        .thenComparing(Evento::getHoraApertura))
+                .collect(Collectors.toList());
+
         List<EventoDTO> eventosDTO = new ArrayList<>();
-        for (Evento evento : eventos) {
+        for (Evento evento : eventosFiltrados) {
             eventosDTO.add(getEventoDTO(evento));
         }
         return eventosDTO;

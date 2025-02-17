@@ -1,12 +1,7 @@
-import { Client, Message } from '@stomp/stompjs';
+import { Injectable } from '@angular/core';
+import { Client, IMessage, StompSubscription } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
-import { Subject, Observable } from 'rxjs';
-import { Injectable } from "@angular/core";
-
-interface SubscriptionRequest {
-    emisorId: number;
-    receptorId: number;
-}
+import { Observable, Subject } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -14,87 +9,86 @@ interface SubscriptionRequest {
 export class SocketService {
     private client: Client;
     private messageSubject: Subject<any> = new Subject();
-    private pendingSubscriptions: SubscriptionRequest[] = [];
-    private pendingSolicitudes: number[] = [];
+    private subscriptions: Map<string, StompSubscription> = new Map();
+    private pendingTopics: Set<string> = new Set();
+    private currentTopics: Set<string> = new Set();
     private connected: boolean = false;
 
     constructor() {
         this.client = new Client({
             webSocketFactory: () => {
                 const token = sessionStorage.getItem('authToken');
-                return new SockJS("http://localhost:8080/ws?access_token=" + token);
+                return new SockJS(`http://localhost:8080/ws?access_token=${token}`);
             },
             reconnectDelay: 5000,
-            onConnect: frame => {
-                console.log('Socket connected!', frame);
+            heartbeatIncoming: 10000,
+            heartbeatOutgoing: 10000,
+            onConnect: () => {
                 this.connected = true;
-                while (this.pendingSubscriptions.length > 0) {
-                    const req = this.pendingSubscriptions.shift();
-                    if (req) {
-                        this.doSubscribe(req.emisorId, req.receptorId);
-                    }
-                }
-                while (this.pendingSolicitudes.length > 0) {
-                    const userId = this.pendingSolicitudes.shift();
-                    if (userId !== undefined) {
-                        const topic = `/topic/solicitudes/${userId}`;
-                        this.client.subscribe(topic, (message: Message) => {
-                            this.messageSubject.next(JSON.parse(message.body));
-                        });
-                    }
-                }
+                this.subscriptions.clear();
+                this.currentTopics.forEach(topic => this.subscribeToTopic(topic));
+                this.pendingTopics.forEach(topic => this.subscribeToTopic(topic));
+                this.pendingTopics.clear();
             },
             onStompError: frame => {
-                console.error('Broker reported error: ' + frame.headers['message']);
-                console.error('Additional details: ' + frame.body);
+                console.error('Broker error: ' + frame.headers['message']);
+                console.error('Details: ' + frame.body);
             },
             onDisconnect: () => {
-                console.log('Socket disconnected!');
                 this.connected = false;
+                this.subscriptions.clear();
             }
         });
         this.client.activate();
     }
 
-    subscribeToSolicitudes(userId: number) {
+    private subscribeToTopic(topic: string): void {
+        if (!this.subscriptions.has(topic)) {
+            const subscription = this.client.subscribe(topic, (message: IMessage) => {
+                try {
+                    const parsed = JSON.parse(message.body);
+                    this.messageSubject.next(parsed);
+                } catch (e) {
+                    console.error('Error parsing message from topic', topic, e);
+                }
+            });
+            this.subscriptions.set(topic, subscription);
+        }
+        this.currentTopics.add(topic);
+    }
+
+    subscribeToSolicitudes(userId: number): void {
         const topic = `/topic/solicitudes/${userId}`;
         if (!this.connected) {
-            this.pendingSolicitudes.push(userId);
+            this.pendingTopics.add(topic);
         } else {
-            this.client.subscribe(topic, (message: Message) => {
-                console.log("Received message on topic " + topic, message);
-                const parsed = JSON.parse(message.body);
-                this.messageSubject.next(parsed);
-            });
+            this.subscribeToTopic(topic);
         }
     }
 
-
-    subscribeToConversation(emisorId: number, receptorId: number) {
+    subscribeToNotificaciones(userId: number): void {
+        const topic = `/topic/notificaciones/${userId}`;
         if (!this.connected) {
-            this.pendingSubscriptions.push({ emisorId, receptorId });
+            this.pendingTopics.add(topic);
         } else {
-            this.doSubscribe(emisorId, receptorId);
+            this.subscribeToTopic(topic);
         }
     }
 
-    private doSubscribe(emisorId: number, receptorId: number) {
-        const c1 = `/topic/conversacion/${emisorId}-${receptorId}`;
-        const c2 = `/topic/conversacion/${receptorId}-${emisorId}`;
-
-        this.client.subscribe(c1, (message: Message) => {
-            this.messageSubject.next(JSON.parse(message.body));
-        });
-        this.client.subscribe(c2, (message: Message) => {
-            this.messageSubject.next(JSON.parse(message.body));
-        });
+    subscribeToConversation(emisorId: number | undefined, receptorId: number): void {
+        const topic1 = `/topic/conversacion/${emisorId}-${receptorId}`;
+        const topic2 = `/topic/conversacion/${receptorId}-${emisorId}`;
+        if (!this.connected) {
+            this.pendingTopics.add(topic1);
+            this.pendingTopics.add(topic2);
+        } else {
+            this.subscribeToTopic(topic1);
+            this.subscribeToTopic(topic2);
+        }
     }
 
     listenEvent(): Observable<any> {
         return this.messageSubject.asObservable();
     }
 
-    disconnect() {
-        this.client.deactivate();
-    }
 }
