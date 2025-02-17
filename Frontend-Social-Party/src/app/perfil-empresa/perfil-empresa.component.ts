@@ -12,6 +12,7 @@ import { TokenDataDTO } from "../modelos/TokenDataDTO";
 import { FormsModule } from "@angular/forms";
 import {CommonModule, NgOptimizedImage} from "@angular/common";
 import {environment} from "../../environments/environment";
+import {NavLateralEmpresaComponent} from "../nav-lateral-empresa/nav-lateral-empresa.component";
 
 @Component({
     selector: 'app-perfil-empresa',
@@ -24,7 +25,8 @@ import {environment} from "../../environments/environment";
         CommonModule,
         NavSuperiorEmpresaComponent,
         NavInferiorEmpresaComponent,
-        NgOptimizedImage
+        NgOptimizedImage,
+        NavLateralEmpresaComponent
     ]
 })
 export class PerfilEmpresaComponent implements OnInit {

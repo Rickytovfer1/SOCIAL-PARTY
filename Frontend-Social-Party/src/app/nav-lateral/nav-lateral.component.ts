@@ -80,22 +80,12 @@ export class NavLateralComponent  implements OnInit {
         this.router.navigate(['/ver-empresas']);
     }
 
-    irAmigos() {
-        this.router.navigate(['/amigos']);
-    }
-
     irUbicacion() {
         this.router.navigate(['/asistentes-evento']);
     }
 
     irPublicaciones() {
         this.router.navigate(['/publicaciones']);
-    }
-
-    cerrarSesion() {
-        const token = "";
-        sessionStorage.setItem("authToken", token);
-        this.router.navigate(['/login']);
     }
 
 }

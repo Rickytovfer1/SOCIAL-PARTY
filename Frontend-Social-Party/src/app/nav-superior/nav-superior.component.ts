@@ -74,26 +74,6 @@ export class NavSuperiorComponent  implements OnInit {
         });
     }
 
-  irPerfil() {
-      this.router.navigate(['/perfil']);
-  }
-
-  irEntradas() {
-      this.router.navigate(['/ver-empresas']);
-  }
-
-  irAmigos() {
-      this.router.navigate(['/amigos']);
-  }
-
-  irUbicacion() {
-      this.router.navigate(['/asistentes-evento']);
-  }
-
-  irPublicaciones() {
-      this.router.navigate(['/publicaciones']);
-  }
-
   cerrarSesion() {
       const token = "";
       sessionStorage.setItem("authToken", token);

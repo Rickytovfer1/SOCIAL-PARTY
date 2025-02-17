@@ -17,22 +17,6 @@ export class NavSuperiorEmpresaComponent  implements OnInit {
 
   ngOnInit() {}
 
-    irPerfil() {
-        this.router.navigate(['/perfil-empresa']);
-    }
-
-    irEventos() {
-        this.router.navigate(['/crear-evento-empresa']);
-    }
-
-    irUbicacion() {
-        this.router.navigate(['/asistentes-evento-empresa']);
-    }
-
-    irPublicaciones() {
-        this.router.navigate(['/crear-publicacion-empresa']);
-    }
-
     cerrarSesion() {
         sessionStorage.clear();
         this.router.navigate(['/login']);

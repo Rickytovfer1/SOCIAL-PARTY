@@ -5,8 +5,7 @@ ion-toolbar {
 ion-img {
   height: 50px;
   width: 50px;
-  margin: 0 auto;
-  margin-right: 25px;
+    margin: 0 25px 0 auto;
 }
 
 ion-text {
@@ -33,9 +32,7 @@ ion-menu {
 .icono {
   width: 60px;
   height: 60px;
-  margin: 0 auto;
-  margin-right: 25px;
-  margin-left: 15px;
+  margin: 0 25px 0 15px;
 }
 
 ion-row {

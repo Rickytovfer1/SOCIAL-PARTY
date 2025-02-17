@@ -60,13 +60,13 @@ ion-footer {
   }
 }
 
-app-nav-lateral {
+app-nav-lateral, app-nav-lateral-empresa {
     display: none;
     height: 100vh;
 }
 
 @media (min-width: 768px) {
-    app-nav-lateral {
+    app-nav-lateral, app-nav-lateral-empresa {
         display: block;
     }
 }

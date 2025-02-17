@@ -11,6 +11,7 @@ import { jwtDecode } from 'jwt-decode';
 import { TokenDataDTO } from '../modelos/TokenDataDTO';
 import {NavInferiorComponent} from "../nav-inferior/nav-inferior.component";
 import {NavSuperiorComponent} from "../nav-superior/nav-superior.component";
+import {NavLateralEmpresaComponent} from "../nav-lateral-empresa/nav-lateral-empresa.component";
 
 @Component({
     selector: 'app-crear-evento-empresa',
@@ -22,7 +23,8 @@ import {NavSuperiorComponent} from "../nav-superior/nav-superior.component";
         FormsModule,
         CommonModule,
         NavSuperiorEmpresaComponent,
-        NavInferiorEmpresaComponent
+        NavInferiorEmpresaComponent,
+        NavLateralEmpresaComponent
     ]
 })
 export class CrearEventoEmpresaComponent implements OnInit {

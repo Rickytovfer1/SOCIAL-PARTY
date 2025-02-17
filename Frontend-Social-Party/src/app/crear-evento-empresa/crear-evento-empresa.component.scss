@@ -73,3 +73,13 @@ ion-button {
 ion-col {
     margin: 0 auto;
 }
+
+ion-content {
+    height: 94%;
+}
+
+@media (max-width: 768px) {
+    ion-content {
+        height: 100%;
+    }
+}

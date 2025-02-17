@@ -22,6 +22,8 @@ import { EmpresaService } from "../servicios/empresa.service";
 import { NgForOf, NgIf, NgOptimizedImage } from "@angular/common";
 import { Perfil } from "../modelos/Perfil";
 import {FormsModule} from "@angular/forms";
+import {NavLateralComponent} from "../nav-lateral/nav-lateral.component";
+import {NavLateralEmpresaComponent} from "../nav-lateral-empresa/nav-lateral-empresa.component";
 
 @Component({
     selector: 'app-asistentes-evento-empresa',
@@ -37,7 +39,9 @@ import {FormsModule} from "@angular/forms";
         NgForOf,
         NgIf,
         NgOptimizedImage,
-        FormsModule
+        FormsModule,
+        NavLateralComponent,
+        NavLateralEmpresaComponent
     ]
 })
 export class AsistentesEventoEmpresaComponent implements OnInit {

@@ -5,6 +5,7 @@ import { NavInferiorEmpresaComponent } from '../nav-inferior-empresa/nav-inferio
 import { FormsModule } from "@angular/forms";
 import jsQR from "jsqr";
 import { EntradaService } from "../servicios/entrada.service";
+import {NavLateralEmpresaComponent} from "../nav-lateral-empresa/nav-lateral-empresa.component";
 
 @Component({
     selector: 'app-canjear-entrada-empresa',
@@ -16,6 +17,7 @@ import { EntradaService } from "../servicios/entrada.service";
         NavSuperiorEmpresaComponent,
         NavInferiorEmpresaComponent,
         FormsModule,
+        NavLateralEmpresaComponent,
     ]
 })
 export class CanjearEntradaEmpresaComponent implements AfterViewInit {

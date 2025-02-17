@@ -19,6 +19,7 @@ import {Empresa} from "../modelos/Empresa";
 import {ClienteService} from "../servicios/cliente.service";
 import {EventoService} from "../servicios/evento.service";
 import {EmpresaService} from "../servicios/empresa.service";
+import {NavLateralEmpresaComponent} from "../nav-lateral-empresa/nav-lateral-empresa.component";
 
 @Component({
     selector: 'app-crear-publicacion-empresa',
@@ -30,7 +31,8 @@ import {EmpresaService} from "../servicios/empresa.service";
         CommonModule,
         FormsModule,
         NavSuperiorEmpresaComponent,
-        NavInferiorEmpresaComponent
+        NavInferiorEmpresaComponent,
+        NavLateralEmpresaComponent
     ]
 })
 export class CrearPublicacionEmpresaComponent implements OnInit {

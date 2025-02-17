@@ -1,60 +1,10 @@
-<ion-menu contentId="main-content">
-    <ion-content class="ion-padding" style="--background: #234276;">
-        <ion-menu-toggle style="background-color: #471fcd; height: 100%;">
-            <ion-grid style="width: 100%;">
-                <ion-row style="margin-bottom: 50px">
-                    <ion-col size="auto">
-                        <ion-img class="icono" src="assets/img.png"></ion-img>
-                    </ion-col>
-                </ion-row>
-                <ion-row (click)="irPerfil()">
-                    <ion-col size="3">
-                        <ion-img src="assets/iconoPerfil.png"></ion-img>
-                    </ion-col>
-                    <ion-col size="9" class="despg">
-                        <ion-text>Perfil</ion-text>
-                    </ion-col>
-                </ion-row>
-                <ion-row (click)="irEventos()">
-                    <ion-col size="3">
-                        <ion-img src="assets/tickets.png"></ion-img>
-                    </ion-col>
-                    <ion-col size="9" class="despg">
-                        <ion-text>Crear evento</ion-text>
-                    </ion-col>
-                </ion-row>
-                <ion-row (click)="irUbicacion()">
-                    <ion-col size="3">
-                        <ion-img src="assets/ubicacion.png"></ion-img>
-                    </ion-col>
-                    <ion-col size="9" class="despg">
-                        <ion-text>En vivo</ion-text>
-                    </ion-col>
-                </ion-row>
-                <ion-row (click)="irPublicaciones()">
-                    <ion-col size="3">
-                        <ion-img src="assets/internetIcono.png"></ion-img>
-                    </ion-col>
-                    <ion-col size="9" class="despg">
-                        <ion-text>Crear publicación</ion-text>
-                    </ion-col>
-                </ion-row>
-            </ion-grid>
-        </ion-menu-toggle>
-    </ion-content>
-</ion-menu>
-
-<div id="main-content" main>
-    <ion-header>
+<ion-header>
         <ion-toolbar>
 
             <ion-img class="icono" slot="start" style="width: 55px" src="assets/img.png" alt="Social Party Logo"/>
-            <ion-menu-button slot="start"></ion-menu-button>
-            <ion-text id="num_estrellas" slot="end" class="star-points">100</ion-text>
-            <ion-img slot="end" style="width: 40px;" src="assets/estrella.png" alt="Estrella Party Logo" />
             <ion-img (click)="cerrarSesion()" slot="end" style="width: 40px;" src="assets/logout.png" alt="Ajustes Party Logo" />
 
         </ion-toolbar>
-    </ion-header>
-</div>
+</ion-header>
+
 
