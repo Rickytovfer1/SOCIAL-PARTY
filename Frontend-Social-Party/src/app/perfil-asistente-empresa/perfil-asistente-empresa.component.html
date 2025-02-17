@@ -1,60 +1,70 @@
 <app-nav-superior-empresa></app-nav-superior-empresa>
-<ion-content>
-    <ion-grid>
-        <ion-row>
-            <ion-col size-lg="4" size-xl="4" size-md="6" size-sm="10" size-xs="12">
-                <ion-card id="cardG">
-                    <ion-card id="card_info">
-                        <ion-grid>
-                            <ion-row>
-                                <ion-col size="4" class="ion-align-items-center">
-                                    <img [ngSrc]="getImageUrlCliente(cliente)" fill>
-                                </ion-col>
-                                <ion-col size="8">
+<ion-grid class="grid_menus">
+    <ion-row class="fila_menus">
+        <ion-col size="2.5" class="menu-lateral">
+            <app-nav-lateral style="width: 100%"></app-nav-lateral>
+        </ion-col>
+        <ion-col class="contenido-principal">
+            <ion-content>
+                <ion-grid>
+                    <ion-row>
+                        <ion-col size-lg="4" size-xl="4" size-md="6" size-sm="10" size-xs="12">
+                            <ion-card id="cardG">
+                                <ion-card id="card_info">
                                     <ion-grid>
                                         <ion-row>
-                                            <ion-col class="ion-align-items-center">
-                                                <ion-text id="nombre">{{ cliente.nombre }}</ion-text>
+                                            <ion-col size="4" class="ion-align-items-center">
+                                                <img [ngSrc]="getImageUrlCliente(cliente)" fill>
                                             </ion-col>
-                                            <ion-col class="ion-justify-content-between ion-align-items-center">
-                                                <ion-text id="texto_estrellas">{{ cliente.valoracion }}</ion-text>
-                                                <ion-img id="estrella" src="assets/estrella.png"/>
+                                            <ion-col size="8">
+                                                <ion-grid>
+                                                    <ion-row>
+                                                        <ion-col class="ion-align-items-center">
+                                                            <ion-text id="nombre">{{ cliente.nombre }}</ion-text>
+                                                        </ion-col>
+                                                        <ion-col class="ion-justify-content-between ion-align-items-center">
+                                                            <ion-text id="texto_estrellas">{{ cliente.valoracion }}</ion-text>
+                                                            <ion-img id="estrella" src="assets/estrella.png"/>
+                                                        </ion-col>
+                                                    </ion-row>
+                                                </ion-grid>
                                             </ion-col>
                                         </ion-row>
                                     </ion-grid>
-                                </ion-col>
-                            </ion-row>
-                        </ion-grid>
-                    </ion-card>
-                    <ion-card id="card_bio">
-                        <ion-grid>
+                                </ion-card>
+                                <ion-card id="card_bio">
+                                    <ion-grid>
 
-                            <ion-row >
-                                <ion-col size="2">
-                                    <ion-img src="assets/modificarEstrella.png"></ion-img>
-                                </ion-col>
-                                <ion-col size="10" style="display: flex" class="ion-align-items-center">
-                                    <ion-select [(ngModel)]="opcionSeleccionada" (ionChange)="restarEstrella()" class="contenido" style="margin-left: 20px" placeholder="Seleccionar">
-                                        <ion-select-option value="reiteracion">Reiteramiento (-5)</ion-select-option>
-                                        <ion-select-option value="suplantacion">Suplantación (-10)</ion-select-option>
-                                        <ion-select-option value="agresion">Agresión (-20)</ion-select-option>
-                                    </ion-select>
+                                        <ion-row >
+                                            <ion-col size="2">
+                                                <ion-img src="assets/modificarEstrella.png"></ion-img>
+                                            </ion-col>
+                                            <ion-col size="10" style="display: flex" class="ion-align-items-center">
+                                                <ion-select [(ngModel)]="opcionSeleccionada" (ionChange)="restarEstrella()" class="contenido" style="margin-left: 20px" placeholder="Seleccionar">
+                                                    <ion-select-option value="reiteracion">Reiteramiento (-5)</ion-select-option>
+                                                    <ion-select-option value="suplantacion">Suplantación (-10)</ion-select-option>
+                                                    <ion-select-option value="agresion">Agresión (-20)</ion-select-option>
+                                                </ion-select>
 
-                                </ion-col>
-                            </ion-row>
-                            <ion-row (click)="confirmarBanearCliente(perfilEmpresa.id)" style="margin-top: 20px">
-                                <ion-col size="2">
-                                    <ion-img src="assets/banear.png"></ion-img>
-                                </ion-col>
-                                <ion-col size="10" style="display: flex" class="ion-align-items-center">
-                                    <ion-text class="contenido">Banear cuenta</ion-text>
-                                </ion-col>
-                            </ion-row>
-                        </ion-grid>
-                    </ion-card>
-                </ion-card>
-            </ion-col>
-        </ion-row>
-    </ion-grid>
-</ion-content>
+                                            </ion-col>
+                                        </ion-row>
+                                        <ion-row (click)="confirmarBanearCliente(perfilEmpresa.id)" style="margin-top: 20px">
+                                            <ion-col size="2">
+                                                <ion-img src="assets/banear.png"></ion-img>
+                                            </ion-col>
+                                            <ion-col size="10" style="display: flex" class="ion-align-items-center">
+                                                <ion-text class="contenido">Banear cuenta</ion-text>
+                                            </ion-col>
+                                        </ion-row>
+                                    </ion-grid>
+                                </ion-card>
+                            </ion-card>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+            </ion-content>
+        </ion-col>
+    </ion-row>
+</ion-grid>
+
 <app-nav-inferior-empresa></app-nav-inferior-empresa>
