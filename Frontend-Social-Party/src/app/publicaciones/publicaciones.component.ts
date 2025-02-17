@@ -18,6 +18,8 @@ import {Cliente} from "../modelos/Cliente";
 import {AmigoService} from "../servicios/amigo.service";
 import {Favorito} from "../modelos/Favorito";
 import {FavoritoService} from "../servicios/favorito.service";
+import {NavLateralComponent} from "../nav-lateral/nav-lateral.component";
+import {AmigosComponent} from "../amigos/amigos.component";
 
 
 @Component({
@@ -30,7 +32,9 @@ import {FavoritoService} from "../servicios/favorito.service";
         NavSuperiorComponent,
         NavInferiorComponent,
         CommonModule,
-        FormsModule
+        FormsModule,
+        NavLateralComponent,
+        AmigosComponent
     ]
 })
 export class PublicacionesComponent implements OnInit {

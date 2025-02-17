@@ -1,42 +1,51 @@
 <app-nav-superior></app-nav-superior>
 
-<div id="cabecera">Tus entradas</div>
-
-<ion-content>
-
-    <ion-grid>
-        <ion-row *ngIf="entradas.length === 0">
-            <div style="width: 100%; text-align: center; padding: 20px; color: black">
-                <ion-text style="margin: 0 auto; color: black">No tienes entradas compradas...</ion-text>
-            </div>
-        </ion-row>
-        <ion-row *ngFor="let entrada of entradas">
-            <ion-col>
+<ion-grid class="grid_menus">
+    <ion-row class="fila_menus">
+        <ion-col size="2.5" class="menu-lateral">
+            <app-nav-lateral style="width: 100%"></app-nav-lateral>
+        </ion-col>
+        <ion-col class="contenido-principal">
+            <div id="cabecera">Tus entradas</div>
+            <ion-content>
                 <ion-grid>
-                    <ion-row class="entrada">
-                        <ion-col size="4">
-                            <img [ngSrc]="getImageUrl(entrada.evento.empresa)" fill>
-                        </ion-col>
-                        <ion-col class="col_nombre ion-align-items-center" size="6">
+                    <ion-row *ngIf="entradas.length === 0">
+                        <div style="width: 100%; text-align: center; padding: 20px; color: black">
+                            <ion-text style="margin: 0 auto; color: black">No tienes entradas compradas...</ion-text>
+                        </div>
+                    </ion-row>
+                    <ion-row *ngFor="let entrada of entradas">
+                        <ion-col>
                             <ion-grid>
-                                <ion-row>
-                                    <ion-text class="nombre_empresa">{{ entrada.evento.empresa.nombre}}</ion-text>
+                                <ion-row class="entrada">
+                                    <ion-col size="4">
+                                        <ion-img [src]="getImageUrl(entrada.evento.empresa)"></ion-img>
+                                    </ion-col>
+                                    <ion-col class="col_nombre ion-align-items-center" size="6">
+                                        <ion-grid>
+                                            <ion-row class="info">
+                                                <ion-text class="nombre_empresa">{{ entrada.evento.empresa.nombre}}</ion-text>
+                                            </ion-row>
+                                            <ion-row class="info">
+                                                <ion-text>{{ entrada.evento.titulo}}</ion-text>
+                                            </ion-row>
+                                        </ion-grid>
+                                    </ion-col>
+                                    <ion-col class="col_nombre ion-align-items-center" size="2">
+                                        <ion-img class="img_descarga" src="assets/icons8-descargar-48.png" (click)="downloadPDF(entrada)"></ion-img>
+                                    </ion-col>
                                 </ion-row>
-                                <ion-row>
-                                    <ion-text>{{ entrada.evento.titulo}}</ion-text>
-                                </ion-row>
+                                <hr>
                             </ion-grid>
                         </ion-col>
-                        <ion-col class="col_nombre ion-align-items-center" size="2">
-                            <ion-img class="img_descarga" src="assets/icons8-descargar-48.png" (click)="downloadPDF(entrada)"></ion-img>
-                        </ion-col>
                     </ion-row>
-                    <hr>
                 </ion-grid>
-            </ion-col>
-        </ion-row>
-    </ion-grid>
-
-</ion-content>
+            </ion-content>
+        </ion-col>
+        <ion-col size="2.5" class="menu-lateral" style="border-left: 1px solid black">
+            <app-amigos></app-amigos>
+        </ion-col>
+    </ion-row>
+</ion-grid>
 
 <app-nav-inferior></app-nav-inferior>

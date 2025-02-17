@@ -14,6 +14,17 @@ ion-content {
     font-size: 20px;
     margin: 0 auto;
 }
+
 img{
     border-radius: 40px;
+}
+
+app-nav-superior {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    app-nav-superior {
+        display: block;
+    }
 }

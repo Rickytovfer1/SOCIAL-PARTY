@@ -8,6 +8,8 @@ import {EventoService} from "../servicios/evento.service";
 import {Empresa} from "../modelos/Empresa";
 import {environment} from "../../environments/environment";
 import {NgOptimizedImage} from "@angular/common";
+import {NavLateralComponent} from "../nav-lateral/nav-lateral.component";
+import {AmigosComponent} from "../amigos/amigos.component";
 
 @Component({
     selector: 'app-ver-evento-info',
@@ -18,7 +20,9 @@ import {NgOptimizedImage} from "@angular/common";
         IonicModule,
         NavInferiorComponent,
         NavSuperiorComponent,
-        NgOptimizedImage
+        NgOptimizedImage,
+        NavLateralComponent,
+        AmigosComponent
     ]
 })
 export class VerEventoInfoComponent implements OnInit {

@@ -1,48 +1,58 @@
 <app-nav-superior></app-nav-superior>
 
-<ion-content>
-    <ion-grid>
-        <ion-row>
-            <ion-col size-lg="4" size-xl="4" size-md="6" size-sm="10" size-xs="12">
-                <ion-card id="cardG">
-                    <ion-card id="card_info">
-                        <ion-grid>
-                            <ion-row>
-                                <ion-col size="4" class="ion-align-items-center">
-                                    <img id="foto_perfil" [ngSrc]="getImageUrlCliente(perfilActual)" fill>
-
-                                </ion-col>
-                                <ion-col size="8">
+<ion-grid class="grid_menus">
+    <ion-row class="fila_menus">
+        <ion-col size="2.5" class="menu-lateral">
+            <app-nav-lateral style="width: 100%"></app-nav-lateral>
+        </ion-col>
+        <ion-col class="contenido-principal">
+            <ion-content>
+                <ion-grid>
+                    <ion-row>
+                        <ion-col size-lg="8" size-xl="8" size-md="10" size-sm="10" size-xs="12">
+                            <ion-card id="cardG">
+                                <ion-card id="card_info">
                                     <ion-grid>
                                         <ion-row>
-                                            <ion-col class="ion-align-items-center">
-                                                <ion-text id="nombre">{{ this.perfilActual.nombre }}</ion-text>
+                                            <ion-col size="4" class="ion-align-items-center">
+                                                <ion-img id="foto_perfil" [src]="getImageUrlCliente(perfilActual)"></ion-img>v
                                             </ion-col>
-                                            <ion-col class="ion-justify-content-between ion-align-items-center">
-                                                <ion-text id="texto_estrellas">{{ this.perfilActual.valoracion }}</ion-text>
-                                                <ion-img id="estrella" src="assets/estrella.png"/>
-                                            </ion-col>
-                                        </ion-row>
-                                        <ion-row *ngIf="!esAmigo(this.perfilActual)">
-                                            <ion-col>
-                                                <ion-button [disabled]="botonDesactivado" (click)="enviarSolicitud()">+  Solicitar amistad</ion-button>
+                                            <ion-col size="8">
+                                                <ion-grid>
+                                                    <ion-row>
+                                                        <ion-col class="ion-align-items-center">
+                                                            <ion-text id="nombre">{{ this.perfilActual.nombre }}</ion-text>
+                                                        </ion-col>
+                                                        <ion-col class="ion-justify-content-between ion-align-items-center">
+                                                            <ion-text id="texto_estrellas">{{ this.perfilActual.valoracion }}</ion-text>
+                                                            <ion-img id="estrella" src="assets/estrella.png"/>
+                                                        </ion-col>
+                                                    </ion-row>
+                                                    <ion-row *ngIf="!esAmigo(this.perfilActual)">
+                                                        <ion-col>
+                                                            <ion-button [disabled]="botonDesactivado" (click)="enviarSolicitud()">+  Solicitar amistad</ion-button>
+                                                        </ion-col>
+                                                    </ion-row>
+                                                </ion-grid>
                                             </ion-col>
                                         </ion-row>
                                     </ion-grid>
-                                </ion-col>
-                            </ion-row>
-                        </ion-grid>
-                    </ion-card>
-                    <ion-card id="card_bio">
-                        <div>
-                            <ion-text>{{ this.perfilActual.biografia ? this.perfilActual.biografia : 'Biografía vacía' }}</ion-text>
-                        </div>
-                    </ion-card>
-                </ion-card>
-            </ion-col>
-        </ion-row>
-    </ion-grid>
-
-</ion-content>
+                                </ion-card>
+                                <ion-card id="card_bio">
+                                    <div>
+                                        <ion-text>{{ this.perfilActual.biografia ? this.perfilActual.biografia : 'Biografía vacía' }}</ion-text>
+                                    </div>
+                                </ion-card>
+                            </ion-card>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+            </ion-content>
+        </ion-col>
+        <ion-col id="menu_amigos" size="2.5" class="menu-lateral" style="border-left: 1px solid black">
+            <app-amigos></app-amigos>
+        </ion-col>
+    </ion-row>
+</ion-grid>
 
 <app-nav-inferior></app-nav-inferior>

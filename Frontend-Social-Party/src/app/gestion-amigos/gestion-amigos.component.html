@@ -1,36 +1,48 @@
 <app-nav-superior></app-nav-superior>
 
-<div id="cabecera">Gestión de amigos</div>
+<ion-grid class="grid_menus">
+    <ion-row class="fila_menus">
+        <ion-col size="2.5" class="menu-lateral">
+            <app-nav-lateral style="width: 100%"></app-nav-lateral>
+        </ion-col>
+        <ion-col class="contenido-principal">
+            <div id="cabecera">Gestión de amigos</div>
 
-<ion-content>
+            <ion-content>
 
-    <ion-grid>
-        <ion-row>
-            <ion-col>
                 <ion-grid>
-                    <ion-row *ngIf="amigos.length === 0">
-                        <div style="width: 100%; text-align: center; padding: 20px; color: black">
-                            <ion-text style="margin: 0 auto;">No tienes amigos todavía...</ion-text>
-                        </div>
+                    <ion-row>
+                        <ion-col>
+                            <ion-grid>
+                                <ion-row *ngIf="amigos.length === 0">
+                                    <div style="width: 100%; text-align: center; padding: 20px; color: black">
+                                        <ion-text style="margin: 0 auto; color: black">No tienes amigos todavía...</ion-text>
+                                    </div>
+                                </ion-row>
+                                <ion-row *ngFor="let amigo of amigos" class="amigo">
+                                    <ion-col size="3">
+                                        <img [ngSrc]="getImageUrlCliente(amigo)" fill>
+                                    </ion-col>
+                                    <ion-col class="col_nombre ion-align-items-center" size="6" (click)="verPerfil(amigo)">
+                                        <ion-text>{{ amigo.nombre }} {{ amigo.apellidos }}</ion-text>
+                                    </ion-col>
+                                    <ion-col class="col_nombre ion-align-items-center" size="3">
+                                        <ion-img class="boton_eliminar" (click)="confirmarEliminarAmigo(amigo.id)" src="assets/iconoEliminar.png"></ion-img>
+                                    </ion-col>
+                                </ion-row>
+                                <hr>
+                            </ion-grid>
+                        </ion-col>
                     </ion-row>
-                    <ion-row *ngFor="let amigo of amigos" class="amigo">
-                        <ion-col size="3">
-                            <img [ngSrc]="getImageUrlCliente(amigo)" fill>
-                        </ion-col>
-                        <ion-col class="col_nombre ion-align-items-center" size="6" (click)="verPerfil(amigo)">
-                            <ion-text>{{ amigo.nombre }} {{ amigo.apellidos }}</ion-text>
-                        </ion-col>
-                        <ion-col class="col_nombre ion-align-items-center" size="3">
-                            <ion-img class="boton_eliminar" (click)="confirmarEliminarAmigo(amigo.id)" src="assets/iconoEliminar.png"></ion-img>
-                        </ion-col>
-                    </ion-row>
-                    <hr>
                 </ion-grid>
-            </ion-col>
-        </ion-row>
-    </ion-grid>
 
-</ion-content>
+            </ion-content>
+        </ion-col>
+        <ion-col size="2.5" class="menu-lateral">
+            <app-amigos></app-amigos>
+        </ion-col>
+    </ion-row>
+</ion-grid>
 
 <app-nav-inferior></app-nav-inferior>
 

@@ -18,7 +18,8 @@ import {Router} from "@angular/router";
 import {ClienteService} from "../servicios/cliente.service";
 import {AmigoService} from "../servicios/amigo.service";
 import {EventoService} from "../servicios/evento.service";
-import {Empresa} from "../modelos/Empresa"; // Se asume que Perfil tiene una propiedad "nombre"
+import {Empresa} from "../modelos/Empresa";
+import {NavLateralComponent} from "../nav-lateral/nav-lateral.component"; // Se asume que Perfil tiene una propiedad "nombre"
 
 @Component({
     selector: 'app-ver-solicitudes',
@@ -30,7 +31,8 @@ import {Empresa} from "../modelos/Empresa"; // Se asume que Perfil tiene una pro
         NavSuperiorComponent,
         NavInferiorComponent,
         NgForOf,
-        NgIf
+        NgIf,
+        NavLateralComponent
     ]
 })
 export class VerSolicitudesComponent implements OnInit {

@@ -1,75 +1,89 @@
 <app-nav-superior></app-nav-superior>
-<ion-content>
-    <ion-grid>
-        <ion-row>
-            <div style="display: flex; margin: 0 auto" class="ion-align-items-center">
-                <ion-img id="agregar" (click)="abrirForm()" src="assets/iconoMas.png"></ion-img>
-                <ion-searchbar
-                    placeholder="Buscar publicaciones"
-                    animated="true"
-                    [(ngModel)]="buscar"
-                    (ionInput)="buscarPublicaciones()">
-                </ion-searchbar>
-                <ion-img id="filtro" src="assets/iconoFiltro.png"></ion-img>
-                <ion-popover trigger="filtro" triggerAction="click" [dismissOnSelect]="true">
-                    <ng-template>
-                        <ion-list>
-                            <ion-item button (click)="filtrarPublicaciones('todas')">Todas</ion-item>
-                            <ion-item button (click)="filtrarPublicaciones('tuyas')">Tus publicaciones</ion-item>
-                            <ion-item button (click)="filtrarPublicaciones('amigos')">Publicaciones de amigos</ion-item>
-                            <ion-item button (click)="filtrarPublicaciones('empresas')">Publicaciones de empresas</ion-item>
-                        </ion-list>
-                    </ng-template>
-                </ion-popover>
-            </div>
-        </ion-row>
-        <ion-row>
-            <ion-text id="texto_filtro">{{textoFiltro}}</ion-text>
-        </ion-row>
-        <ion-row *ngIf="publicacionesFiltradas.length === 0">
-            <div style="width: 100%; text-align: center; padding: 40px; color: black">
-                <ion-text style="margin: 0 auto; color: black">No se han encontrado publicaciones.</ion-text>
-            </div>
-        </ion-row>
-        <ion-row>
-            <ion-col size-lg="4" size-xl="4" size-md="6" size-sm="10" size-xs="12">
-                <ion-card *ngFor="let publicacion of this.publicacionesFiltradas">
-                    <ion-img [src]="getImageUrl(publicacion)" alt="Foto publicacion"/>
-                    <ion-grid>
-                        <ion-row class="fila_superior">
-                            <ion-col class="ion-align-items-center" size="3">
-                                <ion-img class="icono" (click)="cambioLike(publicacion)" [src]="imagenCambioLike(publicacion)"></ion-img>
-                                <ion-text>{{devolverIndice(publicacion)}}</ion-text>
-                            </ion-col>
-                            <ion-col class="ion-align-items-center" size="3">
-                                <ion-img class="icono" (click)="verComentarios(publicacion.id)" src="assets/icons8-burbuja-de-diálogo-50.png"></ion-img>
-                                <ion-text>{{ devolverIndiceComentario(publicacion) }}</ion-text>
-                            </ion-col>
-                            <ion-col size="2"></ion-col>
-                            <ion-col class="ion-align-items-center" size="4">
-                                <ion-img class="icono" src="assets/ubicacion.png"></ion-img>
-                                <ion-text>{{ publicacion.lugar }}</ion-text>
-                            </ion-col>
-                        </ion-row>
-                        <ion-row>
-                            <ion-col>
-                                <ion-text class="descripcion"><strong>{{publicacion.nombre}} {{publicacion.apellidos}}</strong>: {{publicacion.texto}}</ion-text>
-                            </ion-col>
-                        </ion-row>
-                        <ion-row>
-                            <ion-col>
-                                <div style="float: left; display: inline-block;">
-                                    <ion-text>{{calcularFecha(publicacion)}}</ion-text>
-                                </div>
-                                <div style="float: right; display: inline-block;">
-                                    <ion-text style="float: right; display: inline-block;">{{obtenerFecha(publicacion)}}</ion-text>
-                                </div>
-                            </ion-col>
-                        </ion-row>
-                    </ion-grid>
-                </ion-card>
-            </ion-col>
-        </ion-row>
-    </ion-grid>
-</ion-content>
+
+<ion-grid class="grid_menus">
+    <ion-row class="fila_menus">
+        <ion-col size="2.5" class="menu-lateral">
+            <app-nav-lateral style="width: 100%"></app-nav-lateral>
+        </ion-col>
+        <ion-col class="contenido-principal">
+            <ion-content>
+                <ion-grid>
+                    <ion-row>
+                        <div id="contenedor_superior" class="ion-align-items-center">
+                            <ion-img id="agregar" (click)="abrirForm()" src="assets/iconoMas.png"></ion-img>
+                            <ion-searchbar
+                                placeholder="Buscar publicaciones"
+                                animated="true"
+                                [(ngModel)]="buscar"
+                                (ionInput)="buscarPublicaciones()">
+                            </ion-searchbar>
+                            <ion-img id="filtro" src="assets/iconoFiltro.png"></ion-img>
+                            <ion-popover trigger="filtro" triggerAction="click" [dismissOnSelect]="true">
+                                <ng-template>
+                                    <ion-list>
+                                        <ion-item button (click)="filtrarPublicaciones('todas')">Todas</ion-item>
+                                        <ion-item button (click)="filtrarPublicaciones('tuyas')">Tus publicaciones</ion-item>
+                                        <ion-item button (click)="filtrarPublicaciones('amigos')">Publicaciones de amigos</ion-item>
+                                        <ion-item button (click)="filtrarPublicaciones('empresas')">Publicaciones de empresas</ion-item>
+                                    </ion-list>
+                                </ng-template>
+                            </ion-popover>
+                        </div>
+                    </ion-row>
+                    <ion-row>
+                        <ion-text id="texto_filtro">{{textoFiltro}}</ion-text>
+                    </ion-row>
+                    <ion-row *ngIf="publicacionesFiltradas.length === 0">
+                        <div style="width: 100%; text-align: center; padding: 40px; color: black">
+                            <ion-text style="margin: 0 auto; color: black">No se han encontrado publicaciones.</ion-text>
+                        </div>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col size-lg="4" size-xl="4" size-md="6" size-sm="10" size-xs="12">
+                            <ion-card *ngFor="let publicacion of this.publicacionesFiltradas">
+                                <ion-img [src]="getImageUrl(publicacion)" alt="Foto publicacion"/>
+                                <ion-grid>
+                                    <ion-row class="fila_superior">
+                                        <ion-col class="ion-align-items-center" size="3">
+                                            <ion-img class="icono" (click)="cambioLike(publicacion)" [src]="imagenCambioLike(publicacion)"></ion-img>
+                                            <ion-text>{{devolverIndice(publicacion)}}</ion-text>
+                                        </ion-col>
+                                        <ion-col class="ion-align-items-center" size="3">
+                                            <ion-img class="icono" (click)="verComentarios(publicacion.id)" src="assets/icons8-burbuja-de-diálogo-50.png"></ion-img>
+                                            <ion-text>{{ devolverIndiceComentario(publicacion) }}</ion-text>
+                                        </ion-col>
+                                        <ion-col size="2"></ion-col>
+                                        <ion-col class="ion-align-items-center" size="4">
+                                            <ion-img class="icono" src="assets/ubicacion.png"></ion-img>
+                                            <ion-text>{{ publicacion.lugar }}</ion-text>
+                                        </ion-col>
+                                    </ion-row>
+                                    <ion-row>
+                                        <ion-col>
+                                            <ion-text class="descripcion"><strong>{{publicacion.nombre}} {{publicacion.apellidos}}</strong>: {{publicacion.texto}}</ion-text>
+                                        </ion-col>
+                                    </ion-row>
+                                    <ion-row>
+                                        <ion-col>
+                                            <div style="float: left; display: inline-block;">
+                                                <ion-text>{{calcularFecha(publicacion)}}</ion-text>
+                                            </div>
+                                            <div style="float: right; display: inline-block;">
+                                                <ion-text style="float: right; display: inline-block;">{{obtenerFecha(publicacion)}}</ion-text>
+                                            </div>
+                                        </ion-col>
+                                    </ion-row>
+                                </ion-grid>
+                            </ion-card>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+            </ion-content>
+        </ion-col>
+        <ion-col size="2.5" class="menu-lateral" style="border-left: 1px solid black">
+            <app-amigos></app-amigos>
+        </ion-col>
+    </ion-row>
+</ion-grid>
+
 <app-nav-inferior></app-nav-inferior>

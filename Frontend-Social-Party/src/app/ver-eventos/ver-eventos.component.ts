@@ -8,6 +8,8 @@ import {NavInferiorComponent} from "../nav-inferior/nav-inferior.component";
 import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {environment} from "../../environments/environment";
 import {Empresa} from "../modelos/Empresa";
+import {NavLateralComponent} from "../nav-lateral/nav-lateral.component";
+import {AmigosComponent} from "../amigos/amigos.component";
 
 @Component({
     selector: 'app-ver-eventos',
@@ -20,7 +22,9 @@ import {Empresa} from "../modelos/Empresa";
         NavInferiorComponent,
         NgForOf,
         NgOptimizedImage,
-        NgIf
+        NgIf,
+        NavLateralComponent,
+        AmigosComponent
     ]
 })
 export class VerEventosComponent implements OnInit {

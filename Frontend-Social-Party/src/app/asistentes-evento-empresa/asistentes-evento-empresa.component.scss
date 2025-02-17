@@ -47,17 +47,31 @@ ion-content {
     font-size: 20px;
     margin: 0 auto;
 }
-.imagenes{
+
+.imagenes {
     width: 90%;
 }
-img{
+
+img {
     border-radius: 40px;
+}
+
+.rating-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.rating-number {
+    color: #ffffff;
+    font-size: 20px;
+    display: inline-block;
+    margin: 0;
 }
 
 @media (min-width: 768px) {
     .derecha {
-        height: 700%;
-        background-color: black;
+        height: 50px;
         margin-right: 20px;
         border-radius: 15%;
     }

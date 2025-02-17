@@ -19,6 +19,7 @@ import {MostrarPublicacion} from "../modelos/MostrarPublicacion";
 import {ClienteService} from "../servicios/cliente.service";
 import {environment} from "../../environments/environment";
 import {Cliente} from "../modelos/Cliente";
+import {NavLateralComponent} from "../nav-lateral/nav-lateral.component";
 
 @Component({
     selector: 'app-comentarios',
@@ -32,7 +33,8 @@ import {Cliente} from "../modelos/Cliente";
         NgForOf,
         FormsModule,
         NgOptimizedImage,
-        NgIf
+        NgIf,
+        NavLateralComponent
     ]
 })
 export class ComentariosComponent  implements OnInit {

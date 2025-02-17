@@ -1,10 +1,5 @@
 <ion-content style="--background: #234276;">
     <ion-grid style="width: 100%;">
-        <ion-row style="margin-bottom: 50px">
-            <ion-col size="auto">
-                <ion-img class="icono" src="assets/img.png"></ion-img>
-            </ion-col>
-        </ion-row>
         <ion-row (click)="irPerfil()">
             <ion-col size="3">
                 <ion-img src="assets/iconoPerfil.png"></ion-img>
@@ -21,14 +16,6 @@
                 <ion-text>Entradas</ion-text>
             </ion-col>
         </ion-row>
-        <ion-row (click)="irAmigos()">
-            <ion-col size="3">
-                <ion-img src="assets/iconoCasa.png"></ion-img>
-            </ion-col>
-            <ion-col size="9" class="despg">
-                <ion-text>Menú</ion-text>
-            </ion-col>
-        </ion-row>
         <ion-row (click)="irUbicacion()">
             <ion-col size="3">
                 <ion-img src="assets/ubicacion.png"></ion-img>
@@ -43,6 +30,11 @@
             </ion-col>
             <ion-col size="9" class="despg">
                 <ion-text>Explorar</ion-text>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col style="text-align: center">
+                <ion-text style="; margin: 0 auto; font-size: 18px">Contáctanos: socialpartysl&#64;gmail.com</ion-text>
             </ion-col>
         </ion-row>
     </ion-grid>

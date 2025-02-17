@@ -1,59 +1,71 @@
 <app-nav-superior></app-nav-superior>
 
-<div class="fondo"></div>
-<div class="banda ion-align-items-center">
-    <ion-text id="nombre">{{ perfil.nombre }} {{ perfil.apellidos }}</ion-text>
-</div>
+<ion-grid class="grid_menus">
+    <ion-row class="fila_menus">
+        <ion-col size="2.5" class="menu-lateral">
+            <app-nav-lateral style="width: 100%"></app-nav-lateral>
+        </ion-col>
+        <ion-col class="contenido-principal">
+            <div class="fondo"></div>
+            <div class="banda ion-align-items-center">
+                <ion-text id="nombre">{{ perfil.nombre }} {{ perfil.apellidos }}</ion-text>
+            </div>
 
-<ion-content id="content_principal" #ionContent>
-    <ion-grid>
-        <div *ngFor="let grupo of gruposMensajes; trackBy: trackByGrupo">
-            <ion-row>
-                <ion-col>
-                    <div class="div_dia">
-                        <hr />
-                        <ion-text>{{ grupo.fecha }}</ion-text>
-                        <hr />
-                    </div>
-                </ion-col>
-            </ion-row>
-            <ion-row *ngFor="let mensaje of grupo.mensajes; trackBy: trackByMensaje">
-                <ion-col>
-                    <div
-                        [ngClass]="mensaje.idEmisor === usuario.id ? 'emisor' : 'receptor'"
-                        (click)="!mensaje.borrado && mensaje.idEmisor === usuario.id ? mostrarOpciones(mensaje) : null"
-                        (press)="!mensaje.borrado && mensaje.idEmisor === usuario.id ? mostrarOpciones(mensaje) : null">
-                        <ng-container *ngIf="mensaje.borrado; else normalMessage">
-                            <strong>Este mensaje ha sido borrado</strong>
-                        </ng-container>
-                        <ng-template #normalMessage>
-                            <div class="message-content">
-                                <div class="message-text">
-                                    {{ mensaje.texto }}
-                                    <span *ngIf="mensaje.editado" class="editado"> (editado)</span>
+            <ion-content id="content_principal" #ionContent>
+                <ion-grid id="grid_mensajes">
+                    <div *ngFor="let grupo of gruposMensajes; trackBy: trackByGrupo">
+                        <ion-row>
+                            <ion-col>
+                                <div class="div_dia">
+                                    <hr />
+                                    <ion-text>{{ grupo.fecha }}</ion-text>
+                                    <hr />
                                 </div>
-                                <div class="message-time">
-                                    {{ mensaje.hora ? (mensaje.hora | slice:0:5) : '' }}
+                            </ion-col>
+                        </ion-row>
+                        <ion-row *ngFor="let mensaje of grupo.mensajes; trackBy: trackByMensaje">
+                            <ion-col>
+                                <div
+                                    [ngClass]="mensaje.idEmisor === usuario.id ? 'emisor' : 'receptor'"
+                                    (click)="!mensaje.borrado && mensaje.idEmisor === usuario.id ? mostrarOpciones(mensaje) : null"
+                                    (press)="!mensaje.borrado && mensaje.idEmisor === usuario.id ? mostrarOpciones(mensaje) : null">
+                                    <ng-container *ngIf="mensaje.borrado; else normalMessage">
+                                        <strong>Este mensaje ha sido borrado</strong>
+                                    </ng-container>
+                                    <ng-template #normalMessage>
+                                        <div class="message-content">
+                                            <div class="message-text">
+                                                {{ mensaje.texto }}
+                                                <span *ngIf="mensaje.editado" class="editado"> (editado)</span>
+                                            </div>
+                                            <div class="message-time">
+                                                {{ mensaje.hora ? (mensaje.hora | slice:0:5) : '' }}
+                                            </div>
+                                        </div>
+                                    </ng-template>
                                 </div>
-                            </div>
-                        </ng-template>
+                            </ion-col>
+                        </ion-row>
                     </div>
-                </ion-col>
-            </ion-row>
-        </div>
-    </ion-grid>
-</ion-content>
+                </ion-grid>
+            </ion-content>
 
-<div style="background-color: #D3E5E5">
-    <div id="enviar_mensaje">
-        <ion-input
-            [(ngModel)]="nuevoTexto"
-            placeholder="Envía un mensaje..."
-            (keydown.enter)="enviar()">
-        </ion-input>
-        <ion-img (click)="enviar()" src="assets/iconoEnviar.png"></ion-img>
-    </div>
-</div>
+            <div style="background-color: #D3E5E5">
+                <div id="enviar_mensaje">
+                    <ion-input
+                        [(ngModel)]="nuevoTexto"
+                        placeholder="Envía un mensaje..."
+                        (keydown.enter)="enviar()">
+                    </ion-input>
+                    <ion-img (click)="enviar()" src="assets/iconoEnviar.png"></ion-img>
+                </div>
+            </div>
+        </ion-col>
+        <ion-col size="2.5" class="menu-lateral" style="border-left: 1px solid black">
+            <app-amigos></app-amigos>
+        </ion-col>
+    </ion-row>
+</ion-grid>
 
 <app-nav-inferior></app-nav-inferior>
 

@@ -14,13 +14,15 @@ import { PerfilServicio } from '../servicios/perfil.service';
 import { SocketService } from '../servicios/SocketService';
 import {jwtDecode} from 'jwt-decode';
 import {NavInferiorComponent} from "../nav-inferior/nav-inferior.component";
+import {NavLateralComponent} from "../nav-lateral/nav-lateral.component";
+import {AmigosComponent} from "../amigos/amigos.component";
 
 @Component({
     selector: 'app-chat',
     templateUrl: './chat.component.html',
     styleUrls: ['./chat.component.scss'],
     standalone: true,
-    imports: [CommonModule, FormsModule, NavSuperiorComponent, IonicModule, NavInferiorComponent],
+    imports: [CommonModule, FormsModule, NavSuperiorComponent, IonicModule, NavInferiorComponent, NavLateralComponent, AmigosComponent],
     providers: [DatePipe]
 })
 export class ChatComponent implements OnInit, AfterViewChecked {
