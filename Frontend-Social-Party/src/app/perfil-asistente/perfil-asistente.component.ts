@@ -155,7 +155,7 @@ export class PerfilAsistenteComponent  implements OnInit {
                 break;
             }
         }
-        if (cliente.nombre === this.perfil.nombre) {
+        if (cliente.nombre === this.perfil.nombre && cliente.apellidos === this.perfil.apellidos) {
             encontrado = true;
         }
         return encontrado;

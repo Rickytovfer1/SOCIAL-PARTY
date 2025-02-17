@@ -57,7 +57,7 @@
 
                                         <ion-col size="7" class="ion-justify-content-center ion-align-items-center fix-col">
                                             <ion-text class="nombre">
-                                                {{ cliente.nombre === perfil.nombre ? 'Tú' : cliente.nombre }}
+                                                {{ cliente.nombre === perfil.nombre && cliente.apellidos === perfil.apellidos ? 'Tú' : cliente.nombre }}
                                             </ion-text>
 
                                             <div class="rating-container">
