@@ -51,6 +51,8 @@ export class ConfirmacionPagoComponent implements OnInit {
     fech_tarjeta: string  = "";
     ccv_tarjeta: string  = "";
 
+    entradasCliente: Entrada[] = [];
+
     constructor(private entradaService: EntradaService,
                 private activateRoute: ActivatedRoute,
                 private router: Router,
@@ -81,13 +83,31 @@ export class ConfirmacionPagoComponent implements OnInit {
         this.verEvento(this.id)
     }
 
+    cargarEntradasCliente() {
+        this.entradaService.verEntradas(this.perfil.id).subscribe({
+            next: data => {
+                this.entradasCliente = data;
+            },
+            error: () => console.log("Error al cargar las entradas del cliente.")
+        })
+    }
+
     comprarEntrada(): void {
+
+        for (const entrada of this.entradasCliente) {
+            if (entrada.evento.id === this.id) {
+                const toast = document.getElementById("toastEntradaDuplicada") as any;
+                toast.present();
+                return;
+            }
+        }
 
         if (!this.num_tarjeta || !this.fech_tarjeta || !this.ccv_tarjeta) {
             const toast = document.getElementById("toastCampos") as any;
             toast.present();
             return;
         }
+
         this.entradaService.comprarEntrada(this.id, this.empresa.id, this.usuario.id).subscribe({
             next: (entradaComprada: any) => {
                 console.log('Entrada comprada:', entradaComprada);
@@ -112,8 +132,6 @@ export class ConfirmacionPagoComponent implements OnInit {
             }
         });
     }
-
-
 
     generatePDF(): void {
         const doc = new jsPDF();
@@ -205,6 +223,7 @@ export class ConfirmacionPagoComponent implements OnInit {
                     perfil.correo = this.usuario.correo;
                 }
                 this.perfil = perfil;
+                this.cargarEntradasCliente();
             },
             error: (e) => {
                 console.error("Error al cargar el perfil:", e);
