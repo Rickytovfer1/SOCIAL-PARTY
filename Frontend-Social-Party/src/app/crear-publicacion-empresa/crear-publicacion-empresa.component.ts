@@ -130,6 +130,8 @@ export class CrearPublicacionEmpresaComponent implements OnInit {
         this.publicacionService.crearPublicacionEmpresa(this.publicacion).subscribe({
             next: () => {
                 console.log('Éxito', 'Publicación creada exitosamente.');
+                const toast = document.getElementById("toastCreada") as any;
+                toast.present();
                 this.router.navigate(['/asistentes-evento-empresa']);
             },
             error: e => {

@@ -11,6 +11,7 @@ ion-segment {
 
 ion-content {
     --background: #D3E5E5;
+    height: 93%;
 }
 
 #nombre {
@@ -84,5 +85,9 @@ ion-text {
 @media (min-width: 768px) {
     ion-segment {
         display: none;
+    }
+    ion-content {
+        --background: #D3E5E5;
+        height: 100%;
     }
 }

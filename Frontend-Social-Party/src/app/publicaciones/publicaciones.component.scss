@@ -1,5 +1,6 @@
 ion-content {
     --background: #D3E5E5;
+    height: 95%;
 }
 
 ion-card {
@@ -60,4 +61,8 @@ ion-col {
         display: flex;
         margin: 0 auto;
     }
+    ion-content {
+        height: 100%;
+    }
+
 }

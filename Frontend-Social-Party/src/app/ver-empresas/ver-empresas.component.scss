@@ -1,5 +1,6 @@
 ion-content {
     --background: #D3E5E5;
+    height: 92%;
 }
 
 ion-searchbar {
@@ -51,6 +52,9 @@ ion-text {
         width: 10%;
         height: 10%;
         margin: 0 auto;
+    }
+    ion-content {
+        height: 100%;
     }
 }
 

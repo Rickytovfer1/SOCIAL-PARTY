@@ -22,6 +22,8 @@
 
 ion-content {
     --background: #471FCD;
+    height: 92%
+
 }
 
 .pregunta {
@@ -93,5 +95,8 @@ ion-searchbar {
     #img_qr {
         width: 35px;
         height: 35px;
+    }
+    ion-content {
+        height: 100%
     }
 }

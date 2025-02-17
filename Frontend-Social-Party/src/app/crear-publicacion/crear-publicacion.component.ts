@@ -176,6 +176,8 @@ export class CrearPublicacionComponent implements OnInit {
         this.publicacionService.crearPublicacionCliente(this.publicacion).subscribe({
             next: () => {
                 console.log('Éxito', 'Publicación creada exitosamente.');
+                const toast = document.getElementById("toastCreada") as any;
+                toast.present();
                 this.router.navigate(['/publicaciones']);
             },
             error: e => {

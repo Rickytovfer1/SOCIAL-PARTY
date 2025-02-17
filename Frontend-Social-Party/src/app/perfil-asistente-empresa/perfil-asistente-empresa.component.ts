@@ -154,6 +154,8 @@ export class PerfilAsistenteEmpresaComponent implements OnInit {
     banearCliente(idCliente: number, idEmpresa: number): void {
         this.empresaService.banearCliente(idCliente, idEmpresa).subscribe({
             next: () => {
+                const toast = document.getElementById("toastBaneadoPerfe") as any;
+                toast.present();
                 console.log("Cliente exitosamente");
             },
             error: (e) => {
