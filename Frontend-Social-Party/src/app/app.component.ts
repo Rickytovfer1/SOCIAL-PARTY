@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
 import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { LoggingInterceptor } from './LoggingInterceptor';
 
 
 @Component({
@@ -10,11 +8,6 @@ import { LoggingInterceptor } from './LoggingInterceptor';
     imports: [IonApp, IonRouterOutlet],
     standalone: true,
     providers: [
-        {
-            provide: HTTP_INTERCEPTORS,
-            useClass: LoggingInterceptor,
-            multi: true
-        }
     ]
 })
 export class AppComponent {

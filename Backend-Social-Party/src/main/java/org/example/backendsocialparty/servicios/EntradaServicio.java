@@ -150,8 +150,10 @@ public class EntradaServicio {
         if (errorMessage.length() > 0) {
             logger.error("Cliente no apto para entrar. Detalles del cliente: {} | Fecha de nacimiento: {} | Edad calculada: {} | Empresa: {}",
                     cliente, cliente.getFechaNacimiento(), edad, empresa);
-            throw new RuntimeException("El cliente no es apto para entrar: " + errorMessage.toString());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage.toString());
         }
+
+
 
 
 

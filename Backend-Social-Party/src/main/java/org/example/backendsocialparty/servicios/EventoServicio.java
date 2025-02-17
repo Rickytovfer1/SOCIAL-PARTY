@@ -44,18 +44,26 @@ public class EventoServicio {
                 .orElseThrow(() -> new RuntimeException("No existe una empresa con este ID."));
 
         LocalDate hoy = LocalDate.now();
+        LocalTime ahora = LocalTime.now();
         List<Evento> eventosFiltrados = empresa.getEventos().stream()
-                .filter(evento -> !evento.getFecha().isBefore(hoy))
+                .filter(evento -> {
+                    if (evento.getFecha().isAfter(hoy)) {
+                        return true;
+                    }
+                    else if (evento.getFecha().isEqual(hoy)) {
+                        return ahora.isBefore(evento.getHoraFinalizacion());
+                    }
+                    return false;
+                })
                 .sorted(Comparator.comparing(Evento::getFecha)
                         .thenComparing(Evento::getHoraApertura))
                 .collect(Collectors.toList());
 
-        List<EventoDTO> eventosDTO = new ArrayList<>();
-        for (Evento evento : eventosFiltrados) {
-            eventosDTO.add(getEventoDTO(evento));
-        }
-        return eventosDTO;
+        return eventosFiltrados.stream()
+                .map(evento -> getEventoDTO(evento))
+                .collect(Collectors.toList());
     }
+
 
     public List<ClienteDTO> listarClientesEvento(Integer idEvento) {
         Evento e = eventoRepositorio.findById(idEvento)

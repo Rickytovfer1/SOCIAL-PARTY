@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {IonicModule} from "@ionic/angular";
+import {IonicModule, ToastController} from "@ionic/angular";
 import {NavInferiorEmpresaComponent} from "../nav-inferior-empresa/nav-inferior-empresa.component";
 import {NavSuperiorEmpresaComponent} from "../nav-superior-empresa/nav-superior-empresa.component";
 import {EntradaService} from "../servicios/entrada.service";
@@ -52,6 +52,7 @@ export class ConfirmacionPagoComponent implements OnInit {
                 private router: Router,
                 private eventoService: EventoService,
                 private perfilService: PerfilServicio,
+                private toastController: ToastController,
                 private usuarioService: UsuarioService) {
     }
 
@@ -81,7 +82,7 @@ export class ConfirmacionPagoComponent implements OnInit {
         if (!this.num_tarjeta || !this.fech_tarjeta || !this.ccv_tarjeta) {
             const toast = document.getElementById("toastCampos") as any;
             toast.present();
-            return
+            return;
         }
         this.entradaService.comprarEntrada(this.id, this.empresa.id, this.usuario.id).subscribe({
             next: (entradaComprada: any) => {
@@ -91,11 +92,23 @@ export class ConfirmacionPagoComponent implements OnInit {
                 this.generatePDF();
                 this.router.navigate(["/ver-empresas"]);
             },
-            error: (error) => {
+            error: async (error) => {
                 console.error('Error al comprar la entrada:', error);
+                let message = 'Error al comprar la entrada';
+                if (error.error && error.error.message) {
+                    message = error.error.message;
+                }
+                const toast = await this.toastController.create({
+                    message,
+                    duration: 3000,
+                    position: 'top',
+                    color: 'danger'
+                });
+                toast.present();
             }
         });
     }
+
 
 
     generatePDF(): void {
