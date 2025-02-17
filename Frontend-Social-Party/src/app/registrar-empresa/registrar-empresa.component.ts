@@ -4,6 +4,7 @@ import {Router} from "@angular/router";
 import {RegistroEmpresaService} from "../servicios/registro-empresa.service";
 import {RegistroEmpresa} from "../modelos/RegistroEmpresa";
 import {FormsModule} from "@angular/forms";
+import {EMPTY} from "rxjs";
 
 @Component({
     selector: 'app-registrar-empresa',
@@ -103,8 +104,35 @@ export class RegistrarEmpresaComponent implements OnInit {
                 console.info("Registro exitoso");
                 this.router.navigate(['/login']);
             },
-            error: (e) => console.error(e),
+            error: (errorResponse) => {
+                this.manejarErrorBackend(errorResponse);
+                console.error = () => {};
+                return EMPTY;
+            }
         });
+    }
+
+    private manejarErrorBackend(error: any) {
+
+        if (error.status === 400 && error.error) {
+            const mensaje = error.error;
+
+            if (mensaje.includes("correo")) {
+                const toast = document.getElementById("existeCorreo") as any;
+                toast.present();
+            } else if (mensaje.includes("NIF")) {
+                const toast = document.getElementById("existeNIF") as any;
+                toast.present();
+            } else if (mensaje.includes("teléfono")) {
+                const toast = document.getElementById("existeTelefono") as any;
+                toast.present();
+            } else {
+                const toast = document.getElementById("error") as any;
+                toast.present();
+            }
+        } else {
+            console.error("Ocurrió un error inesperado. Intente más tarde.", "toastError");
+        }
     }
 
 

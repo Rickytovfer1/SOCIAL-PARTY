@@ -4,6 +4,7 @@ import {RegistroCliente} from "../modelos/RegistroCliente";
 import {RegistroClienteService} from "../servicios/registro-cliente.service";
 import {Router} from "@angular/router";
 import {FormsModule} from "@angular/forms";
+import {EMPTY, of} from "rxjs";
 
 @Component({
     selector: 'app-registrar-cliente',
@@ -115,6 +116,8 @@ export class RegistrarClienteComponent implements OnInit {
             },
             error: (errorResponse) => {
                 this.manejarErrorBackend(errorResponse);
+                console.error = () => {};
+                return EMPTY;
             }
         });
     }
@@ -134,7 +137,7 @@ export class RegistrarClienteComponent implements OnInit {
                 const toast = document.getElementById("existeTelefono") as any;
                 toast.present();
             } else {
-                const toast = document.getElementById("telefono") as any;
+                const toast = document.getElementById("error") as any;
                 toast.present();
             }
         } else {

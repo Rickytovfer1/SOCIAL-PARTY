@@ -5,6 +5,7 @@ import org.example.backendsocialparty.DTOs.*;
 import org.example.backendsocialparty.enumerados.Rol;
 import org.example.backendsocialparty.exception.CorreoYaRegistradoException;
 import org.example.backendsocialparty.exception.DniYaRegistradoException;
+import org.example.backendsocialparty.exception.NifYaRegistradoException;
 import org.example.backendsocialparty.exception.TelefonoYaRegistradoException;
 import org.example.backendsocialparty.modelos.Cliente;
 import org.example.backendsocialparty.modelos.Empresa;
@@ -114,6 +115,18 @@ public class UsuarioServicio implements UserDetailsService {
     }
 
     public Usuario registrarEmpresa(RegistrarEmpresaDTO dto){
+
+        if (usuarioRepositorio.existsByCorreo(dto.getCorreo())) {
+            throw new CorreoYaRegistradoException("El correo '" + dto.getCorreo() + "' ya está registrado.");
+        }
+
+        if (empresaRepositorio.existsByNif(dto.getNif())) {
+            throw new NifYaRegistradoException("El NIF '" + dto.getNif() + "' ya está registrado.");
+        }
+
+        if (empresaRepositorio.existsByTelefono(dto.getTelefono())) {
+            throw new TelefonoYaRegistradoException("El teléfono '" + dto.getTelefono() + "' ya está registrado.");
+        }
 
         List<Usuario> usuarios = usuarioRepositorio.findAll();
 
