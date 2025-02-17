@@ -65,17 +65,8 @@ export class LoginComponent implements OnInit {
             },
             error: async (e) => {
                 console.error(e);
-                let mensaje = "Error al iniciar sesión.";
-                if (e.status === 401 && e.error && e.error.mensaje) {
-                    mensaje = e.error.mensaje;
-                }
-                const toast = await this.toastController.create({
-                    message: mensaje,
-                    duration: 3000,
-                    color: 'warning',
-                    position: 'top'
-                });
-                await toast.present();
+                const toast = document.getElementById("toastContrasenaIncorrecta") as any;
+                toast.present();
             }
         });
     }
