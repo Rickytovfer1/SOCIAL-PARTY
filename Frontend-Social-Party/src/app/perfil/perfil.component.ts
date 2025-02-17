@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IonicModule } from "@ionic/angular";
+import {IonicModule, ToastController} from "@ionic/angular";
 import { NavSuperiorComponent } from "../nav-superior/nav-superior.component";
 import { NavInferiorComponent } from "../nav-inferior/nav-inferior.component";
 import { ActivatedRoute } from "@angular/router";
@@ -55,7 +55,8 @@ export class PerfilComponent implements OnInit {
         private perfilService: PerfilServicio,
         private activateRoute: ActivatedRoute,
         private usuarioService: UsuarioService,
-        private clienteService: ClienteService
+        private clienteService: ClienteService,
+        private toastController: ToastController
     ) {}
 
     ngOnInit() {
@@ -155,10 +156,26 @@ export class PerfilComponent implements OnInit {
                 this.cargarPerfil(this.registro.id);
                 this.foto = null;
             },
-            error: (e) => {
+            error: async (e) => {
                 console.error("Error al actualizar el usuario:", e);
+                console.log("Error structure:", e.error);
+                let message = 'Error al actualizar el usuario';
+                if (typeof e.error === 'string') {
+                    message = e.error;
+                } else if (e.error && e.error.message) {
+                    message = e.error.message;
+                }
+                const toast = await this.toastController.create({
+                    message,
+                    duration: 3000,
+                    position: 'top',
+                    color: 'danger'
+                });
+                toast.present();
             }
+
         });
+
     }
 
     editarBoton(): void {

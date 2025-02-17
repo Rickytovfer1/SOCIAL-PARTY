@@ -10,7 +10,7 @@
 
             <ion-content>
                 <ion-grid>
-                    <ion-row *ngIf="solicitudes.length === 0">
+                    <ion-row *ngIf="solicitudes.length === 0 && notificaciones.length === 0">
                         <div style="width: 100%; text-align: center; padding: 20px; color: black">
                             <ion-text style="margin: 0 auto; color: black">Buzón vacío...</ion-text>
                         </div>
@@ -79,5 +79,3 @@
     position="top"
     color="primary"
 ></ion-toast>
-
-

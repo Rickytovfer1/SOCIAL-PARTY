@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IonicModule } from "@ionic/angular";
+import {IonicModule, ToastController} from "@ionic/angular";
 import { ActivatedRoute } from "@angular/router";
 import { Perfil } from "../modelos/Perfil";
 import { PerfilServicio } from "../servicios/perfil.service";
@@ -55,7 +55,8 @@ export class EditarClienteAdminComponent implements OnInit {
         private activateRoute: ActivatedRoute,
         private usuarioService: UsuarioService,
         private clienteService: ClienteService,
-        private perfilService: PerfilServicio
+        private perfilService: PerfilServicio,
+        private toastController: ToastController
     ) {}
 
     ngOnInit() {
@@ -122,23 +123,50 @@ export class EditarClienteAdminComponent implements OnInit {
         };
 
         formData.append("cliente", new Blob([JSON.stringify(clienteData)], { type: "application/json" }));
+
+
+        const usuarioData = {
+            correo: this.registro.correo
+        };
+        formData.append("usuario", new Blob([JSON.stringify(usuarioData)], { type: "application/json" }));
+
         if (this.foto) {
             formData.append("fotoPerfil", this.foto);
         }
+
         this.adminService.actualizarPerfilCliente(formData).subscribe({
-            next: (respuesta) => {
+            next: async (respuesta) => {
                 console.log('Usuario actualizado:', respuesta);
-                const toast = document.getElementById("toastClienteEditado") as any;
+                const toast = await this.toastController.create({
+                    message: 'Cliente actualizado correctamente',
+                    duration: 3000,
+                    position: 'top',
+                    color: 'success'
+                });
                 toast.present();
                 this.editar = false;
                 this.cargarPerfil(this.registro.id);
                 this.foto = null;
             },
-            error: (e) => {
+            error: async (e) => {
                 console.error("Error al actualizar el usuario:", e);
+                let message = 'Error al actualizar el usuario';
+                if (typeof e.error === 'string') {
+                    message = e.error;
+                } else if (e.error && e.error.message) {
+                    message = e.error.message;
+                }
+                const toast = await this.toastController.create({
+                    message,
+                    duration: 3000,
+                    position: 'top',
+                    color: 'danger'
+                });
+                toast.present();
             }
         });
     }
+
 
     cargarUsuario(idCliente: number): void {
         this.adminService.getUsuario(idCliente).subscribe({

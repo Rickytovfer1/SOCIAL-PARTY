@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IonicModule } from "@ionic/angular";
+import {IonicModule, ToastController} from "@ionic/angular";
 import { NavSuperiorEmpresaComponent } from "../nav-superior-empresa/nav-superior-empresa.component";
 import { NavInferiorEmpresaComponent } from "../nav-inferior-empresa/nav-inferior-empresa.component";
 import { Usuario } from "../modelos/Usuario";
@@ -41,7 +41,8 @@ export class PerfilEmpresaComponent implements OnInit {
     constructor(
         private perfilService: PerfilServicio,
         private activateRoute: ActivatedRoute,
-        private usuarioService: UsuarioService
+        private usuarioService: UsuarioService,
+        private toastController: ToastController
     ) {}
 
     ngOnInit() {
@@ -96,11 +97,11 @@ export class PerfilEmpresaComponent implements OnInit {
     editarBoton(): void {
         if (this.editar) {
             this.guardarCambios();
-            this.editar = false;
         } else {
             this.editar = true;
         }
     }
+
 
     guardarCambios(): void {
         const formData = new FormData();
@@ -119,18 +120,35 @@ export class PerfilEmpresaComponent implements OnInit {
         if (this.foto) {
             formData.append("fotoPerfil", this.foto);
         }
+
         this.perfilService.updatePerfilEmpresa(formData).subscribe({
             next: (updatedPerfil: PerfilEmpresa) => {
                 const toast = document.getElementById("perfilEditado") as any;
                 toast.present();
                 this.perfilEmpresa = updatedPerfil;
                 this.foto = null;
+                this.editar = false;
             },
-            error: (err) => {
+            error: async (err) => {
                 console.error("Error al actualizar la empresa:", err);
+                let message = 'Error al actualizar la empresa';
+                if (typeof err.error === 'string') {
+                    message = err.error;
+                } else if (err.error && err.error.message) {
+                    message = err.error.message;
+                }
+                const toast = await this.toastController.create({
+                    message,
+                    duration: 3000,
+                    position: 'top',
+                    color: 'danger'
+                });
+                toast.present();
             }
         });
     }
+
+
 
     getImageUrl(empresaDTO: PerfilEmpresa): string {
         if (!empresaDTO.fotoPerfil) {

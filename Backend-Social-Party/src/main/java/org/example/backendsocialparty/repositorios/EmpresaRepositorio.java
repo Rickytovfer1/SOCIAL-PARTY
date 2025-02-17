@@ -15,4 +15,6 @@ public interface EmpresaRepositorio extends JpaRepository<Empresa, Integer> {
 
     boolean existsByNif(String nif);
     boolean existsByTelefono(String telefono);
+
+    Optional<Empresa> findByTelefono(String telefono);
 }

@@ -60,6 +60,7 @@ public class ClienteControlador {
         }
         return clienteServicio.actualizarCliente(clienteDTO);
     }
+
     @GetMapping("/ver/comentarios/cliente/{idCliente}")
     public List<ComentarioDTO> verComentariosCliente(@PathVariable int idCliente){
         return clienteServicio.listarComentarios(idCliente);
