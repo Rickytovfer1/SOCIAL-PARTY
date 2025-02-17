@@ -11,8 +11,16 @@
                     <ion-img id="imagenEmpresa" [src]="getImageUrlEmpresa()"/>
                 </ion-content>
                 <div class="banda ion-justify-content-between ion-align-items-center">
-                    <ion-text style="color: #ffffff; margin: 0 auto; font-size: 25px; font-weight: bold;">{{ empresa.nombre }}</ion-text>
+                    <ion-text
+                        style="color: #ffffff; margin: 0 auto; font-size: 25px; font-weight: bold; text-align: center;"
+                        class="ion-text-center">
+                        {{ empresa.nombre }}
+                    </ion-text>
+                    <a href="https://mail.google.com" target="_blank">
+                        <ion-img style="width: 50px; height: 50px; margin-right: 10px" [src]="'assets/gmail.png'"/>
+                    </a>
                 </div>
+
                 <ion-grid id="grid_eventos">
                     <ion-row *ngIf="eventos.length === 0">
                         <div style="width: 100%; text-align: center; padding: 20px; color: black">

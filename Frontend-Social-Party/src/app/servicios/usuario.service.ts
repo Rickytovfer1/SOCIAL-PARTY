@@ -29,4 +29,10 @@ export class UsuarioService {
         const options = this.comunService.autorizarPeticion();
         return this.http.get<string>(`${this.apiUrl}/cliente/publicacion/${id}`, options);
     }
+
+    verificacion(dni: string, telefono: string, correo: string): Observable<boolean> {
+        const options = this.comunService.autorizarPeticion();
+        return this.http.get<boolean>(`${this.apiUrl}/verificar?dni=${dni}&telefono=${telefono}&correo=${correo}`, options);
+    }
+
 }

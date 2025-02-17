@@ -13,4 +13,7 @@ public interface UsuarioRepositorio extends JpaRepository<Usuario, Integer> {
 
     Optional<Usuario> findTopByCorreo(String correo);
 
+    boolean existsByCorreo(String correo);
+
+
 }
