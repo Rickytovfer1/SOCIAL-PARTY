@@ -1,61 +1,99 @@
 <app-nav-superior-admin></app-nav-superior-admin>
 
-<ion-segment value="clientes" (ionChange)="cambio($event)">
-    <ion-segment-button value="clientes">
-        <ion-label>Clientes</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="empresas">
-        <ion-label>Empresas</ion-label>
-    </ion-segment-button>
-</ion-segment>
+<ion-grid class="grid_menus">
+    <ion-row class="fila_menus">
+        <ion-col size="2.5" class="menu-lateral">
+            <ion-content style="--background: #234276;">
+                <ion-grid style="width: 100%;">
+                    <ion-row class="fila_lateral">
+                        <ion-col size="3">
+                            <ion-img class="icono" src="assets/iconoCasa.png"></ion-img>
+                        </ion-col>
+                        <ion-col size="9" class="despg">
+                            <ion-text class="texto_lateral">Inicio</ion-text>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row class="fila_lateral">
+                        <ion-col size="3">
+                            <ion-img class="icono" src="assets/iconoPerfil.png"></ion-img>
+                        </ion-col>
+                        <ion-col (click)="segmentoSeleccionado = 'clientes'" size="9" class="despg">
+                            <ion-text class="texto_lateral">Clientes</ion-text>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row class="fila_lateral">
+                        <ion-col size="3">
+                            <ion-img class="icono" src="assets/tickets.png"></ion-img>
+                        </ion-col>
+                        <ion-col (click)="segmentoSeleccionado = 'empresas'" size="9" class="despg">
+                            <ion-text class="texto_lateral">Empresas</ion-text>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+            </ion-content>
+        </ion-col>
+        <ion-col class="contenido-principal">
 
-<ion-content class="fondo">
-        <ion-grid *ngIf="segmentoSeleccionado === 'clientes'">
-            <ion-row>
-                <ion-col style="margin: 0 auto" size-lg="4" size-xl="4" size-md="6" size-sm="10" size-xs="12">
-                    <ion-card
-                        class="tarjeta_amigo ion-text-center"
-                        *ngFor="let cliente of clientes">
-                        <ion-grid>
-                            <ion-row (click)="verInfo(cliente.id)">
-                                <ion-col size="3">
-                                    <img [ngSrc]="getImageUrlCliente(cliente)" fill>
-                                </ion-col>
-                                <ion-col size="9" style="display: flex" class="ion-align-items-center">
-                                    <ion-text id="nombre">{{ cliente.nombre }} {{ cliente.apellidos }}</ion-text>
-                                </ion-col>
-                            </ion-row>
-                        </ion-grid>
-                    </ion-card>
-                </ion-col>
-            </ion-row>
-        </ion-grid>
+            <ion-segment value="clientes" (ionChange)="cambio($event)">
+                <ion-segment-button value="clientes">
+                    <ion-label>Clientes</ion-label>
+                </ion-segment-button>
+                <ion-segment-button value="empresas">
+                    <ion-label>Empresas</ion-label>
+                </ion-segment-button>
+            </ion-segment>
 
-        <ion-grid *ngIf="segmentoSeleccionado === 'empresas'">
-            <ion-row>
-                <ion-col size-lg="4" size-xl="4" size-md="6" size-sm="10" size-xs="12">
-                    <ion-card *ngFor="let empresa of empresas">
-                        <ion-grid>
-                            <ion-row (click)="verInfoEmpresa(empresa.id)">
-                                <ion-col size="5">
-                                    <img [ngSrc]="getImageUrl(empresa)" class="img_empresa" fill>
-                                </ion-col>
-                                <ion-col size="7">
-                                    <ion-grid class="textos">
-                                        <ion-row>
-                                            <ion-text class="nombre">{{empresa.nombre}}</ion-text>
-                                        </ion-row>
-                                        <ion-row>
-                                            <ion-text class="direccion">{{empresa.direccion}}</ion-text>
-                                        </ion-row>
-                                    </ion-grid>
-                                </ion-col>
-                            </ion-row>
-                        </ion-grid>
-                    </ion-card>
-                </ion-col>
-            </ion-row>
-        </ion-grid>
-</ion-content>
+            <ion-content class="fondo">
+                <ion-grid *ngIf="segmentoSeleccionado === 'clientes'">
+                    <ion-row>
+                        <ion-col style="margin: 0 auto" size-lg="4" size-xl="4" size-md="6" size-sm="10" size-xs="12">
+                            <ion-card
+                                class="tarjeta_amigo ion-text-center"
+                                *ngFor="let cliente of clientes">
+                                <ion-grid>
+                                    <ion-row (click)="verInfo(cliente.id)">
+                                        <ion-col size="3">
+                                            <ion-img class="foto_perfil" [src]="getImageUrlCliente(cliente)"></ion-img>
+                                        </ion-col>
+                                        <ion-col size="9" style="display: flex" class="ion-align-items-center">
+                                            <ion-text id="nombre">{{ cliente.nombre }} {{ cliente.apellidos }}</ion-text>
+                                        </ion-col>
+                                    </ion-row>
+                                </ion-grid>
+                            </ion-card>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+
+                <ion-grid *ngIf="segmentoSeleccionado === 'empresas'">
+                    <ion-row>
+                        <ion-col size-lg="4" size-xl="4" size-md="6" size-sm="10" size-xs="12">
+                            <ion-card *ngFor="let empresa of empresas">
+                                <ion-grid>
+                                    <ion-row (click)="verInfoEmpresa(empresa.id)">
+                                        <ion-col size="5">
+                                            <img [ngSrc]="getImageUrl(empresa)" class="img_empresa" fill>
+                                        </ion-col>
+                                        <ion-col size="7">
+                                            <ion-grid class="textos">
+                                                <ion-row>
+                                                    <ion-text class="nombre">{{empresa.nombre}}</ion-text>
+                                                </ion-row>
+                                                <ion-row>
+                                                    <ion-text class="direccion">{{empresa.direccion}}</ion-text>
+                                                </ion-row>
+                                            </ion-grid>
+                                        </ion-col>
+                                    </ion-row>
+                                </ion-grid>
+                            </ion-card>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+            </ion-content>
+        </ion-col>
+    </ion-row>
+</ion-grid>
+
 
 <app-nav-inferior-admin></app-nav-inferior-admin>

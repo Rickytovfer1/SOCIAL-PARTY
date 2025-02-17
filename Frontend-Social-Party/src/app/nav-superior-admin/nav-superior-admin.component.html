@@ -1,33 +1,10 @@
-<ion-menu contentId="main-content">
-    <ion-content class="ion-padding" style="--background: #234276;">
-        <ion-menu-toggle style="background-color: #471fcd; height: 100%;">
-            <ion-grid style="width: 100%;">
-                <ion-row style="margin-bottom: 50px">
-                    <ion-col size="auto">
-                        <ion-img class="icono" src="assets/img.png"></ion-img>
-                    </ion-col>
-                </ion-row>
-                <ion-row (click)="irPrincipal()">
-                    <ion-col size="3">
-                        <ion-img src="assets/iconoPerfil.png"></ion-img>
-                    </ion-col>
-                    <ion-col size="9" class="despg">
-                        <ion-text>Princinpal</ion-text>
-                    </ion-col>
-                </ion-row>
-            </ion-grid>
-        </ion-menu-toggle>
-    </ion-content>
-</ion-menu>
-
-<div id="main-content" main>
-    <ion-header>
+<ion-header>
         <ion-toolbar>
 
             <ion-img class="icono" slot="start" style="width: 55px" src="assets/img.png" alt="Social Party Logo"/>
-            <ion-menu-button slot="start"></ion-menu-button>
+            <ion-img id="boton_inicio" slot="start" (click)="irPrincipal()" src="assets/iconoCasa.png"></ion-img>
             <ion-img (click)="cerrarSesion()" slot="end" style="width: 40px;" src="assets/logout.png" alt="Ajustes Party Logo" />
+
         </ion-toolbar>
-    </ion-header>
-</div>
+</ion-header>
 
