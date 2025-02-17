@@ -23,7 +23,6 @@ import {Usuario} from "../modelos/Usuario";
         IonicModule,
         NavInferiorComponent,
         NgForOf,
-        NgOptimizedImage,
         NgIf,
         NavLateralComponent,
         AmigosComponent

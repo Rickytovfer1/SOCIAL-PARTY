@@ -34,13 +34,9 @@ import {NavLateralEmpresaComponent} from "../nav-lateral-empresa/nav-lateral-emp
         IonicModule,
         NavSuperiorEmpresaComponent,
         NavInferiorEmpresaComponent,
-        NavInferiorComponent,
-        NavSuperiorComponent,
         NgForOf,
         NgIf,
-        NgOptimizedImage,
         FormsModule,
-        NavLateralComponent,
         NavLateralEmpresaComponent
     ]
 })

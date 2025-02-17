@@ -26,7 +26,6 @@ import {AmigosComponent} from "../amigos/amigos.component";
         NavInferiorComponent,
         NavSuperiorComponent,
         NgForOf,
-        NgOptimizedImage,
         NgForOf,
         NgIf,
         NavLateralComponent,

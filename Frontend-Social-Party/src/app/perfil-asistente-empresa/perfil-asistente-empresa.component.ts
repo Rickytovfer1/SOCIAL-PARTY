@@ -26,7 +26,6 @@ import {FormsModule} from "@angular/forms";
         NavSuperiorEmpresaComponent,
         NavInferiorEmpresaComponent,
         IonicModule,
-        NgIf,
         NgOptimizedImage,
         FormsModule
     ]

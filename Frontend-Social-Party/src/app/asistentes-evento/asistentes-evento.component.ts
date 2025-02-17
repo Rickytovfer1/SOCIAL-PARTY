@@ -34,7 +34,6 @@ import {AmigosComponent} from "../amigos/amigos.component";
         NavSuperiorComponent,
         NgForOf,
         NgIf,
-        NgOptimizedImage,
         FormsModule,
         NavLateralComponent,
         AmigosComponent

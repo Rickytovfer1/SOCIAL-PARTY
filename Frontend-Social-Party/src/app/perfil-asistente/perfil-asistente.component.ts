@@ -30,7 +30,6 @@ import {AmigosComponent} from "../amigos/amigos.component";
         NavSuperiorComponent,
         NavInferiorComponent,
         NgIf,
-        NgOptimizedImage,
         NavLateralComponent,
         AmigosComponent
     ]

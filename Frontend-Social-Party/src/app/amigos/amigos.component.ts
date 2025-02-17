@@ -25,9 +25,7 @@ import { NavLateralComponent } from "../nav-lateral/nav-lateral.component";
         CommonModule,
         IonicModule,
         NavSuperiorComponent,
-        NavInferiorComponent,
-        NgOptimizedImage,
-        NavLateralComponent
+        NavInferiorComponent
     ]
 })
 export class AmigosComponent implements OnInit {
