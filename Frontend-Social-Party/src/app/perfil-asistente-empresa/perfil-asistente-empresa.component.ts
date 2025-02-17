@@ -70,7 +70,6 @@ export class PerfilAsistenteEmpresaComponent implements OnInit {
             }
         }
 
-
         this.activateRoute.params.subscribe(params => {
             this.idCliente = Number(params['id']);
         });
