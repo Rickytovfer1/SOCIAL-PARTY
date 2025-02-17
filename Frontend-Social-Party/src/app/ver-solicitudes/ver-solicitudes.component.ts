@@ -79,6 +79,7 @@ export class VerSolicitudesComponent implements OnInit {
         }
     }
 
+
     cargarUsuario(correo: string | undefined): void {
         this.usuarioService.getUsuario(correo).subscribe({
             next: (usuario: Usuario) => {

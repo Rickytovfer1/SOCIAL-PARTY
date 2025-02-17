@@ -1,4 +1,4 @@
-import { Component, OnInit, NgZone } from '@angular/core';
+import { Component, OnInit, NgZone, ChangeDetectorRef } from '@angular/core';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { IonicModule } from "@ionic/angular";
 import { NavSuperiorComponent } from "../nav-superior/nav-superior.component";
@@ -35,7 +35,8 @@ export class AmigosComponent implements OnInit {
     usuario: Usuario = {} as Usuario;
     amigos: Cliente[] = [];
     correo?: string;
-    pendingNotificaciones: number = 0;  // Variable unificada para notificaciones
+    pendingNotificaciones: number = 0;
+    pendingSolicitudes: number = 0;
     socketSubscription: any;
 
     constructor(
@@ -45,8 +46,13 @@ export class AmigosComponent implements OnInit {
         private socketService: SocketService,
         private notificacionService: NotificacionService,
         private router: Router,
-        private zone: NgZone
+        private zone: NgZone,
+        private cd: ChangeDetectorRef
     ) {}
+
+    get pendingBadge(): number {
+        return this.pendingNotificaciones + this.pendingSolicitudes;
+    }
 
     ngOnInit() {
         this.inicio();
@@ -75,12 +81,19 @@ export class AmigosComponent implements OnInit {
                 if (usuario && usuario.id) {
                     this.cargarAmigos(usuario.id);
                     this.cargarNotificaciones(usuario.id);
+                    this.cargarSolicitudesPendientes(usuario.id);
                     this.socketService.subscribeToNotificaciones(usuario.id);
+                    this.socketService.subscribeToSolicitudes(usuario.id);
                     if (!this.socketSubscription) {
                         this.socketSubscription = this.socketService.listenEvent().subscribe((data: any) => {
                             this.zone.run(() => {
-                                if (data && (data.tipo === 'comentario' || data.tipo === 'like' || data.tipo === 'notificacion')) {
-                                    this.pendingNotificaciones++;
+                                if (data) {
+                                    if (data.tipo === 'comentario' || data.tipo === 'like' || data.tipo === 'notificacion' || data.tipo === 'mensaje') {
+                                        this.pendingNotificaciones++;
+                                    } else if (data.tipo === 'solicitud') {
+                                        this.pendingSolicitudes++;
+                                    }
+                                    this.cd.detectChanges();
                                 }
                             });
                         });
@@ -111,6 +124,17 @@ export class AmigosComponent implements OnInit {
             },
             error: (e) => {
                 console.error('Error al cargar notificaciones', e);
+            }
+        });
+    }
+
+    cargarSolicitudesPendientes(idUsuario: number): void {
+        this.solicitudService.getSolicitudes(idUsuario).subscribe({
+            next: (solicitudes) => {
+                this.pendingSolicitudes = solicitudes.length;
+            },
+            error: (e) => {
+                console.error('Error al cargar solicitudes pendientes', e);
             }
         });
     }
