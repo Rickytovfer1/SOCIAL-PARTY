@@ -12,11 +12,15 @@
                     <ion-row>
                         <ion-col>
                             <ion-grid>
+                                <ion-row *ngIf="comentarios.length === 0">
+                                    <div style="width: 100%; text-align: center; padding: 20px; color: white">
+                                        <ion-text style="margin: 0 auto; color: white">Esta publicación todavía no tiene comentarios.</ion-text>
+                                    </div>
+                                </ion-row>
                                 <ion-row class="comentario" *ngFor="let comentario of comentarios">
                                     <ion-col size="3" class="ion-align-items-center" style="display: flex">
-                                        <img *ngIf="comentario.id_cliente !== undefined && clientes[comentario.id_cliente]"
-                                             [ngSrc]="getImageUrlCliente(clientes[comentario.id_cliente]!)"
-                                             fill>
+                                        <ion-img class="foto_perfil" *ngIf="comentario.id_cliente !== undefined && clientes[comentario.id_cliente]"
+                                                 [src]="getImageUrlCliente(clientes[comentario.id_cliente]!)"></ion-img>
                                     </ion-col>
                                     <ion-col size="1"></ion-col>
                                     <ion-col size="8">
@@ -45,7 +49,7 @@
 
             </ion-content>
 
-            <div style="background-color: #5ab7d5">
+            <div style="background-color: #5ab7d5; border-top: 1px solid black;">
                 <div id="enviar_mensaje">
                     <ion-input
                         [(ngModel)]="nuevoComentario"
@@ -55,6 +59,9 @@
                     <ion-img id="img_enviar" (click)="enviarMensaje()" src="assets/iconoEnviar.png"></ion-img>
                 </div>
             </div>
+        </ion-col>
+        <ion-col size="2.5" class="menu-lateral" style="border-left: 1px solid black">
+            <app-amigos></app-amigos>
         </ion-col>
     </ion-row>
 </ion-grid>

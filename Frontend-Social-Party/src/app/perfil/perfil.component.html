@@ -43,8 +43,8 @@
                                     <ion-label>Fecha de nacimiento:</ion-label>
                                     <ion-input type="date" [(ngModel)]="registro.fechaNacimiento" [readonly]="!editar"></ion-input>
                                 </ion-row>
-                                <ion-row>
-                                    <ion-label>Foto perfil:</ion-label>
+                                <ion-row style="padding-bottom: 40px; padding-top: 10px">
+                                    <ion-label>Foto perfil: </ion-label>
                                     <input type="file" (change)="seleccionarFoto($event)" accept="image/*" [disabled]="!editar" />
                                 </ion-row>
                                 <ion-row>

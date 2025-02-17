@@ -1,4 +1,4 @@
-import { Component, OnInit, NgZone } from '@angular/core';
+import {Component, OnInit, NgZone, HostListener} from '@angular/core';
 import {CommonModule, NgOptimizedImage} from '@angular/common';
 import { IonicModule } from "@ionic/angular";
 import { NavSuperiorComponent } from "../nav-superior/nav-superior.component";
@@ -39,6 +39,9 @@ export class AmigosComponent implements OnInit {
     pendingSolicitudes: number = 0;
     socketSubscription: any;
 
+    private screenWidth: number = window.innerWidth;
+    private readonly breakpoint = 768;
+
     constructor(
         private usuarioService: UsuarioService,
         private amigoService: AmigoService,
@@ -49,7 +52,21 @@ export class AmigosComponent implements OnInit {
     ) {}
 
     ngOnInit() {
+        this.checkScreenSize();
         this.inicio();
+    }
+
+    @HostListener('window:resize', [])
+    onResize() {
+        this.checkScreenSize();
+    }
+
+    checkScreenSize() {
+        this.screenWidth = window.innerWidth;
+
+        if (this.screenWidth > this.breakpoint && this.router.url === '/amigos') {
+            this.router.navigate(['/ver-empresas']);
+        }
     }
 
     inicio() {

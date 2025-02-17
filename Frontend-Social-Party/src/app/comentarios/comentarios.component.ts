@@ -20,6 +20,7 @@ import {ClienteService} from "../servicios/cliente.service";
 import {environment} from "../../environments/environment";
 import {Cliente} from "../modelos/Cliente";
 import {NavLateralComponent} from "../nav-lateral/nav-lateral.component";
+import {AmigosComponent} from "../amigos/amigos.component";
 
 @Component({
     selector: 'app-comentarios',
@@ -34,7 +35,8 @@ import {NavLateralComponent} from "../nav-lateral/nav-lateral.component";
         FormsModule,
         NgOptimizedImage,
         NgIf,
-        NavLateralComponent
+        NavLateralComponent,
+        AmigosComponent
     ]
 })
 export class ComentariosComponent  implements OnInit {
@@ -44,10 +46,7 @@ export class ComentariosComponent  implements OnInit {
     perfil: Perfil = {} as Perfil;
     cliente: Cliente = {} as Cliente;
     idPublicacion!: number;
-    id_Cliente!: number;
     comentarios: Comentario[] = []
-    perfilesComentarios: Perfil[] = [];
-    nombresComentarios: {[key: number]: string} = {};
     nuevoComentario: string = ""
     clientes: { [key: number]: Cliente } = {};
 
@@ -124,8 +123,6 @@ export class ComentariosComponent  implements OnInit {
         });
     }
 
-
-
     cargarCliente(idCliente: number | undefined) {
         if (idCliente == null || this.clientes[idCliente]) return;
 
@@ -141,9 +138,6 @@ export class ComentariosComponent  implements OnInit {
         });
     }
 
-
-
-
     enviarMensaje() {
 
         const mensaje: ComentarioEnvio = {
@@ -158,6 +152,8 @@ export class ComentariosComponent  implements OnInit {
         })
 
         this.nuevoComentario = ""
+
+        this.refreshData()
     }
 
     calcularFecha(comentario: Comentario): string {
@@ -203,6 +199,15 @@ export class ComentariosComponent  implements OnInit {
         } else {
             return `${this.baseUrl}${clienteDTO.fotoPerfil}`;
         }
+    }
+
+    refreshData() {
+        this.comentarios = []
+        this.cargarComentarios(this.idPublicacion)
+    }
+
+    ionViewWillEnter() {
+        this.refreshData()
     }
 
 }

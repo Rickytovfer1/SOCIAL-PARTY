@@ -15,6 +15,18 @@ img {
     margin-bottom: 55%;
 }
 
+@media (min-width: 768px) {
+    #grid_secundario {
+        height: 100%;
+        margin-bottom: 1%;
+    }
+    img {
+        width: 40px;
+        height: 40px;
+        border-radius: 30%;
+    }
+}
+
 #fila_icono {
     height: 100%;
     margin: 0 auto;
@@ -56,14 +68,10 @@ ion-button {
     --background: #5AB7D5
 }
 
-@media (min-width: 768px) {
-    #grid_secundario {
-        height: 100%;
-        margin-bottom: 20%;
-    }
-    img {
-        width: 40px;
-        height: 40px;
-        border-radius: 30%;
-    }
+input[type="file"]::file-selector-button {
+    font-size: 16px;
+}
+
+input[type="file"] {
+    font-size: 0;
 }

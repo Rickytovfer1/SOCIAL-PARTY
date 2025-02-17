@@ -1,9 +1,9 @@
-#foto_perfil {
-    width: 80%;
-    height: 80%;
-    margin: 0 auto;
-    padding: 0;
-    border-radius: 40px;
+.foto_perfil {
+    border-radius: 50%;
+    overflow: hidden;
+    width: 90%;
+    height: 90%;
+    object-fit: cover;
 }
 
 #estrella {
