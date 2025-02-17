@@ -1,9 +1,11 @@
 .fondo {
     --background: #D3E5E5;
 }
+
 #grid_principal {
     height: 35%;
 }
+
 img {
     width: 40px;
     height: 40px;
@@ -18,7 +20,7 @@ img {
 @media (min-width: 768px) {
     #grid_secundario {
         height: 100%;
-        margin-bottom: 1%;
+        margin-bottom: 20%;
     }
     img {
         width: 40px;
