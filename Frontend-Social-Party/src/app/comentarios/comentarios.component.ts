@@ -140,6 +140,10 @@ export class ComentariosComponent  implements OnInit {
 
     enviarMensaje() {
 
+        if (!this.nuevoComentario.trim()) {
+            return
+        }
+
         const mensaje: ComentarioEnvio = {
             texto: this.nuevoComentario,
             id_cliente: this.perfil.id,
