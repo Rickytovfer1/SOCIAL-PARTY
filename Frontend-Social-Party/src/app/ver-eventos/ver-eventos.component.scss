@@ -1,0 +1,108 @@
+.fondo {
+    --background: #471FCD;
+    height: 50%;
+}
+
+.info {
+    border-radius: 10px;
+    padding: 8px;
+    background-color: #5AB7D5;
+    color: #ffffff;
+    white-space: wrap;
+    text-align: center;
+    font-size: 15px;
+    margin: 0 auto;
+    width: 90%;
+    border: 1px solid black;
+}
+
+@media (min-width: 768px) {
+    .fondo {
+        --background: #471FCD;
+        height: 50%;
+    }
+    .info {
+        border-radius: 10px;
+        padding: 10px;
+        background-color: #5AB7D5;
+        color: #ffffff;
+        white-space: wrap;
+        text-align: center;
+        font-size: 14px;
+        margin: 0 auto;
+        width: 75%;
+        border: 1px solid black;
+    }
+}
+
+.banda {
+    background-color: #306DA9;
+    height: 10%;
+    padding: 1%;
+    display: flex;
+}
+
+ion-content {
+    --background: #D3E5E5;
+}
+
+.nombre_evento {
+    font-size: 20px;
+    color: #ffffff;
+    text-align: center;
+    font-weight: bold;
+    font-style: italic;
+    margin: 10px auto 0;
+}
+
+ion-card {
+    margin: 15px auto;
+    --background: #306DA9;
+    border-radius: 40px;
+}
+
+.foto_evento {
+    border-radius: 25px;
+    overflow: hidden;
+}
+
+.descp_evento {
+    font-size: 18px;
+    color: #ffffff;
+    margin: 0 auto;
+    text-align: center;
+}
+
+#grid_eventos {
+    margin-bottom: 10%;
+}
+
+#img_correo {
+    width: 40px;
+    height: 40px;
+    margin: 0 auto;
+    float: right;
+}
+
+@media (min-width: 768px) {
+    #img_correo {
+        width: 70px;
+        height: 70px;
+        margin: 0 auto;
+        float: right;
+    }
+}
+
+#nombre_empresa {
+    color: #ffffff;
+    margin: 0 auto;
+    font-size: 25px;
+    font-weight: bold;
+    text-align: center;
+}
+#img_reporte{
+    width: 40px;
+    height: 40px;
+    margin: 0 auto;
+    float: left;
+}

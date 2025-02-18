@@ -1,0 +1,34 @@
+.tarjeta_amigo {
+  --background: #306DA9;
+  border-radius: 40px;
+  vertical-align: center;
+  margin: 20px;
+}
+
+ion-content {
+  --background: #D3E5E5;
+}
+
+#nombre {
+    color: #ffffff;
+    font-size: 20px;
+    margin: 0 auto;
+}
+
+app-nav-superior {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    app-nav-superior {
+        display: block;
+    }
+}
+
+.foto_perfil {
+    border-radius: 40%;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}

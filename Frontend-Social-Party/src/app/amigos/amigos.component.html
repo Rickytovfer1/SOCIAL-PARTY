@@ -1,0 +1,38 @@
+<app-nav-superior></app-nav-superior>
+
+<ion-content>
+    <ion-grid>
+        <ion-row class="ion-justify-content-between ion-align-items-center" style="padding: 1%">
+            <div style="display: inline-flex; align-items: center;">
+                <ion-img (click)="verSolicitudes()" src="assets/iconoNoti.png" style="width: 40px; height: 40px;"></ion-img>
+                <div class="badge-container">
+                    <ion-badge *ngIf="pendingBadge > 0">
+                        {{ pendingBadge }}
+                    </ion-badge>
+                </div>
+            </div>
+            <ion-img (click)="verAmigos()" src="assets/iconoAmigos.png"></ion-img>
+        </ion-row>
+        <ion-row>
+            <ion-col style="margin: 0 auto" size-lg="10" size-xl="10" size-md="10" size-sm="10" size-xs="10">
+                <div *ngIf="amigos.length === 0" style="width: 100%; text-align: center; padding: 20px; color: black">
+                    <ion-text style="margin: 0 auto;">No tienes amigos todavía...</ion-text>
+                </div>
+                <ion-card (click)="abrirChat(amigo.idUsuario)" class="tarjeta_amigo ion-text-center" *ngFor="let amigo of amigos">
+                    <ion-grid>
+                        <ion-row>
+                            <ion-col size="3">
+                                <ion-img class="foto_perfil" [src]="getImageUrlCliente(amigo)"></ion-img>
+                            </ion-col>
+                            <ion-col size="9" style="display: flex" class="ion-align-items-center">
+                                <ion-text id="nombre">{{ amigo.nombre }} {{ amigo.apellidos }}</ion-text>
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>
+
+<app-nav-inferior></app-nav-inferior>

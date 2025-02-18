@@ -1,0 +1,75 @@
+ion-content {
+    --background: #D3E5E5;
+    height: 92%;
+}
+
+ion-searchbar {
+    --border-radius: 60px;
+    width: 85%;
+    margin: 10px auto;
+}
+
+ion-card {
+    margin: 25px auto;
+    --background: #306DA9;
+    border-radius: 20px;
+}
+
+.img_empresa {
+    width: 90%;
+    height: 90%;
+    margin: 0 auto;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+ion-col {
+    margin: 0 auto;
+    text-align: center;
+}
+
+ion-text {
+    margin: 10px auto;
+    color: #ffffff
+}
+
+.direccion {
+    font-size: 15px;
+}
+
+.nombre {
+    font-size: 30px;
+}
+
+#icono_entradas {
+    width: 5%;
+    height: 5%;
+    margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+    #icono_entradas {
+        width: 10%;
+        height: 10%;
+        margin: 0 auto;
+    }
+    ion-content {
+        height: 100%;
+    }
+}
+
+.star-points {
+    color: #F0FF00;
+    font-size: 25px;
+    margin-left: 25px;
+}
+.rating-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#item_range {
+    --background: #D3E5E5;
+}

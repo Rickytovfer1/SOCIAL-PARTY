@@ -1,0 +1,85 @@
+<app-nav-superior></app-nav-superior>
+
+<ion-grid class="grid_menus">
+    <ion-row class="fila_menus">
+        <ion-col size="2.5" class="menu-lateral">
+            <app-nav-lateral style="width: 100%"></app-nav-lateral>
+        </ion-col>
+        <ion-col class="contenido-principal">
+            <ion-content>
+                <ion-content class="fondo">
+                    <ion-img id="imagenEmpresa" [src]="getImageUrlEmpresa()"/>
+                </ion-content>
+                <div class="banda ion-justify-content-between ion-align-items-center">
+                    <ion-grid>
+                        <ion-row>
+                            <ion-col size="4" style="display: flex" class="ion-align-items-center">
+                                <a [href]="'https://mail.google.com/mail/?view=cm&fs=1&to=socialpartysl@gmail.com&su=Consulta&body=Buenas, quisiera mostrar mi desacuerdo por mí eliminación de estrellas. Gracias'" target="_blank">
+                                    <ion-img id="img_reporte" [src]="'assets/reporte.png'"/>
+                                </a>
+                            </ion-col>
+                            <ion-col size="4" style="display: flex" class="ion-align-items-center">
+                                <ion-text id="nombre_empresa" class="ion-text-center">{{ empresa.nombre }}</ion-text>
+                            </ion-col>
+                            <ion-col size="4">
+                                <a [href]="'https://mail.google.com/mail/?view=cm&fs=1&to=' + usuario.correo + '&su=Consulta&body=Hola, quiero obtener más información sobre su empresa.'" target="_blank">
+                                    <ion-img id="img_correo" [src]="'assets/gmail.png'"/>
+                                </a>
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
+                </div>
+
+                <ion-grid id="grid_eventos">
+                    <ion-row *ngIf="eventos.length === 0">
+                        <div style="width: 100%; text-align: center; padding: 20px; color: black">
+                            <ion-text style="margin: 0 auto; color: black">Esta empresa no tiene eventos.</ion-text>
+                        </div>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col style="margin: 0 auto" size-lg="4" size-xl="4" size-md="6" size-sm="10" size-xs="12">
+                            <ion-card *ngFor="let evento of eventos">
+                                <ion-img [src]="getImageUrl(evento)" alt="Foto publicacion"/>
+                                <ion-grid>
+                                    <ion-row (click)="verEvento(evento.id)">
+                                        <ion-col>
+                                            <ion-grid>
+                                                <ion-row>
+                                                    <ion-col size="6">
+                                                        <div class="info">
+                                                            <ion-label >{{evento.fecha}}</ion-label>
+                                                        </div>
+                                                    </ion-col>
+                                                    <ion-col size="6">
+                                                        <div class="info">
+                                                            <ion-label >{{evento.horaApertura}} - {{evento.horaFinalizacion}}</ion-label>
+                                                        </div>
+                                                    </ion-col>
+                                                </ion-row>
+                                                <ion-row>
+                                                    <ion-col style="display: flex" class="ion-align-items-center">
+                                                        <ion-label class="nombre_evento">{{evento.titulo}}</ion-label>
+                                                    </ion-col>
+                                                </ion-row>
+                                                <ion-row>
+                                                    <ion-col style="display: flex" class="ion-align-items-center">
+                                                        <ion-label class="descp_evento">{{evento.descripcion}}</ion-label>
+                                                    </ion-col>
+                                                </ion-row>
+                                            </ion-grid>
+                                        </ion-col>
+                                    </ion-row>
+                                </ion-grid>
+                            </ion-card>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+            </ion-content>
+        </ion-col>
+        <ion-col size="2.5" class="menu-lateral" style="border-left: 1px solid black">
+            <app-amigos></app-amigos>
+        </ion-col>
+    </ion-row>
+</ion-grid>
+
+<app-nav-inferior></app-nav-inferior>

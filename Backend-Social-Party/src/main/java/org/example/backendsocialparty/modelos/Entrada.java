@@ -20,17 +20,25 @@ public class Entrada {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(name = "fecha", nullable = false)
     private LocalDateTime fecha;
 
+    @Column(name = "codigoEntrada")
+    private Integer codigoEntrada;
+
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cliente")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Cliente cliente;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "evento")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Evento evento;
 
 

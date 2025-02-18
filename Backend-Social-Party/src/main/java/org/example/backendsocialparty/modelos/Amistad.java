@@ -16,15 +16,16 @@ public class Amistad {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "usuario1")
-    private Cliente usuario1;
+    @ManyToOne
+    @JoinColumn(name = "usuario_id")
+    private Cliente usuario;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "usuario2")
-    private Cliente usuario2;
+    @ManyToOne
+    @JoinColumn(name = "amigo_id")
+    private Cliente amigo;
+
 
 
 

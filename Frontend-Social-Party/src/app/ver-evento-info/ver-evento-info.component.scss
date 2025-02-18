@@ -1,0 +1,71 @@
+ion-content {
+    --background: #D3E5E5;
+    height: 100%;
+}
+
+ion-col {
+    margin: 0 auto;
+    white-space: wrap;
+}
+
+#cardG {
+    border: 5px solid #471FCD;
+    border-radius: 40px;
+    padding: 10px;
+    margin: 0 auto;
+    width: 80%;
+}
+
+#card_info {
+    --background: #306DA9;
+    color: white;
+    border: 1px solid black;
+    padding: 5px;
+    border-radius: 20px;
+}
+
+#card_bio {
+    --background: #306DA9;
+    color: white;
+    border: 1px solid black;
+    padding: 15px;
+    border-radius: 20px;
+    text-align: center;
+}
+
+img {
+    border-radius: 15px;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+}
+
+#nombre {
+    font-size: 25px;
+}
+
+ion-title {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+ion-button {
+    color: #ffffff;
+    --border-radius: 25px;
+    --background: #5AB7D5;
+    margin: 20px auto;
+}
+
+@media (max-width: 768px) {
+    #cardG {
+        border: 5px solid #471FCD;
+        border-radius: 40px;
+        padding: 10px;
+        margin: 0 auto;
+        width: 100%;
+    }
+}
+
+ion-footer {
+    --background: #D3E5E5;
+}

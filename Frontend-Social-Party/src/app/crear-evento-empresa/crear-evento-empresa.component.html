@@ -1,0 +1,55 @@
+<app-nav-superior-empresa></app-nav-superior-empresa>
+
+<ion-grid class="grid_menus">
+    <ion-row class="fila_menus">
+        <ion-col size="2.5" class="menu-lateral">
+            <app-nav-lateral-empresa style="width: 100%"></app-nav-lateral-empresa>
+        </ion-col>
+        <ion-col class="contenido-principal">
+            <ion-content class="fondo">
+                <ion-grid>
+                    <ion-row>
+                        <ion-col size-lg="4" size-xl="4" size-md="8" size-sm="10" size-xs="12">
+                            <ion-card id="card_borde">
+                                <ion-card id="card_fondo">
+                                    <ion-card class="card-form">
+                                        <div class="card-form">
+
+                                            <ion-label position="floating">Título</ion-label>
+                                            <ion-input placeholder="Introduce un título" [(ngModel)]="titulo" name="titulo" required></ion-input>
+
+                                            <ion-label position="floating">Descripción</ion-label>
+                                            <ion-input placeholder="Introduce una descripción" [(ngModel)]="descripcion" name="descripcion" required></ion-input>
+
+                                            <ion-label position="floating">Fecha</ion-label>
+                                            <ion-datetime locale="es" presentation="date" displayFormat="YYYY-MM-DD" pickerFormat="YYYY-MM-DD" [(ngModel)]="fecha" name="fecha" required></ion-datetime>
+
+                                            <ion-label position="floating">Hora de Apertura</ion-label>
+                                            <ion-datetime locale="es" placeholder="Selecciona la hora de apertura" presentation="time" displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="horaApertura" name="horaApertura" required></ion-datetime>
+
+                                            <ion-label position="floating">Hora de Finalización</ion-label>
+                                            <ion-datetime locale="es" placeholder="Selecciona la hora de finalización" presentation="time" displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="horaFinalizacion" name="horaFinalizacion" required></ion-datetime>
+
+                                            <ion-label position="floating">Precio</ion-label>
+                                            <ion-input type="number" [(ngModel)]="precio" name="precio" required></ion-input>
+
+                                            <ion-label>Foto: </ion-label>
+                                            <input type="file" (change)="seleccionarFoto($event)" accept="image/*">
+
+                                            <ion-button (click)="crearEvento()">
+                                                Crear Evento
+                                            </ion-button>
+                                        </div>
+                                    </ion-card>
+                                </ion-card>
+                            </ion-card>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+
+            </ion-content>
+        </ion-col>
+    </ion-row>
+</ion-grid>
+
+<app-nav-inferior-empresa></app-nav-inferior-empresa>

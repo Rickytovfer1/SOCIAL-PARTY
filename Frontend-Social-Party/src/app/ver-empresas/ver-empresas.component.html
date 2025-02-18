@@ -1,0 +1,81 @@
+<app-nav-superior></app-nav-superior>
+
+<ion-grid class="grid_menus">
+    <ion-row class="fila_menus">
+        <ion-col size="2.5" class="menu-lateral">
+            <app-nav-lateral style="width: 100%"></app-nav-lateral>
+        </ion-col>
+        <ion-col class="contenido-principal">
+            <ion-content>
+                <div style="display: flex; padding: 10px" class="ion-align-items-center ion-justify-content-between">
+                    <ion-img (click)="verEntradas()" id="icono_entradas" src="assets/icons8-boleto-96.png"></ion-img>
+                    <ion-searchbar
+                        placeholder="Buscar sitios"
+                        animated="true"
+                        [(ngModel)]="buscar"
+                        (ionInput)="onSearchChange($event)">
+                    </ion-searchbar>
+                    <ion-img id="filtro1" src="assets/iconoFiltro.png"></ion-img>
+                    <ion-popover trigger="filtro1" triggerAction="click" [dismissOnSelect]="true">
+                        <ng-template>
+                            <ion-list>
+                                <ion-item button (click)="sortByValoracionAsc()">Menor a Mayor</ion-item>
+                                <ion-item button (click)="sortByValoracionDesc()">Mayor a Menor</ion-item>
+                                <ion-item button (click)="toggleRangeFilter()">Filtrar por Valoracion</ion-item>
+                            </ion-list>
+                        </ng-template>
+                    </ion-popover>
+                </div>
+
+                <ion-item id="item_range" *ngIf="showRangeFilter">
+                    <ion-range dualKnobs="true" min="0" max="100" step="1" [(ngModel)]="valoracionRange" (ionChange)="filterByRange()">
+                        <ion-label slot="start">{{ valoracionRange.lower }}</ion-label>
+                        <ion-label slot="end">{{ valoracionRange.upper }}</ion-label>
+                    </ion-range>
+                </ion-item>
+
+                <ion-grid>
+                    <ion-row>
+                        <ion-col size-lg="4" size-xl="4" size-md="6" size-sm="10" size-xs="12">
+                            <div *ngIf="empresasFiltradas.length === 0" style="width: 100%; text-align: center; padding: 20px; color: black">
+                                <ion-text style="margin: 0 auto; color: black">Empresas no encontradas...</ion-text>
+                            </div>
+                            <ion-card *ngFor="let empresa of empresasFiltradas" (click)="verEventos(empresa.id)">
+                                <ion-grid>
+                                    <ion-row>
+                                        <ion-col size="5">
+                                            <img [ngSrc]="getImageUrl(empresa)" class="img_empresa" fill>
+                                        </ion-col>
+                                        <ion-col size="7">
+                                            <ion-grid class="textos">
+                                                <ion-row>
+                                                    <ion-text class="nombre">{{ empresa.nombre }}</ion-text>
+                                                </ion-row>
+                                                <ion-row>
+                                                    <ion-text class="direccion">{{ empresa.direccion }}</ion-text>
+                                                </ion-row>
+                                                <ion-row>
+                                                    <div class="rating-container">
+                                                        <ion-text class="star-points" style="margin: 0;">{{ empresa.valoracionMinima }}</ion-text>
+                                                        <ion-img src="assets/estrella.png" alt="Estrella" style="width: 25px; margin-left: 8px;"></ion-img>
+                                                    </div>
+                                                </ion-row>
+
+                                            </ion-grid>
+                                        </ion-col>
+                                    </ion-row>
+                                </ion-grid>
+                            </ion-card>
+
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+            </ion-content>
+        </ion-col>
+        <ion-col size="2.5" class="menu-lateral" style="border-left: 1px solid black">
+            <app-amigos></app-amigos>
+        </ion-col>
+    </ion-row>
+</ion-grid>
+
+<app-nav-inferior></app-nav-inferior>

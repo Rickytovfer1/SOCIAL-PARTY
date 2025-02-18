@@ -1,0 +1,58 @@
+<app-nav-superior></app-nav-superior>
+
+<ion-grid class="grid_menus">
+    <ion-row class="fila_menus">
+        <ion-col size="2.5" class="menu-lateral">
+            <app-nav-lateral style="width: 100%"></app-nav-lateral>
+        </ion-col>
+        <ion-col class="contenido-principal">
+            <ion-content class="fondo">
+
+                <ion-card id="cartaouter" class="card-outer">
+                    <ion-card class="card-middle">
+                        <ion-card class="card-inner">
+                            <ion-card-header>
+                                <ion-label>Escribe tu texto:</ion-label>
+                                <ion-textarea [(ngModel)]="publicacion.texto" placeholder="Escribe un texto"></ion-textarea>
+                            </ion-card-header>
+
+                            <ion-card-content>
+                                <ion-label>Sube tu foto:</ion-label>
+                                <input type="file" (change)="seleccionarFoto($event)" accept="image/*"/>
+                            </ion-card-content>
+                            <ion-button (click)="publicar()">Publicar</ion-button>
+                        </ion-card>
+                    </ion-card>
+                </ion-card>
+
+            </ion-content>
+        </ion-col>
+        <ion-col size="2.5" class="menu-lateral" style="border-left: 1px solid black">
+            <app-amigos></app-amigos>
+        </ion-col>
+    </ion-row>
+</ion-grid>
+
+<app-nav-inferior></app-nav-inferior>
+
+<ion-toast
+    id="toastSinEvento"
+    message="No estás en ningún evento, no puedes publicar."
+    duration="3000"
+    position="top"
+    color="warning"
+></ion-toast>
+<ion-toast
+    id="toastCompleta"
+    message="Por favor, completa todos los campos."
+    duration="3000"
+    position="top"
+    color="danger"
+></ion-toast>
+<ion-toast
+    id="toastCreada"
+        message="Publicación creada exitosamente"
+    duration="3000"
+    position="top"
+    color="success"
+></ion-toast>

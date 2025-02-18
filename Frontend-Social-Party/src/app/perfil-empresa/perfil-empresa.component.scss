@@ -1,0 +1,78 @@
+.fondo {
+    --background: #D3E5E5;
+    height: 100%;
+}
+
+@media (min-width: 768px) {
+    .fondo {
+        height: 92%;
+    }
+}
+
+#grid_principal {
+    height: 35%;
+}
+
+img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+#grid_secundario {
+    height: 100%;
+    margin-bottom: 55%;
+}
+
+#fila_icono {
+    height: 100%;
+    margin: 0 auto;
+}
+
+#col_icono {
+    height: 100%;
+    margin: 0 auto;
+    padding: 0;
+}
+
+#icono {
+    width: 50%;
+    height: 50%;
+    object-fit: cover;
+    margin: 0 auto;
+}
+
+#col_principal {
+    margin: 0 auto
+}
+
+ion-label {
+    color: #000000
+}
+
+ion-input {
+    --padding-start: 10px;
+    --background: #ffffff;
+    --border-radius: 15px;
+    margin-top: 15px;
+    margin-bottom: 30px
+}
+
+ion-button {
+    color: #000000;
+    --border-radius: 25px;
+    margin: 0 auto;
+    --background: #5AB7D5
+}
+
+@media (min-width: 768px) {
+    #grid_secundario {
+        height: 100%;
+        margin-bottom: 20%;
+    }
+    img {
+        width: 40px;
+        height: 40px;
+        border-radius: 30%;
+    }
+}

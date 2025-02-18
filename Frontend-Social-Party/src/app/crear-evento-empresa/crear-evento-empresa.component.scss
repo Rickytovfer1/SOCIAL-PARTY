@@ -1,0 +1,85 @@
+.fondo {
+    --background: #D3E5E5;
+}
+
+#card_borde {
+    --background: #471FCD;
+    border-radius: 25px;
+}
+
+#card_fondo {
+    --background: #FFFFFF;
+    border-radius: 25px;
+}
+
+.card-form {
+    --background: #306DA9;
+    border-radius: 25px;
+    padding: 10px;
+}
+
+ion-label {
+    color: #ffffff;
+}
+
+ion-input, ion-datetime {
+    --padding-start: 10px;
+    --background: #ffffff;
+    --border-radius: 15px;
+    margin-top: 15px;
+    margin-bottom: 30px;
+    padding: 10px;
+    font-size: 14px;
+    color: #000000;
+}
+
+ion-datetime {
+    --border-radius: 15px;
+    --background: #ffffff;
+    --padding-start: 10px;
+    --color: #000000;
+    border-radius: 16px;
+    box-shadow: rgba(var(--ion-color-base-rgb), 0.3) 0px 10px 15px -3px;
+}
+
+ion-datetime::part(calendar-day) {
+    color: #000000;
+}
+
+ion-datetime::part(calendar-day today) {
+    color: #000000;
+}
+
+input[type="file"]::file-selector-button {
+    font-size: 16px;
+}
+
+input[type="file"] {
+    font-size: 0;
+}
+
+ion-button {
+    --background: #5AB7D5;
+    border-radius: 40px;
+    margin: 20px auto 5px;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    color: white;
+}
+
+ion-col {
+    margin: 0 auto;
+}
+
+ion-content {
+    height: 94%;
+}
+
+@media (max-width: 768px) {
+    ion-content {
+        height: 100%;
+    }
+}

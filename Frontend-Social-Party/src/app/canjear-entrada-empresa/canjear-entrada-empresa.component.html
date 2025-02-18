@@ -1,0 +1,59 @@
+<app-nav-superior-empresa></app-nav-superior-empresa>
+
+<ion-grid class="grid_menus">
+    <ion-row class="fila_menus">
+        <ion-col size="2.5" class="menu-lateral">
+            <app-nav-lateral-empresa style="width: 100%"></app-nav-lateral-empresa>
+        </ion-col>
+        <ion-col class="contenido-principal">
+            <ion-content class="fondo">
+                <ion-card id="cartaouter" class="card-outer">
+                    <ion-card class="card-middle">
+                        <ion-card class="card-inner">
+                            <ion-card-header>
+                                <ion-label>Código de entrada: </ion-label>
+                                <ion-input [(ngModel)]="codigoEntrada" placeholder="Escribe tu texto"></ion-input>
+                            </ion-card-header>
+
+                            <ion-card-content>
+                                <ion-card-content>
+                                    <ion-label>Verificar QR:</ion-label>
+                                    <video #videoElement autoplay playsinline style="width: 100%; border-radius: 10px;"></video>
+                                </ion-card-content>
+
+                            </ion-card-content>
+
+                            <ion-button (click)="redeemEntrada()">Canjear</ion-button>
+                        </ion-card>
+                    </ion-card>
+                </ion-card>
+            </ion-content>
+        </ion-col>
+    </ion-row>
+</ion-grid>
+
+<app-nav-inferior-empresa></app-nav-inferior-empresa>
+
+<ion-toast
+    id="toastBlanco"
+    message="Por favor, inserte un código de entrada."
+    duration="3000"
+    position="top"
+    color="danger"
+></ion-toast>
+<ion-toast
+    id="toastCanjeada"
+    message="Esta entrada ya ha sido canjeada"
+    duration="3000"
+    position="top"
+    color="warning"
+></ion-toast>
+<ion-toast
+    id="toastNoExiste"
+    message="Esta entrada no existe"
+    duration="3000"
+    position="top"
+    color="warning"
+></ion-toast>
+
+

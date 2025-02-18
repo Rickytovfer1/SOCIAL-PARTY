@@ -1,0 +1,93 @@
+#cabecera {
+    text-align: center;
+    background-color: #306DA9;
+    font-weight: bold;
+    font-size: 20px;
+    color: white;
+    padding: 25px;
+}
+
+ion-content {
+    --background: #D3E5E5;
+}
+
+.amigo {
+    background-color: #5ab7d5;
+    border-top: 2px solid black;
+    width: 40%;
+    margin: 0 auto;
+    border-left: 2px solid black;
+    border-right: 2px solid black;
+}
+
+@media (max-width: 768px) {
+    .amigo {
+        background-color: #5ab7d5;
+        border-top: 2px solid black;
+        width: 100%;
+        border-left: 0;
+        border-right: 0;
+    }
+}
+
+ion-grid {
+    padding: 0;
+}
+
+ion-row {
+    margin: 0;
+}
+
+ion-col {
+    padding: 0;
+}
+
+ion-text {
+    color: white;
+    margin: 0 auto;
+}
+
+.col_nombre {
+    text-align: center;
+    display: flex;
+    font-size: 18px;
+}
+
+hr {
+    height: 2px !important;
+    background: black !important;
+    display: block !important;
+    margin: 0 auto !important;
+    width: 40%;
+}
+
+@media (max-width: 768px) {
+    hr {
+        height: 2px !important;
+        background: black !important;
+        display: block !important;
+        margin: 0 !important;
+        width: 100%;
+    }
+}
+
+.boton_eliminar {
+    width: 40%;
+    margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+    .boton_eliminar {
+        width: 55%;
+        margin: 0 auto;
+    }
+}
+
+.foto_perfil {
+    border-radius: 50%;
+    overflow: hidden;
+    width: 80%;
+    height: 80%;
+    object-fit: cover;
+    margin: 0 auto;
+}

@@ -1,0 +1,35 @@
+<ion-content>
+    <ion-grid id="grid_principal">
+        <ion-row id="fila_icono">
+            <ion-col size-lg="4" size-xl="4" size-md="4" size-sm="6" size-xs="8" id="col_icono">
+                <ion-img id="icono" src="assets/img.png" alt="Icono"></ion-img>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+    <ion-grid>
+        <ion-col size-lg="4" size-xl="4" size-md="4" size-sm="6" size-xs="8">
+
+            <ion-img *ngIf="!esUltimaImagen" class="imagenes" [src]="imagenActual" alt="Imagen dinámica"></ion-img>
+
+            <div *ngIf="!esUltimaImagen" class="indicadores">
+                <div *ngFor="let img of imagenes; let i = index"
+                     class="punto"
+                     [class.activo]="i === indice">
+                </div>
+            </div>
+
+            <div *ngIf="esUltimaImagen" class="contenedor-mensaje">
+                <p *ngIf="esUltimaImagen" class="mensaje-fin">Esta aplicación tendrá como objetivo el desarrollo de las
+                actividades sociales en locales o discotecas, haciendo el entorno nocturno joven más seguro
+                y respetuoso, beneficiando y ayudando también a las empresas.</p>
+            </div>
+
+
+            <ion-button (click)="accionBoton()">
+                {{ esUltimaImagen ? 'Comenzar' : 'Siguiente' }}
+            </ion-button>
+
+        </ion-col>
+    </ion-grid>
+</ion-content>

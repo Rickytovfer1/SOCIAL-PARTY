@@ -1,0 +1,68 @@
+ion-content {
+    --background: #D3E5E5;
+    height: 95%;
+}
+
+ion-card {
+    margin: 25px auto;
+    --background: #306DA9;
+    border-radius: 10px;
+}
+
+#agregar {
+    margin: 15px auto;
+}
+
+ion-col {
+}
+
+ion-text {
+    margin-left: 10px;
+    color: #ffffff;
+}
+
+.descripcion {
+    font-size: 18px;
+}
+
+ion-searchbar {
+    --border-radius: 60px;
+    width: 90%;
+    margin: 20px auto;
+}
+
+.icono {
+    width: 35px;
+}
+
+ion-col {
+    margin: 0 auto;
+}
+
+.fila_superior ion-col {
+    display: flex;
+}
+
+#texto_filtro {
+    color: black;
+    margin: 0 auto;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+#contenedor_superior {
+    display: flex;
+    margin: 0 auto;
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    #contenedor_superior {
+        display: flex;
+        margin: 0 auto;
+    }
+    ion-content {
+        height: 100%;
+    }
+
+}

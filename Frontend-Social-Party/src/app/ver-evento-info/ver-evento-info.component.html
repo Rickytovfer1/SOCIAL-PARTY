@@ -1,0 +1,69 @@
+<app-nav-superior></app-nav-superior>
+
+<ion-grid class="grid_menus">
+    <ion-row class="fila_menus">
+        <ion-col size="2.5" class="menu-lateral">
+            <app-nav-lateral style="width: 100%"></app-nav-lateral>
+        </ion-col>
+        <ion-col class="contenido-principal">
+            <ion-content>
+                <ion-grid>
+                    <ion-row>
+                        <ion-col size-lg="6" size-xl="6" size-md="8" size-sm="10" size-xs="12">
+                            <ion-card id="cardG">
+                                <ion-card id="card_info">
+                                    <ion-grid>
+                                        <ion-row>
+                                            <ion-col size="6" class="ion-align-items-center">
+                                                <img class="foto_evento" [ngSrc]="getImageUrl(evento)" fill/>
+                                            </ion-col>
+                                            <ion-col size="6">
+                                                <ion-grid>
+                                                    <ion-row>
+                                                        <ion-col style="text-align: center" class="ion-align-items-center">
+                                                            <ion-text id="nombre">{{ empresa.nombre }}</ion-text>
+                                                        </ion-col>
+                                                    </ion-row>
+                                                </ion-grid>
+                                            </ion-col>
+                                        </ion-row>
+                                    </ion-grid>
+                                </ion-card>
+                                <ion-card id="card_bio">
+                                    <ion-title>{{ evento.titulo }}</ion-title>
+                                    <div>
+                                        <ion-text>
+                                            {{ evento.descripcion }}
+                                        </ion-text>
+                                        <hr>
+                                        <ion-text>
+                                            Precio: {{ evento.precio }}€
+                                        </ion-text>
+                                        <hr>
+                                        <ion-text>
+                                            Día: {{ evento.fecha }}
+                                        </ion-text>
+                                        <hr>
+                                        <ion-text>
+                                            Apertura: {{ evento.horaApertura }}h / Cierre: {{evento.horaFinalizacion}}h
+                                        </ion-text>
+
+                                    </div>
+                                    <ion-button (click)="comprarEntrada(evento.id)">Comprar entrada</ion-button>
+                                </ion-card>
+                            </ion-card>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+            </ion-content>
+        </ion-col>
+        <ion-col size="2.5" class="menu-lateral" style="border-left: 1px solid black">
+            <app-amigos></app-amigos>
+        </ion-col>
+    </ion-row>
+</ion-grid>
+
+<ion-footer>
+    <app-nav-inferior></app-nav-inferior>
+</ion-footer>
+
