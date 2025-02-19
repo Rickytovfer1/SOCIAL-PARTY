@@ -11,7 +11,7 @@ public class CorsConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry
                 .addMapping("/ws/**")
-                .allowedOrigins("http://localhost:4200")
+                .allowedOrigins("https://social-party-1-krc9.onrender.com")
                 .allowedMethods("*");
     }
 }
