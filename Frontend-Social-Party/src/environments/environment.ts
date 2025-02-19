@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: '/api',
+  apiUrl: 'https://social-party.onrender.com',
     socketUrl: '/ws'
 };
 
