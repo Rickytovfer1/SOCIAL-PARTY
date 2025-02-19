@@ -1,16 +1,17 @@
-FROM openjdk:18-alpine
+FROM openjdk:18-alpine as builder
 
 WORKDIR /app
 
 COPY mvnw pom.xml ./
 COPY .mvn .mvn
-RUN ./mvnw dependency:go-offline
-
 COPY src src
+RUN ./mvnw dependency:go-offline
 RUN ./mvnw clean package -DskipTests
 
-COPY target/Backend-Social-Party-0.0.1-SNAPSHOT.jar app.jar
+FROM openjdk:18-alpine
+
+WORKDIR /app
+COPY --from=builder /app/target/Backend-Social-Party-0.0.1-SNAPSHOT.jar app.jar
 
 EXPOSE 8080
-
 CMD ["java", "-jar", "app.jar"]
