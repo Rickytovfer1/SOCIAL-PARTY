@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Client, IMessage, StompSubscription } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 import { Observable, Subject } from 'rxjs';
+import {environment} from "../../environments/environment";
+
 
 @Injectable({
     providedIn: 'root'
@@ -18,7 +20,8 @@ export class SocketService {
         this.client = new Client({
             webSocketFactory: () => {
                 const token = sessionStorage.getItem('authToken');
-                return new SockJS(`http://localhost:8080/ws?access_token=${token}`);
+                const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
+                return new SockJS(`${protocol}://${environment.socketUrl}/ws?access_token=${token}`);
             },
             reconnectDelay: 5000,
             heartbeatIncoming: 10000,
