@@ -11,5 +11,4 @@ public class AmistadDTO {
     private Integer id;
     private Integer idUsuario;
     private Integer idAmigo;
-
 }
