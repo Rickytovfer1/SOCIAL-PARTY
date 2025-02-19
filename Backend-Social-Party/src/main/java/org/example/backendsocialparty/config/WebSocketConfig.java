@@ -25,7 +25,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry
                 .addEndpoint("/ws")
-                .setAllowedOrigins("http://localhost:4200")
+                .setAllowedOrigins("https://social-party-1.onrender.com")
                 .addInterceptors(new JWTAuthHandshakeInterceptor(jwtService))
                 .withSockJS();
     }
