@@ -19,7 +19,7 @@ public class EmailService {
 
     public void sendVerificationEmail(String to, String token) {
         String subject = "Verifica tu cuenta";
-        String verificationUrl = "http://localhost:8080/verify?token=" + token;
+        String verificationUrl = "https://social-party.onrender.com/verify?token=" + token;
         String message = "Por favor, haz clic en el siguiente enlace para verificar tu cuenta:\n" + verificationUrl;
 
         SimpleMailMessage mailMessage = new SimpleMailMessage();
