@@ -9,7 +9,7 @@ RUN ./mvnw dependency:go-offline
 COPY src src
 RUN ./mvnw clean package -DskipTests
 
-COPY target/safajobs-0.0.1-SNAPSHOT.jar app.jar
+COPY target/Backend-Social-Party-0.0.1-SNAPSHOT.jar app.jar
 
 EXPOSE 8080
 
