@@ -18,7 +18,7 @@ export class SocketService {
         this.client = new Client({
             webSocketFactory: () => {
                 const token = sessionStorage.getItem('authToken');
-                return new SockJS(`http://localhost:8080/ws?access_token=${token}`);
+                return new SockJS(`https://social-party-ryz1.onrender.com/ws?access_token=${token}`);
             },
             reconnectDelay: 5000,
             heartbeatIncoming: 10000,
