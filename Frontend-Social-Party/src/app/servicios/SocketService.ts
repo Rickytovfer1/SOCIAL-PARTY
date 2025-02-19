@@ -20,8 +20,8 @@ export class SocketService {
         this.client = new Client({
             webSocketFactory: () => {
                 const token = sessionStorage.getItem('authToken');
-                const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
-                return new SockJS(`${protocol}://${environment.socketUrl}/ws?access_token=${token}`);
+                const protocol = window.location.protocol === 'https:' ? 'https:' : 'http:';
+                return new SockJS(`${protocol}//${environment.socketUrl}/ws?access_token=${token}`);
             },
             reconnectDelay: 5000,
             heartbeatIncoming: 10000,
